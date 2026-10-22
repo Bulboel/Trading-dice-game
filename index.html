@@ -20,25 +20,44 @@ small{font-size:.7em;opacity:.9}
 .row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:6px 0}
 button{font:inherit;color:var(--tx);background:var(--bt);border:1px solid var(--ln);border-radius:8px;padding:8px 10px;min-height:44px}
 button:disabled{opacity:.4}
-.dc{flex:1;min-width:0;max-width:98px;padding:6px 3px;border-bottom-width:5px}.dc span{display:block;font-size:11px}.dc b{display:block}.cr{background:#fff8;border-radius:50%}.rc::after{content:"";position:absolute;width:34%;height:34%;border-radius:50%;background:#ffd21f;border:2px solid #fff}#bd .z1{border-bottom:3px solid #e0661a;background-image:linear-gradient(rgba(224,102,26,.3),rgba(224,102,26,.3))}#bd .z0{border-top:3px solid #2f9a5f;background-image:linear-gradient(rgba(47,154,95,.3),rgba(47,154,95,.3))}.zt{position:absolute;left:4px;top:2px;z-index:1;color:var(--tx);opacity:.75;white-space:nowrap;font-size:10px;pointer-events:none}#hl{font-size:13px;opacity:.8}
+.dc{flex:1;min-width:0;max-width:98px;padding:6px 3px;border-bottom-width:5px}.dc span{display:block;font-size:11px}.dc b{font-size:11px}.dc b{display:block}.cr{background:#fff8;border-radius:50%}.rc::after{content:"";position:absolute;width:34%;height:34%;border-radius:50%;background:#ffd21f;border:2px solid #fff}#bd .z1{border-bottom:3px solid #e0661a;background-image:linear-gradient(rgba(224,102,26,.3),rgba(224,102,26,.3))}#bd .z0{border-top:3px solid #2f9a5f;background-image:linear-gradient(rgba(47,154,95,.3),rgba(47,154,95,.3))}.zt{position:absolute;left:4px;top:2px;z-index:1;color:var(--tx);opacity:.75;white-space:nowrap;font-size:10px;pointer-events:none}#hl{font-size:13px;opacity:.8}
+.dc{display:block;background:var(--bt);border:1px solid var(--ln);border-bottom:5px solid var(--ln);border-radius:8px;cursor:grab;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none;flex:1;min-width:0;max-width:98px;padding:4px 3px;text-align:center}
+.dc.off{opacity:.45;pointer-events:none}.dc svg{display:block;margin:0 auto}.dc b,.dc span{display:block;font-size:11px}
+#hand{touch-action:none}#gh{position:fixed;left:0;top:0;width:60px;height:60px;pointer-events:none;z-index:9;transform:translate(-50%,-120%);filter:drop-shadow(0 8px 6px #0007)}
+.cb{position:absolute;inset:4%;display:flex;z-index:2;filter:drop-shadow(0 2px 2px #0006)}.cb svg{width:100%;height:100%}.cb.poof{animation:poof .6s forwards}
+@keyframes poof{30%{transform:rotate(-12deg) scale(1.1)}to{transform:rotate(25deg) scale(0);opacity:0}}
+#bd{perspective:700px}.u-r{transform-origin:0 50%;animation:ur .45s both}.u-l{transform-origin:100% 50%;animation:ul .45s both}.u-d{transform-origin:50% 0;animation:ud .45s both}.u-u{transform-origin:50% 100%;animation:uu .45s both}.u-b{animation:ub .4s both}
+@keyframes ur{from{transform:rotateY(-90deg);opacity:.2}to{transform:none;opacity:1}}@keyframes ul{from{transform:rotateY(90deg);opacity:.2}to{transform:none;opacity:1}}
+@keyframes ud{from{transform:rotateX(90deg);opacity:.2}to{transform:none;opacity:1}}@keyframes uu{from{transform:rotateX(-90deg);opacity:.2}to{transform:none;opacity:1}}
+@keyframes ub{from{transform:scale(.6)}50%{transform:scale(1.1)}to{transform:none}}.cr.pop{animation:pop .4s both}@keyframes pop{from{transform:scale(0) translateY(-20px);opacity:0}60%{transform:scale(1.25)}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){.u-r,.u-l,.u-d,.u-u,.u-b,.cr.pop,.cb.poof{animation:none}}
 </style></head><body>
-<div id="hd"></div><div id="bd"></div><div id="roll"></div><div id="msg"></div><div class="row" id="ct"></div><div id="hl"></div><div class="row" id="hand"></div>
+<div id="hd"></div><div id="bd"></div><div id="roll"></div><div id="msg"></div><div class="row" id="ct"></div><div id="hl"></div><div class="row" id="hand"></div><div class="row"><button id="vs" onclick="ai=!ai;init()"></button></div>
 <script>
 const W=8,H=10,Z=1,WIN=5,P=['Vert','Orange'],D4=[[1,0],[-1,0],[0,1],[0,-1]];
 const EC={eau:'#1e4fa0',feu:'#d22',glace:'#7de',terre:'#8a5a2b',vent:'#4c4',foudre:'#a3d'};
 const BT={eau:'foudre',foudre:'vent',vent:'terre',terre:'glace',glace:'feu',feu:'eau'};
-const M=[{n:'Foudre ✕',em:'🦎',el:'foudre',lv:5,c:[[1,0,2],[1,1,1],[1,2,5],[1,3,6],[0,1,3],[2,1,4]]},
-{n:'Vent T',em:'🦆',el:'vent',lv:5,c:[[0,0,3],[1,0,1],[2,0,4],[1,1,2],[1,2,6],[1,3,5]]}];
-let b,pl,cr,cur,mode,rot,pc,die,hi,msg,moved,over,drag,sel;
+const K=(a,b)=>[[1,0,2],[1,1,1],[1,2,5],[1,3,6],[0,a,3],[2,b,4]],V=[[0,0,1],[0,1,3]],Hz=[[0,0,1],[1,0,3]];
+const M=[{n:'Foudre',em:'🦎',el:'foudre',lv:5,c:K(1,1)},
+{n:'Vent',em:'🦆',el:'vent',lv:5,c:[[0,0,3],[1,0,1],[2,0,4],[1,1,2],[1,2,6],[1,3,5]]},
+{n:'Terre',em:'🐢',el:'terre',lv:5,c:K(0,1)},
+{n:'Glace',em:'🐧',el:'glace',lv:5,c:K(0,3)},
+{n:'Eau',em:'🐙',el:'eau',lv:5,c:[[0,0,3],[1,0,2],[1,1,1],[2,1,4],[2,2,5],[3,2,6]]},
+{n:'Feu',em:'🦊',el:'feu',lv:5,c:[[0,0,2],[1,0,3],[2,0,5],[2,1,1],[3,1,4],[4,1,6]]},
+{n:'Étincelle',em:'🐝',el:'foudre',lv:2,c:V},{n:'Brise',em:'🐦',el:'vent',lv:2,c:Hz},
+{n:'Caillou',em:'🐜',el:'terre',lv:2,c:V},{n:'Givre',em:'🐇',el:'glace',lv:2,c:Hz},
+{n:'Goutte',em:'🐟',el:'eau',lv:2,c:V},{n:'Braise',em:'🐥',el:'feu',lv:2,c:Hz}];
+let b,pl,cr,cur,mode,rot,pc,hov,die,hi,msg,moved,over,drag,sel,anim,cubeCls='',ai=true,gid=0,aiT=0,busy=0,dg=null;
 const $=i=>document.getElementById(i),at=(x,y)=>cr.find(c=>c.x==x&&c.y==y),inb=(x,y)=>x>=0&&y>=0&&x<W&&y<H;
-const homeRow=()=>cur?0:H-1,inZone=(o,y)=>o?y<Z:y>=H-Z;
-function init(){b=[...Array(H)].map(()=>Array(W).fill(null));cr=[];over=0;sel=null;drag=0;
- pl=[0,1].map(()=>{const d=[...Array(10)].map((_,k)=>k%2).sort(()=>Math.random()-.5);return{q:d,h:d.splice(0,5),s:0}});
- cur=0;mode='i';moved=0;msg='Vert : choisis un dé. Le premier dé se pose dans ta zone (en bas) ; la créature apparaît ensuite.';render()}
+const homeRow=()=>cur?0:H-1,inZone=(o,y)=>o?y<Z:y>=H-Z,full=k=>b.flat().filter(c=>c&&c.f&&c.o==k).length>=4,sh=a=>a.sort(()=>Math.random()-.5);
+function init(){gid++;busy=0;b=[...Array(H)].map(()=>Array(W).fill(null));cr=[];over=0;sel=null;drag=0;pc=null;hov=null;anim=null;cubeCls='';aiT=0;
+ pl=[0,1].map(()=>{const d=sh([...sh([0,1,2,3,4,5]).slice(0,5),...sh([6,7,8,9,10,11]).slice(0,5)]);return{h:d.splice(0,5),q:d,s:0}});
+ cur=0;mode='i';moved=0;$('roll').textContent='';$('roll').className='';
+ msg='Vert : glisse un dé de ta main sur le damier (dans ta zone, en bas), puis lance-le. Tu peux aussi avancer une créature.';render()}
 function net(m,r){let c=M[m].c.map(a=>[...a]);for(let i=0;i<r;i++)c=c.map(([x,y,v])=>[-y,x,v]);
  const mx=Math.min(...c.map(a=>a[0])),my=Math.min(...c.map(a=>a[1]));return c.map(([x,y,v])=>[x-mx,y-my,v])}
-function cells(){if(mode!='p'||!pc)return[];const n=net(die,rot),w=Math.max(...n.map(a=>a[0]))+1,h=Math.max(...n.map(a=>a[1]))+1;
- return n.map(([x,y,v])=>[x+pc.x-(w>>1),y+pc.y-(h>>1),v])}
+function cellsOf(m,r,p){const n=net(m,r),f=n.find(a=>a[2]==1);return n.map(([x,y,v])=>[x-f[0]+p.x,y-f[1]+p.y,v])}
+function cells(){const p=(mode=='p'||mode=='r')?pc:mode=='d'?hov:null;return p?cellsOf(die,rot,p):[]}
 function ok(cs){let adj=0;for(const[x,y]of cs){if(!inb(x,y)||b[y][x])return 0;if(y==homeRow())adj=1;
  for(const[dx,dy]of D4){const c=(b[y+dy]||[])[x+dx];if(c&&c.o==cur)adj=1}}return adj}
 function pw(x,y){const c=b[y][x];if(!c)return 0;if(c.el)for(const[dx,dy]of D4){const n=(b[y+dy]||[])[x+dx];if(n&&n.el==BT[c.el])return c.v+1}return c.v}
@@ -46,55 +65,100 @@ function bfs(c){const par={},q=[[c.x,c.y,0]];par[[c.x,c.y]]=null;
  while(q.length){const[x,y,d]=q.shift();if(d==3)continue;
   for(const[dx,dy]of D4){const X=x+dx,Y=y+dy;if(!inb(X,Y)||!b[Y][X]||par[[X,Y]]!==undefined)continue;
    par[[X,Y]]=[x,y];if(!at(X,Y))q.push([X,Y,d+1])}}return par}
+function unfoldOrder(cs){const f=cs.find(a=>a[2]==1),o={},q=[[f[0],f[1]]];o[[f[0],f[1]]]={d:0,c:'u-b'};let max=0;
+ while(q.length){const[x,y]=q.shift();for(const[dx,dy]of D4){const X=x+dx,Y=y+dy;if(o[[X,Y]]||!cs.some(a=>a[0]==X&&a[1]==Y))continue;
+  const d=o[[x,y]].d+1;max=Math.max(max,d);o[[X,Y]]={d,c:dx==1?'u-r':dx==-1?'u-l':dy==1?'u-d':'u-u'};q.push([X,Y])}}
+ return{o,max}}
 const PIP=[0,[[.5,.5]],[[.25,.25],[.75,.75]],[[.25,.25],[.5,.5],[.75,.75]],[[.25,.25],[.75,.25],[.25,.75],[.75,.75]],[[.25,.25],[.75,.25],[.5,.5],[.25,.75],[.75,.75]],[[.25,.2],[.75,.2],[.25,.5],[.75,.5],[.25,.8],[.75,.8]]];
-function svg(m,r){const n=net(m,r),w=Math.max(...n.map(a=>a[0]))+1,h=Math.max(...n.map(a=>a[1]))+1,col=EC[M[m].el],pc=M[m].el=='glace'?'#123':'#fff';
- return '<svg viewBox="0 0 '+w+' '+h+'" width="100%">'+n.map(([x,y,v])=>'<rect x="'+(x+.04)+'" y="'+(y+.04)+'" width=".92" height=".92" rx=".12" fill="'+col+'" stroke="'+(v==1?'#ffd21f':'#fff')+'" stroke-width="'+(v==1?.1:.03)+'"/>'+PIP[v].map(([a,b])=>'<circle cx="'+(x+a)+'" cy="'+(y+b)+'" r=".075" fill="'+pc+'"/>').join('')).join('')+'</svg>'}
+function svg(m,r,hh,pp){const n=net(m,r),w=Math.max(...n.map(a=>a[0]))+1,h=Math.max(...n.map(a=>a[1]))+1,col=EC[M[m].el],pc=M[m].el=='glace'?'#123':'#fff';
+ return '<svg viewBox="0 0 '+w+' '+h+'" width="100%" height="'+hh+'">'+n.map(([x,y,v])=>'<rect x="'+(x+.04)+'" y="'+(y+.04)+'" width=".92" height=".92" rx=".12" fill="'+col+'" stroke="'+(v==1?'#ffd21f':'#fff')+'" stroke-width="'+(v==1?.12:.03)+'"/>'+(pp?PIP[v].map(([a,b])=>'<circle cx="'+(x+a)+'" cy="'+(y+b)+'" r=".075" fill="'+pc+'"/>').join(''):'')).join('')+'</svg>'}
+function cube(m,sz){const c=EC[M[m].el],t=M[m].el=='glace'?'#123':'#fff';
+ return '<svg class="cube" viewBox="0 0 40 40"'+(sz?' width="'+sz+'" height="'+sz+'"':'')+'><g stroke="#fff" stroke-opacity=".7" stroke-width="1" stroke-linejoin="round"><polygon points="3,12 20,21 20,39 3,30" fill="'+c+'"/><polygon points="37,12 20,21 20,39 37,30" fill="'+c+'"/><polygon points="37,12 20,21 20,39 37,30" fill="#000" fill-opacity=".25" stroke="none"/><polygon points="20,3 37,12 20,21 3,12" fill="'+c+'"/><polygon points="20,3 37,12 20,21 3,12" fill="#fff" fill-opacity=".3" stroke="none"/></g><text x="20" y="15.5" text-anchor="middle" font-size="9" font-weight="800" fill="'+t+'">'+M[m].lv+'</text></svg>'}
 function valide(x,y){const k=cur;pl[k].s++;const st=[[x,y]],seen={};
  while(st.length){const[i,j]=st.pop();if(!inb(i,j)||seen[[i,j]])continue;const c=b[j][i];if(!c||c.o!=k||c.f)continue;seen[[i,j]]=1;b[j][i]=null;
   cr=cr.filter(a=>!(a.x==i&&a.y==j));D4.forEach(([dx,dy])=>st.push([i+dx,j+dy]))}
- msg='Passage validé ('+pl[k].s+'/'+WIN+') ! Ton trajet disparaît.';if(pl[k].s>=WIN){over=1;msg='🏆 '+P[k]+' gagne la partie !'}}
+ msg='Point pour '+P[k]+' ('+pl[k].s+'/'+WIN+') ! Son trajet disparaît.';if(pl[k].s>=WIN){over=1;msg='🏆 '+P[k]+' gagne la partie !'}}
 function mv(c,x,y){const e=at(x,y);if(e&&e.o==c.o){msg='Case occupée par ta propre créature.';return}
  const par=bfs(c)[[x,y]];if(!par){msg='Impossible : case non colorée ou trop loin (3 pas max).';return}
  if(e){const a=pw(par[0],par[1]),d=pw(x,y);
   if(a>d){cr=cr.filter(z=>z!=e);c.x=x;c.y=y;msg='Attaque réussie ! '+a+' contre '+d+'. La créature adverse disparaît.'}
-  else if(a<d){cr=cr.filter(z=>z!=c);msg='Attaque ratée : '+a+' contre '+d+'. Ta créature disparaît.'}
+  else if(a<d){cr=cr.filter(z=>z!=c);msg='Attaque ratée : '+a+' contre '+d+'. La créature attaquante disparaît.'}
   else msg='Égalité '+a+'-'+d+' : personne ne bouge.'}
- else{c.x=x;c.y=y;msg='Créature avancée. Choisis maintenant un dé.'}
+ else{c.x=x;c.y=y;msg='Créature avancée.'}
  moved=1;sel=null;const k=b[c.y]&&b[c.y][c.x];if(cr.includes(c)&&k&&k.o==cur&&!k.f&&inZone(1-cur,c.y))valide(c.x,c.y)}
-function pick(i){hi=i;die=pl[cur].h[i];sel=null;mode='r';const lv=M[die].lv,r=1+Math.floor(Math.random()*6),R=$('roll');let n=0;
- msg='Lancer du dé '+M[die].n+'… il faut '+lv+' ou plus.';
- const t=setInterval(()=>{n++;const f=n<14?1+Math.floor(Math.random()*6):r;R.textContent=f;R.className=n<14?'rl':(r>=lv?'win':'lose');
-  if(n>=14){clearInterval(t);
-   if(r>=lv){mode='p';rot=cur?0:2;pc={x:3,y:cur?2:H-3};msg='Lancer : '+r+' (niveau '+lv+') ✔ Fais glisser le dé sur le damier (le sens est fixe), puis Poser.';render()}
-   else if(b.flat().filter(c=>c&&c.f&&c.o==cur).length>=4){fin();msg='Lancer : '+r+' (niveau '+lv+') ✘ Tu as déjà 4 cases colorées : rien à colorer. '+msg;render()}
-   else{mode='c';msg='Lancer : '+r+' (niveau '+lv+') ✘ Touche une case vide pour la colorer (4 cases maximum).';render()}}},80)}
-function fin(){const p=pl[cur];p.q.push(p.h.splice(hi,1)[0]);
+function firstValid(m,r){const ys=[...Array(H).keys()];if(!cur)ys.reverse();for(const y of ys)for(const x of[3,4,2,5,1,6,0,7])if(ok(cellsOf(m,r,{x,y})))return{x,y};return null}
+function pick(i){const m=pl[cur].h[i],p=firstValid(m,cur?0:2);if(!p){msg='Aucun emplacement possible pour ce dé.';return}
+ hi=i;die=m;rot=cur?0:2;pc=p;mode='p';sel=null;$('roll').textContent='';$('roll').className='';
+ msg='Le dé est posé, fermé. Fais-le glisser où tu veux, puis touche « Lancer ».'}
+function annuler(){mode='i';pc=null;hov=null;msg='Choisis un dé ou avance une créature.'}
+function lancer(){if(mode!='p')return;const cs=cells();if(!cs.length||!ok(cs)){msg='Placement impossible : le dé doit tenir sur des cases vides et toucher ta zone ou tes cases.';render();return}
+ mode='r';cubeCls='';const g=gid,lv=M[die].lv,r=1+Math.floor(Math.random()*6),R=$('roll'),k=cur,m=die;let n=0;msg='Lancer du dé '+M[m].n+'… il faut '+lv+' ou plus.';render();
+ const t=setInterval(()=>{if(g!=gid){clearInterval(t);return}n++;const f=n<14?1+Math.floor(Math.random()*6):r;R.textContent=f;R.className=n<14?'rl':(r>=lv?'win':'lose');
+  if(n<14)return;clearInterval(t);
+  if(r>=lv){const f1=cs.find(a=>a[2]==1),u=unfoldOrder(cs);for(const[x,y,v]of cs)b[y][x]={o:k,el:M[m].el,v};cr.push({o:k,x:f1[0],y:f1[1],em:M[m].em});
+   anim={o:u.o,t0:Date.now(),tot:u.max*220+450};pc=null;msg='Lancer : '+r+' ✔ Le dé se déploie !';render();
+   setTimeout(()=>{if(g!=gid)return;let s='Lancer : '+r+' ✔ Le dé s’est déployé, une créature apparaît !';const z=cs.find(a=>inZone(1-k,a[1]));if(z){valide(z[0],z[1]);s+=' '+msg}fin();if(!over)msg=s+' '+msg;render()},anim.tot+500)}
+  else{cubeCls='poof';msg='Lancer : '+r+' ✘ Le dé se brise…';render();
+   setTimeout(()=>{if(g!=gid)return;pc=null;cubeCls='';const s='Lancer : '+r+' ✘ Le dé disparaît.';
+    if(full(k)){fin();msg=s+' (Déjà 4 cases colorées : rien à colorer.) '+msg}
+    else if(ai&&k==1){colorAI();fin();msg=s+' L’IA colore une case. '+msg}
+    else{mode='c';msg=s+' Touche une case vide pour la colorer (4 maximum).'}render()},650)}},80)}
+function fin(){const p=pl[cur];p.q.push(p.h.splice(hi,1)[0]);busy=0;hov=null;cubeCls='';
  if(over){mode='x';return}
- cur=1-cur;moved=0;mode='i';pc=null;sel=null;$('roll').textContent='';$('roll').className='';const n=pl[cur];while(n.h.length<5&&n.q.length)n.h.push(n.q.shift());
- msg=P[cur]+' : glisse une créature (facultatif), puis choisis un dé.'}
-function poser(){const cs=cells();if(!cs.length||!ok(cs)){msg='Placement impossible : cases vides, collé à ta couleur ou à ta rangée de départ.';return}
- for(const[x,y,v]of cs)b[y][x]={o:cur,el:M[die].el,v};
- const f=cs.find(a=>a[2]==1);cr.push({o:cur,x:f[0],y:f[1],em:M[die].em});msg='Dé posé : une créature apparaît !';
- const z=cs.find(a=>inZone(1-cur,a[1]));if(z)valide(z[0],z[1]);fin()}
-const B=$('bd'),cellAt=e=>{const r=B.getBoundingClientRect();return[Math.floor((e.clientX-r.left)/r.width*W),Math.floor((e.clientY-r.top)/r.height*H)]};
-B.onpointerdown=e=>{if(over)return;e.preventDefault();const[x,y]=cellAt(e);if(!inb(x,y))return;
+ cur=1-cur;moved=0;mode='i';pc=null;sel=null;const n=pl[cur];while(n.h.length<5&&n.q.length)n.h.push(n.q.shift());
+ msg=ai&&cur?'Tour de l’IA…':P[cur]+' : glisse un dé sur le damier, ou avance une créature.'}
+function colorAI(){let best=null,bs=-1;for(let y=0;y<H;y++)for(let x=0;x<W;x++){if(b[y][x])continue;
+ if(!D4.some(([dx,dy])=>{const c=(b[y+dy]||[])[x+dx];return c&&c.o==cur})&&y!=homeRow())continue;const s=(cur?y:-y)+Math.random();if(s>bs){bs=s;best=[x,y]}}
+ if(best)b[best[1]][best[0]]={o:cur,f:1,v:0}}
+function ia(){if(over||mode!='i'||cur!=1)return;busy=1;const g=gid;let bs=-1e9,best=null;
+ for(const c of cr.filter(z=>z.o==cur)){const R=bfs(c);for(const k in R){if(R[k]===null)continue;const[x,y]=k.split(',').map(Number),e=at(x,y);if(e&&e.o==cur)continue;
+  let sc=y*2+Math.random();const cl=b[y][x];if(cl&&cl.o==cur&&!cl.f&&inZone(0,y))sc+=200;
+  if(e)sc+=pw(R[k][0],R[k][1])>pw(x,y)?150:-500;if(sc>bs){bs=sc;best=[c,x,y]}}}
+ if(best&&bs>best[0].y*2+1)mv(best[0],best[1],best[2]);render();if(over){mode='x';return}
+ setTimeout(()=>{if(g!=gid)return;const h=pl[cur].h;let bb=null,bc=-1e9;
+  h.forEach((m,i)=>{for(let x=0;x<W;x++)for(let y=0;y<H;y++){const cs=cellsOf(m,0,{x,y});if(!ok(cs))continue;
+   const sc=(Math.max(...cs.map(a=>a[1]))*2+Math.random()*3+(cs.some(a=>inZone(0,a[1]))?100:0))*(7-M[m].lv)/6;if(sc>bc){bc=sc;bb=[i,x,y]}}});
+  if(!bb){hi=0;if(!full(cur))colorAI();fin();msg='L’IA ne peut poser aucun dé. '+msg;render();return}
+  hi=bb[0];die=h[hi];rot=0;pc={x:bb[1],y:bb[2]};mode='p';msg='L’IA pose son dé '+M[die].n+'…';render();setTimeout(()=>{if(g==gid)lancer()},1000)},900)}
+const B=$('bd'),Hd=$('hand'),cellAt=e=>{const r=B.getBoundingClientRect();return[Math.floor((e.clientX-r.left)/r.width*W),Math.floor((e.clientY-r.top)/r.height*H)]};
+B.onpointerdown=e=>{if(over||(ai&&cur==1))return;e.preventDefault();const[x,y]=cellAt(e);if(!inb(x,y))return;
  if(mode=='p'){drag=1;B.setPointerCapture(e.pointerId);pc={x,y}}
- else if(mode=='c'){if(b[y][x])msg='Case déjà occupée.';else{b[y][x]={o:cur,f:1,v:0};msg='Case colorée pour toujours.';fin()}}
- else if(mode=='i'){const c=at(x,y);if(c){if(c.o!=cur)msg='Cette créature est à '+P[c.o]+'. C’est le tour de '+P[cur]+'.';else if(moved)msg='Tu as déjà avancé ce tour : choisis un dé.';else{sel=c;B.setPointerCapture(e.pointerId);msg=Object.keys(bfs(c)).length>1?'Créature choisie : touche (ou glisse vers) une case marquée d’un point jaune.':'Cette créature ne peut pas avancer : elle ne marche que sur des cases colorées.'}}}
+ else if(mode=='c'){if(b[y][x])msg='Case déjà occupée.';else{b[y][x]={o:cur,f:1,v:0};fin();msg='Case colorée pour toujours. '+msg}}
+ else if(mode=='i'){const c=at(x,y);if(c){if(c.o!=cur)msg='Cette créature est à '+P[c.o]+'. C’est le tour de '+P[cur]+'.';else if(moved)msg='Tu as déjà avancé ce tour : pose un dé.';else{sel=c;B.setPointerCapture(e.pointerId);msg=Object.keys(bfs(c)).length>1?'Créature choisie : touche (ou glisse vers) une case marquée d’un point jaune.':'Cette créature ne peut pas avancer : elle ne marche que sur des cases colorées.'}}}
  render()};
-B.onpointermove=e=>{if(drag){const[x,y]=cellAt(e);pc={x,y};render()}};
+B.onpointermove=e=>{if(drag){const[x,y]=cellAt(e);pc={x,y};rBoard()}};
 B.onpointerup=e=>{if(drag){drag=0}else if(mode=='i'&&sel){const[x,y]=cellAt(e);if(inb(x,y)&&(x!=sel.x||y!=sel.y))mv(sel,x,y)}render()};
-function render(){const R=(mode=='i'&&sel)?bfs(sel):null,cs=cells(),bad=cs.length&&!ok(cs);B.innerHTML='';
- for(let y=0;y<H;y++)for(let x=0;x<W;x++){const c=b[y][x],d=document.createElement('div');
+const gh=e=>{dg.g.style.left=e.clientX+'px';dg.g.style.top=e.clientY+'px'};
+Hd.onpointerdown=e=>{const c=e.target.closest('.dc');if(!c||c.classList.contains('off')||mode!='i'||over||(ai&&cur==1))return;e.preventDefault();
+ const i=+c.dataset.i,g=document.createElement('div');g.id='gh';g.innerHTML=cube(pl[cur].h[i],60);document.body.append(g);
+ dg={i,x0:e.clientX,y0:e.clientY,mv:0,g};Hd.setPointerCapture(e.pointerId);gh(e)};
+Hd.onpointermove=e=>{if(!dg)return;if(Math.hypot(e.clientX-dg.x0,e.clientY-dg.y0)>10)dg.mv=1;gh(e);
+ if(dg.mv){const[x,y]=cellAt(e);hov=inb(x,y)?{x,y}:null;die=pl[cur].h[dg.i];rot=cur?0:2;mode='d';rBoard()}};
+const fdrop=e=>{if(!dg)return;const d=dg;dg=null;d.g.remove();
+ if(d.mv&&e.type=='pointerup'){const[x,y]=cellAt(e),m=pl[cur].h[d.i];mode='i';hov=null;
+  if(inb(x,y)&&ok(cellsOf(m,cur?0:2,{x,y}))){hi=d.i;die=m;rot=cur?0:2;pc={x,y};mode='p';$('roll').textContent='';$('roll').className='';msg='Le dé est posé, fermé. Touche « Lancer » (ou déplace-le d’abord).'}
+  else msg=inb(x,y)?'Placement impossible : le dé doit tenir sur des cases vides et toucher ta zone (en bas) ou tes cases.':'Dépose le dé sur le damier.'}
+ else if(!d.mv&&e.type=='pointerup')pick(d.i);
+ else{mode='i';hov=null}
+ render()};
+Hd.onpointerup=fdrop;Hd.onpointercancel=fdrop;
+function rBoard(){const R=(mode=='i'&&sel)?bfs(sel):null,cs=cells(),fp=(mode=='p'||mode=='d')?cs:[],bad=fp.length&&!ok(fp),now=Date.now(),A=anim&&now-anim.t0<anim.tot+600?anim:null;B.innerHTML='';
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++){const c=b[y][x],d=document.createElement('div'),an=A&&A.o[[x,y]];
   d.className='c'+(y<Z?' z1':'')+(y>=H-Z?' z0':'')+(c?' o'+c.o+(c.f?' f':''):'');let h='';if(x==0&&(y==0||y==H-1))h+='<small class="zt">'+(y?'Zone Vert':'Zone Orange')+'</small>';
-  if(c&&!c.f){const q=pw(x,y);h=(q>c.v?c.v+'<small>+1</small>':c.v)+'<i class="d" style="background:'+EC[c.el]+'"></i>'}
-  const p=cs.find(a=>a[0]==x&&a[1]==y);if(p){d.classList.add(bad?'bad':'pv');h+='<small>'+p[2]+'</small>'}
-  const k=at(x,y);if(R&&R[[x,y]]!==undefined&&!(k&&k.o==cur))d.classList.add('rc');if(k){h+='<span class="cr">'+k.em+'</span>';if(k==sel)d.classList.add('sel')}
-  d.innerHTML=h;B.append(d)}
- $('hd').innerHTML='<span>'+pl[0].s+'/'+WIN+' Vert</span><span>'+(over?'Fin':'Tour : '+P[cur])+'</span><span>Orange '+pl[1].s+'/'+WIN+'</span>';
+  if(an){d.classList.add(an.c);d.style.animationDelay=((an.d*220-(now-A.t0))/1000)+'s'}
+  if(c&&!c.f){const q=pw(x,y);h+=(q>c.v?c.v+'<small>+1</small>':c.v)+'<i class="d" style="background:'+EC[c.el]+'"></i>'}
+  const p=fp.find(a=>a[0]==x&&a[1]==y);if(p){d.classList.add(bad?'bad':'pv')}
+  if(pc&&(mode=='p'||mode=='r')&&pc.x==x&&pc.y==y)h+='<span class="cb '+cubeCls+'">'+cube(die)+'</span>';
+  const k=at(x,y);if(R&&R[[x,y]]!==undefined&&!(k&&k.o==cur))d.classList.add('rc');
+  if(k){const pop=an&&an.d==0;h+='<span class="cr'+(pop?' pop':'')+'"'+(pop?' style="animation-delay:'+((A.tot-(now-A.t0))/1000)+'s"':'')+'>'+k.em+'</span>';if(k==sel)d.classList.add('sel')}
+  d.innerHTML=h;B.append(d)}}
+function render(){rBoard();const me=!ai||cur==0,hp=ai?0:cur;
+ $('hd').innerHTML='<span>'+pl[0].s+'/'+WIN+' Vert</span><span>'+(over?'Fin':'Tour : '+P[cur]+(ai&&cur?' (IA)':''))+'</span><span>Orange'+(ai?' IA ':' ')+pl[1].s+'/'+WIN+'</span>';
  $('msg').textContent=msg;
- $('ct').innerHTML=mode=='p'?'<button onclick="poser();render()">Poser ✓</button>':over?'<button onclick="init()">Rejouer</button>':'';
- $('hl').textContent=over?'':mode=='i'?'Main de '+P[cur]+' : touche un dé pour le lancer':'';
- $('hand').innerHTML=over?'':pl[cur].h.map((m,i)=>'<button class="dc" style="border-bottom-color:'+EC[M[m].el]+'" '+(mode=='i'?'':'disabled')+' onclick="pick('+i+');render()">'+svg(m,cur?0:2)+'<b>Niv. '+M[m].lv+'</b><span>'+M[m].el+'</span></button>').join('')}
+ $('ct').innerHTML=over?'<button onclick="init()">Rejouer</button>':mode=='p'&&me?'<button onclick="lancer()">🎲 Lancer le dé</button><button onclick="annuler()">Annuler</button>':'';
+ $('hl').textContent=over?'':mode=='i'&&me?'Main de '+P[hp]+' : glisse un dé sur le damier':'';
+ $('hand').innerHTML=over?'':pl[hp].h.map((m,i)=>'<div class="dc'+(mode=='i'&&me?'':' off')+'" data-i="'+i+'" style="border-bottom-color:'+EC[M[m].el]+'">'+cube(m,46)+svg(m,hp?0:2,22,0)+'<b>'+M[m].em+' '+M[m].n+'</b><span>Niv. '+M[m].lv+' · '+M[m].c.length+' faces</span></div>').join('');
+ $('vs').textContent=ai?'Mode : contre l’IA (passer à 2 joueurs)':'Mode : 2 joueurs (passer contre l’IA)';
+ if(ai&&cur==1&&mode=='i'&&!over&&!busy&&!aiT){const g=gid;aiT=setTimeout(()=>{aiT=0;if(g==gid)ia()},900)}}
 init();
 </script></body></html>
