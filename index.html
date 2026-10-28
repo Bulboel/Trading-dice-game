@@ -134,7 +134,35 @@ body{margin:0;padding:0;max-width:none;height:100%;overflow:hidden;font-size:14p
 @media(prefers-reduced-motion:reduce){.cr.pop{animation:none}}
 #sc{--rz:0deg;inset:auto;left:50%;top:50%;width:min(84cqw,66cqh);aspect-ratio:8/10;transform:translate(-50%,-50%) rotateX(var(--tilt))}
 #hd{font-size:12px}#hd span{white-space:nowrap}#top button{padding:4px 7px}
-</style></head><body><div id="app"><div id="top"><button id="vs" onclick="ai=!ai;init()" title="Changer de mode"></button><button id="tr" onclick="TER=(TER+1)%6;init()" title="Changer de terrain"></button><div id="hd"></div></div><div id="bw"><div id="sc"></div><div id="bq"><div id="bd"></div><div id="ent"></div><div id="fly"><div id="fx"><div class="fsh"></div><div class="fcb"></div></div></div></div><div id="pad"><i></i></div></div><div id="mr"><div id="roll"></div><div id="msg"></div></div><div id="bot"><div class="row" id="ct"></div><div class="row" id="hand"></div></div><div id="hl" hidden></div></div><div id="lens" hidden></div><div id="fiche" hidden onclick="if(event.target===this)closeCard()"><div id="fc"></div></div><script>
+
+/* ===== relief ===== */
+#bw{--tilt:46deg}
+#cam{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transform-style:preserve-3d;transition:transform .4s ease}
+#slab{position:absolute;inset:0;--sd:calc(var(--tw)*.8);transform-style:preserve-3d;pointer-events:none}
+#slab i{position:absolute;display:block;background:var(--sc,#4a3a2a)}
+#slab .a{left:0;top:100%;width:100%;height:var(--sd);transform-origin:50% 0;transform:rotateX(-90deg);box-shadow:inset 0 0 0 99px rgba(0,0,0,.2)}
+#slab .b{left:0;bottom:100%;width:100%;height:var(--sd);transform-origin:50% 100%;transform:rotateX(90deg);box-shadow:inset 0 0 0 99px rgba(0,0,0,.38)}
+#slab .c1{right:100%;top:0;width:var(--sd);height:100%;transform-origin:100% 50%;transform:rotateY(-90deg);box-shadow:inset 0 0 0 99px rgba(0,0,0,.3)}
+#slab .d{left:100%;top:0;width:var(--sd);height:100%;transform-origin:0 50%;transform:rotateY(90deg);box-shadow:inset 0 0 0 99px rgba(0,0,0,.3)}
+.t-terre{--sc:#5d4327}.t-feu{--sc:#2a0d08}.t-glace{--sc:#7fbfe0}.t-vent{--sc:#dcecf9}.t-eau{--sc:#0c4a80}.t-foudre{--sc:#1a0e30}
+.blk{position:absolute;width:12.5%;height:10%;transform-style:preserve-3d;pointer-events:none}
+.blk i{position:absolute;display:block}
+.blk .tp{inset:0;transform:translateZ(var(--bh));background:var(--bc);box-shadow:inset 0 0 0 2px rgba(255,255,255,.4),inset 0 0 12px rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:calc(var(--tw)*.4);text-shadow:0 1px 2px #0008;font-style:normal}
+.blk .tp small{font-size:.55em;margin-left:1px}
+.blk .tp u{position:absolute;top:2px;right:2px;width:calc(var(--tw)*.2);height:calc(var(--tw)*.2);border-radius:50%;border:1px solid #fff}
+.blk .sf{left:0;top:100%;width:100%;height:var(--bh);transform-origin:50% 0;transform:rotateX(90deg);background:var(--bc);box-shadow:inset 0 0 0 99px rgba(0,0,0,.28)}
+.blk .sb{left:0;bottom:100%;width:100%;height:var(--bh);transform-origin:50% 100%;transform:rotateX(-90deg);background:var(--bc);box-shadow:inset 0 0 0 99px rgba(0,0,0,.4)}
+.blk .sl{right:100%;top:0;width:var(--bh);height:100%;transform-origin:100% 50%;transform:rotateY(90deg);background:var(--bc);box-shadow:inset 0 0 0 99px rgba(0,0,0,.36)}
+.blk .sr{left:100%;top:0;width:var(--bh);height:100%;transform-origin:0 50%;transform:rotateY(-90deg);background:var(--bc);box-shadow:inset 0 0 0 99px rgba(0,0,0,.34)}
+.blk.rise{animation:rise .5s both}@keyframes rise{from{transform:translateZ(-40px);opacity:0}to{transform:none;opacity:1}}
+.hl{position:absolute;width:12.5%;height:10%;transform:translateZ(var(--z,1px));pointer-events:none;background:rgba(255,236,110,.38);box-shadow:inset 0 0 14px 4px rgba(255,236,110,.95),0 0 12px 3px rgba(255,236,110,.7);animation:glow2 1.2s ease-in-out infinite}
+.hl.rd{background:rgba(255,60,60,.38);box-shadow:inset 0 0 14px 4px rgba(255,70,70,.95),0 0 12px 3px rgba(255,70,70,.6);animation:none}
+@keyframes glow2{50%{background:rgba(255,236,110,.62)}}
+#bd .pv,#bd .bad{box-shadow:none}#bd .pv::before,#bd .bad::before{display:none}
+.cr{transform:translateZ(var(--cz,0px)) translate(-50%,-100%) rotateZ(calc(-1*var(--rz))) rotateX(calc(-1*var(--tilt)))}
+@keyframes popc{from{transform:translateZ(var(--cz,0px)) translate(-50%,-100%) rotateZ(calc(-1*var(--rz))) rotateX(calc(-1*var(--tilt))) scale(0);opacity:0}60%{transform:translateZ(var(--cz,0px)) translate(-50%,-100%) rotateZ(calc(-1*var(--rz))) rotateX(calc(-1*var(--tilt))) scale(1.25)}to{transform:translateZ(var(--cz,0px)) translate(-50%,-100%) rotateZ(calc(-1*var(--rz))) rotateX(calc(-1*var(--tilt))) scale(1);opacity:1}}
+@media(prefers-reduced-motion:reduce){#cam{transition:none}.blk.rise{animation:none}.hl{animation:none}}
+</style></head><body><div id="app"><div id="top"><button id="vs" onclick="ai=!ai;init()" title="Changer de mode"></button><button id="tr" onclick="TER=(TER+1)%6;init()" title="Changer de terrain"></button><div id="hd"></div></div><div id="bw"><div id="cam"><div id="sc"></div><div id="bq"><div id="slab"><i class="a"></i><i class="b"></i><i class="c1"></i><i class="d"></i></div><div id="bd"></div><div id="ent"></div><div id="fly"><div id="fx"><div class="fsh"></div><div class="fcb"></div></div></div></div></div><div id="pad"><i></i></div></div><div id="mr"><div id="roll"></div><div id="msg"></div></div><div id="bot"><div class="row" id="ct"></div><div class="row" id="hand"></div></div><div id="hl" hidden></div></div><div id="lens" hidden></div><div id="fiche" hidden onclick="if(event.target===this)closeCard()"><div id="fc"></div></div><script>
 const W=8,H=10,Z=1,WIN=2,P=['Vert','Orange'],D4=[[1,0],[-1,0],[0,1],[0,-1]];
 const EC={eau:'#1e4fa0',feu:'#d22',glace:'#7de',terre:'#8a5a2b',vent:'#4c4',foudre:'#a3d'};
 const BT={eau:'foudre',foudre:'vent',vent:'terre',terre:'glace',glace:'feu',feu:'eau'};
@@ -171,13 +199,12 @@ function net(m,r){let c=M[m].c.map(a=>[...a]);for(let i=0;i<r;i++)c=c.map(([x,y,
  const mx=Math.min(...c.map(a=>a[0])),my=Math.min(...c.map(a=>a[1]));return c.map(([x,y,v])=>[x-mx,y-my,v])}
 function cellsOf(m,r,p){const n=net(m,r),f=n[0];return n.map(([x,y,v])=>[x-f[0]+p.x,y-f[1]+p.y,v])}
 function cells(){const p=(mode=='p'||mode=='r')?pc:mode=='d'?hov:null;return p?cellsOf(die,rot,p):[]}
-function split(cs,lv){const put=[],lost=[];for(const a of cs){const[x,y]=a;if(!inb(x,y)){lost.push(a);continue}const c0=b[y][x];if(c0&&(c0.f||c0.o==cur||!(c0.lv<lv)))lost.push(a);else put.push(a)}return{put,lost}}
-function ok(cs,lv=M[die].lv){const{put}=split(cs,lv),f=cs[0];if(!f||!put.includes(f))return 0;let adj=0;for(const[x,y]of put){if(Math.abs(y-homeRow())<=1)adj=1;
+function split(cs,lv){const put=[],lost=[];for(const a of cs){if(inb(a[0],a[1]))put.push(a);else lost.push(a)}return{put,lost}}
+function ok(cs,lv){const{put}=split(cs),f=cs[0];if(!f||!put.includes(f))return 0;let adj=0;for(const[x,y]of put){if(Math.abs(y-homeRow())<=1)adj=1;const c1=b[y][x];if(c1&&c1.o==cur&&!c1.f)adj=1;
  for(const[dx,dy]of D4){const c=(b[y+dy]||[])[x+dx];if(c&&c.o==cur&&!c.f)adj=1}}return adj}
 function pw(x,y){const c=b[y][x];if(!c)return 0;let v=c.v;if(c.el){if(c.el===TL[TER])v++;for(const[dx,dy]of D4){const n=(b[y+dy]||[])[x+dx];if(n&&n.el==BT[c.el]){v++;break}}}return v}
 function pwc(c,x,y){const cl=b[y][x];return cl&&cl.id===c.id?pw(x,y):1}
 function why(cs,lv){const f=cs[0];if(!f||!inb(f[0],f[1]))return 'la case où tu poses le dé doit être sur le plateau.';
- const c0=b[f[1]][f[0]];if(c0){if(c0.f)return 'la case où tu poses le dé est colorée : elle ne peut pas être recouverte.';if(c0.o==cur)return 'tu ne peux pas poser le dé sur tes propres faces.';if(!(c0.lv<lv))return 'ton dé doit avoir un niveau supérieur à celui du dé adverse sur lequel tu le poses.'}
  return 'le dé doit toucher les abords de ta zone ou un de tes dés déjà posés.'}
 function bfs(c){const par={},q=[[c.x,c.y,0]];par[[c.x,c.y]]=null;
  while(q.length){const[x,y,d]=q.shift();if(d==3)continue;
@@ -229,13 +256,13 @@ function lancer(){if(mode!='p')return;const all=cells(),sp=split(all,M[die].lv),
  mode='r';cubeCls='';const g=gid,lv=M[die].need,nd=M[die].nd,rs=[...Array(nd)].map(()=>1+Math.floor(Math.random()*6)),r=Math.max(...rs),rt=rs.join('·'),R=$('roll'),k=cur,m=die;let n=0;msg='Lancer du dé '+M[m].n+'… il faut '+lv+' ou plus'+(nd>1?' avec l’un des '+nd+' dés':'')+'.';render();
  const t=setInterval(()=>{if(g!=gid){clearInterval(t);return}n++;R.textContent=n<14?[...Array(nd)].map(()=>1+Math.floor(Math.random()*6)).join('·'):rt;R.className=n<14?'rl':(r>=lv?'win':'lose');
   if(n<14)return;clearInterval(t);
-  if(r>=lv){const f1=cs[0],u=unfoldOrder(all);sp.lost.forEach(a=>{delete u.o[[a[0],a[1]]]});const did=++DID;let pl2=cs.slice(),dropped=0;const under=cr.filter(c=>c.o!=k&&pl2.some(a=>a[0]==c.x&&a[1]==c.y)),crushed=under.length;
+  if(r>=lv){const f1=cs[0],u=unfoldOrder(all);sp.lost.forEach(a=>{delete u.o[[a[0],a[1]]]});const did=++DID;let pl2=cs.slice(),dropped=0;const under=cr.filter(c=>pl2.some(a=>a[0]==c.x&&a[1]==c.y)),crushed=under.length;
    for(const c of under){const gone=[],own=pl2.find(a=>a[0]==c.x&&a[1]==c.y);if(own&&own!==f1)gone.push(own);
     while(gone.length<2){const far=pl2.filter(a=>a!==f1&&!gone.includes(a)).sort((p,q)=>((u.o[[q[0],q[1]]]||{d:0}).d)-((u.o[[p[0],p[1]]]||{d:0}).d))[0];if(!far)break;gone.push(far)}
     gone.forEach(a=>delete u.o[[a[0],a[1]]]);pl2=pl2.filter(a=>!gone.includes(a));dropped+=gone.length}
    cr=cr.filter(c=>!under.includes(c));for(const[x,y,v]of pl2)b[y][x]={o:k,el:M[m].el,v,lv:M[m].lv,id:did,mn:M[m].n};const nc={o:k,x:f1[0],y:f1[1],em:M[m].em,id:did,mn:M[m].n,mi:m};cr.push(nc);
    anim={o:u.o,t0:Date.now(),tot:u.max*220+450};pc=null;msg='Lancer : '+rt+' ✔ Le dé se déploie !';render();
-   setTimeout(()=>{if(g!=gid)return;let s='Lancer : '+rt+' ✔ Le dé s’est déployé, une créature apparaît !'+(crushed?' ('+crushed+' créature'+(crushed>1?'s':'')+' adverse'+(crushed>1?'s':'')+' écrasée'+(crushed>1?'s':'')+', le dé perd '+dropped+' face'+(dropped>1?'s':'')+')':'')+(lost?' ('+lost+' face'+(lost>1?'s':'')+' perdue'+(lost>1?'s':'')+')':'');const z=pl2.find(a=>inZone(1-k,a[1]));if(z){valide(z[0],z[1]);s+=' '+msg}if(!over)s+=resolve(nc);fin();if(!over)msg=s+' '+msg;render()},anim.tot+500)}
+   setTimeout(()=>{if(g!=gid)return;let s='Lancer : '+rt+' ✔ Le dé s’est déployé, une créature apparaît !'+(crushed?' ('+crushed+' créature'+(crushed>1?'s':'')+' écrasée'+(crushed>1?'s':'')+', le dé perd '+dropped+' face'+(dropped>1?'s':'')+')':'')+(lost?' ('+lost+' face'+(lost>1?'s':'')+' perdue'+(lost>1?'s':'')+')':'');const z=pl2.find(a=>inZone(1-k,a[1]));if(z){valide(z[0],z[1]);s+=' '+msg}if(!over)s+=resolve(nc);fin();if(!over)msg=s+' '+msg;render()},anim.tot+500)}
   else{cubeCls='poof';msg='Lancer : '+rt+' ✘ Le dé se brise…';render();
    setTimeout(()=>{if(g!=gid)return;pc=null;cubeCls='';const s='Lancer : '+rt+' ✘ Le dé disparaît.';
     fin();msg=s+' '+msg;render()},650)}},80)}
@@ -253,7 +280,7 @@ function ia(){if(over||mode!='i'||cur!=1)return;busy=1;const g=gid;let bs=-1e9,b
  if(best&&bs>best[0].y*2+1)mv(best[0],best[1],best[2]);render();if(over){mode='x';return}
  setTimeout(()=>{if(g!=gid)return;const h=pl[cur].h;let bb=null,bc=-1e9;
   h.forEach((m,i)=>{for(let x=0;x<W;x++)for(let y=0;y<H;y++){const all=cellsOf(m,0,{x,y});if(!ok(all,M[m].lv))continue;const cs=split(all,M[m].lv).put;
-   const sc=(Math.max(...cs.map(a=>a[1]))*2+Math.random()*3+(cs.some(a=>inZone(0,a[1]))?100:0)+cs.filter(a=>b[a[1]][a[0]]).length*8)*pOk(m);if(sc>bc){bc=sc;bb=[i,x,y]}}});
+   const sc=(Math.max(...cs.map(a=>a[1]))*2+Math.random()*3+(cs.some(a=>inZone(0,a[1]))?100:0)+cs.filter(a=>b[a[1]][a[0]]&&b[a[1]][a[0]].o!=cur).length*8-cs.filter(a=>b[a[1]][a[0]]&&b[a[1]][a[0]].o==cur).length*5-cr.filter(c=>c.o==cur&&cs.some(a=>a[0]==c.x&&a[1]==c.y)).length*60)*pOk(m);if(sc>bc){bc=sc;bb=[i,x,y]}}});
   if(!bb){hi=0;fin();msg='L’IA ne peut poser aucun dé. '+msg;render();return}
   hi=bb[0];die=h[hi];rot=0;pc={x:bb[1],y:bb[2]};mode='p';msg='L’IA pose son dé '+M[die].n+'…';render();setTimeout(()=>{if(g==gid)lancer()},1000)},900)}
 function bx(w,h,d,x,y,z,c){const f=(n,a,b,t)=>'<i class="f'+n+'" style="width:'+a+'px;height:'+b+'px;margin:'+(-b/2)+'px 0 0 '+(-a/2)+'px;background:'+c+';transform:'+t+'"></i>';
@@ -314,6 +341,15 @@ const fdrop=e=>{if(!dg)return;const d=dg;dg=null;lz=null;d.g.remove();
  else{mode='i';hov=null}
  render()};
 Hd.onpointerup=fdrop;Hd.onpointercancel=fdrop;
+function tilePos(x,y){const C=$('cam'),cs0=getComputedStyle(C).transform,m=new DOMMatrix(cs0==='none'?undefined:cs0),bw=$('bw').getBoundingClientRect(),cx=bw.x+bw.width/2,cy=bw.y+bw.height/2,r=B.children[y*W+x].getBoundingClientRect();
+ return[cx+(r.x+r.width/2-cx-m.e)/m.a,cy+(r.y+r.height/2-cy-m.f)/m.d]}
+function updCam(){if(drag||(dg&&dg.mv))return;let f=null;
+ if((mode=='p'||mode=='r')&&pc)f=pc;else if(mode=='i'&&cu&&(!ai||cur==0)&&Date.now()-lastJ<2000)f=cu;
+ const C=$('cam');if(!f){C.style.transform='';return}
+ const bw=$('bw').getBoundingClientRect(),cx=bw.x+bw.width/2,cy=bw.y+bw.height/2,[px,py]=tilePos(f.x,f.y),sc=1.75;
+ C.style.transform='translate('+(-sc*(px-cx))+'px,'+(-sc*(py-cy))+'px) scale('+sc+')'}
+const bhOf=c=>(0.14+0.06*c.v)*(B.clientWidth/W);
+function blk(c,x,y,q,an,A,now){return '<div class="blk'+(an?' rise':'')+'" style="left:'+(x*100/W)+'%;top:'+(y*100/H)+'%;--bh:'+bhOf(c)+'px;--bc:'+(c.o?'#e0661a':'#2f9a5f')+(an?';animation-delay:'+((an.d*220-(now-A.t0))/1000)+'s':'')+'"><i class="tp">'+(q>c.v?c.v+'<small>+'+(q-c.v)+'</small>':c.v)+(c.el?'<u style="background:'+EC[c.el]+'"></u>':'')+'</i><i class="sf"></i><i class="sb"></i><i class="sl"></i><i class="sr"></i></div>'}
 function rFly(){const FX=$('fx'),p=(mode=='p'||mode=='r')&&pc?pc:null;if(!p){FX.style.display='none';return}
  FX.style.display='';FX.style.left=((p.x+.5)/W*100)+'%';FX.style.top=((p.y+.5)/H*100)+'%';const k=die+cubeCls,C=FX.lastElementChild;if(FX.dataset.k!==k){FX.dataset.k=k;C.innerHTML=cube(die);C.className='fcb '+cubeCls}}
 const PD=$('pad'),KN=PD.firstElementChild;
@@ -330,12 +366,12 @@ function rBoard(){$('bq').style.setProperty('--tw',(B.clientWidth/W)+'px');$('sc
  for(let y=0;y<H;y++)for(let x=0;x<W;x++){const c=b[y][x],d=document.createElement('div'),an=A&&A.o[[x,y]];
   d.dataset.x=x;d.dataset.y=y;d.className='c'+(y<Z?' z1':'')+(y>=H-Z?' z0':'')+(c?' o'+c.o+(c.f?' f':''):'');let h='';if(x==3&&(y==0||y==H-1))h+='<small class="zt">'+(y?'Zone Vert':'Zone Orange')+'</small>';
   if(an){d.classList.add(an.c);d.style.animationDelay=((an.d*220-(now-A.t0))/1000)+'s'}
-  if(c&&!c.f){const q=pw(x,y);h+='<span class="tx">'+(q>c.v?c.v+'<small>+'+(q-c.v)+'</small>':c.v)+'</span>'+(c.el?'<i class="d" style="background:'+EC[c.el]+'"></i>':'')}
-  const p=fp.find(a=>a[0]==x&&a[1]==y);if(p){d.classList.add(bad?'bad':sp.lost.includes(p)?'lostc':'pv')}
+  if(c&&!c.f){const q=pw(x,y);ents.push(blk(c,x,y,q,an,A,now));h+='<span class="tx">'+(q>c.v?c.v+'<small>+'+(q-c.v)+'</small>':c.v)+'</span>'+(c.el?'<i class="d" style="background:'+EC[c.el]+'"></i>':'')}
+  const p=fp.find(a=>a[0]==x&&a[1]==y);if(p){d.classList.add(bad?'bad':sp.lost.includes(p)?'lostc':'pv');ents.push('<div class="hl'+(bad?' rd':'')+'" style="left:'+(x*100/W)+'%;top:'+(y*100/H)+'%;--z:'+(((c&&!c.f)?bhOf(c):0)+1)+'px"></div>')}
   
   const k=at(x,y);if(inf&&inf.at===msg&&inf.x==x&&inf.y==y)d.classList.add('insp');if(cu&&mode=='i'&&Date.now()-lastJ<3000&&cu.x==x&&cu.y==y&&(!ai||cur==0))d.classList.add('cur');if(R&&R[[x,y]]!==undefined&&!(k&&k.o==cur))d.classList.add('rc');
-  if(k){if(c&&!c.f){const q=pw(x,y);h+='<small class="nb">'+(q>c.v?c.v+'+'+(q-c.v):c.v)+'</small>'}const pop=an&&an.d==0;ents.push('<i class="cr'+(pop?' pop':'')+'" data-x="'+x+'" data-y="'+y+'" style="left:'+((x+.5)/W*100)+'%;top:'+((y+.5)/H*100)+'%'+(pop?';animation-delay:'+((A.tot-(now-A.t0))/1000)+'s':'')+'">'+k.em+'</i>');if(k==sel)d.classList.add('sel')}
-  d.innerHTML=h;B.append(d)}$('ent').innerHTML=ents.join('');rFly();renderLens()}
+  if(k){if(c&&!c.f){const q=pw(x,y);h+='<small class="nb">'+(q>c.v?c.v+'+'+(q-c.v):c.v)+'</small>'}const pop=an&&an.d==0;ents.push('<i class="cr'+(pop?' pop':'')+'" data-x="'+x+'" data-y="'+y+'" style="left:'+((x+.5)/W*100)+'%;top:'+((y+.5)/H*100)+'%;--cz:'+((c&&!c.f)?bhOf(c):0)+'px'+(pop?';animation-delay:'+((A.tot-(now-A.t0))/1000)+'s':'')+'">'+k.em+'</i>');if(k==sel)d.classList.add('sel')}
+  d.innerHTML=h;B.append(d)}$('ent').innerHTML=ents.join('');rFly();renderLens();updCam()}
 function renderLens(){const L=$('lens');if(!lz){L.hidden=true;return}
  const fp=(mode=='p'||mode=='d')?cells().filter(a=>inb(a[0],a[1])):[];let cx=lz.x,cy=lz.y;
  if(fp.length){const xs=fp.map(a=>a[0]),ys=fp.map(a=>a[1]);cx=Math.round((Math.min(...xs)+Math.max(...xs))/2);cy=Math.round((Math.min(...ys)+Math.max(...ys))/2)}
@@ -344,7 +380,7 @@ function renderLens(){const L=$('lens');if(!lz){L.hidden=true;return}
  L.className=(lz.x<W/2&&lz.y<H*.4)?'r':'';L.hidden=false}
 function render(){$('bq').style.setProperty('--rz',cur==1&&!over?'180deg':'0deg');rBoard();const me=!ai||cur==0,hp=ai?0:cur;
  $('hd').innerHTML='<span>'+pl[0].s+'/'+WIN+' Vert</span><span>'+(over?'Fin':'Tour : '+P[cur]+(ai&&cur?' (IA)':''))+'</span><span>Orange'+(ai?' IA ':' ')+pl[1].s+'/'+WIN+'</span>';
- const SP=(mode=='p'||mode=='d')&&cells().length?split(cells(),M[die].lv):null,L=SP?SP.lost.length:0;const O=SP?SP.put.filter(a=>b[a[1]][a[0]]).length:0;const U=SP?cr.filter(c=>c.o!=cur&&SP.put.some(a=>a[0]==c.x&&a[1]==c.y)).length:0;const WY=(mode=='p'||mode=='d')&&cells().length&&!ok(cells())?' ✖ '+why(cells(),M[die].lv):'';$('msg').textContent=msg+WY+(U?' ☠ '+U+' créature'+(U>1?'s':'')+' adverse'+(U>1?'s':'')+' sous le dé : il perdra jusqu’à '+2*U+' faces.':'')+(O?' ⚔ Tu écrases '+O+' face'+(O>1?'s':'')+' adverse'+(O>1?'s':'')+'.':'')+(L?' ⚠ '+L+' face'+(L>1?'s':'')+' perdue'+(L>1?'s':'')+' (bord ou case non recouvrable).':'');
+ const SP=(mode=='p'||mode=='d')&&cells().length?split(cells(),M[die].lv):null,L=SP?SP.lost.length:0;const O=SP?SP.put.filter(a=>b[a[1]][a[0]]).length:0;const U=SP?cr.filter(c=>SP.put.some(a=>a[0]==c.x&&a[1]==c.y)).length:0;const WY=(mode=='p'||mode=='d')&&cells().length&&!ok(cells())?' ✖ '+why(cells(),M[die].lv):'';$('msg').textContent=msg+WY+(U?' ☠ '+U+' créature'+(U>1?'s':'')+' sous le dé : il perdra jusqu’à '+2*U+' faces.':'')+(O?' ⚔ Tu recouvres '+O+' face'+(O>1?'s':'')+' déjà posée'+(O>1?'s':'')+'.':'')+(L?' ⚠ '+L+' face'+(L>1?'s':'')+' perdue'+(L>1?'s':'')+' (bord ou case non recouvrable).':'');
  if(inf&&inf.at===msg)$('msg').innerHTML=inf.html;
  $('ct').innerHTML=over?'<button onclick="init()">Rejouer</button>':mode=='p'&&me?'<button onclick="lancer()">🎲 Lancer le dé</button><button onclick="annuler()">Annuler</button>':'';
  $('hl').textContent=over?'':mode=='i'&&me?'Main de '+P[hp]+' : glisse un dé sur le damier':'';
