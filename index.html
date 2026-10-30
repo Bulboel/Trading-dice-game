@@ -204,7 +204,21 @@ body{margin:0;padding:0;max-width:none;height:100%;overflow:hidden;font-size:14p
 @keyframes bub{0%{transform:scale(.7);opacity:0}6%{opacity:1}60%{transform:scale(1.08)}100%{transform:none;opacity:1}}
 #ct button.on{background:#ffd21f;color:#222;border-color:#c9a000}
 @media(prefers-reduced-motion:reduce){.fb,.fc3{animation:none}}
-</style></head><body><div id="app"><div id="top"><button id="vs" onclick="ai=!ai;init()" title="Changer de mode"></button><button id="tr" onclick="TER=(TER+1)%6;init()" title="Changer de terrain"></button><div id="hd"></div></div><div id="bw"><div id="cam"><div id="sc"></div><div id="bq"><div id="slab"><i class="a"></i><i class="b"></i><i class="c1"></i><i class="d"></i></div><div id="bd"></div><div id="ent"></div><div id="fly"><div id="fx"><div class="fsh"></div><div class="fb"><div class="blk fc3"></div></div></div></div></div></div><div id="pad"><i></i></div></div><div id="mr"><div id="roll"></div><div id="msg"></div></div><div id="bot"><div class="row" id="ct"></div><div class="row" id="hand"></div></div><div id="hl" hidden></div></div><div id="lens" hidden></div><div id="fiche" hidden onclick="if(event.target===this)closeCard()"><div id="fc"></div></div><script>
+
+/* ===== déplacement des créatures : sélection puis case lumineuse ===== */
+#crl{position:absolute;inset:0;pointer-events:none;transform-style:preserve-3d}
+.cr{transition:left .38s ease,top .38s ease,transform 1.1s ease}
+.cr.sel{filter:drop-shadow(0 0 5px #7ff) drop-shadow(0 0 12px #7ff);animation:hop .9s ease-in-out infinite}
+@keyframes hop{0%,100%{transform:translateZ(var(--cz,0px)) translate(-50%,-100%) rotateZ(calc(-1*var(--rz))) rotateX(calc(-1*var(--tilt)))}50%{transform:translateZ(calc(var(--cz,0px) + var(--tw)*.22)) translate(-50%,-100%) rotateZ(calc(-1*var(--rz))) rotateX(calc(-1*var(--tilt)))}}
+.mv{position:absolute;width:12.5%;height:10%;transform:translateZ(var(--z,2px));pointer-events:auto;background:rgba(90,230,255,.34);box-shadow:inset 0 0 12px 3px rgba(130,245,255,.95),0 0 12px 3px rgba(90,220,255,.7);animation:glow3 1.1s ease-in-out infinite}
+.mv.at{background:rgba(255,70,70,.4);box-shadow:inset 0 0 12px 3px rgba(255,100,100,.95),0 0 12px 3px rgba(255,70,70,.7)}
+.mv.at::after{content:"⚔";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:calc(var(--tw)*.5);color:#fff;text-shadow:0 1px 3px #000}
+@keyframes glow3{50%{background:rgba(90,230,255,.58)}}
+.hl.sl{background:rgba(120,240,255,.25);box-shadow:inset 0 0 10px 3px rgba(120,240,255,.9);animation:none}
+#bd .rc::after{display:none}
+.blk{pointer-events:auto}
+@media(prefers-reduced-motion:reduce){.cr.sel,.mv{animation:none}.cr{transition:none}}
+</style></head><body><div id="app"><div id="top"><button id="vs" onclick="ai=!ai;init()" title="Changer de mode"></button><button id="tr" onclick="TER=(TER+1)%6;init()" title="Changer de terrain"></button><div id="hd"></div></div><div id="bw"><div id="cam"><div id="sc"></div><div id="bq"><div id="slab"><i class="a"></i><i class="b"></i><i class="c1"></i><i class="d"></i></div><div id="bd"></div><div id="ent"></div><div id="crl"></div><div id="fly"><div id="fx"><div class="fsh"></div><div class="fb"><div class="blk fc3"></div></div></div></div></div></div><div id="pad"><i></i></div></div><div id="mr"><div id="roll"></div><div id="msg"></div></div><div id="bot"><div class="row" id="ct"></div><div class="row" id="hand"></div></div><div id="hl" hidden></div></div><div id="lens" hidden></div><div id="fiche" hidden onclick="if(event.target===this)closeCard()"><div id="fc"></div></div><script>
 const W=8,H=10,Z=1,WIN=2,P=['Vert','Orange'],D4=[[1,0],[-1,0],[0,1],[0,-1]];
 const EC={eau:'#1e4fa0',feu:'#d22',glace:'#7de',terre:'#8a5a2b',vent:'#4c4',foudre:'#a3d'};
 const BT={eau:'foudre',foudre:'vent',vent:'terre',terre:'glace',glace:'feu',feu:'eau'};
@@ -363,13 +377,22 @@ const B=$('bd'),BQ=$('bq'),Hd=$('hand'),cellAt=e=>{const el=document.elementFrom
 BQ.onpointerdown=e=>{if(over||(ai&&cur==1))return;e.preventDefault();const[x,y]=cellAt(e);if(!inb(x,y))return;
  if(mode=='p'){drag=1;lz={x,y};BQ.setPointerCapture(e.pointerId);pc={x,y}}
  else if(mode=='c'){if(b[y][x])msg='Case déjà occupée.';else{b[y][x]={o:cur,f:1,v:0};fin();msg='Case colorée pour toujours. '+msg}}
- else if(mode=='i'){const c=at(x,y);if(c){if(c.o!=cur)msg='Cette créature est à '+P[c.o]+'. C’est le tour de '+P[cur]+'.';else if(moved)msg='Tu as déjà avancé ce tour : pose un dé.';else{sel=c;down=1;lz={x,y};BQ.setPointerCapture(e.pointerId);msg=Object.keys(bfs(c)).length>1?'Créature choisie : touche (ou glisse vers) une case marquée d’un point jaune.':'Cette créature ne peut pas avancer : elle ne marche que sur des cases colorées.'}}}
+ 
  render()};
 BQ.onpointermove=e=>{if(drag||(down&&sel)){const[x,y]=cellAt(e);if(inb(x,y)){lz={x,y};if(drag)pc={x,y};rBoard()}}};BQ.onpointercancel=()=>{drag=0;down=0;lz=null;render()};
+const selMsg=c=>Object.keys(bfs(c)).length>1?'Créature choisie : touche une case lumineuse pour l’y envoyer (3 pas max). Retouche-la pour sa fiche.':'Cette créature ne peut pas avancer : elle ne marche que sur des cases de dés (3 pas max). Retouche-la pour sa fiche.';
 BQ.onpointerup=e=>{lz=null;down=0;const[x,y]=cellAt(e),me=!ai||cur==0,canI=over||(ai&&cur==1)||mode=='i'||mode=='r'||mode=='x';
  if(drag){drag=0}
- else if(mode=='i'&&sel&&me&&inb(x,y)&&(x!=sel.x||y!=sel.y)&&bfs(sel)[[x,y]]!==undefined&&!(at(x,y)&&at(x,y).o==cur))mv(sel,x,y);
- else if(canI)inspect(x,y);
+ else if(inb(x,y)&&canI){const c=at(x,y);
+  if(mode=='i'&&me&&!over){
+   if(sel){
+    if(c===sel)openCard(sel);
+    else if(bfs(sel)[[x,y]]!==undefined&&!(c&&c.o==cur))mv(sel,x,y);
+    else if(c&&c.o==cur&&!moved){sel=c;msg=selMsg(c)}
+    else{sel=null;inspect(x,y)}
+   }else if(c&&c.o==cur&&!moved){sel=c;msg=selMsg(c)}
+   else inspect(x,y)
+  }else inspect(x,y)}
  render()};
 const gh=e=>{dg.g.style.left=e.clientX+'px';dg.g.style.top=e.clientY+'px'};
 Hd.onpointerdown=e=>{const c=e.target.closest('.dc');if(!c||c.classList.contains('off')||mode!='i'||over||(ai&&cur==1))return;e.preventDefault();
@@ -392,8 +415,12 @@ function updCam(){if(drag||(dg&&dg.mv))return;let f=null;
  const C=$('cam');if(!f){C.style.transform='';return}
  const bw=$('bw').getBoundingClientRect(),cx=bw.x+bw.width/2,cy=bw.y+bw.height/2,[px,py]=tilePos(f.x,f.y),sc=1.75;
  C.style.transform='translate('+(-sc*(px-cx))+'px,'+(-sc*(py-cy))+'px) scale('+sc+')'}
+let UID=0;const CRL=$('crl');
+function upCr(k,x,y,c,pop,A,now,live){k.uid=k.uid||++UID;let e=CRL.querySelector('[data-uid="'+k.uid+'"]');
+ if(!e){e=document.createElement('i');e.dataset.uid=k.uid;e.className='cr'+(pop?' pop':'');e.textContent=k.em;if(pop)e.style.animationDelay=((A.tot-(now-A.t0))/1000)+'s';CRL.append(e)}
+ e.dataset.x=x;e.dataset.y=y;e.style.left=((x+.5)/W*100)+'%';e.style.top=((y+.5)/H*100)+'%';e.style.setProperty('--cz',((c&&!c.f)?bhOf(c):0)+'px');e.classList.toggle('sel',k===sel);live.add(String(k.uid))}
 const bhOf=c=>(0.14+0.06*c.v)*(B.clientWidth/W);
-function blk(c,x,y,q,an,A,now){return '<div class="blk'+(an?' '+an.c:'')+'" style="left:'+(x*100/W)+'%;top:'+(y*100/H)+'%;--bh:'+bhOf(c)+'px;--bc:'+(c.o?'#e0661a':'#2f9a5f')+(an?';animation-delay:'+((an.d*220-(now-A.t0))/1000)+'s':'')+'"><i class="tp">'+(q>c.v?c.v+'<small>+'+(q-c.v)+'</small>':c.v)+(c.el?'<u style="background:'+EC[c.el]+'"></u>':'')+'</i><i class="sf"></i><i class="sb"></i><i class="sl"></i><i class="sr"></i></div>'}
+function blk(c,x,y,q,an,A,now){return '<div class="blk'+(an?' '+an.c:'')+'" data-x="'+x+'" data-y="'+y+'" style="left:'+(x*100/W)+'%;top:'+(y*100/H)+'%;--bh:'+bhOf(c)+'px;--bc:'+(c.o?'#e0661a':'#2f9a5f')+(an?';animation-delay:'+((an.d*220-(now-A.t0))/1000)+'s':'')+'"><i class="tp">'+(q>c.v?c.v+'<small>+'+(q-c.v)+'</small>':c.v)+(c.el?'<u style="background:'+EC[c.el]+'"></u>':'')+'</i><i class="sf"></i><i class="sb"></i><i class="sl"></i><i class="sr"></i></div>'}
 function landCube(){const C=$('fx').querySelector('.fc3');if(!C)return;const m=new DOMMatrix(getComputedStyle(C).transform),a=Math.atan2(m.b,m.a)*180/Math.PI;C.style.setProperty('--a0',a+'deg');C.style.setProperty('--a1',(Math.round(a/90)*90)+'deg');cubeCls='land'}
 function rFly(){const FX=$('fx'),p=(mode=='p'||mode=='r')&&pc?pc:null;if(!p){FX.style.display='none';return}
  FX.style.display='';FX.style.left=(p.x*100/W)+'%';FX.style.top=(p.y*100/H)+'%';const k=die+cubeCls,C=FX.querySelector('.fc3');
@@ -410,7 +437,7 @@ function jloop(t){if(!jv)return;const dt=Math.min(.05,(t-jt)/1000);jt=t;const mg
 PD.onpointerdown=e=>{if(over||(ai&&cur==1)||!(mode=='i'||mode=='p'))return;e.preventDefault();PD.setPointerCapture(e.pointerId);PD.classList.add('on');jmv(e);const T=mode=='p'?pc:cu;jx=T.x;jy=T.y;jt=performance.now();lastJ=Date.now();requestAnimationFrame(jloop)};
 PD.onpointermove=e=>{if(jv)jmv(e)};
 const jend=()=>{jv=null;KN.style.transform='';PD.classList.remove('on');render()};PD.onpointerup=jend;PD.onpointercancel=jend;
-function rBoard(){$('bq').style.setProperty('--tw',(B.clientWidth/W)+'px');$('sc').style.setProperty('--tw',(B.clientWidth/W)+'px');const ents=[],thr=new Set();const R=(mode=='i'&&sel)?bfs(sel):null,cs=cells(),fp=(mode=='p'||mode=='d')?cs:[],bad=fp.length&&!ok(fp),sp=fp.length?split(fp,M[die].lv):{put:[],lost:[]},now=Date.now(),A=anim&&now-anim.t0<anim.tot+600?anim:null;B.innerHTML='';
+function rBoard(){$('bq').style.setProperty('--tw',(B.clientWidth/W)+'px');$('sc').style.setProperty('--tw',(B.clientWidth/W)+'px');const ents=[],thr=new Set(),live=new Set();const R=(mode=='i'&&sel)?bfs(sel):null,cs=cells(),fp=(mode=='p'||mode=='d')?cs:[],bad=fp.length&&!ok(fp),sp=fp.length?split(fp,M[die].lv):{put:[],lost:[]},now=Date.now(),A=anim&&now-anim.t0<anim.tot+600?anim:null;B.innerHTML='';
  for(const a of cr)for(const e of cr)if(a.o!=e.o&&Math.abs(a.x-e.x)+Math.abs(a.y-e.y)==1){thr.add(a);thr.add(e)}
  if(mode=='i'&&sel&&R)for(const e of cr)if(e.o!=sel.o&&Object.keys(R).some(k=>{const[qx,qy]=k.split(',').map(Number);return Math.abs(qx-e.x)+Math.abs(qy-e.y)==1&&!(qx==sel.x&&qy==sel.y)}))thr.add(e);
  if((mode=='p'||mode=='r'||mode=='d')&&cs.length){const f=cs[0];for(const e of cr)if(e.o!=cur&&Math.abs(f[0]-e.x)+Math.abs(f[1]-e.y)==1)thr.add(e)}
@@ -420,9 +447,9 @@ function rBoard(){$('bq').style.setProperty('--tw',(B.clientWidth/W)+'px');$('sc
   if(c&&!c.f){const q=pw(x,y);ents.push(blk(c,x,y,q,an,A,now));h+='<span class="tx">'+(q>c.v?c.v+'<small>+'+(q-c.v)+'</small>':c.v)+'</span>'+(c.el?'<i class="d" style="background:'+EC[c.el]+'"></i>':'')}
   const p=fp.find(a=>a[0]==x&&a[1]==y);if(p){d.classList.add(bad?'bad':sp.lost.includes(p)?'lostc':'pv');ents.push('<div class="hl'+(bad?' rd':'')+'" style="left:'+(x*100/W)+'%;top:'+(y*100/H)+'%;--z:'+(((c&&!c.f)?bhOf(c):0)+1)+'px"></div>')}
   
-  const k=at(x,y);if(inf&&inf.at===msg&&inf.x==x&&inf.y==y)d.classList.add('insp');if(cu&&mode=='i'&&Date.now()-lastJ<3000&&cu.x==x&&cu.y==y&&(!ai||cur==0))d.classList.add('cur');if(R&&R[[x,y]]!==undefined&&!(k&&k.o==cur))d.classList.add('rc');
-  if(k){if(c&&!c.f){const q=pw(x,y);h+='<small class="nb">'+(q>c.v?c.v+'+'+(q-c.v):c.v)+'</small>'}const pop=an&&an.d==0;ents.push('<i class="cr'+(pop?' pop':'')+'" data-x="'+x+'" data-y="'+y+'" style="left:'+((x+.5)/W*100)+'%;top:'+((y+.5)/H*100)+'%;--cz:'+((c&&!c.f)?bhOf(c):0)+'px'+(pop?';animation-delay:'+((A.tot-(now-A.t0))/1000)+'s':'')+'">'+k.em+'</i>');if(thr.has(k))ents.push('<i class="hd" style="left:'+((x+.5)/W*100)+'%;top:'+((y+.5)/H*100)+'%;--cz:'+((c&&!c.f)?bhOf(c):0)+'px">'+HEAD+'</i>');if(k==sel)d.classList.add('sel')}
-  d.innerHTML=h;B.append(d)}$('ent').innerHTML=ents.join('');rFly();renderLens();updCam()}
+  const k=at(x,y);if(inf&&inf.at===msg&&inf.x==x&&inf.y==y)d.classList.add('insp');if(cu&&mode=='i'&&Date.now()-lastJ<3000&&cu.x==x&&cu.y==y&&(!ai||cur==0))d.classList.add('cur');if(R&&R[[x,y]]!==undefined&&!(k&&k.o==cur)){d.classList.add('rc');if(!(sel&&sel.x==x&&sel.y==y))ents.push('<div class="mv'+(k?' at':'')+'" data-x="'+x+'" data-y="'+y+'" style="left:'+(x*100/W)+'%;top:'+(y*100/H)+'%;--z:'+(((c&&!c.f)?bhOf(c):0)+2)+'px"></div>')}if(sel&&sel.x==x&&sel.y==y&&mode=='i')ents.push('<div class="hl sl" style="left:'+(x*100/W)+'%;top:'+(y*100/H)+'%;--z:'+(((c&&!c.f)?bhOf(c):0)+1)+'px"></div>');
+  if(k){if(c&&!c.f){const q=pw(x,y);h+='<small class="nb">'+(q>c.v?c.v+'+'+(q-c.v):c.v)+'</small>'}const pop=an&&an.d==0;upCr(k,x,y,c,pop,A,now,live);if(thr.has(k))ents.push('<i class="hd" style="left:'+((x+.5)/W*100)+'%;top:'+((y+.5)/H*100)+'%;--cz:'+((c&&!c.f)?bhOf(c):0)+'px">'+HEAD+'</i>');if(k==sel)d.classList.add('sel')}
+  d.innerHTML=h;B.append(d)}$('ent').innerHTML=ents.join('');for(const e of [...CRL.children])if(!live.has(e.dataset.uid))e.remove();rFly();renderLens();updCam()}
 let lensT=0,lensP=0;
 function renderLens(){const L=$('lens');if(!lz){L.hidden=true;L.innerHTML='';return}
  const t=performance.now();if(!L.hidden&&t-lensT<50){if(!lensP){lensP=1;setTimeout(()=>{lensP=0;renderLens()},55)}return}lensT=t;
