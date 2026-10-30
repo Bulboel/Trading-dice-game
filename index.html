@@ -184,7 +184,27 @@ body{margin:0;padding:0;max-width:none;height:100%;overflow:hidden;font-size:14p
 #lens .lz{position:absolute;inset:0;overflow:hidden;border-radius:9px}
 #lens #cam,#lens #bq{transition:none}
 #lens .rg{position:absolute;border:2px dashed #fff;border-radius:4px;box-shadow:0 0 6px #fff;pointer-events:none;z-index:50}
-</style></head><body><div id="app"><div id="top"><button id="vs" onclick="ai=!ai;init()" title="Changer de mode"></button><button id="tr" onclick="TER=(TER+1)%6;init()" title="Changer de terrain"></button><div id="hd"></div></div><div id="bw"><div id="cam"><div id="sc"></div><div id="bq"><div id="slab"><i class="a"></i><i class="b"></i><i class="c1"></i><i class="d"></i></div><div id="bd"></div><div id="ent"></div><div id="fly"><div id="fx"><div class="fsh"></div><div class="blk fc3"></div></div></div></div></div><div id="pad"><i></i></div></div><div id="mr"><div id="roll"></div><div id="msg"></div></div><div id="bot"><div class="row" id="ct"></div><div class="row" id="hand"></div></div><div id="hl" hidden></div></div><div id="lens" hidden></div><div id="fiche" hidden onclick="if(event.target===this)closeCard()"><div id="fc"></div></div><script>
+
+/* ===== caméra basse + dé qui lévite et pivote ===== */
+#bw{--tilt:62deg;perspective:1200px;perspective-origin:50% 6%}
+#bq{width:min(94cqw,76cqh)}#sc{width:min(94cqw,76cqh)}
+.fb{position:absolute;inset:0;transform-style:preserve-3d;animation:bob2 1.8s ease-in-out infinite}
+@keyframes bob2{0%,100%{transform:translateZ(calc(var(--tw)*.3))}50%{transform:translateZ(calc(var(--tw)*.6))}}
+.fc3{animation:spin3 7s linear infinite}
+@keyframes spin3{to{transform:rotateZ(360deg)}}
+.fb.land{animation:landz .4s ease-in forwards}@keyframes landz{from{transform:translateZ(calc(var(--tw)*.45))}to{transform:translateZ(0)}}
+.fc3.land{animation:landspin .4s ease-out forwards}@keyframes landspin{from{transform:rotateZ(var(--a0,0deg))}to{transform:rotateZ(var(--a1,0deg))}}
+.fb.poof{animation:none}
+/* dépliage en charnière */
+.blk.u-r{transform-origin:0 50% 0;animation:bur .45s both}.blk.u-l{transform-origin:100% 50% 0;animation:bul .45s both}.blk.u-d{transform-origin:50% 0 0;animation:bud .45s both}.blk.u-u{transform-origin:50% 100% 0;animation:buu .45s both}.blk.u-b{transform-origin:50% 50% 0;animation:bub .4s both}
+@keyframes bur{0%{transform:rotateY(-90deg);opacity:0}6%{opacity:1}100%{transform:none;opacity:1}}
+@keyframes bul{0%{transform:rotateY(90deg);opacity:0}6%{opacity:1}100%{transform:none;opacity:1}}
+@keyframes bud{0%{transform:rotateX(90deg);opacity:0}6%{opacity:1}100%{transform:none;opacity:1}}
+@keyframes buu{0%{transform:rotateX(-90deg);opacity:0}6%{opacity:1}100%{transform:none;opacity:1}}
+@keyframes bub{0%{transform:scale(.7);opacity:0}6%{opacity:1}60%{transform:scale(1.08)}100%{transform:none;opacity:1}}
+#ct button.on{background:#ffd21f;color:#222;border-color:#c9a000}
+@media(prefers-reduced-motion:reduce){.fb,.fc3{animation:none}}
+</style></head><body><div id="app"><div id="top"><button id="vs" onclick="ai=!ai;init()" title="Changer de mode"></button><button id="tr" onclick="TER=(TER+1)%6;init()" title="Changer de terrain"></button><div id="hd"></div></div><div id="bw"><div id="cam"><div id="sc"></div><div id="bq"><div id="slab"><i class="a"></i><i class="b"></i><i class="c1"></i><i class="d"></i></div><div id="bd"></div><div id="ent"></div><div id="fly"><div id="fx"><div class="fsh"></div><div class="fb"><div class="blk fc3"></div></div></div></div></div></div><div id="pad"><i></i></div></div><div id="mr"><div id="roll"></div><div id="msg"></div></div><div id="bot"><div class="row" id="ct"></div><div class="row" id="hand"></div></div><div id="hl" hidden></div></div><div id="lens" hidden></div><div id="fiche" hidden onclick="if(event.target===this)closeCard()"><div id="fc"></div></div><script>
 const W=8,H=10,Z=1,WIN=2,P=['Vert','Orange'],D4=[[1,0],[-1,0],[0,1],[0,-1]];
 const EC={eau:'#1e4fa0',feu:'#d22',glace:'#7de',terre:'#8a5a2b',vent:'#4c4',foudre:'#a3d'};
 const BT={eau:'foudre',foudre:'vent',vent:'terre',terre:'glace',glace:'feu',feu:'eau'};
@@ -210,10 +230,10 @@ const M=[];LVR.forEach((R,l)=>ELS.forEach((el,e)=>{const t=[0,0,1,1,2,3][l],cr=C
  M.push({n:NM[e]+' '+RN[l],em:cr[0],cn:cr[1],lo:cr[2],el,lv:l+1,nd:R.nd,need:R.need,t,fk:(t==0?6:0)+e,c:SH[l][e].map(([x,y],k)=>[x,y,R.v[k]])})}));
 const pOk=m=>{const D=M[m],q=(D.need-1)/6;return D.nd>1?1-q*q:1-q};
 function mkDeck(){const pk=(l,n)=>sh([0,1,2,3,4,5]).slice(0,n).map(e=>(l-1)*6+e);return sh([...pk(6,1),...pk(5,2),...pk(1,2),...pk(2,2),...pk(3,2),...pk(4,1)])}
-let b,pl,cr,cur,mode,rot,pc,hov,die,hi,msg,moved,over,drag,sel,anim,cubeCls='',ai=true,gid=0,aiT=0,busy=0,dg=null,lz=null,down=0,DID=0,inf=null,TER=Math.floor(Math.random()*6),cu=null,lastJ=0,jv=null,jx=0,jy=0,jt=0;
+let b,pl,cr,cur,mode,rot,pc,hov,die,hi,msg,moved,over,drag,sel,anim,cubeCls='',ai=true,gid=0,aiT=0,busy=0,dg=null,lz=null,down=0,DID=0,bonus=[0,0],useB=0,inf=null,TER=Math.floor(Math.random()*6),cu=null,lastJ=0,jv=null,jx=0,jy=0,jt=0;
 const $=i=>document.getElementById(i),at=(x,y)=>cr.find(c=>c.x==x&&c.y==y),inb=(x,y)=>x>=0&&y>=0&&x<W&&y<H;
 const homeRow=()=>cur?0:H-1,inZone=(o,y)=>o?y<Z:y>=H-Z,full=k=>b.flat().filter(c=>c&&c.f&&c.o==k).length>=4,sh=a=>a.sort(()=>Math.random()-.5);
-function init(){gid++;busy=0;b=[...Array(H)].map(()=>Array(W).fill(null));cr=[];over=0;sel=null;drag=0;pc=null;hov=null;anim=null;cubeCls='';aiT=0;
+function init(){bonus=[0,0];useB=0;gid++;busy=0;b=[...Array(H)].map(()=>Array(W).fill(null));cr=[];over=0;sel=null;drag=0;pc=null;hov=null;anim=null;cubeCls='';aiT=0;
  pl=[0,1].map(()=>{const d=mkDeck();return{h:d.splice(0,5),q:d,s:0}});
  cur=0;mode='i';moved=0;$('roll').textContent='';$('roll').className='';
  cu={x:3,y:H-3};lastJ=0;theme();msg=TERR[TL[TER]].em+' '+TERR[TL[TER]].n+' : +1 aux dés '+TL[TER]+'. Vert : glisse un dé de ta main sur le damier (ou utilise le joystick discret en bas à droite), puis lance-le.';render()}
@@ -274,10 +294,10 @@ function mv(c,x,y){const e=at(x,y);if(e&&e.o==c.o){msg='Case occupée par ta pro
 function firstValid(m,r){const ys=[...Array(H).keys()];if(!cur)ys.reverse();for(const y of ys)for(const x of[3,4,2,5,1,6,0,7])if(ok(cellsOf(m,r,{x,y}),M[m].lv))return{x,y};return null}
 function pick(i){const m=pl[cur].h[i],p=firstValid(m,cur?0:2);if(!p){msg='Aucun emplacement possible pour ce dé.';return}
  hi=i;die=m;rot=cur?0:2;pc=p;mode='p';sel=null;$('roll').textContent='';$('roll').className='';
- msg='Le dé est posé, fermé. Fais-le glisser où tu veux, puis touche « Lancer ».'}
-function annuler(){mode='i';pc=null;hov=null;msg='Choisis un dé ou avance une créature.'}
+ msg='Le dé est posé, fermé. Fais-le glisser où tu veux, puis touche « Lancer ».'+bm()}
+function annuler(){useB=0;mode='i';pc=null;hov=null;msg='Choisis un dé ou avance une créature.'}
 function lancer(){if(mode!='p')return;const all=cells(),sp=split(all,M[die].lv),cs=sp.put,lost=sp.lost.length;if(!ok(all)){msg='Placement impossible : '+why(all,M[die].lv);render();return}
- mode='r';cubeCls='';const g=gid,lv=M[die].need,nd=M[die].nd,rs=[...Array(nd)].map(()=>1+Math.floor(Math.random()*6)),r=Math.max(...rs),rt=rs.join('·'),R=$('roll'),k=cur,m=die;let n=0;msg='Lancer du dé '+M[m].n+'… il faut '+lv+' ou plus'+(nd>1?' avec l’un des '+nd+' dés':'')+'.';render();
+ mode='r';cubeCls='';const g=gid,lv=M[die].need,ub=(useB&&bonus[cur])?1:0,nd=M[die].nd+ub,rs=[...Array(nd)].map(()=>1+Math.floor(Math.random()*6)),r=Math.max(...rs),rt=rs.join('·'),R=$('roll'),k=cur,m=die;if(ub)bonus[k]=0;useB=0;let n=0;msg=(ub?'✨ ':'')+'Lancer du dé '+M[m].n+'… il faut '+lv+' ou plus'+(nd>1?' avec l’un des '+nd+' dés':'')+'.';render();
  const t=setInterval(()=>{if(g!=gid){clearInterval(t);return}n++;R.textContent=n<14?[...Array(nd)].map(()=>1+Math.floor(Math.random()*6)).join('·'):rt;R.className=n<14?'rl':(r>=lv?'win':'lose');
   if(n<14)return;clearInterval(t);
   if(r>=lv){const f1=cs[0],u=unfoldOrder(all);sp.lost.forEach(a=>{delete u.o[[a[0],a[1]]]});const did=++DID;let pl2=cs.slice(),dropped=0;const under=cr.filter(c=>pl2.some(a=>a[0]==c.x&&a[1]==c.y)),crushed=under.length;
@@ -285,12 +305,12 @@ function lancer(){if(mode!='p')return;const all=cells(),sp=split(all,M[die].lv),
     while(gone.length<2){const far=pl2.filter(a=>a!==f1&&!gone.includes(a)).sort((p,q)=>((u.o[[q[0],q[1]]]||{d:0}).d)-((u.o[[p[0],p[1]]]||{d:0}).d))[0];if(!far)break;gone.push(far)}
     gone.forEach(a=>delete u.o[[a[0],a[1]]]);pl2=pl2.filter(a=>!gone.includes(a));dropped+=gone.length}
    cr=cr.filter(c=>!under.includes(c));for(const[x,y,v]of pl2)b[y][x]={o:k,el:M[m].el,v,lv:M[m].lv,id:did,mn:M[m].n};const nc={o:k,x:f1[0],y:f1[1],em:M[m].em,id:did,mn:M[m].n,mi:m,lv:M[m].lv};cr.push(nc);
-   anim={o:u.o,t0:Date.now(),tot:u.max*220+450};pc=null;msg='Lancer : '+rt+' ✔ Le dé se déploie !';render();
-   setTimeout(()=>{if(g!=gid)return;let s='Lancer : '+rt+' ✔ Le dé s’est déployé, une créature apparaît !'+(crushed?' ('+crushed+' créature'+(crushed>1?'s':'')+' écrasée'+(crushed>1?'s':'')+', le dé perd '+dropped+' face'+(dropped>1?'s':'')+')':'')+(lost?' ('+lost+' face'+(lost>1?'s':'')+' perdue'+(lost>1?'s':'')+')':'');const z=pl2.find(a=>inZone(1-k,a[1]));if(z){valide(z[0],z[1]);s+=' '+msg}if(!over)s+=resolve(nc);fin();if(!over)msg=s+' '+msg;render()},anim.tot+500)}
+   anim={o:u.o,t0:Date.now()+400,tot:u.max*220+450};landCube();msg='Lancer : '+rt+' ✔ Le dé se pose, puis se déploie !';render();setTimeout(()=>{if(g!=gid)return;pc=null;cubeCls='';render()},400);
+   setTimeout(()=>{if(g!=gid)return;let s='Lancer : '+rt+' ✔ Le dé s’est déployé, une créature apparaît !'+(crushed?' ('+crushed+' créature'+(crushed>1?'s':'')+' écrasée'+(crushed>1?'s':'')+', le dé perd '+dropped+' face'+(dropped>1?'s':'')+')':'')+(lost?' ('+lost+' face'+(lost>1?'s':'')+' perdue'+(lost>1?'s':'')+')':'');const z=pl2.find(a=>inZone(1-k,a[1]));if(z){valide(z[0],z[1]);s+=' '+msg}if(!over)s+=resolve(nc);fin();if(!over)msg=s+' '+msg;render()},anim.tot+900)}
   else{cubeCls='poof';msg='Lancer : '+rt+' ✘ Le dé retourne dans ta main…';render();
-   setTimeout(()=>{if(g!=gid)return;pc=null;cubeCls='';const s='Lancer : '+rt+' ✘ Le dé revient dans ta main.';
+   setTimeout(()=>{if(g!=gid)return;pc=null;cubeCls='';const gain=!bonus[k];if(gain)bonus[k]=1;const s='Lancer : '+rt+' ✘ Le dé revient dans ta main.'+(gain?' ✨ Tu gagnes un dé bonus pour ton prochain lancer.':'');
     fin(true);msg=s+' '+msg;render()},650)}},80)}
-function fin(keep){const p=pl[cur];if(!keep)p.q.push(p.h.splice(hi,1)[0]);busy=0;hov=null;cubeCls='';
+function fin(keep){useB=0;const p=pl[cur];if(!keep)p.q.push(p.h.splice(hi,1)[0]);busy=0;hov=null;cubeCls='';
  if(over){mode='x';return}
  cur=1-cur;moved=0;mode='i';pc=null;sel=null;const n=pl[cur];while(n.h.length<5&&n.q.length)n.h.push(n.q.shift());
  msg=ai&&cur?'Tour de l’IA…':P[cur]+' : glisse un dé sur le damier, ou avance une créature.'}
@@ -306,7 +326,7 @@ function ia(){if(over||mode!='i'||cur!=1)return;busy=1;const g=gid;let bs=-1e9,b
   h.forEach((m,i)=>{for(let x=0;x<W;x++)for(let y=0;y<H;y++){const all=cellsOf(m,0,{x,y});if(!ok(all,M[m].lv))continue;const cs=split(all,M[m].lv).put;
    const sc=(Math.max(...cs.map(a=>a[1]))*2+Math.random()*3+(cs.some(a=>inZone(0,a[1]))?100:0)+cs.filter(a=>b[a[1]][a[0]]&&b[a[1]][a[0]].o!=cur).length*8-cs.filter(a=>b[a[1]][a[0]]&&b[a[1]][a[0]].o==cur).length*5-cr.filter(c=>c.o==cur&&cs.some(a=>a[0]==c.x&&a[1]==c.y)).length*60)*pOk(m);if(sc>bc){bc=sc;bb=[i,x,y]}}});
   if(!bb){hi=0;fin(true);msg='L’IA ne peut poser aucun dé. '+msg;render();return}
-  hi=bb[0];die=h[hi];rot=0;pc={x:bb[1],y:bb[2]};mode='p';msg='L’IA pose son dé '+M[die].n+'…';render();setTimeout(()=>{if(g==gid)lancer()},1000)},900)}
+  hi=bb[0];die=h[hi];rot=0;pc={x:bb[1],y:bb[2]};mode='p';msg='L’IA pose son dé '+M[die].n+'…';render();setTimeout(()=>{if(g==gid){if(bonus[cur])useB=1;lancer()}},1000)},900)}
 function bx(w,h,d,x,y,z,c){const f=(n,a,b,t)=>'<i class="f'+n+'" style="width:'+a+'px;height:'+b+'px;margin:'+(-b/2)+'px 0 0 '+(-a/2)+'px;background:'+c+';transform:'+t+'"></i>';
  return '<div class="bx" style="transform:translate3d('+x+'px,'+y+'px,'+z+'px)">'+f(0,w,h,'translateZ('+d/2+'px)')+f(1,w,h,'rotateY(180deg) translateZ('+d/2+'px)')+f(2,d,h,'rotateY(90deg) translateZ('+w/2+'px)')+f(3,d,h,'rotateY(-90deg) translateZ('+w/2+'px)')+f(4,w,d,'rotateX(90deg) translateZ('+h/2+'px)')+f(5,w,d,'rotateX(-90deg) translateZ('+h/2+'px)')+'</div>'}
 function figure(mi,c,tier){const w='#fff',k='#222',o='#f90',L=[[40,34,30,0,10,0,c],[36,30,30,0,-20,4,c],[6,6,3,-9,-22,20,k],[6,6,3,9,-22,20,k],[12,10,12,-11,32,4,c],[12,10,12,11,32,4,c]];
@@ -359,7 +379,7 @@ Hd.onpointermove=e=>{if(!dg)return;if(Math.hypot(e.clientX-dg.x0,e.clientY-dg.y0
  if(dg.mv){const[x,y]=cellAt(e);hov=inb(x,y)?{x,y}:null;lz=hov;die=pl[cur].h[dg.i];rot=cur?0:2;mode='d';rBoard()}};
 const fdrop=e=>{if(!dg)return;const d=dg;dg=null;lz=null;d.g.remove();
  if(d.mv&&e.type=='pointerup'){const[x,y]=cellAt(e),m=pl[cur].h[d.i];mode='i';hov=null;
-  if(inb(x,y)&&ok(cellsOf(m,cur?0:2,{x,y}),M[m].lv)){hi=d.i;die=m;rot=cur?0:2;pc={x,y};mode='p';$('roll').textContent='';$('roll').className='';msg='Le dé est posé, fermé. Touche « Lancer » (ou déplace-le d’abord).'}
+  if(inb(x,y)&&ok(cellsOf(m,cur?0:2,{x,y}),M[m].lv)){hi=d.i;die=m;rot=cur?0:2;pc={x,y};mode='p';$('roll').textContent='';$('roll').className='';msg='Le dé est posé, fermé. Touche « Lancer » (ou déplace-le d’abord).'+bm()}
   else msg=inb(x,y)?'Placement impossible : '+why(cellsOf(m,cur?0:2,{x,y}),M[m].lv):'Dépose le dé sur le damier.'}
  else if(!d.mv&&e.type=='pointerup')pick(d.i);
  else{mode='i';hov=null}
@@ -373,11 +393,13 @@ function updCam(){if(drag||(dg&&dg.mv))return;let f=null;
  const bw=$('bw').getBoundingClientRect(),cx=bw.x+bw.width/2,cy=bw.y+bw.height/2,[px,py]=tilePos(f.x,f.y),sc=1.75;
  C.style.transform='translate('+(-sc*(px-cx))+'px,'+(-sc*(py-cy))+'px) scale('+sc+')'}
 const bhOf=c=>(0.14+0.06*c.v)*(B.clientWidth/W);
-function blk(c,x,y,q,an,A,now){return '<div class="blk'+(an?' rise':'')+'" style="left:'+(x*100/W)+'%;top:'+(y*100/H)+'%;--bh:'+bhOf(c)+'px;--bc:'+(c.o?'#e0661a':'#2f9a5f')+(an?';animation-delay:'+((an.d*220-(now-A.t0))/1000)+'s':'')+'"><i class="tp">'+(q>c.v?c.v+'<small>+'+(q-c.v)+'</small>':c.v)+(c.el?'<u style="background:'+EC[c.el]+'"></u>':'')+'</i><i class="sf"></i><i class="sb"></i><i class="sl"></i><i class="sr"></i></div>'}
+function blk(c,x,y,q,an,A,now){return '<div class="blk'+(an?' '+an.c:'')+'" style="left:'+(x*100/W)+'%;top:'+(y*100/H)+'%;--bh:'+bhOf(c)+'px;--bc:'+(c.o?'#e0661a':'#2f9a5f')+(an?';animation-delay:'+((an.d*220-(now-A.t0))/1000)+'s':'')+'"><i class="tp">'+(q>c.v?c.v+'<small>+'+(q-c.v)+'</small>':c.v)+(c.el?'<u style="background:'+EC[c.el]+'"></u>':'')+'</i><i class="sf"></i><i class="sb"></i><i class="sl"></i><i class="sr"></i></div>'}
+function landCube(){const C=$('fx').querySelector('.fc3');if(!C)return;const m=new DOMMatrix(getComputedStyle(C).transform),a=Math.atan2(m.b,m.a)*180/Math.PI;C.style.setProperty('--a0',a+'deg');C.style.setProperty('--a1',(Math.round(a/90)*90)+'deg');cubeCls='land'}
 function rFly(){const FX=$('fx'),p=(mode=='p'||mode=='r')&&pc?pc:null;if(!p){FX.style.display='none';return}
- FX.style.display='';FX.style.left=(p.x*100/W)+'%';FX.style.top=(p.y*100/H)+'%';const k=die+cubeCls,C=FX.lastElementChild;
- if(FX.dataset.k!==k){FX.dataset.k=k;C.className='blk fc3 '+cubeCls;C.style.setProperty('--bc',EC[M[die].el]);C.innerHTML='<i class="tp">'+M[die].lv+'</i><i class="sf"></i><i class="sb"></i><i class="sl"></i><i class="sr"></i>'}
+ FX.style.display='';FX.style.left=(p.x*100/W)+'%';FX.style.top=(p.y*100/H)+'%';const k=die+cubeCls,C=FX.querySelector('.fc3');
+ if(FX.dataset.k!==k){FX.dataset.k=k;C.className='blk fc3 '+cubeCls;C.parentNode.className='fb '+cubeCls;C.style.setProperty('--bc',EC[M[die].el]);C.innerHTML='<i class="tp">'+M[die].lv+'</i><i class="sf"></i><i class="sb"></i><i class="sl"></i><i class="sr"></i>'}
  C.style.setProperty('--bh',(B.clientWidth/W*.92)+'px')}
+const bm=()=>bonus[cur]?' ✨ Dé bonus disponible : touche « Dé bonus » pour l’ajouter à ton lancer.':'';
 const PD=$('pad'),KN=PD.firstElementChild;
 function jmv(e){const r=PD.getBoundingClientRect(),R=r.width/2,dx=e.clientX-(r.left+R),dy=e.clientY-(r.top+R),m=Math.hypot(dx,dy)||1,k=Math.min(1,m/R);jv={vx:dx/m*k,vy:dy/m*k};KN.style.transform='translate('+(dx/m*k*R*.6)+'px,'+(dy/m*k*R*.6)+'px)'}
 function jloop(t){if(!jv)return;const dt=Math.min(.05,(t-jt)/1000);jt=t;const mg=Math.hypot(jv.vx,jv.vy);
@@ -417,10 +439,10 @@ function renderLens(){const L=$('lens');if(!lz){L.hidden=true;L.innerHTML='';ret
  cl.style.transformOrigin='0 0';cl.style.transform='translate('+(S/2-k*ux)+'px,'+(S/2-k*uy)+'px) scale('+k+')';
  const mr=B.children[lz.y*W+lz.x].getBoundingClientRect();L.className=(mr.left+mr.width/2<r0.left+r0.width*.5&&mr.top+mr.height/2<r0.top+r0.height*.45)?'r':''}
 function render(){$('bq').style.setProperty('--rz',cur==1&&!over?'180deg':'0deg');rBoard();const me=!ai||cur==0,hp=ai?0:cur;
- $('hd').innerHTML='<span>'+pl[0].s+'/'+WIN+' Vert</span><span>'+(over?'Fin':'Tour : '+P[cur]+(ai&&cur?' (IA)':''))+'</span><span>Orange'+(ai?' IA ':' ')+pl[1].s+'/'+WIN+'</span>';
+ $('hd').innerHTML='<span>'+pl[0].s+'/'+WIN+' Vert'+(bonus[0]?' ✨':'')+'</span><span>'+(over?'Fin':'Tour : '+P[cur]+(ai&&cur?' (IA)':''))+'</span><span>Orange'+(ai?' IA ':' ')+pl[1].s+'/'+WIN+(bonus[1]?' ✨':'')+'</span>';
  const SP=(mode=='p'||mode=='d')&&cells().length?split(cells(),M[die].lv):null,L=SP?SP.lost.length:0;const O=SP?SP.put.filter(a=>b[a[1]][a[0]]).length:0;const U=SP?cr.filter(c=>SP.put.some(a=>a[0]==c.x&&a[1]==c.y)).length:0;const WY=(mode=='p'||mode=='d')&&cells().length&&!ok(cells())?' ✖ '+why(cells(),M[die].lv):'';$('msg').textContent=msg+WY+(U?' ☠ '+U+' créature'+(U>1?'s':'')+' sous le dé : il perdra jusqu’à '+2*U+' faces.':'')+(O?' ⚔ Tu recouvres '+O+' face'+(O>1?'s':'')+' déjà posée'+(O>1?'s':'')+'.':'')+(L?' ⚠ '+L+' face'+(L>1?'s':'')+' perdue'+(L>1?'s':'')+' (bord ou case non recouvrable).':'');
  if(inf&&inf.at===msg)$('msg').innerHTML=inf.html;
- $('ct').innerHTML=over?'<button onclick="init()">Rejouer</button>':mode=='p'&&me?'<button onclick="lancer()">🎲 Lancer le dé</button><button onclick="annuler()">Annuler</button>':'';
+ $('ct').innerHTML=over?'<button onclick="init()">Rejouer</button>':mode=='p'&&me?'<button onclick="lancer()">🎲 Lancer le dé</button>'+(bonus[cur]?'<button class="'+(useB?'on':'')+'" onclick="useB=!useB;render()">✨ Dé bonus</button>':'')+'<button onclick="annuler()">Annuler</button>':'';
  $('hl').textContent=over?'':mode=='i'&&me?'Main de '+P[hp]+' : glisse un dé sur le damier':'';
  $('hand').innerHTML=over?'':pl[hp].h.map((m,i)=>'<div class="dc l'+M[m].lv+(mode=='i'&&me?'':' off')+'" data-i="'+i+'" style="border-bottom-color:'+EC[M[m].el]+'">'+cube(m,34)+svg(m,hp?0:2,16,0)+'<b>'+M[m].em+' '+M[m].n+'</b><span>Niv.'+M[m].lv+' · '+M[m].c.length+'f</span><span>'+(M[m].nd>1?'🎲🎲':'🎲')+' '+M[m].need+'+</span></div>').join('');
  const sc=over||(mode=='p'&&me);$('ct').style.display=sc?'flex':'none';$('hand').style.display=sc?'none':'flex';$('vs').textContent=ai?'🤖 IA':'👥 2J';
