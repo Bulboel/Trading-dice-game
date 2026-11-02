@@ -308,18 +308,23 @@ let orbitEnabled=false;document.getElementById('orbit-view').onclick=()=>{orbitE
 document.getElementById('pan-view').onclick=()=>{panEnabled=!panEnabled;if(panEnabled&&orbitEnabled)document.getElementById('orbit-view').click();document.getElementById('pan-view').setAttribute('aria-pressed',String(panEnabled));canvas.classList.toggle('panning',panEnabled)};
 canvas.addEventListener('wheel',e=>{if(!active||e.ctrlKey)return;e.preventDefault();changeZoom(zoom*Math.exp(-e.deltaY*.0015),e)},{passive:false});
 canvas.addEventListener('contextmenu',e=>{if(active)e.preventDefault()});
+const touchPointers=new Map();let pinchDistance=0;
+function touchPoint(e){return{x:e.clientX,y:e.clientY}}
+function touchPinch(){const p=[...touchPointers.values()];return Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y)}
+function moveTouchCamera(dx,dy){const r=canvas.getBoundingClientRect();if(orbitEnabled){orbitYaw-=dx/r.width*Math.PI*2;orbitPitch=Math.max(.035,Math.min(Math.PI/2-.035,orbitPitch+dy/r.height*Math.PI))}else{panX-=dx/r.width*2*viewSpan*viewAspect/zoom;panY+=dy/r.height*2*viewSpan/zoom;panX=Math.max(-18,Math.min(18,panX));panY=Math.max(-18,Math.min(18,panY))}updateCamera()}
 canvas.onpointerdown=e=>{
+ if(e.pointerType==='touch'){touchPointers.set(e.pointerId,touchPoint(e));canvas.setPointerCapture(e.pointerId);if(touchPointers.size===2){pinchDistance=touchPinch();panDrag=null}if(touchPointers.size>1||(!state.pc&&state.mode!=='d'&&state.mode!=='p')){e.preventDefault();return}}
  if(panEnabled||orbitEnabled||e.button===2||e.shiftKey||e.altKey){e.preventDefault();canvas.setPointerCapture(e.pointerId);panDrag={id:e.pointerId,x:e.clientX,y:e.clientY,orbit:orbitEnabled||e.altKey};return}
  if(state.over||(state.ai&&state.cur===1))return;e.preventDefault();canvas.setPointerCapture(e.pointerId);game.board.onpointerdown({clientX:e.clientX,clientY:e.clientY,pointerId:e.pointerId,preventDefault(){}})
 };
 // Keep capture on the visible canvas, including when the board is magnified.
 const originalCapture=game.board.setPointerCapture.bind(game.board);game.board.setPointerCapture=id=>active?canvas.setPointerCapture(id):originalCapture(id);
-canvas.onpointermove=e=>{if(panDrag){if(e.pointerId!==panDrag.id)return;const r=canvas.getBoundingClientRect(),dx=e.clientX-panDrag.x,dy=e.clientY-panDrag.y;
+canvas.onpointermove=e=>{if(e.pointerType==='touch'&&touchPointers.has(e.pointerId)){const previous=touchPointers.get(e.pointerId);touchPointers.set(e.pointerId,touchPoint(e));if(touchPointers.size>=2){const distance=touchPinch();if(pinchDistance>0)changeZoom(zoom*distance/pinchDistance);pinchDistance=distance;return}if(!state.pc&&state.mode!=='d'&&state.mode!=='p'){moveTouchCamera(e.clientX-previous.x,e.clientY-previous.y);return}}if(panDrag){if(e.pointerId!==panDrag.id)return;const r=canvas.getBoundingClientRect(),dx=e.clientX-panDrag.x,dy=e.clientY-panDrag.y;
  if(panDrag.orbit){orbitYaw-=dx/r.width*Math.PI*2;orbitPitch=Math.max(.035,Math.min(Math.PI/2-.035,orbitPitch+dy/r.height*Math.PI));}
  else{panX-=dx/r.width*2*viewSpan*viewAspect/zoom;panY+=dy/r.height*2*viewSpan/zoom;panX=Math.max(-18,Math.min(18,panX));panY=Math.max(-18,Math.min(18,panY));}
  panDrag.x=e.clientX;panDrag.y=e.clientY;updateCamera();return}game.board.onpointermove(e)};
-canvas.onpointerup=e=>{if(panDrag){panDrag=null;return}game.board.onpointerup(e)};
-canvas.onpointercancel=e=>{if(panDrag){panDrag=null;return}game.board.onpointercancel(e)};
+canvas.onpointerup=e=>{if(e.pointerType==='touch'){touchPointers.delete(e.pointerId);pinchDistance=0;if(!state.pc&&state.mode!=='d'&&state.mode!=='p')return}if(panDrag){panDrag=null;return}game.board.onpointerup(e)};
+canvas.onpointercancel=e=>{if(e.pointerType==='touch'){touchPointers.delete(e.pointerId);pinchDistance=0;if(!state.pc&&state.mode!=='d'&&state.mode!=='p')return}if(panDrag){panDrag=null;return}game.board.onpointercancel(e)};
 let sceneryKey='';
 function setActive(value){active=value;const type=game.snapshot().terrain,fire=type==='feu';if(!value)placementLens.hidden=true;host.classList.toggle('view3d',value);document.getElementById('land-caption').hidden=!value;forest.visible=!fire;if(fire&&value&&!crater)crater=createCrater(world,game.snapshot().blocked,!!renderer.isSoftware);if(crater)crater.root.visible=fire;
  if(sceneryKey!==type){sceneryKey=type;renderer.setClearColor(fire?0x221b20:0x172c25,1);scene.fog.color.set(fire?0x392328:0x304d3d);sky.color.set(fire?0xf1c6ab:0xe9f0d5);sky.groundColor.set(fire?0x3e2023:0x3c5034);sun.color.set(fire?0xffb16a:0xffe1a0);sun.intensity=fire?2.5:3.1;const caption=document.getElementById('land-caption');caption.querySelector('span').textContent=fire?'LES LÈVRES DU BRASIER':'LE SANCTUAIRE VERDOYANT';caption.querySelector('small').textContent=fire?'La roche respire. Les évents sont impraticables.':'La rivière murmure. Le duel commence.';canvas.setAttribute('aria-label',fire?'Plateau 3D au bord du cratère, six évents fumants impraticables':'Plateau 3D de la Clairière des murmures, huit colonnes et dix lignes')}
