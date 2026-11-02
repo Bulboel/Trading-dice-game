@@ -83,3 +83,9 @@ body[data-portal-view="home"] #portal #portal-nav .portal-tab:before{width:250px
 /* Shared character portraits for Eberien and Kala in collection, decks and detail sheets. */
 .collect-art .hand-portrait{display:block;width:76px;height:76px;max-width:100%;filter:drop-shadow(0 5px 9px #0007)}
 .detail-character .hand-portrait{display:block;width:clamp(120px,18vw,200px);height:auto;max-height:240px;filter:drop-shadow(0 10px 14px #0008)}
+
+/* Premium artisan leather pouch presentation. Keep the mouth and dice launch geometry unchanged. */
+.pouch-theatre .pouch-prop{filter:drop-shadow(0 15px 14px #0008) drop-shadow(0 3px 3px #0006)}
+.pouch-theatre .pouch-prop-back .dice-pouch svg{filter:contrast(1.08) saturate(.92)}
+.pouch-theatre .pouch-prop-front .dice-pouch svg{filter:contrast(1.08) saturate(.92)}
+.pouch-theatre .pouch-prop-back:after{content:"";position:absolute;pointer-events:none;left:17%;right:17%;top:33%;bottom:10%;border-radius:38% 38% 45% 45%;background:linear-gradient(115deg,#fff3d30b,transparent 35%,#00000018 70%,#fff0c00b);mix-blend-mode:soft-light}
