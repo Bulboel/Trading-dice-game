@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Dés dépliables – prototype</title>
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Les dés d’Hackénia — Clairière des murmures</title>
+<meta name="description" content="Un duel de dés et de créatures dans les paysages vivants d’Hackénia.">
+
 <style>
 :root{--bg:#eef2f5;--tx:#1d2a33;--ce:#fbfdff;--ln:#9fb0bd;--bt:#dbe4ea;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161d23;--tx:#e8eef2;--ce:#202a31;--ln:#46565f;--bt:#2b3740;color-scheme:dark}}
@@ -231,14 +233,15 @@ body{margin:0;padding:0;max-width:none;height:100%;overflow:hidden;font-size:14p
 #rot button{width:42px;height:42px;min-height:0;padding:0;border-radius:50%;font-size:19px;line-height:1;color:#fff;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);opacity:.6}
 #rot button:active{opacity:1}
 @media(prefers-reduced-motion:reduce){.pin{animation:none}}
-</style></head><body><div id="app"><div id="top"><button id="vs" onclick="ai=!ai;init()" title="Changer de mode"></button><button id="tr" onclick="TER=(TER+1)%6;init()" title="Changer de terrain"></button><div id="hd"></div></div><div id="bw"><div id="cam"><div id="sc"></div><div id="bq"><div id="slab"><i class="a"></i><i class="b"></i><i class="c1"></i><i class="d"></i></div><div id="bd"></div><div id="ent"></div><div id="crl"></div><div id="fly"><div id="fx"><div class="fsh"></div><div class="fb"><div class="blk fc3"></div></div></div></div></div></div><div id="pins"></div><div id="rot"><button onclick="rotV(-90)" title="Pivoter à gauche">⟲</button><button onclick="rotV(0)" title="Recentrer">🧭</button><button onclick="rotV(90)" title="Pivoter à droite">⟳</button></div><div id="pad"><i></i></div></div><div id="mr"><div id="roll"></div><div id="msg"></div></div><div id="bot"><div class="row" id="ct"></div><div class="row" id="hand"></div></div><div id="hl" hidden></div></div><div id="lens" hidden></div><div id="fiche" hidden onclick="if(event.target===this)closeCard()"><div id="fc"></div></div><script>
+</style><link rel="stylesheet" href="assets/clearing.css?v=20261102"></head><body><div id="app"><header id="identity"><div><span class="eyebrow">LES DÉS D’HACKÉNIA</span><h1 id="land-name">Clairière des murmures</h1></div><div class="land-note"><span></span>Terrain vivant</div></header><div id="top"><button id="vs" onclick="ai=!ai;init()" title="Changer de mode"></button><button id="tr" onclick="TER=(TER+1)%6;init()" title="Changer de terrain"></button><div id="hd"></div></div><div id="bw"><div id="land-caption"><span>LE SANCTUAIRE VERDOYANT</span><small>La rivière murmure. Le duel commence.</small></div><div id="cam"><div id="sc"></div><div id="bq"><div id="slab"><i class="a"></i><i class="b"></i><i class="c1"></i><i class="d"></i></div><div id="bd"></div><div id="ent"></div><div id="crl"></div><div id="fly"><div id="fx"><div class="fsh"></div><div class="fb"><div class="blk fc3"></div></div></div></div></div></div><div id="pins"></div><div id="rot"><button onclick="rotV(-90)" title="Pivoter à gauche">⟲</button><button onclick="rotV(0)" title="Recentrer">⌖</button><button onclick="rotV(90)" title="Pivoter à droite">⟳</button></div><div id="pad"><i></i></div></div><div id="terrain-tools"><span id="terrain-status" role="status">Clairière · terre +1</span><label>Ambiance <select id="quality" aria-label="Qualité de l’ambiance"><option value="auto">Auto</option><option value="rich">Détaillée</option><option value="light">Légère</option><option value="still">Sans mouvement</option></select></label></div><div id="mr"><div id="roll"></div><div id="msg"></div></div><div id="bot"><div class="row" id="ct"></div><div class="row" id="hand"></div></div><div id="hl" hidden></div></div><div id="lens" hidden></div><div id="fiche" hidden onclick="if(event.target===this)closeCard()"><div id="fc"></div></div><script>
 const W=8,H=10,Z=1,WIN=2,KW=3,P=['Vert','Orange'],D4=[[1,0],[-1,0],[0,1],[0,-1]];
 const EC={eau:'#1e4fa0',feu:'#d22',glace:'#7de',terre:'#8a5a2b',vent:'#4c4',foudre:'#a3d'};
 const BT={eau:'foudre',foudre:'vent',vent:'terre',terre:'glace',glace:'feu',feu:'eau'};
-const TERR={terre:{n:'Bois tendre',em:'🌲',dec:['🌲','🌳','🌲','🍄']},feu:{n:'Lave en fusion',em:'🌋',dec:['🌋','🔥','⛰️','🔥']},glace:{n:'Glacier éternel',em:'🏔️',dec:['🏔️','❄️','🧊','❄️']},vent:{n:'Plateau des vents',em:'☁️',dec:['☁️','💨','🌈','☁️']},eau:{n:'Lagon cristallin',em:'🌴',dec:['🌴','🐚','🌊','🌴']},foudre:{n:'Plaine foudroyée',em:'⚡',dec:['⚡','🌩️','🏚️','⚡']}},TL=['terre','feu','glace','vent','eau','foudre'];
+const TERR={terre:{n:'Clairière des murmures',em:'🌲',dec:['🌲','🌳','🌲','🍄']},feu:{n:'Lave en fusion',em:'🌋',dec:['🌋','🔥','⛰️','🔥']},glace:{n:'Glacier éternel',em:'🏔️',dec:['🏔️','❄️','🧊','❄️']},vent:{n:'Plateau des vents',em:'☁️',dec:['☁️','💨','🌈','☁️']},eau:{n:'Lagon cristallin',em:'🌴',dec:['🌴','🐚','🌊','🌴']},foudre:{n:'Plaine foudroyée',em:'⚡',dec:['⚡','🌩️','🏚️','⚡']}},TL=['terre','feu','glace','vent','eau','foudre'];
 function theme(){const el=TL[TER],T=TERR[el];$('bw').className='t-'+el;$('tr').textContent=T.em;$('tr').title=T.n+' : +1 aux dés '+el;
- const sc=[];for(let i=0;i<6;i++){sc.push([-6,6+i*17,T.dec[i%4]]);sc.push([106,10+i*16,T.dec[(i+1)%4]])}for(let i=0;i<5;i++)sc.push([8+i*21,-13,T.dec[(i+2)%4]]);
- $('sc').innerHTML=sc.map(a=>'<i style="left:'+a[0]+'%;top:'+a[1]+'%">'+a[2]+'</i>').join('')}
+ $('sc').replaceChildren();
+ document.getElementById('land-name').textContent=T.n;
+ if(window.HackeniaView)window.HackeniaView.setActive(el==='terre')}
 const ELS=['foudre','vent','terre','glace','eau','feu'],NM=['Foudre','Vent','Terre','Glace','Eau','Feu'],RN=['I','II','III','IV','V','VI'];
 const LVR=[{v:[1,2,3],need:2,nd:1},{v:[1,2,3,4],need:3,nd:1},{v:[1,2,3,4,5],need:4,nd:1},{v:[1,2,3,4,5,6],need:5,nd:1},{v:[3,4,5,6],need:5,nd:2},{v:[3,3,4,4,5,6],need:5,nd:2}];
 const SH=[
@@ -257,7 +260,7 @@ const M=[];LVR.forEach((R,l)=>ELS.forEach((el,e)=>{const t=[0,0,1,1,2,3][l],cr=C
  M.push({n:NM[e]+' '+RN[l],em:cr[0],cn:cr[1],lo:cr[2],el,lv:l+1,nd:R.nd,need:R.need,t,fk:(t==0?6:0)+e,c:SH[l][e].map(([x,y],k)=>[x,y,R.v[k]])})}));
 const pOk=m=>{const D=M[m],q=(D.need-1)/6;return D.nd>1?1-q*q:1-q};
 function mkDeck(){const pk=(l,n)=>sh([0,1,2,3,4,5]).slice(0,n).map(e=>(l-1)*6+e);return sh([...pk(6,1),...pk(5,2),...pk(1,2),...pk(2,2),...pk(3,2),...pk(4,1)])}
-let b,pl,cr,cur,mode,rot,pc,hov,die,hi,msg,moved,over,drag,sel,anim,cubeCls='',ai=true,gid=0,aiT=0,busy=0,dg=null,lz=null,down=0,DID=0,bonus=[0,0],kills=[0,0],rzU=0,rzCur=0,useB=0,inf=null,TER=Math.floor(Math.random()*6),cu=null,lastJ=0,jv=null,jx=0,jy=0,jt=0;
+let b,pl,cr,cur,mode,rot,pc,hov,die,hi,msg,moved,over,drag,sel,anim,cubeCls='',ai=true,gid=0,aiT=0,busy=0,dg=null,lz=null,down=0,DID=0,bonus=[0,0],kills=[0,0],rzU=0,rzCur=0,useB=0,inf=null,TER=0,cu=null,lastJ=0,jv=null,jx=0,jy=0,jt=0;
 const $=i=>document.getElementById(i),at=(x,y)=>cr.find(c=>c.x==x&&c.y==y),inb=(x,y)=>x>=0&&y>=0&&x<W&&y<H;
 const homeRow=()=>cur?0:H-1,inZone=(o,y)=>o?y<Z:y>=H-Z,full=k=>b.flat().filter(c=>c&&c.f&&c.o==k).length>=4,sh=a=>a.sort(()=>Math.random()-.5);
 function init(){bonus=[0,0];kills=[0,0];rzU=0;useB=0;gid++;busy=0;b=[...Array(H)].map(()=>Array(W).fill(null));cr=[];over=0;sel=null;drag=0;pc=null;hov=null;anim=null;cubeCls='';aiT=0;
@@ -324,7 +327,7 @@ function pick(i){const m=pl[cur].h[i],p=firstValid(m,cur?0:2);if(!p){msg='Aucun 
  hi=i;die=m;rot=cur?0:2;pc=p;mode='p';sel=null;$('roll').textContent='';$('roll').className='';
  msg='Le dé est posé, fermé. Fais-le glisser où tu veux, puis touche « Lancer ».'+bm()}
 function rotV(d){rzU=d?rzU+d:0;render()}
-function annuler(){useB=0;mode='i';pc=null;hov=null;msg='Choisis un dé ou avance une créature.'}
+function annuler(){useB=0;mode='i';pc=null;hov=null;msg='Choisis un dé ou avance une créature.';render()}
 function lancer(){if(mode!='p')return;const all=cells(),sp=split(all,M[die].lv),cs=sp.put,lost=sp.lost.length;if(!ok(all)){msg='Placement impossible : '+why(all,M[die].lv);render();return}
  mode='r';cubeCls='';const g=gid,lv=M[die].need,ub=(useB&&bonus[cur])?1:0,nd=M[die].nd+ub,rs=[...Array(nd)].map(()=>1+Math.floor(Math.random()*6)),r=Math.max(...rs),rt=rs.join('·'),R=$('roll'),k=cur,m=die;if(ub)bonus[k]=0;useB=0;let n=0;msg=(ub?'✨ ':'')+'Lancer du dé '+M[m].n+'… il faut '+lv+' ou plus'+(nd>1?' avec l’un des '+nd+' dés':'')+'.';render();
  const t=setInterval(()=>{if(g!=gid){clearInterval(t);return}n++;R.textContent=n<14?[...Array(nd)].map(()=>1+Math.floor(Math.random()*6)).join('·'):rt;R.className=n<14?'rl':(r>=lv?'win':'lose');
@@ -395,7 +398,7 @@ function inspect(x,y,card=true){if(!inb(x,y))return;const c=b[y][x],k=at(x,y),z=
  else{const q=pw(x,y);h='<b>Case de '+P[c.o]+' · dé '+(c.mn||'?')+' (niv. '+c.lv+')</b>'+z+'<br>Numéro '+c.v+' · '+(c.el||'sans élément')+' · attaque de la case : '+q+(q>c.v?' ('+(c.el===TL[TER]?'+1 terrain ':'')+(q-c.v-(c.el===TL[TER]?1:0)?'+1 case de '+BT[c.el]+' voisine':'')+')':'')}
  if(k){h+='<br>'+k.em+' Créature de '+P[k.o]+' · attaque '+pwc(k,x,y)+(c&&!c.f&&c.id===k.id?'':' (1 : hors de son dé)');if(k===sel&&!moved)h+='<br>Touche une case à point jaune pour avancer.'}
  inf={html:h,at:msg,x,y};if(k&&card)openCard(k)}
-const B=$('bd'),BQ=$('bq'),Hd=$('hand'),cellAt=e=>{const el=document.elementFromPoint(e.clientX,e.clientY),t=el&&el.closest&&el.closest('[data-x]');return t?[+t.dataset.x,+t.dataset.y]:[-1,-1]};
+const B=$('bd'),BQ=$('bq'),Hd=$('hand'),cellAt=e=>{if(window.HackeniaView?.active)return window.HackeniaView.cellAt(e);const el=document.elementFromPoint(e.clientX,e.clientY),t=el&&el.closest&&el.closest('[data-x]');return t?[+t.dataset.x,+t.dataset.y]:[-1,-1]};
 BQ.onpointerdown=e=>{if(over||(ai&&cur==1))return;e.preventDefault();const[x,y]=cellAt(e);if(!inb(x,y))return;
  if(mode=='p'){drag=1;lz={x,y};BQ.setPointerCapture(e.pointerId);pc={x,y}}
  else if(mode=='c'){if(b[y][x])msg='Case déjà occupée.';else{b[y][x]={o:cur,f:1,v:0};fin();msg='Case colorée pour toujours. '+msg}}
@@ -479,7 +482,7 @@ function rBoard(){$('bq').style.setProperty('--tw',(B.clientWidth/W)+'px');$('sc
   
   const k=at(x,y);if(inf&&inf.at===msg&&inf.x==x&&inf.y==y)d.classList.add('insp');if(cu&&mode=='i'&&Date.now()-lastJ<3000&&cu.x==x&&cu.y==y&&(!ai||cur==0))d.classList.add('cur');if(R&&R[[x,y]]!==undefined&&!(k&&k.o==cur)){d.classList.add('rc');if(!(sel&&sel.x==x&&sel.y==y))ents.push('<div class="mv'+(k?' at':'')+'" data-x="'+x+'" data-y="'+y+'" style="left:'+(x*100/W)+'%;top:'+(y*100/H)+'%;--z:'+(((c&&!c.f)?bhOf(c):0)+2)+'px"></div>')}if(sel&&sel.x==x&&sel.y==y&&mode=='i')ents.push('<div class="hl sl" style="left:'+(x*100/W)+'%;top:'+(y*100/H)+'%;--z:'+(((c&&!c.f)?bhOf(c):0)+1)+'px"></div>');
   if(k){if(c&&!c.f){const q=pw(x,y);h+='<small class="nb">'+(q>c.v?c.v+'+'+(q-c.v):c.v)+'</small>'}const pop=an&&k.fresh;upCr(k,x,y,c,pop,A,now,live);if(thr.has(k))ents.push('<i class="hd" style="left:'+((x+.5)/W*100)+'%;top:'+((y+.5)/H*100)+'%;--cz:'+((c&&!c.f)?bhOf(c):0)+'px">'+HEAD+'</i>');if(k==sel)d.classList.add('sel')}
-  d.innerHTML=h;B.append(d)}$('ent').innerHTML=ents.join('');for(const e of [...CRL.children])if(!live.has(e.dataset.uid))e.remove();rFly();renderLens();updCam();rPins()}
+  d.innerHTML=h;B.append(d)}$('ent').innerHTML=ents.join('');for(const e of [...CRL.children])if(!live.has(e.dataset.uid))e.remove();rFly();renderLens();updCam();rPins();if(window.HackeniaView)window.HackeniaView.sync()}
 let lensT=0,lensP=0;
 function renderLens(){const L=$('lens');if(!lz){L.hidden=true;L.innerHTML='';return}
  const t=performance.now();if(!L.hidden&&t-lensT<50){if(!lensP){lensP=1;setTimeout(()=>{lensP=0;renderLens()},55)}return}lensT=t;
@@ -504,5 +507,7 @@ function render(){$('bq').classList.toggle('selmode',!!(mode=='i'&&sel));rzCur=(
  $('hand').innerHTML=over?'':pl[hp].h.map((m,i)=>'<div class="dc l'+M[m].lv+(mode=='i'&&me?'':' off')+'" data-i="'+i+'" style="border-bottom-color:'+EC[M[m].el]+'">'+cube(m,34)+svg(m,hp?0:2,16,0)+'<b>'+M[m].em+' '+M[m].n+'</b><span>Niv.'+M[m].lv+' · '+M[m].c.length+'f</span><span>'+(M[m].nd>1?'🎲🎲':'🎲')+' '+M[m].need+'+</span></div>').join('');
  const sc=over||(mode=='p'&&me);$('ct').style.display=sc?'flex':'none';$('hand').style.display=sc?'none':'flex';$('vs').textContent=ai?'🤖 IA':'👥 2J';
  if(ai&&cur==1&&mode=='i'&&!over&&!busy&&!aiT){const g=gid;aiT=setTimeout(()=>{aiT=0;if(g==gid)ia()},900)}}
+window.hackeniaGame={snapshot:()=>({b,cr,cur,mode,pc,die,rot,sel,anim,cubeCls,rzCur,cu,lastJ,over,ai,drag,dg,moved,terrain:TL[TER],preview:cells(),valid:cells().length?!!ok(cells()):false,reachable:mode==='i'&&sel?bfs(sel):null}),power:pw,elementColors:EC,monsters:M,board:BQ,tap:(x,y)=>{tap(x,y);render()},refresh:render};
 init();
-</script></body></html>
+</script><script type="module" src="assets/clearing.js?v=20261102" onerror="document.getElementById('terrain-status').textContent='Affichage de secours · module 3D indisponible'"></script></body></html>
+
