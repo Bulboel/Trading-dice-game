@@ -145,3 +145,58 @@ body[data-portal-view="home"] #portal #portal-nav .portal-tab:before{width:250px
  body.portal-open:not([data-portal-view="home"]) #portal #portal-nav .menu-die-visual{margin:5px auto 13px!important}
  body.portal-open:not([data-portal-view="home"]) #portal #portal-nav .portal-tab strong{font-size:9px!important;white-space:normal!important}
 }
+
+/* Compact collection cards: SVG element glyphs must never expand to intrinsic full-screen dimensions. */
+#portal .collect-card .collect-art{height:72px;min-height:72px;max-height:72px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#portal .collect-card .collect-art>svg,#portal .collect-card .collect-art svg:not(.hand-portrait){display:block;width:60px!important;height:60px!important;max-width:100%!important;max-height:100%!important;flex:none}
+#portal .collect-card .collect-art .hand-portrait{width:65px!important;height:65px!important;max-width:100%}
+@media(max-width:700px){
+ #portal .portal-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+ #portal .collect-card{min-width:0!important;padding:9px 7px!important;gap:2px}
+ #portal .collect-card .collect-art{height:52px;min-height:52px;max-height:52px}
+ #portal .collect-card .collect-art>svg,#portal .collect-card .collect-art svg:not(.hand-portrait){width:45px!important;height:45px!important}
+ #portal .collect-card .collect-art .hand-portrait{width:48px!important;height:48px!important}
+ #portal .collect-card h3{font-size:13px!important;margin:3px 0!important;overflow-wrap:anywhere}
+ #portal .collect-card .card-kind{font-size:9px;line-height:1.25}
+ #portal .collect-card .card-stats{font-size:9px;margin:4px 0!important;line-height:1.3}
+ #portal .collect-card .card-rarity{font-size:10px}
+ #portal .collect-card button{font-size:11px!important;min-height:35px!important;padding:5px!important}
+ #portal .portal-tools{gap:6px;flex-wrap:wrap}
+ #portal .portal-tools label,#portal .portal-tools label.search{flex:1 1 calc(50% - 6px);min-width:0}
+ #portal .portal-tools input,#portal .portal-tools select{width:100%;min-width:0;font-size:13px}
+ #portal-detail{box-sizing:border-box!important;width:calc(100vw - 16px)!important;max-width:calc(100vw - 16px)!important;max-height:calc(100dvh - 16px)!important;border-radius:14px!important;overflow:auto!important}
+ #portal-detail .character-sheet{display:grid!important;grid-template-columns:1fr!important;min-height:0!important}
+ #portal-detail .detail-showcase{display:grid!important;grid-template-columns:92px minmax(0,1fr)!important;grid-template-rows:auto auto!important;min-height:108px!important;max-height:122px!important;overflow:hidden!important;border-right:0!important;border-bottom:1px solid #d2e9df12}
+ #portal-detail .detail-showcase-top{grid-column:2;grid-row:1;padding:14px 46px 0 8px!important;align-items:start;gap:5px;flex-wrap:wrap;font-size:10px}
+ #portal-detail .detail-portrait{grid-column:1;grid-row:1/3;min-height:0!important;height:108px!important;display:grid;place-items:center;overflow:hidden}
+ #portal-detail .detail-character{font-size:55px!important;transform:none!important}
+ #portal-detail .detail-character>svg,#portal-detail .detail-character svg:not(.hand-portrait){width:64px!important;height:64px!important;max-width:100%!important;max-height:100%!important}
+ #portal-detail .detail-character .hand-portrait{width:75px!important;height:88px!important}
+ #portal-detail .detail-orbit,#portal-detail .detail-pedestal{display:none!important}
+ #portal-detail .detail-showcase-bottom{grid-column:2;grid-row:2;min-height:0!important;padding:0 8px 12px!important;align-self:end}
+ #portal-detail .detail-model-hint{display:none!important}
+ #portal-detail #collection-model{position:absolute;left:0;top:0;width:92px;height:108px;overflow:hidden;pointer-events:none}
+ #portal-detail #collection-model model-viewer{display:block!important;width:92px!important;height:108px!important;min-height:0!important}
+ #portal-detail .detail-information{padding:13px 14px 12px!important;min-width:0}
+ #portal-detail .detail-section-label{margin:0 0 4px!important;font-size:8px}
+ #portal-detail h2{font-size:clamp(21px,6vw,26px)!important;margin:0 30px 6px 0!important;line-height:1.1}
+ #portal-detail .detail-description{font-size:11px!important;line-height:1.4!important;margin:0 0 10px!important;max-width:none}
+ #portal-detail .detail-stats{gap:5px!important;margin:0 0 10px!important}
+ #portal-detail .detail-stats>div{padding:7px 6px!important;border-radius:7px}
+ #portal-detail .detail-stats dt{font-size:9px!important}
+ #portal-detail .detail-stats dd{font-size:20px!important;margin:3px 0 0!important}
+ #portal-detail .detail-deployment-head{padding:7px 10px!important}
+ #portal-detail .detail-deployment-body{padding:8px 10px!important;gap:8px!important;justify-content:center;flex-wrap:wrap}
+ #portal-detail .detail-net{--tile-size:25px!important;gap:2px!important}
+ #portal-detail .detail-deployment-body>p{font-size:9px!important;line-height:1.3!important;max-width:15ch}
+ #portal-detail .detail-combat-note{padding:7px 0!important;gap:8px}
+ #portal-detail .detail-combat-note p{font-size:9px!important;line-height:1.35!important}
+ #portal-detail .detail-footer{padding-top:7px!important;gap:8px}
+ #portal-detail .detail-footer>span{font-size:9px}
+ #portal-detail .detail-footer button{min-height:32px!important;padding:5px 9px!important}
+ #portal-detail .detail-close{right:8px!important;top:8px!important}
+ #portal .pouch-theatre{height:min(400px,58dvh);margin:10px 0!important}
+ #portal .pouch-prop-back[role="button"]{pointer-events:auto!important;cursor:pointer;outline-offset:6px}
+ #portal .pouch-prop-back[role="button"]:focus-visible{outline:2px solid #ead19b}
+ #portal .shop-theatre-intro{gap:10px}
+}
