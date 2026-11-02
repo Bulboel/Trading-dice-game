@@ -187,7 +187,7 @@ body{margin:0;padding:0;max-width:none;height:100%;overflow:hidden;font-size:14p
 
 /* ===== caméra basse + dé qui lévite et pivote ===== */
 #bw{--tilt:62deg;perspective:1200px;perspective-origin:50% 6%}
-#bq{width:min(94cqw,76cqh)}#sc{width:min(94cqw,76cqh)}
+#bq{width:min(90cqw,76cqh)}#sc{width:min(90cqw,76cqh)}
 .fb{position:absolute;inset:0;transform-style:preserve-3d;animation:bob2 1.8s ease-in-out infinite}
 @keyframes bob2{0%,100%{transform:translateZ(calc(var(--tw)*.3))}50%{transform:translateZ(calc(var(--tw)*.6))}}
 .fc3{animation:spin3 7s linear infinite}
@@ -218,8 +218,21 @@ body{margin:0;padding:0;max-width:none;height:100%;overflow:hidden;font-size:14p
 #bd .rc::after{display:none}
 .blk{pointer-events:auto}
 @media(prefers-reduced-motion:reduce){.cr.sel,.mv{animation:none}.cr{transition:none}}
-</style></head><body><div id="app"><div id="top"><button id="vs" onclick="ai=!ai;init()" title="Changer de mode"></button><button id="tr" onclick="TER=(TER+1)%6;init()" title="Changer de terrain"></button><div id="hd"></div></div><div id="bw"><div id="cam"><div id="sc"></div><div id="bq"><div id="slab"><i class="a"></i><i class="b"></i><i class="c1"></i><i class="d"></i></div><div id="bd"></div><div id="ent"></div><div id="crl"></div><div id="fly"><div id="fx"><div class="fsh"></div><div class="fb"><div class="blk fc3"></div></div></div></div></div></div><div id="pad"><i></i></div></div><div id="mr"><div id="roll"></div><div id="msg"></div></div><div id="bot"><div class="row" id="ct"></div><div class="row" id="hand"></div></div><div id="hl" hidden></div></div><div id="lens" hidden></div><div id="fiche" hidden onclick="if(event.target===this)closeCard()"><div id="fc"></div></div><script>
-const W=8,H=10,Z=1,WIN=2,P=['Vert','Orange'],D4=[[1,0],[-1,0],[0,1],[0,-1]];
+
+/* ===== déplacement fiable + pivot du plateau ===== */
+#bq{transform:rotateX(var(--tilt)) rotateZ(var(--rz)) scale(var(--bs,1))}
+#bq.selmode .cr{pointer-events:none}#bq.selmode .cr.sel{pointer-events:auto}
+#pins{position:absolute;inset:0;pointer-events:none;z-index:5}
+.pin{position:absolute;width:48px;height:48px;margin:-24px 0 0 -24px;border-radius:50%;pointer-events:auto;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;background:radial-gradient(rgba(150,245,255,.55),rgba(60,200,255,.22));border:3px solid #bff;box-shadow:0 0 14px #5ef;animation:pinp 1s ease-in-out infinite}
+.pin::after{content:"";width:10px;height:10px;border-radius:50%;background:#e8ffff}
+.pin.at{background:radial-gradient(rgba(255,140,140,.6),rgba(255,60,60,.28));border-color:#fbb;box-shadow:0 0 14px #f55}.pin.at::after{display:none}
+@keyframes pinp{50%{transform:scale(1.14)}}
+#rot{position:absolute;left:6px;bottom:6px;display:flex;gap:6px;z-index:6}
+#rot button{width:42px;height:42px;min-height:0;padding:0;border-radius:50%;font-size:19px;line-height:1;color:#fff;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);opacity:.6}
+#rot button:active{opacity:1}
+@media(prefers-reduced-motion:reduce){.pin{animation:none}}
+</style></head><body><div id="app"><div id="top"><button id="vs" onclick="ai=!ai;init()" title="Changer de mode"></button><button id="tr" onclick="TER=(TER+1)%6;init()" title="Changer de terrain"></button><div id="hd"></div></div><div id="bw"><div id="cam"><div id="sc"></div><div id="bq"><div id="slab"><i class="a"></i><i class="b"></i><i class="c1"></i><i class="d"></i></div><div id="bd"></div><div id="ent"></div><div id="crl"></div><div id="fly"><div id="fx"><div class="fsh"></div><div class="fb"><div class="blk fc3"></div></div></div></div></div></div><div id="pins"></div><div id="rot"><button onclick="rotV(-90)" title="Pivoter à gauche">⟲</button><button onclick="rotV(0)" title="Recentrer">🧭</button><button onclick="rotV(90)" title="Pivoter à droite">⟳</button></div><div id="pad"><i></i></div></div><div id="mr"><div id="roll"></div><div id="msg"></div></div><div id="bot"><div class="row" id="ct"></div><div class="row" id="hand"></div></div><div id="hl" hidden></div></div><div id="lens" hidden></div><div id="fiche" hidden onclick="if(event.target===this)closeCard()"><div id="fc"></div></div><script>
+const W=8,H=10,Z=1,WIN=2,KW=3,P=['Vert','Orange'],D4=[[1,0],[-1,0],[0,1],[0,-1]];
 const EC={eau:'#1e4fa0',feu:'#d22',glace:'#7de',terre:'#8a5a2b',vent:'#4c4',foudre:'#a3d'};
 const BT={eau:'foudre',foudre:'vent',vent:'terre',terre:'glace',glace:'feu',feu:'eau'};
 const TERR={terre:{n:'Bois tendre',em:'🌲',dec:['🌲','🌳','🌲','🍄']},feu:{n:'Lave en fusion',em:'🌋',dec:['🌋','🔥','⛰️','🔥']},glace:{n:'Glacier éternel',em:'🏔️',dec:['🏔️','❄️','🧊','❄️']},vent:{n:'Plateau des vents',em:'☁️',dec:['☁️','💨','🌈','☁️']},eau:{n:'Lagon cristallin',em:'🌴',dec:['🌴','🐚','🌊','🌴']},foudre:{n:'Plaine foudroyée',em:'⚡',dec:['⚡','🌩️','🏚️','⚡']}},TL=['terre','feu','glace','vent','eau','foudre'];
@@ -244,13 +257,13 @@ const M=[];LVR.forEach((R,l)=>ELS.forEach((el,e)=>{const t=[0,0,1,1,2,3][l],cr=C
  M.push({n:NM[e]+' '+RN[l],em:cr[0],cn:cr[1],lo:cr[2],el,lv:l+1,nd:R.nd,need:R.need,t,fk:(t==0?6:0)+e,c:SH[l][e].map(([x,y],k)=>[x,y,R.v[k]])})}));
 const pOk=m=>{const D=M[m],q=(D.need-1)/6;return D.nd>1?1-q*q:1-q};
 function mkDeck(){const pk=(l,n)=>sh([0,1,2,3,4,5]).slice(0,n).map(e=>(l-1)*6+e);return sh([...pk(6,1),...pk(5,2),...pk(1,2),...pk(2,2),...pk(3,2),...pk(4,1)])}
-let b,pl,cr,cur,mode,rot,pc,hov,die,hi,msg,moved,over,drag,sel,anim,cubeCls='',ai=true,gid=0,aiT=0,busy=0,dg=null,lz=null,down=0,DID=0,bonus=[0,0],useB=0,inf=null,TER=Math.floor(Math.random()*6),cu=null,lastJ=0,jv=null,jx=0,jy=0,jt=0;
+let b,pl,cr,cur,mode,rot,pc,hov,die,hi,msg,moved,over,drag,sel,anim,cubeCls='',ai=true,gid=0,aiT=0,busy=0,dg=null,lz=null,down=0,DID=0,bonus=[0,0],kills=[0,0],rzU=0,rzCur=0,useB=0,inf=null,TER=Math.floor(Math.random()*6),cu=null,lastJ=0,jv=null,jx=0,jy=0,jt=0;
 const $=i=>document.getElementById(i),at=(x,y)=>cr.find(c=>c.x==x&&c.y==y),inb=(x,y)=>x>=0&&y>=0&&x<W&&y<H;
 const homeRow=()=>cur?0:H-1,inZone=(o,y)=>o?y<Z:y>=H-Z,full=k=>b.flat().filter(c=>c&&c.f&&c.o==k).length>=4,sh=a=>a.sort(()=>Math.random()-.5);
-function init(){bonus=[0,0];useB=0;gid++;busy=0;b=[...Array(H)].map(()=>Array(W).fill(null));cr=[];over=0;sel=null;drag=0;pc=null;hov=null;anim=null;cubeCls='';aiT=0;
+function init(){bonus=[0,0];kills=[0,0];rzU=0;useB=0;gid++;busy=0;b=[...Array(H)].map(()=>Array(W).fill(null));cr=[];over=0;sel=null;drag=0;pc=null;hov=null;anim=null;cubeCls='';aiT=0;
  pl=[0,1].map(()=>{const d=mkDeck();return{h:d.splice(0,5),q:d,s:0}});
  cur=0;mode='i';moved=0;$('roll').textContent='';$('roll').className='';
- cu={x:3,y:H-3};lastJ=0;theme();msg=TERR[TL[TER]].em+' '+TERR[TL[TER]].n+' : +1 aux dés '+TL[TER]+'. Vert : glisse un dé de ta main sur le damier (ou utilise le joystick discret en bas à droite), puis lance-le.';render()}
+ cu={x:3,y:H-3};lastJ=0;theme();msg=TERR[TL[TER]].em+' '+TERR[TL[TER]].n+' : +1 aux dés '+TL[TER]+'. Victoire : 2 points, ou 3 ennemis vaincus en duel. Glisse un dé de ta main sur le damier, puis lance-le.';render()}
 function net(m,r){let c=M[m].c.map(a=>[...a]);for(let i=0;i<r;i++)c=c.map(([x,y,v])=>[-y,x,v]);
  const mx=Math.min(...c.map(a=>a[0])),my=Math.min(...c.map(a=>a[1]));return c.map(([x,y,v])=>[x-mx,y-my,v])}
 function cellsOf(m,r,p){const n=net(m,r),f=n[0];return n.map(([x,y,v])=>[x-f[0]+p.x,y-f[1]+p.y,v])}
@@ -281,16 +294,17 @@ function valide(x,y){const k=cur;pl[k].s++;const st=[[x,y]],seen={};
  while(st.length){const[i,j]=st.pop();if(!inb(i,j)||seen[[i,j]])continue;const c=b[j][i];if(!c||c.o!=k||c.f)continue;seen[[i,j]]=1;b[j][i]=null;
   cr=cr.filter(a=>!(a.x==i&&a.y==j));D4.forEach(([dx,dy])=>st.push([i+dx,j+dy]))}
  msg='Point pour '+P[k]+' ('+pl[k].s+'/'+WIN+') ! Son trajet disparaît.';if(pl[k].s>=WIN){over=1;msg='🏆 '+P[k]+' gagne la partie !'}}
+function chkKills(){for(const o of[0,1])if(!over&&kills[o]>=KW){over=1;return' 🏆 '+P[o]+' gagne : '+KW+' ennemis vaincus en duel !'}return''}
 function resolve(c,d=0){if(d>4||!cr.includes(c))return '';let t='';
  for(const[dx,dy]of D4){const e=at(c.x+dx,c.y+dy);if(!e||e===c)continue;
   if(e.o!=c.o){const a=pwc(c,c.x,c.y),v=pwc(e,e.x,e.y),f=' Combat '+c.em+' '+a+' contre '+e.em+' '+v;
-   if(a>v){cr=cr.filter(z=>z!==e);return t+f+' : la créature adverse disparaît.'+resolve(c,d+1)}
-   if(a<v){cr=cr.filter(z=>z!==c);return t+f+' : ta créature disparaît.'}
+   if(a>v){cr=cr.filter(z=>z!==e);kills[c.o]++;return t+f+' : la créature adverse disparaît.'+resolve(c,d+1)}
+   if(a<v){cr=cr.filter(z=>z!==c);kills[e.o]++;return t+f+' : ta créature disparaît.'}
    t+=f+' : égalité, rien ne se passe.'}
   else return t+fuse(c,e,d)}
  return t}
 function fuse(c,e,d){const v1=pwc(c,c.x,c.y),v2=pwc(e,e.x,e.y),k=c.o,p=v2>v1?e:c,q=p===c?e:c,cp=b[p.y][p.x],cq=b[q.y][q.x],id=++DID,
-  el=(cp&&cp.el)||(cq&&cq.el)||undefined,lv=Math.max((cp&&cp.lv)||2,(cq&&cq.lv)||2),nv=Math.min(6,v1+v2),n={o:k,x:p.x,y:p.y,em:'🐉',id,mn:'Fusion',mi:-1,lv:Math.max(c.lv||1,e.lv||1)},nw=[[p.x,p.y]];
+  el=(cp&&cp.el)||(cq&&cq.el)||undefined,lv=Math.max((cp&&cp.lv)||2,(cq&&cq.lv)||2),nv=Math.min(6,v1+v2),n={o:k,x:p.x,y:p.y,em:'🐉',id,mn:'Fusion',mi:-1,lv:Math.max(c.lv||1,e.lv||1),fresh:1},nw=[[p.x,p.y]];
  cr=cr.filter(z=>z!==c&&z!==e);cr.push(n);b[p.y][p.x]={o:k,el,v:nv,lv,id,mn:'Fusion'};
  for(const[dx,dy]of D4){const X=p.x+dx,Y=p.y+dy;if(inb(X,Y)&&!b[Y][X]){b[Y][X]={o:k,el,v:3,lv,id,mn:'Fusion'};nw.push([X,Y])}}
  const o={};nw.forEach((a,i)=>{o[[a[0],a[1]]]={d:i?1:0,c:'u-b'}});anim={o,t0:Date.now(),tot:700};
@@ -300,15 +314,16 @@ function fuse(c,e,d){const v1=pwc(c,c.x,c.y),v2=pwc(e,e.x,e.y),k=c.o,p=v2>v1?e:c
 function mv(c,x,y){const e=at(x,y);if(e&&e.o==c.o){msg='Case occupée par ta propre créature.';return}
  const par=bfs(c)[[x,y]];if(!par){msg='Impossible : case non colorée ou trop loin (3 pas max).';return}
  if(e){const a=pwc(c,par[0],par[1]),d=pwc(e,x,y);
-  if(a>d){cr=cr.filter(z=>z!=e);c.x=x;c.y=y;msg='Attaque réussie ! '+a+' contre '+d+'. La créature adverse disparaît.'}
-  else if(a<d){cr=cr.filter(z=>z!=c);msg='Attaque ratée : '+a+' contre '+d+'. La créature attaquante disparaît.'}
+  if(a>d){cr=cr.filter(z=>z!=e);kills[c.o]++;c.x=x;c.y=y;msg='Attaque réussie ! '+a+' contre '+d+'. La créature adverse disparaît.'}
+  else if(a<d){cr=cr.filter(z=>z!=c);kills[e.o]++;msg='Attaque ratée : '+a+' contre '+d+'. La créature attaquante disparaît.'}
   else msg='Égalité '+a+'-'+d+' : personne ne bouge.'}
  else{c.x=x;c.y=y;msg='Créature avancée.'}
- moved=1;sel=null;const k=b[c.y]&&b[c.y][c.x];if(cr.includes(c)&&k&&k.o==cur&&!k.f&&inZone(1-cur,c.y))valide(c.x,c.y);if(!over&&cr.includes(c)){const t=resolve(c);if(t)msg+=t}}
+ moved=1;sel=null;const k=b[c.y]&&b[c.y][c.x];if(cr.includes(c)&&k&&k.o==cur&&!k.f&&inZone(1-cur,c.y))valide(c.x,c.y);if(!over&&cr.includes(c)){const t=resolve(c);if(t)msg+=t}msg+=chkKills()}
 function firstValid(m,r){const ys=[...Array(H).keys()];if(!cur)ys.reverse();for(const y of ys)for(const x of[3,4,2,5,1,6,0,7])if(ok(cellsOf(m,r,{x,y}),M[m].lv))return{x,y};return null}
 function pick(i){const m=pl[cur].h[i],p=firstValid(m,cur?0:2);if(!p){msg='Aucun emplacement possible pour ce dé.';return}
  hi=i;die=m;rot=cur?0:2;pc=p;mode='p';sel=null;$('roll').textContent='';$('roll').className='';
  msg='Le dé est posé, fermé. Fais-le glisser où tu veux, puis touche « Lancer ».'+bm()}
+function rotV(d){rzU=d?rzU+d:0;render()}
 function annuler(){useB=0;mode='i';pc=null;hov=null;msg='Choisis un dé ou avance une créature.'}
 function lancer(){if(mode!='p')return;const all=cells(),sp=split(all,M[die].lv),cs=sp.put,lost=sp.lost.length;if(!ok(all)){msg='Placement impossible : '+why(all,M[die].lv);render();return}
  mode='r';cubeCls='';const g=gid,lv=M[die].need,ub=(useB&&bonus[cur])?1:0,nd=M[die].nd+ub,rs=[...Array(nd)].map(()=>1+Math.floor(Math.random()*6)),r=Math.max(...rs),rt=rs.join('·'),R=$('roll'),k=cur,m=die;if(ub)bonus[k]=0;useB=0;let n=0;msg=(ub?'✨ ':'')+'Lancer du dé '+M[m].n+'… il faut '+lv+' ou plus'+(nd>1?' avec l’un des '+nd+' dés':'')+'.';render();
@@ -318,13 +333,13 @@ function lancer(){if(mode!='p')return;const all=cells(),sp=split(all,M[die].lv),
    for(const c of under){const gone=[],own=pl2.find(a=>a[0]==c.x&&a[1]==c.y);if(own&&own!==f1)gone.push(own);
     while(gone.length<2){const far=pl2.filter(a=>a!==f1&&!gone.includes(a)).sort((p,q)=>((u.o[[q[0],q[1]]]||{d:0}).d)-((u.o[[p[0],p[1]]]||{d:0}).d))[0];if(!far)break;gone.push(far)}
     gone.forEach(a=>delete u.o[[a[0],a[1]]]);pl2=pl2.filter(a=>!gone.includes(a));dropped+=gone.length}
-   cr=cr.filter(c=>!under.includes(c));for(const[x,y,v]of pl2)b[y][x]={o:k,el:M[m].el,v,lv:M[m].lv,id:did,mn:M[m].n};const nc={o:k,x:f1[0],y:f1[1],em:M[m].em,id:did,mn:M[m].n,mi:m,lv:M[m].lv};cr.push(nc);
+   cr=cr.filter(c=>!under.includes(c));for(const[x,y,v]of pl2)b[y][x]={o:k,el:M[m].el,v,lv:M[m].lv,id:did,mn:M[m].n};const top=pl2.reduce((a,c)=>c[2]>=a[2]?c:a),nc={o:k,x:top[0],y:top[1],em:M[m].em,id:did,mn:M[m].n,mi:m,lv:M[m].lv,fresh:1};cr.push(nc);
    anim={o:u.o,t0:Date.now()+400,tot:u.max*220+450};landCube();msg='Lancer : '+rt+' ✔ Le dé se pose, puis se déploie !';render();setTimeout(()=>{if(g!=gid)return;pc=null;cubeCls='';render()},400);
-   setTimeout(()=>{if(g!=gid)return;let s='Lancer : '+rt+' ✔ Le dé s’est déployé, une créature apparaît !'+(crushed?' ('+crushed+' créature'+(crushed>1?'s':'')+' écrasée'+(crushed>1?'s':'')+', le dé perd '+dropped+' face'+(dropped>1?'s':'')+')':'')+(lost?' ('+lost+' face'+(lost>1?'s':'')+' perdue'+(lost>1?'s':'')+')':'');const z=pl2.find(a=>inZone(1-k,a[1]));if(z){valide(z[0],z[1]);s+=' '+msg}if(!over)s+=resolve(nc);fin();if(!over)msg=s+' '+msg;render()},anim.tot+900)}
+   setTimeout(()=>{if(g!=gid)return;let s='Lancer : '+rt+' ✔ Le dé s’est déployé, une créature apparaît !'+(crushed?' ('+crushed+' créature'+(crushed>1?'s':'')+' écrasée'+(crushed>1?'s':'')+', le dé perd '+dropped+' face'+(dropped>1?'s':'')+')':'')+(lost?' ('+lost+' face'+(lost>1?'s':'')+' perdue'+(lost>1?'s':'')+')':'');const z=pl2.find(a=>inZone(1-k,a[1]));if(z){valide(z[0],z[1]);s+=' '+msg}let kw='';if(!over){s+=resolve(nc);kw=chkKills();s+=kw}fin();if(!over)msg=s+' '+msg;else if(kw)msg=s;render()},anim.tot+900)}
   else{cubeCls='poof';msg='Lancer : '+rt+' ✘ Le dé retourne dans ta main…';render();
    setTimeout(()=>{if(g!=gid)return;pc=null;cubeCls='';const gain=!bonus[k];if(gain)bonus[k]=1;const s='Lancer : '+rt+' ✘ Le dé revient dans ta main.'+(gain?' ✨ Tu gagnes un dé bonus pour ton prochain lancer.':'');
     fin(true);msg=s+' '+msg;render()},650)}},80)}
-function fin(keep){useB=0;const p=pl[cur];if(!keep)p.q.push(p.h.splice(hi,1)[0]);busy=0;hov=null;cubeCls='';
+function fin(keep){useB=0;rzU=0;const p=pl[cur];if(!keep)p.q.push(p.h.splice(hi,1)[0]);busy=0;hov=null;cubeCls='';
  if(over){mode='x';return}
  cur=1-cur;moved=0;mode='i';pc=null;sel=null;const n=pl[cur];while(n.h.length<5&&n.q.length)n.h.push(n.q.shift());
  msg=ai&&cur?'Tour de l’IA…':P[cur]+' : glisse un dé sur le damier, ou avance une créature.'}
@@ -358,6 +373,13 @@ function figure(mi,c,tier){const w='#fff',k='#222',o='#f90',L=[[40,34,30,0,10,0,
  11:[[8,6,8,0,-16,18,o],[8,10,8,0,-40,0,'#fa0'],[5,8,5,0,-48,0,'#fe0'],[5,14,16,-22,6,0,c],[5,14,16,22,6,0,c]],
  '-1':[[6,12,6,-12,-42,4,'#eee'],[6,12,6,12,-42,4,'#eee'],[4,34,30,-26,-4,-8,'#7a3'],[4,34,30,26,-4,-8,'#7a3'],[12,12,40,0,14,-36,c],[4,8,8,0,-6,-30,'#fd0'],[10,8,12,0,-14,20,c]]};
  const TX={2:[[6,10,6,-10,-44,0,'#fd0'],[6,12,6,0,-47,0,'#fd0'],[6,10,6,10,-44,0,'#fd0']],3:[[44,3,3,0,-54,20,'#fe8'],[44,3,3,0,-54,-20,'#fe8'],[3,3,40,-22,-54,0,'#fe8'],[3,3,40,22,-54,0,'#fe8'],[4,34,30,-26,-4,-8,'#fff'],[4,34,30,26,-4,-8,'#fff']]};return L.concat(X[mi]||[],TX[tier]||[]).map(a=>bx(...a)).join('')}
+let MAN=null;try{fetch('assets/manifest.json').then(r=>r.ok?r.json():null).then(j=>{MAN=j}).catch(()=>{})}catch(e){}
+const cid=D=>D?D.el+'-'+['petit','moyen','legendaire','divin'][D.t]:'fusion';
+let MVL=0;function loadMV(){if(MVL)return;MVL=1;const sc=document.createElement('script');sc.type='module';sc.src='https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js';document.head.append(sc)}
+function try3d(D){const e=MAN&&MAN.creatures&&MAN.creatures[cid(D)];if(!e||!e.glb)return;loadMV();const st=$('fc').querySelector('.st'),mv=document.createElement('model-viewer');
+ mv.setAttribute('src','assets/'+e.glb);mv.setAttribute('auto-rotate','');mv.setAttribute('rotation-per-second','24deg');mv.setAttribute('camera-orbit','0deg 78deg auto');mv.setAttribute('interaction-prompt','none');mv.setAttribute('disable-zoom','');mv.setAttribute('shadow-intensity','1');mv.setAttribute('exposure','1.1');
+ mv.style.cssText='position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .4s;--poster-color:transparent;background:transparent';
+ mv.addEventListener('load',()=>{mv.style.opacity=1;const f=st.querySelector('.sc');if(f)f.style.visibility='hidden'});mv.addEventListener('error',()=>mv.remove());st.append(mv)}
 function openCard(k){const D=k.mi>=0?M[k.mi]:null,cl=b[k.y][k.x],el=(D&&D.el)||(cl&&cl.el)||'',col=EC[el]||'#c9a227',own=cl&&cl.id===k.id,nv=cl&&!cl.f?pw(k.x,k.y):0,
  nm=D?D.cn:'Dragon de Fusion',lo=D?D.lo:'Né de l’union de deux alliés, il veille sur les cases qu’il a éveillées. Sa force est la somme de celle de ses parents.',weak=Object.keys(BT).find(e=>BT[e]===el);
  $('fc').style.setProperty('--ec',col);
@@ -365,7 +387,7 @@ function openCard(k){const D=k.mi>=0?M[k.mi]:null,cl=b[k.y][k.x],el=(D&&D.el)||(
   '<div><b>Camp</b>'+P[k.o]+'</div><div><b>Dé d’origine</b>'+(D?D.n+' · niv. '+D.lv+(D.lv>5?' (divin)':D.lv>4?' (légendaire)':'')+' · '+D.c.length+' faces · lancer '+D.need+'+'+(D.nd>1?' avec 2 dés':''):'Fusion')+'</div>'+
   '<div><b>Case actuelle</b>'+(cl&&!cl.f?'n° '+cl.v+(nv>cl.v?' (+'+(nv-cl.v)+' bonus)':''):'case colorée')+'</div><div><b>Attaque</b>'+pwc(k,k.x,k.y)+(own?'':' (hors de son dé)')+'</div>'+
   '<div><b>Fort contre</b>'+(BT[el]||'—')+'</div><div><b>Faible contre</b>'+(weak||'—')+'</div></div><p class="lo">« '+lo+' »</p><button onclick="closeCard()">Fermer</button></div>';
- $('fiche').hidden=false}
+ try3d(D);$('fiche').hidden=false}
 function closeCard(){$('fiche').hidden=true}
 function inspect(x,y,card=true){if(!inb(x,y))return;const c=b[y][x],k=at(x,y),z=y<Z?' · Zone Orange':y>=H-Z?' · Zone Vert':'';let h;
  if(!c)h='<b>Case vide</b>'+z;
@@ -381,19 +403,27 @@ BQ.onpointerdown=e=>{if(over||(ai&&cur==1))return;e.preventDefault();const[x,y]=
  render()};
 BQ.onpointermove=e=>{if(drag||(down&&sel)){const[x,y]=cellAt(e);if(inb(x,y)){lz={x,y};if(drag)pc={x,y};rBoard()}}};BQ.onpointercancel=()=>{drag=0;down=0;lz=null;render()};
 const selMsg=c=>Object.keys(bfs(c)).length>1?'Créature choisie : touche une case lumineuse pour l’y envoyer (3 pas max). Retouche-la pour sa fiche.':'Cette créature ne peut pas avancer : elle ne marche que sur des cases de dés (3 pas max). Retouche-la pour sa fiche.';
-BQ.onpointerup=e=>{lz=null;down=0;const[x,y]=cellAt(e),me=!ai||cur==0,canI=over||(ai&&cur==1)||mode=='i'||mode=='r'||mode=='x';
- if(drag){drag=0}
- else if(inb(x,y)&&canI){const c=at(x,y);
-  if(mode=='i'&&me&&!over){
-   if(sel){
-    if(c===sel)openCard(sel);
-    else if(bfs(sel)[[x,y]]!==undefined&&!(c&&c.o==cur))mv(sel,x,y);
-    else if(c&&c.o==cur&&!moved){sel=c;msg=selMsg(c)}
-    else{sel=null;inspect(x,y)}
-   }else if(c&&c.o==cur&&!moved){sel=c;msg=selMsg(c)}
-   else inspect(x,y)
-  }else inspect(x,y)}
- render()};
+function tap(x,y){const me=!ai||cur==0,canI=over||(ai&&cur==1)||mode=='i'||mode=='r'||mode=='x';if(!inb(x,y)||!canI)return;const c=at(x,y);
+ if(mode=='i'&&me&&!over){
+  if(sel){
+   if(c===sel)openCard(sel);
+   else if(bfs(sel)[[x,y]]!==undefined&&!(c&&c.o==cur))mv(sel,x,y);
+   else if(c&&c.o==cur&&!moved){sel=c;msg=selMsg(c)}
+   else{sel=null;inspect(x,y)}
+  }else if(c&&c.o==cur&&!moved){sel=c;msg=selMsg(c)}
+  else inspect(x,y)
+ }else inspect(x,y)}
+BQ.onpointerup=e=>{lz=null;down=0;const[x,y]=cellAt(e);if(drag){drag=0}else tap(x,y);render()};
+$('pins').onpointerup=e=>{const p=e.target.closest('.pin');if(!p)return;e.stopPropagation();
+ const sp=sel&&$('crl').querySelector('.cr.sel'),r=sp&&sp.getBoundingClientRect();
+ if(r&&e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom)tap(sel.x,sel.y);   // le doigt est sur la créature choisie : sa fiche
+ else tap(+p.dataset.x,+p.dataset.y);render()};
+function rPins(){const P2=$('pins');if(!(mode=='i'&&sel&&(!ai||cur==0))){P2.innerHTML='';return}
+ const R=bfs(sel),bw=$('bw').getBoundingClientRect(),out=[];
+ for(const k in R){if(R[k]===null)continue;const[x,y]=k.split(',').map(Number),e=at(x,y);if(e&&e.o==cur)continue;
+  const tp=document.querySelector('#ent .blk[data-x="'+x+'"][data-y="'+y+'"] .tp'),r=(tp||B.children[y*W+x]).getBoundingClientRect();
+  out.push('<div class="pin'+(e?' at':'')+'" data-x="'+x+'" data-y="'+y+'" style="left:'+(r.left+r.width/2-bw.left)+'px;top:'+(r.top+r.height/2-bw.top)+'px">'+(e?'⚔':'')+'</div>')}
+ P2.innerHTML=out.join('')}
 const gh=e=>{dg.g.style.left=e.clientX+'px';dg.g.style.top=e.clientY+'px'};
 Hd.onpointerdown=e=>{const c=e.target.closest('.dc');if(!c||c.classList.contains('off')||mode!='i'||over||(ai&&cur==1))return;e.preventDefault();
  const i=+c.dataset.i,g=document.createElement('div');g.id='gh';g.innerHTML=cube(pl[cur].h[i],60);document.body.append(g);
@@ -411,13 +441,13 @@ Hd.onpointerup=fdrop;Hd.onpointercancel=fdrop;
 function tilePos(x,y){const C=$('cam'),cs0=getComputedStyle(C).transform,m=new DOMMatrix(cs0==='none'?undefined:cs0),bw=$('bw').getBoundingClientRect(),cx=bw.x+bw.width/2,cy=bw.y+bw.height/2,r=B.children[y*W+x].getBoundingClientRect();
  return[cx+(r.x+r.width/2-cx-m.e)/m.a,cy+(r.y+r.height/2-cy-m.f)/m.d]}
 function updCam(){if(drag||(dg&&dg.mv))return;let f=null;
- if((mode=='p'||mode=='r')&&pc)f=pc;else if(mode=='i'&&cu&&(!ai||cur==0)&&Date.now()-lastJ<2000)f=cu;
+ if((mode=='p'||mode=='r')&&pc)f=pc;else if(mode=='i'&&!sel&&cu&&(!ai||cur==0)&&Date.now()-lastJ<2000)f=cu;
  const C=$('cam');if(!f){C.style.transform='';return}
  const bw=$('bw').getBoundingClientRect(),cx=bw.x+bw.width/2,cy=bw.y+bw.height/2,[px,py]=tilePos(f.x,f.y),sc=1.75;
  C.style.transform='translate('+(-sc*(px-cx))+'px,'+(-sc*(py-cy))+'px) scale('+sc+')'}
 let UID=0;const CRL=$('crl');
 function upCr(k,x,y,c,pop,A,now,live){k.uid=k.uid||++UID;let e=CRL.querySelector('[data-uid="'+k.uid+'"]');
- if(!e){e=document.createElement('i');e.dataset.uid=k.uid;e.className='cr'+(pop?' pop':'');e.textContent=k.em;if(pop)e.style.animationDelay=((A.tot-(now-A.t0))/1000)+'s';CRL.append(e)}
+ if(!e){e=document.createElement('i');e.dataset.uid=k.uid;e.className='cr'+(pop?' pop':'');e.textContent=k.em;if(pop)e.style.animationDelay=((A.tot-(now-A.t0))/1000)+'s';CRL.append(e);k.fresh=0}
  e.dataset.x=x;e.dataset.y=y;e.style.left=((x+.5)/W*100)+'%';e.style.top=((y+.5)/H*100)+'%';e.style.setProperty('--cz',((c&&!c.f)?bhOf(c):0)+'px');e.classList.toggle('sel',k===sel);live.add(String(k.uid))}
 const bhOf=c=>(0.14+0.06*c.v)*(B.clientWidth/W);
 function blk(c,x,y,q,an,A,now){return '<div class="blk'+(an?' '+an.c:'')+'" data-x="'+x+'" data-y="'+y+'" style="left:'+(x*100/W)+'%;top:'+(y*100/H)+'%;--bh:'+bhOf(c)+'px;--bc:'+(c.o?'#e0661a':'#2f9a5f')+(an?';animation-delay:'+((an.d*220-(now-A.t0))/1000)+'s':'')+'"><i class="tp">'+(q>c.v?c.v+'<small>+'+(q-c.v)+'</small>':c.v)+(c.el?'<u style="background:'+EC[c.el]+'"></u>':'')+'</i><i class="sf"></i><i class="sb"></i><i class="sl"></i><i class="sr"></i></div>'}
@@ -430,7 +460,7 @@ const bm=()=>bonus[cur]?' ✨ Dé bonus disponible : touche « Dé bonus » pour
 const PD=$('pad'),KN=PD.firstElementChild;
 function jmv(e){const r=PD.getBoundingClientRect(),R=r.width/2,dx=e.clientX-(r.left+R),dy=e.clientY-(r.top+R),m=Math.hypot(dx,dy)||1,k=Math.min(1,m/R);jv={vx:dx/m*k,vy:dy/m*k};KN.style.transform='translate('+(dx/m*k*R*.6)+'px,'+(dy/m*k*R*.6)+'px)'}
 function jloop(t){if(!jv)return;const dt=Math.min(.05,(t-jt)/1000);jt=t;const mg=Math.hypot(jv.vx,jv.vy);
- if(mg>.18){const sp=Math.pow((mg-.18)/.82,1.2)*8,s=cur==1&&!over?-1:1;jx=Math.max(0,Math.min(W-1,jx+jv.vx/mg*sp*dt*s));jy=Math.max(0,Math.min(H-1,jy+jv.vy/mg*sp*dt*s));
+ if(mg>.18){const sp=Math.pow((mg-.18)/.82,1.2)*8,th=rzCur*Math.PI/180,bx=jv.vx*Math.cos(th)+jv.vy*Math.sin(th),by=-jv.vx*Math.sin(th)+jv.vy*Math.cos(th);jx=Math.max(0,Math.min(W-1,jx+bx/mg*sp*dt));jy=Math.max(0,Math.min(H-1,jy+by/mg*sp*dt));
   const nx=Math.round(jx),ny=Math.round(jy),T=mode=='p'?pc:cu;lastJ=Date.now();
   if(!T||T.x!=nx||T.y!=ny){if(mode=='p')pc={x:nx,y:ny};else{cu={x:nx,y:ny};inspect(nx,ny,false)}render()}}
  requestAnimationFrame(jloop)}
@@ -448,8 +478,8 @@ function rBoard(){$('bq').style.setProperty('--tw',(B.clientWidth/W)+'px');$('sc
   const p=fp.find(a=>a[0]==x&&a[1]==y);if(p){d.classList.add(bad?'bad':sp.lost.includes(p)?'lostc':'pv');ents.push('<div class="hl'+(bad?' rd':'')+'" style="left:'+(x*100/W)+'%;top:'+(y*100/H)+'%;--z:'+(((c&&!c.f)?bhOf(c):0)+1)+'px"></div>')}
   
   const k=at(x,y);if(inf&&inf.at===msg&&inf.x==x&&inf.y==y)d.classList.add('insp');if(cu&&mode=='i'&&Date.now()-lastJ<3000&&cu.x==x&&cu.y==y&&(!ai||cur==0))d.classList.add('cur');if(R&&R[[x,y]]!==undefined&&!(k&&k.o==cur)){d.classList.add('rc');if(!(sel&&sel.x==x&&sel.y==y))ents.push('<div class="mv'+(k?' at':'')+'" data-x="'+x+'" data-y="'+y+'" style="left:'+(x*100/W)+'%;top:'+(y*100/H)+'%;--z:'+(((c&&!c.f)?bhOf(c):0)+2)+'px"></div>')}if(sel&&sel.x==x&&sel.y==y&&mode=='i')ents.push('<div class="hl sl" style="left:'+(x*100/W)+'%;top:'+(y*100/H)+'%;--z:'+(((c&&!c.f)?bhOf(c):0)+1)+'px"></div>');
-  if(k){if(c&&!c.f){const q=pw(x,y);h+='<small class="nb">'+(q>c.v?c.v+'+'+(q-c.v):c.v)+'</small>'}const pop=an&&an.d==0;upCr(k,x,y,c,pop,A,now,live);if(thr.has(k))ents.push('<i class="hd" style="left:'+((x+.5)/W*100)+'%;top:'+((y+.5)/H*100)+'%;--cz:'+((c&&!c.f)?bhOf(c):0)+'px">'+HEAD+'</i>');if(k==sel)d.classList.add('sel')}
-  d.innerHTML=h;B.append(d)}$('ent').innerHTML=ents.join('');for(const e of [...CRL.children])if(!live.has(e.dataset.uid))e.remove();rFly();renderLens();updCam()}
+  if(k){if(c&&!c.f){const q=pw(x,y);h+='<small class="nb">'+(q>c.v?c.v+'+'+(q-c.v):c.v)+'</small>'}const pop=an&&k.fresh;upCr(k,x,y,c,pop,A,now,live);if(thr.has(k))ents.push('<i class="hd" style="left:'+((x+.5)/W*100)+'%;top:'+((y+.5)/H*100)+'%;--cz:'+((c&&!c.f)?bhOf(c):0)+'px">'+HEAD+'</i>');if(k==sel)d.classList.add('sel')}
+  d.innerHTML=h;B.append(d)}$('ent').innerHTML=ents.join('');for(const e of [...CRL.children])if(!live.has(e.dataset.uid))e.remove();rFly();renderLens();updCam();rPins()}
 let lensT=0,lensP=0;
 function renderLens(){const L=$('lens');if(!lz){L.hidden=true;L.innerHTML='';return}
  const t=performance.now();if(!L.hidden&&t-lensT<50){if(!lensP){lensP=1;setTimeout(()=>{lensP=0;renderLens()},55)}return}lensT=t;
@@ -465,8 +495,8 @@ function renderLens(){const L=$('lens');if(!lz){L.hidden=true;L.innerHTML='';ret
  rg.style.cssText='left:'+(ar.left-br.left)+'px;top:'+(ar.top-br.top)+'px;width:'+ar.width+'px;height:'+ar.height+'px';cl.append(rg);
  cl.style.transformOrigin='0 0';cl.style.transform='translate('+(S/2-k*ux)+'px,'+(S/2-k*uy)+'px) scale('+k+')';
  const mr=B.children[lz.y*W+lz.x].getBoundingClientRect();L.className=(mr.left+mr.width/2<r0.left+r0.width*.5&&mr.top+mr.height/2<r0.top+r0.height*.45)?'r':''}
-function render(){$('bq').style.setProperty('--rz',cur==1&&!over?'180deg':'0deg');rBoard();const me=!ai||cur==0,hp=ai?0:cur;
- $('hd').innerHTML='<span>'+pl[0].s+'/'+WIN+' Vert'+(bonus[0]?' ✨':'')+'</span><span>'+(over?'Fin':'Tour : '+P[cur]+(ai&&cur?' (IA)':''))+'</span><span>Orange'+(ai?' IA ':' ')+pl[1].s+'/'+WIN+(bonus[1]?' ✨':'')+'</span>';
+function render(){$('bq').classList.toggle('selmode',!!(mode=='i'&&sel));rzCur=(cur==1&&!over?180:0)+rzU;$('bq').style.setProperty('--rz',rzCur+'deg');$('bq').style.setProperty('--bs',(((rzCur/90)%2+2)%2==1)?'.74':'1');rBoard();const me=!ai||cur==0,hp=ai?0:cur;
+ $('hd').innerHTML='<span>🟢 '+pl[0].s+'/'+WIN+' ⚔'+kills[0]+(bonus[0]?' ✨':'')+'</span><span>'+(over?'Fin':'Tour : '+P[cur]+(ai&&cur?' (IA)':''))+'</span><span>🟠 '+pl[1].s+'/'+WIN+' ⚔'+kills[1]+(bonus[1]?' ✨':'')+'</span>';
  const SP=(mode=='p'||mode=='d')&&cells().length?split(cells(),M[die].lv):null,L=SP?SP.lost.length:0;const O=SP?SP.put.filter(a=>b[a[1]][a[0]]).length:0;const U=SP?cr.filter(c=>SP.put.some(a=>a[0]==c.x&&a[1]==c.y)).length:0;const WY=(mode=='p'||mode=='d')&&cells().length&&!ok(cells())?' ✖ '+why(cells(),M[die].lv):'';$('msg').textContent=msg+WY+(U?' ☠ '+U+' créature'+(U>1?'s':'')+' sous le dé : il perdra jusqu’à '+2*U+' faces.':'')+(O?' ⚔ Tu recouvres '+O+' face'+(O>1?'s':'')+' déjà posée'+(O>1?'s':'')+'.':'')+(L?' ⚠ '+L+' face'+(L>1?'s':'')+' perdue'+(L>1?'s':'')+' (bord ou case non recouvrable).':'');
  if(inf&&inf.at===msg)$('msg').innerHTML=inf.html;
  $('ct').innerHTML=over?'<button onclick="init()">Rejouer</button>':mode=='p'&&me?'<button onclick="lancer()">🎲 Lancer le dé</button>'+(bonus[cur]?'<button class="'+(useB?'on':'')+'" onclick="useB=!useB;render()">✨ Dé bonus</button>':'')+'<button onclick="annuler()">Annuler</button>':'';
