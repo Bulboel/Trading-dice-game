@@ -107,3 +107,18 @@ body:not(.portal-open):has(#bw.t-feu){background:radial-gradient(ellipse at 50% 
  #mr #msg{font-size:10px;line-height:1.25;max-height:39px;overflow:auto}
  #bw.view3d #landscape{touch-action:none}
 }
+
+/* Phone duel: remove the tall identity banner, keep only two tiny actions. */
+@media(max-width:700px){
+ body:not(.portal-open) #identity{position:relative!important;height:0!important;min-height:0!important;max-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:visible!important;z-index:60!important}
+ body:not(.portal-open) #identity>div:first-child{display:none!important}
+ body:not(.portal-open) #identity .header-actions{position:absolute!important;top:5px!important;right:4px!important;display:flex!important;flex-direction:row!important;align-items:center!important;gap:4px!important;z-index:80!important}
+ body:not(.portal-open) #identity .land-note{display:none!important}
+ body:not(.portal-open) #identity #menu-return,body:not(.portal-open) #identity #history-button{display:flex!important;align-items:center!important;justify-content:center!important;min-width:32px!important;width:32px!important;height:30px!important;min-height:30px!important;max-height:30px!important;padding:0!important;margin:0!important;font:600 13px/1 system-ui,sans-serif!important;border-radius:7px!important;white-space:nowrap!important;box-shadow:0 2px 8px #0005!important}
+ body:not(.portal-open) #identity #history-button #history-count{display:none!important}
+ body:not(.portal-open) #identity #history-button{font-size:0!important}
+ body:not(.portal-open) #identity #history-button:before{content:'H';font:700 15px/1 Georgia,serif!important}
+ body:not(.portal-open) #identity #menu-return{font-size:0!important}
+ body:not(.portal-open) #identity #menu-return:before{content:'↩';font:700 18px/1 system-ui,sans-serif!important}
+ body:not(.portal-open) #top{padding-right:74px!important;min-height:43px!important}
+}
