@@ -13,6 +13,12 @@ let renderer;
 try{renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'low-power'});}catch{renderer=new LandscapeCanvasRenderer(canvas);}
 renderer.setClearColor(0x172c25,1);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;host.prepend(canvas);
+const navigation=document.createElement('div');navigation.id='board-navigation';navigation.setAttribute('role','group');navigation.setAttribute('aria-label','Vue du plateau');
+navigation.innerHTML='<button type="button" id="zoom-out" aria-label="Dézoomer le plateau" title="Dézoomer">−</button><output id="zoom-level" aria-live="polite">110 %</output><button type="button" id="zoom-in" aria-label="Zoomer le plateau" title="Zoomer">+</button><button type="button" id="pan-view" aria-label="Déplacer la vue" aria-pressed="false" title="Déplacer la vue : active puis fais glisser le terrain">✥</button><button type="button" id="reset-view" aria-label="Vue entière du plateau" title="Vue entière">⌖</button>';
+host.append(navigation);
+const zoneLabels=[{owner:1,z:-5.65,title:'Zone orange',hint:'Entrée des Verts : +1 point'},{owner:0,z:5.65,title:'Zone verte',hint:'Entrée des Oranges : +1 point'}].map(data=>{const el=document.createElement('div');el.className='score-zone score-zone-'+data.owner;el.innerHTML='<b>'+data.title+'</b><span>'+data.hint+'</span>';host.append(el);return{...data,el}});
+let zoom=1.1,panX=0,panY=0,panEnabled=false,panDrag=null,viewSpan=9,viewAspect=1;
+
 const scene=new THREE.Scene(),world=new THREE.Group();scene.add(world);scene.fog=new THREE.Fog(0x304d3d,25,58);
 const camera=new THREE.OrthographicCamera(-10,10,10,-10,.1,100);camera.position.set(8,15,16);camera.lookAt(0,0,0);
 scene.add(new THREE.HemisphereLight(0xe9f0d5,0x3c5034,2.3));
@@ -50,6 +56,12 @@ for(let i=0;i<32;i++){const x=rand()*13-6.5,side=rand()>.5?1:-1,z=river(x)+side*
 const gridPoints=[];for(let x=0;x<=8;x++)gridPoints.push(new THREE.Vector3(x-4,.205,-5),new THREE.Vector3(x-4,.205,5));for(let y=0;y<=10;y++)gridPoints.push(new THREE.Vector3(-4,.205,y-5),new THREE.Vector3(4,.205,y-5));
 const grid=new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(gridPoints),new THREE.LineBasicMaterial({color:0xe5d9a0,transparent:true,opacity:.27}));world.add(grid);
 function rail(z,color){const m=mesh(box,mat(color,{metalness:.35}));m.scale.set(8.13,.07,.07);m.position.set(0,.22,z);return m}rail(-5,0xbf9165);rail(5,0x9eae73);
+// The first and last rows are the original scoring zones, one cell deep.
+for(const [z,color]of[[-4.5,0xe2a062],[4.5,0x9cc36b]]){
+ const zone=new THREE.Mesh(new THREE.PlaneGeometry(8,1),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.27,side:THREE.DoubleSide,depthWrite:false}));zone.rotation.x=-Math.PI/2;zone.position.set(0,.212,z);world.add(zone);
+ rail(z<0?-4:4,color);
+ for(let x=-3.5;x<4;x++){const mark=mesh(new THREE.ConeGeometry(.055,.18,3),mat(color));mark.rotation.x=z<0?Math.PI/2:-Math.PI/2;mark.position.set(x,.24,z<0?-4.12:4.12);mark.castShadow=false;}
+}
 for(const x of[-4.08,4.08]){const m=mesh(box,stone);m.scale.set(.07,.07,10.14);m.position.set(x,.20,0)}
 // Dressed perimeter: small trees, stones and broken sanctuary columns.
 function tree(x,z,s=1){const g=new THREE.Group();g.position.set(x,height(x,z),z);world.add(g);const trunk=mesh(new THREE.CylinderGeometry(.07*s,.13*s,1.4*s,7),wood,g);trunk.position.y=.65*s;
@@ -103,12 +115,34 @@ function cellAt(e){const r=canvas.getBoundingClientRect();if(e.clientX<r.left||e
  // Raised faces and creatures must resolve to their own cells, not the plane behind them.
  const hits=raycaster.intersectObjects(pieces.children,true);for(const h of hits){let o=h.object;while(o&&o.parent!==pieces)o=o.parent;if(!o||o===dieGroup)continue;const k=o.userData.k;if(k)return[k.x,k.y];const t=[...tiles.values()].find(t=>t.pivot===o);if(t)return[t.x,t.y]}
  if(!raycaster.ray.intersectPlane(pickPlane,hit))return[-1,-1];world.worldToLocal(hit);const x=Math.floor(hit.x+4),y=Math.floor(hit.z+5);return x>=0&&x<8&&y>=0&&y<10?[x,y]:[-1,-1]}
-canvas.onpointerdown=e=>{if(state.over||(state.ai&&state.cur===1))return;e.preventDefault();canvas.setPointerCapture(e.pointerId);game.board.onpointerdown({clientX:e.clientX,clientY:e.clientY,pointerId:e.pointerId,preventDefault(){}})};
-// The hidden DOM board cannot own pointer capture. Capture remains on the visible canvas.
+function updateCamera(){
+ const right=new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld,0),up=new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld,1),offset=right.multiplyScalar(panX).add(up.multiplyScalar(panY));
+ camera.position.copy(new THREE.Vector3(8,15,16).add(offset));camera.lookAt(offset);camera.zoom=zoom;camera.updateProjectionMatrix();camera.updateMatrixWorld(true);
+}
+function changeZoom(value,anchor){
+ const next=Math.round(Math.max(1,Math.min(2.4,value))*100)/100;
+ if(anchor){const r=canvas.getBoundingClientRect(),nx=(anchor.clientX-r.left)/r.width*2-1,ny=1-(anchor.clientY-r.top)/r.height*2;panX+=nx*viewSpan*viewAspect*(1/zoom-1/next);panY+=ny*viewSpan*(1/zoom-1/next)}
+ zoom=next;if(zoom===1){panX=0;panY=0}panX=Math.max(-6,Math.min(6,panX));panY=Math.max(-6,Math.min(6,panY));
+ document.getElementById('zoom-level').textContent=Math.round(zoom*100)+' %';document.getElementById('zoom-out').disabled=zoom<=1;document.getElementById('zoom-in').disabled=zoom>=2.4;updateCamera();
+}
+function resetView(){panX=panY=0;changeZoom(1)}
+document.getElementById('zoom-in').onclick=()=>changeZoom(zoom+.2);
+document.getElementById('zoom-out').onclick=()=>changeZoom(zoom-.2);
+document.getElementById('reset-view').onclick=resetView;
+document.getElementById('pan-view').onclick=()=>{panEnabled=!panEnabled;document.getElementById('pan-view').setAttribute('aria-pressed',String(panEnabled));canvas.classList.toggle('panning',panEnabled)};
+canvas.addEventListener('wheel',e=>{if(!active||e.ctrlKey)return;e.preventDefault();changeZoom(zoom*Math.exp(-e.deltaY*.0015),e)},{passive:false});
+canvas.addEventListener('contextmenu',e=>{if(active)e.preventDefault()});
+canvas.onpointerdown=e=>{
+ if(panEnabled||e.button===2){e.preventDefault();canvas.setPointerCapture(e.pointerId);panDrag={id:e.pointerId,x:e.clientX,y:e.clientY};return}
+ if(state.over||(state.ai&&state.cur===1))return;e.preventDefault();canvas.setPointerCapture(e.pointerId);game.board.onpointerdown({clientX:e.clientX,clientY:e.clientY,pointerId:e.pointerId,preventDefault(){}})
+};
+// Keep capture on the visible canvas, including when the board is magnified.
 const originalCapture=game.board.setPointerCapture.bind(game.board);game.board.setPointerCapture=id=>active?canvas.setPointerCapture(id):originalCapture(id);
-canvas.onpointermove=e=>game.board.onpointermove(e);canvas.onpointerup=e=>game.board.onpointerup(e);canvas.onpointercancel=e=>game.board.onpointercancel(e);
+canvas.onpointermove=e=>{if(panDrag){if(e.pointerId!==panDrag.id)return;const r=canvas.getBoundingClientRect();panX-=(e.clientX-panDrag.x)/r.width*2*viewSpan*viewAspect/zoom;panY+=(e.clientY-panDrag.y)/r.height*2*viewSpan/zoom;panX=Math.max(-6,Math.min(6,panX));panY=Math.max(-6,Math.min(6,panY));panDrag.x=e.clientX;panDrag.y=e.clientY;updateCamera();return}game.board.onpointermove(e)};
+canvas.onpointerup=e=>{if(panDrag){panDrag=null;return}game.board.onpointerup(e)};
+canvas.onpointercancel=e=>{if(panDrag){panDrag=null;return}game.board.onpointercancel(e)};
 function setActive(value){active=value;host.classList.toggle('view3d',value);document.getElementById('land-caption').hidden=!value;document.getElementById('terrain-status').textContent=value?(renderer.isSoftware?'Clairière · rendu léger · terre +1':'Clairière · terre +1'):'Terrain '+game.snapshot().terrain+' · +1 élément';}
-function resize(){const r=host.getBoundingClientRect(),aspect=r.width/Math.max(r.height,1);renderer.setSize(r.width,r.height,false);const span=Math.max(8.9,7.1/aspect);camera.left=-span*aspect;camera.right=span*aspect;camera.top=span;camera.bottom=-span;camera.updateProjectionMatrix()}
+function resize(){const r=host.getBoundingClientRect(),aspect=r.width/Math.max(r.height,1);renderer.setSize(r.width,r.height,false);const span=Math.max(8.9,7.1/aspect);viewSpan=span;viewAspect=aspect;camera.left=-span*aspect;camera.right=span*aspect;camera.top=span;camera.bottom=-span;updateCamera()}
 function configure(){quality=document.getElementById('quality').value;light=renderer.isSoftware||quality==='light'||quality==='auto'&&(matchMedia('(max-width:700px)').matches||navigator.hardwareConcurrency<=4);moving=quality!=='still'&&!matchMedia('(prefers-reduced-motion:reduce)').matches;renderer.setPixelRatio(Math.min(devicePixelRatio||1,light?1.25:1.8));renderer.shadowMap.enabled=!light;grass.count=renderer.isSoftware?Math.min(200,grassCount):light?Math.min(650,grassCount):grassCount;motes.visible=!light&&moving;windAmount.value=moving?1:0;resize()}
 document.getElementById('quality').addEventListener('change',configure);matchMedia('(prefers-reduced-motion:reduce)').addEventListener('change',configure);new ResizeObserver(resize).observe(host);document.addEventListener('visibilitychange',()=>{paused=document.hidden});
 canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();setActive(false);document.getElementById('terrain-status').textContent='Affichage de secours · recharge la page pour retrouver la 3D'});
@@ -118,6 +152,8 @@ function frame(now){requestAnimationFrame(frame);if(paused||!active||now-lastFra
  for(const g of glints){g.m.position.x=g.x+(moving?Math.sin(t*.4+g.phase)*.16:0);g.m.position.z=river(g.m.position.x)+(g.z-river(g.x));g.m.scale.x=.6+Math.sin(t+g.phase)*.3}
  motes.rotation.y=moving?Math.sin(t*.08)*.06:0;
  const target=-state.rzCur*Math.PI/180;if(!moving)currentAngle=target;currentAngle+=Math.atan2(Math.sin(target-currentAngle),Math.cos(target-currentAngle))*Math.min(1,dt*5);world.rotation.y=currentAngle;world.updateMatrixWorld(true);
+ for(const zone of zoneLabels){const point=world.localToWorld(new THREE.Vector3(0,.35,zone.z)).project(camera),rect=host.getBoundingClientRect();zone.el.style.left=((point.x+1)*rect.width/2)+'px';zone.el.style.top=((1-point.y)*rect.height/2)+'px';zone.el.hidden=point.x<-.9||point.x>.9||point.y<-.86||point.y>.9;}
+
  for(const tile of tiles.values()){let progress=1;const a=tile.an,A=state.anim;if(a&&A&&moving){progress=Math.max(0,Math.min(1,(Date.now()-A.t0-a.d*220)/450))}tile.pivot.visible=progress>0;const eased=1-Math.pow(1-progress,3);tile.pivot.scale.setScalar(Math.max(.001,eased));tile.pivot.position.y=.22+(1-eased)*.55;tile.pivot.rotation.x=a?.c==='u-d'?(1-eased)*Math.PI/2:a?.c==='u-u'?-(1-eased)*Math.PI/2:0;tile.pivot.rotation.z=a?.c==='u-r'?-(1-eased)*Math.PI/2:a?.c==='u-l'?(1-eased)*Math.PI/2:0}
  for(const g of creatures.values()){const k=g.userData.k;g.position.lerp(g.userData.target,moving?Math.min(1,dt*9):1);g.rotation.y=k.o?Math.PI:0;const spawn=state.anim?.o[k.x+','+k.y];g.visible=!spawn||Date.now()>state.anim.t0+spawn.d*220+300;const body=g.children[1];body.position.y=.35+(moving?Math.sin(t*2+k.id)*.012:0);}
  if(dieGroup.visible){dieGroup.position.copy(dieGroup.userData.target);dieGroup.position.y+=moving?Math.sin(t*2)*.08:0;dieGroup.rotation.y=moving&&state.cubeCls!=='land'?t*.7:0;dieGroup.scale.setScalar(state.cubeCls==='poof'?.35:1)}
