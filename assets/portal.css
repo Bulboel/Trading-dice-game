@@ -116,3 +116,32 @@ body[data-portal-view="home"] #portal #portal-nav .portal-tab:before{width:250px
  #portal .deck-actions button{min-height:44px}
 }
 @media(max-width:360px){body[data-portal-view="home"] #portal #portal-nav .portal-tab{--menu-size:50px;height:106px;min-height:106px!important}#portal .portal-head .wallet{max-width:120px}}
+
+/* Mobile overflow regression: constrain the page, not just its inner content.
+   The 3D dice and long wallet text must never enlarge the layout viewport. */
+@media (max-width: 700px){
+ html{width:100%;max-width:100%;overflow-x:hidden}
+ body.portal-open{width:100%!important;min-width:0!important;max-width:100%!important;margin:0!important;padding:0!important;overflow-x:hidden!important}
+ body.portal-open #portal{width:100%!important;min-width:0!important;max-width:100%!important;margin:0!important;padding:0 12px 24px!important;overflow-x:hidden!important}
+ #portal .portal-head{width:100%;max-width:100%;min-width:0;grid-template-columns:minmax(0,1fr) auto!important;gap:6px 9px!important;padding:12px 0!important}
+ #portal .portal-brand{min-width:0;max-width:100%;overflow:hidden}
+ #portal .portal-brand h1{font-size:clamp(19px,5.5vw,27px)!important;letter-spacing:clamp(1px,.5vw,3px)!important;white-space:nowrap}
+ #portal .portal-head .wallet{grid-column:2!important;grid-row:1!important;max-width:125px!important;min-width:0!important;width:auto!important;padding:5px 7px!important;gap:5px!important}
+ #portal .wallet-copy{min-width:0!important;max-width:85px!important}
+ #portal #portal-gold{font-size:12px!important;white-space:normal!important;overflow-wrap:normal!important;word-break:normal!important;line-height:1.15!important}
+ #portal .portal-back{grid-column:1/-1!important;grid-row:2!important;justify-self:start}
+ #portal #portal-nav{box-sizing:border-box;max-width:100%;min-width:0}
+ #portal .portal-section{min-width:0;max-width:100%;overflow-wrap:break-word}
+ #portal .deck-layout{grid-template-columns:minmax(0,1fr)!important;min-width:0}
+ #portal .deck-layout>div,#portal .deck-layout>aside{min-width:0;max-width:100%}
+ #portal #play-deck,#portal #play-terrain{max-width:100%;min-width:0}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;min-height:0!important;max-width:440px!important;width:100%!important;margin:12px auto!important;padding:12px!important;overflow:hidden!important;justify-content:stretch!important;align-content:start!important}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab{--menu-size:54px!important;grid-column:auto!important;display:flex!important;flex:initial!important;width:100%!important;min-width:0!important;max-width:100%!important;height:112px!important;min-height:112px!important;padding:4px!important;margin:0!important;overflow:hidden!important;background:#192c2a9c!important;border:1px solid #e5d5a527!important;border-radius:13px!important;transform:none!important}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .menu-die-visual{width:54px!important;height:54px!important;margin:6px auto 17px!important;flex-shrink:0}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab strong{font:500 12px/1.2 Georgia,serif!important;white-space:normal!important;max-width:100%!important}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .menu-die-shadow{top:72px!important;width:68px!important}
+ body.portal-open:not([data-portal-view="home"]) #portal #portal-nav{position:relative!important;top:auto!important;display:flex!important;flex-wrap:nowrap!important;justify-content:flex-start!important;overflow-x:auto!important;overflow-y:hidden!important;gap:4px!important;padding:8px 2px!important;margin:0 0 12px!important}
+ body.portal-open:not([data-portal-view="home"]) #portal #portal-nav .portal-tab{--menu-size:29px!important;flex:0 0 67px!important;width:67px!important;min-width:67px!important;height:68px!important;min-height:68px!important}
+ body.portal-open:not([data-portal-view="home"]) #portal #portal-nav .menu-die-visual{margin:5px auto 13px!important}
+ body.portal-open:not([data-portal-view="home"]) #portal #portal-nav .portal-tab strong{font-size:9px!important;white-space:normal!important}
+}
