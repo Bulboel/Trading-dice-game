@@ -442,3 +442,14 @@ body[data-portal-view="home"] #portal #portal-nav .portal-tab:before{width:250px
   letter-spacing:.65px;text-shadow:0 2px 5px #000;
  }
 }
+
+/* v65 mobile shell diagnostic + final cascade guards */
+@media(max-width:700px){
+ body.portal-open{overflow-x:hidden!important;max-width:100vw!important;width:100%!important;min-width:0!important}
+ body.portal-open #portal{overflow-x:hidden!important;max-width:100vw!important;width:100%!important;min-width:0!important}
+ body.portal-open #portal .portal-head{grid-template-columns:minmax(0,1fr) 100px!important}
+ body.portal-open #portal .portal-brand{min-width:0!important}
+ body.portal-open #portal .portal-brand small{font-size:9px!important;white-space:nowrap!important;letter-spacing:.7px!important}
+ #portal-build{display:inline-block!important;color:#e3c987!important;font-size:9px!important;letter-spacing:0!important;font-family:system-ui,sans-serif!important}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(4,minmax(0,1fr))!important}
+}
