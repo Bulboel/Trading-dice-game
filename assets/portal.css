@@ -200,3 +200,15 @@ body[data-portal-view="home"] #portal #portal-nav .portal-tab:before{width:250px
  #portal .pouch-prop-back[role="button"]:focus-visible{outline:2px solid #ead19b}
  #portal .shop-theatre-intro{gap:10px}
 }
+
+/* Stable mobile currency pill: numeric amount only, never split or widen page. */
+@media(max-width:700px){
+ #portal .portal-head .wallet{display:flex!important;align-items:center!important;justify-content:center!important;flex:0 0 auto!important;width:108px!important;max-width:108px!important;min-width:108px!important;min-height:54px!important;gap:6px!important;padding:6px!important;border-radius:11px!important}
+ #portal .portal-head .wallet-copy{display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;flex:1 1 auto!important;width:auto!important;min-width:0!important;max-width:none!important;text-align:center!important}
+ #portal #portal-gold{display:block!important;width:100%!important;white-space:nowrap!important;word-break:keep-all!important;overflow-wrap:normal!important;font:700 16px/1.15 system-ui,sans-serif!important;letter-spacing:0!important;font-variant-numeric:tabular-nums!important}
+ #portal .wallet-copy small{display:block!important;white-space:nowrap!important;font:9px/1.2 system-ui,sans-serif!important;letter-spacing:0!important;margin:2px 0 0!important}
+ #portal .wallet-bubble{flex:0 0 27px!important;width:27px!important;height:27px!important}
+ #portal .wallet-bubble-bounce,#portal .wallet-bubble img{width:27px!important;height:27px!important}
+ #portal .portal-head{grid-template-columns:minmax(0,1fr) 108px!important;overflow:hidden}
+ #portal .portal-brand h1{max-width:100%;font-size:clamp(18px,5vw,25px)!important;letter-spacing:1px!important}
+}
