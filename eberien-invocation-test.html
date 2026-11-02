@@ -38,18 +38,35 @@ else{hinge.position.set(0,-half,side*half);body.position.set(0,half,0);body.rota
 panel('top',1);panel('bottom',1);panel('x',1);panel('x',-1);panel('z',1);panel('z',-1);
 const light=new THREE.PointLight(0x76caff,0,5);light.position.set(0,.9,0);scene.add(light);
 const glow=new THREE.Mesh(new THREE.SphereGeometry(.65,24,16),new THREE.MeshBasicMaterial({color:0x86d6ff,transparent:true,opacity:0,depthWrite:false}));glow.position.set(0,.8,0);scene.add(glow);
-const character=new THREE.Group();scene.add(character);let model=null,mixer=null,animName='idle',seq=0,progress=0,playing=false,ready=false,transitioning=false;
-const loader=new GLTFLoader();const clips={};
-async function get(name){if(!clips[name])clips[name]=loader.loadAsync('./assets/Models/Characters/'+encodeURIComponent(paths[name]));return clips[name]}
-function normalize(gltf){const root=gltf.scene;root.updateMatrixWorld(true);const box=new THREE.Box3().setFromObject(root),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());const s=2.8/Math.max(size.y,.01);root.scale.multiplyScalar(s);root.position.set(-center.x*s,-box.min.y*s,-center.z*s);return root}
-async function change(name){const token=++seq;status.textContent='Chargement de l’animation '+name+'…';try{const data=await get(name);if(token!==seq)return;if(mixer){mixer.stopAllAction();mixer.uncacheRoot(model)}if(model)character.remove(model);model=normalize({scene:cloneSkeleton(data.scene)});character.add(model);mixer=new THREE.AnimationMixer(model);if(data.animations.length){const action=mixer.clipAction(data.animations[0]);action.reset();action.setLoop(name==='idle'?THREE.LoopRepeat:THREE.LoopOnce,name==='idle'?Infinity:1);action.clampWhenFinished=true;action.play()}animName=name;status.textContent='Animation : '+name;}catch(e){status.textContent='Erreur de chargement : '+paths[name];console.error(e)}}
+const character=new THREE.Group();scene.add(character);
+let model=null,mixer=null,progress=0,playing=false,ready=false,activeAction=null,animationTicket=0;
+const loader=new GLTFLoader(), loaded={};
+async function get(name){if(!loaded[name])loaded[name]=loader.loadAsync('./assets/Models/Characters/'+encodeURIComponent(paths[name]));return loaded[name]}
+function normalize(root){root.updateMatrixWorld(true);const box=new THREE.Box3().setFromObject(root),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());const scale=2.8/Math.max(size.y,.01);root.scale.multiplyScalar(scale);root.position.set(-center.x*scale,-box.min.y*scale,-center.z*scale);return root}
+async function change(name){
+const ticket=++animationTicket;status.textContent='Chargement : '+name+'…';
+try{
+ const data=await get(name);
+ if(ticket!==animationTicket)return;
+ if(!model){model=normalize(data.scene);character.add(model);mixer=new THREE.AnimationMixer(model);}
+ if(!data.animations.length)throw new Error('Animation absente');
+ const clip=data.animations[0];
+ // Les trois exports Meshy utilisent les mêmes noms d'os ; une seule copie du modèle reste affichée.
+ const action=mixer.clipAction(clip,model);
+ if(activeAction&&activeAction!==action){activeAction.fadeOut(.18);}
+ action.reset().setEffectiveWeight(1).setEffectiveTimeScale(1);
+ action.setLoop(name==='idle'?THREE.LoopRepeat:THREE.LoopOnce,name==='idle'?Infinity:1);
+ action.clampWhenFinished=name!=='idle';action.fadeIn(.18).play();activeAction=action;
+ status.textContent='Animation : '+clip.name;
+}catch(e){status.textContent='Impossible de charger '+name+' : '+e.message;console.error(e)}
+}
 function ease(t){return t*t*(3-2*t)}
 function pose(t){const unfold=ease(Math.max(0,Math.min(1,(t-.08)/.36)));for(const p of panels){if(p.axis==='top')p.hinge.rotation.x=-unfold*Math.PI*.68;else if(p.axis==='bottom')p.hinge.rotation.x=0;else if(p.axis==='x')p.hinge.rotation.z=-p.side*unfold*Math.PI*.5;else p.hinge.rotation.x=p.side*unfold*Math.PI*.5}
-const appear=ease(Math.max(0,Math.min(1,(t-.40)/.46)));character.visible=appear>.005;character.position.y=-1.8+appear*1.8;character.scale.setScalar(.45+.55*appear);cube.visible=t<.48;light.intensity=6*Math.sin(Math.PI*Math.max(0,Math.min(1,(t-.22)/.68)));glow.material.opacity=.26*Math.sin(Math.PI*Math.max(0,Math.min(1,(t-.2)/.7)));glow.scale.setScalar(1+appear*1.5);}
-async function start(){if(!ready||transitioning)return;transitioning=true;btn.open.disabled=true;btn.again.disabled=true;btn.spell.disabled=true;btn.victory.disabled=true;await change('idle');if(!model){transitioning=false;return;}playing=true;progress=0;character.visible=false;cube.visible=true;pose(0);status.textContent='Le dé s’ouvre…';transitioning=false;}
+const appear=ease(Math.max(0,Math.min(1,(t-.40)/.46)));character.visible=appear>.005;character.position.y=-1.8+appear*1.8;character.scale.setScalar(.45+.55*appear);cube.visible=t<.38;light.intensity=6*Math.sin(Math.PI*Math.max(0,Math.min(1,(t-.22)/.68)));glow.material.opacity=.26*Math.sin(Math.PI*Math.max(0,Math.min(1,(t-.2)/.7)));glow.scale.setScalar(1+appear*1.5);}
+async function start(){if(!ready)return;btn.open.disabled=true;btn.again.disabled=true;btn.spell.disabled=false;btn.victory.disabled=false;await change('idle');playing=true;progress=0;character.visible=false;cube.visible=true;pose(0);status.textContent='Le dé s’ouvre…';}
 btn.open.addEventListener('click',start);btn.again.addEventListener('click',start);
-btn.spell.addEventListener('click',()=>{if(!playing)change('spell')});btn.victory.addEventListener('click',()=>{if(!playing)change('victory')});
+btn.spell.addEventListener('click',()=>{change('spell')});btn.victory.addEventListener('click',()=>{change('victory')});
 function resize(){const w=stage.clientWidth,h=stage.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false)}new ResizeObserver(resize).observe(stage);resize();
-const clock=new THREE.Clock();function render(){requestAnimationFrame(render);const dt=Math.min(clock.getDelta(),.05);if(playing){progress=Math.min(1,progress+dt/4.2);pose(progress);if(progress>=1){playing=false;cube.visible=false;btn.again.disabled=false;btn.spell.disabled=false;btn.victory.disabled=false;status.textContent='Eberien est apparu !'}}mixer?.update(dt);orbit.update();renderer.render(scene,camera)}render();
-try{await change('idle');if(model){ready=true;character.visible=false;btn.open.disabled=false;status.textContent='Eberien est prêt. L’animation Idle jouera en boucle dès son apparition.'}}catch(e){console.error(e)}
+const clock=new THREE.Clock();function render(){requestAnimationFrame(render);const dt=Math.min(clock.getDelta(),.1);if(playing){progress=Math.min(1,progress+dt/3);pose(progress);if(progress>=1){playing=false;cube.visible=false;btn.again.disabled=false;btn.spell.disabled=false;btn.victory.disabled=false;status.textContent='Eberien est apparu !'}}mixer?.update(dt);orbit.update();renderer.render(scene,camera)}render();
+await change('idle');if(model){ready=true;character.visible=false;btn.open.disabled=false;status.textContent='Eberien est prêt. Clique sur Ouvrir le dé.'}
 </script></body></html>
