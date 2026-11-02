@@ -274,7 +274,7 @@ const CRE=[
 const M=[];LVR.forEach((R,l)=>ELS.forEach((el,e)=>{const t=[0,0,1,1,2,3][l],cr=CRE[t][e];
  M.push({n:NM[e]+' '+RN[l],em:cr[0],cn:cr[1],lo:cr[2],el,lv:l+1,nd:R.nd,need:R.need,t,fk:(t==0?6:0)+e,c:SH[l][e].map(([x,y],k)=>[x,y,R.v[k]])})}));
 M.push({n:'Eberien',em:'🧙',cn:'Eberien',lo:'Magicien haut-elfe de Hackénia, affinité Glace.',el:'glace',lv:2,nd:1,need:3,t:0,fk:9,modelKey:'eberien',c:[[1,1,4],[1,0,2],[0,1,3],[2,1,5],[1,2,6]]});
-M.push({n:'Kala',em:'🏹',cn:'Kala',lo:'Elfe des bois, archère et barde de Hackénia, affinité Terre.',el:'terre',lv:2,nd:1,need:3,t:0,fk:8,modelKey:'kala',c:[[1,1,4],[1,0,3],[0,1,5],[2,1,6],[1,2,2]]});
+M.push({n:'Kala',em:'🏹',cn:'Kala',lo:'Elfe des bois, archère et barde de Hackénia, affinité Terre.',el:'terre',lv:2,nd:1,need:3,t:0,fk:8,modelKey:'kala',c:[[1,1,4],[1,0,2],[0,1,3],[2,1,5],[1,2,6]]});
 const pOk=m=>{const D=M[m],q=(D.need-1)/6;return D.nd>1?1-q*q:1-q};
 function mkDeck(){const pk=(l,n)=>sh([0,1,2,3,4,5]).slice(0,n).map(e=>(l-1)*6+e);return sh([...pk(6,1),...pk(5,2),...pk(1,2),...pk(2,2),...pk(3,2),...pk(4,1)])}
 let gamePaused=true,matchStarted=false,chosenDeck=null;
