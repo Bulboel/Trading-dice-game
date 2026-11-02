@@ -234,7 +234,7 @@ async function attachCreatureModel(g,k){
  try{const info=await game.modelInfo(mi);if(!info?.glb)return;const url='assets/'+info.glb;
  if(!modelCache.has(url))modelCache.set(url,(async()=>{const exists=await fetch(url,{method:'HEAD'});if(!exists.ok)return null;const tools=await getModelTools();const gltf=await tools.loader.loadAsync(url);return{gltf,clone:tools.clone}})().catch(()=>null));
  const asset=await modelCache.get(url);if(!asset||!g.parent||g.userData.modelId!==mi)return;
- const root=asset.clone(asset.gltf.scene),holder=new THREE.Group();holder.userData.imported=true;holder.add(root);root.updateMatrixWorld(true);const bounds=new THREE.Box3().setFromObject(root),size=bounds.getSize(new THREE.Vector3());if(!Number.isFinite(size.y)||size.y<=0)return;
+ const root=asset.clone(asset.gltf.scene),holder=new THREE.Group();holder.userData.imported=true;holder.add(root);if(mi===36)holder.rotation.y=Math.PI;root.updateMatrixWorld(true);const bounds=new THREE.Box3().setFromObject(root),size=bounds.getSize(new THREE.Vector3());if(!Number.isFinite(size.y)||size.y<=0)return;
  const scale=Math.min(.95/size.y,.78/Math.max(size.x,.01),.78/Math.max(size.z,.01));root.scale.setScalar(scale);root.position.set(-(bounds.min.x+bounds.max.x)*scale/2,-bounds.min.y*scale+.1,-(bounds.min.z+bounds.max.z)*scale/2);
  root.traverse(o=>{o.userData.imported=true;if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});g.children.forEach((o,i)=>{if(i>0)o.visible=false});g.add(holder);g.userData.model=holder;
  if(asset.gltf.animations.length){const mixer=new THREE.AnimationMixer(root),idle=asset.gltf.animations.find(a=>/idle|stand|breath/i.test(a.name))||asset.gltf.animations[0];mixer.clipAction(idle).play();g.userData.mixer=mixer}
