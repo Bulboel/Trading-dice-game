@@ -13,6 +13,27 @@ let renderer;
 try{renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'low-power'});}catch{renderer=new LandscapeCanvasRenderer(canvas);}
 renderer.setClearColor(0x172c25,1);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;host.prepend(canvas);
+// Copy the freshly rendered placement to a separate overlay, above the finger.
+const placementLens=document.createElement('aside');placementLens.id='placement-lens';placementLens.hidden=true;placementLens.setAttribute('aria-label','Loupe de placement');
+const lensCanvas=document.createElement('canvas');lensCanvas.width=lensCanvas.height=320;const lensContext=lensCanvas.getContext('2d'),lensCaption=document.createElement('div');lensCaption.id='placement-lens-caption';placementLens.append(lensCanvas,lensCaption);document.body.append(placementLens);let lensPoint=null;
+function updateLens(point){lensPoint=point?{x:point.x,y:point.y}:null}
+function drawPlacementLens(){
+ const point=lensPoint||(state.mode==='p'?state.pc:null),allowed=active&&!state.over&&(!state.ai||state.cur===0)&&(state.mode==='p'||state.mode==='d')&&point;
+ placementLens.hidden=!allowed;if(!allowed)return;
+ const r=canvas.getBoundingClientRect(),c=state.b[point.y]?.[point.x],level=.24+(c&&!c.f?.14+.06*c.v:0),project=(x,y,z)=>{const p=world.localToWorld(new THREE.Vector3(x,y,z)).project(camera);return{x:(p.x+1)*r.width/2,y:(1-p.y)*r.height/2}};
+ const focus=project(point.x-3.5,level+.25,point.y-4.5),points=[];
+ const preview=state.preview.length?state.preview:[[point.x,point.y]];
+ for(const [x,y]of preview){if(x<0||x>=8||y<0||y>=10)continue;for(const dx of[-.5,.5])for(const dz of[-.5,.5])points.push(project(x-3.5+dx,level,y-4.5+dz))}
+ const size=points.length?Math.max(...points.map(p=>p.x))-Math.min(...points.map(p=>p.x)):50,sy=points.length?Math.max(...points.map(p=>p.y))-Math.min(...points.map(p=>p.y)):50;
+ const crop=Math.max(58,Math.min(140,Math.max(size,sy)*1.22)),centerX=Math.max(size,sy)>115?focus.x:points.length?(Math.max(...points.map(p=>p.x))+Math.min(...points.map(p=>p.x)))/2:focus.x,centerY=Math.max(size,sy)>115?focus.y:points.length?(Math.max(...points.map(p=>p.y))+Math.min(...points.map(p=>p.y)))/2-10:focus.y;
+ const left=Math.max(0,Math.min(r.width-crop,centerX-crop/2)),top=Math.max(0,Math.min(r.height-crop,centerY-crop/2)),scale=canvas.width/r.width;
+ lensContext.fillStyle='#20392c';lensContext.fillRect(0,0,320,320);lensContext.drawImage(canvas,left*scale,top*scale,crop*scale,crop*scale,0,0,320,320);
+ const fx=(focus.x-left)/crop*320,fy=(focus.y-top)/crop*320;lensContext.strokeStyle='#fff0ba';lensContext.lineWidth=2;lensContext.setLineDash([5,4]);lensContext.strokeRect(fx-17,fy-17,34,34);lensContext.setLineDash([]);
+ lensCaption.textContent=state.valid?'Placement valide':'Placement impossible';placementLens.dataset.valid=String(state.valid);
+ // Move aside if the placement itself is near the upper-left corner.
+ placementLens.classList.toggle('right',r.left+focus.x<190&&r.top+focus.y<220);
+}
+
 const navigation=document.createElement('div');navigation.id='board-navigation';navigation.setAttribute('role','group');navigation.setAttribute('aria-label','Vue du plateau');
 navigation.innerHTML='<button type="button" id="zoom-out" aria-label="Dézoomer le plateau" title="Dézoomer">−</button><output id="zoom-level" aria-live="polite">110 %</output><button type="button" id="zoom-in" aria-label="Zoomer le plateau" title="Zoomer">+</button><button type="button" id="pan-view" aria-label="Déplacer la vue" aria-pressed="false" title="Déplacer la vue : active puis fais glisser le terrain">✥</button><button type="button" id="reset-view" aria-label="Vue entière du plateau" title="Vue entière">⌖</button>';
 host.append(navigation);
@@ -59,7 +80,12 @@ function rock(x,z,size=.4){
  m.position.set(x,height(x,z)+size*flatten*.38,z);m.scale.set(size*(.9+rand()*.3),size*flatten,size*(.6+rand()*.45));m.rotation.set((rand()-.5)*.3,rand()*6,(rand()-.5)*.25);return m;
 }
 const river=x=>.45+Math.sin(x*.48)*.8+Math.sin(x*1.1)*.15;
-function height(x,z){const d=Math.abs(z-river(x)),edge=Math.max(0,Math.abs(x)-4.1,Math.abs(z)-5.1);return -.26*Math.exp(-d*d/1.1)+.05+Math.sin(x*1.7+z*.7)*.035+Math.sin(z*2.4)*.025+Math.min(edge,1.7)*(.16+.08*Math.sin(x+z))}
+function height(x,z){
+ const d=Math.abs(z-river(x)),edge=Math.max(0,Math.abs(x)-4.1,Math.abs(z)-5.1),land=.05+Math.sin(x*1.7+z*.7)*.035+Math.sin(z*2.4)*.025+Math.min(edge,1.7)*(.16+.08*Math.sin(x+z));
+ // Cut the channel through the raised perimeter too: land must never dam the water.
+ const bed=-.24+Math.sin(x*1.4)*.008;return THREE.MathUtils.lerp(bed,land,THREE.MathUtils.smoothstep(d,.78,1.4));
+}
+function waterHeight(x,z,t){return -.045+Math.sin(x*3.2+z*2.2-t*1.8)*.014+Math.sin(x*6.7-z*3.3-t*2.5)*.006}
 // A continuous sculpted surface, with vertex colours for grass, banks and riverbed.
 const ground=new THREE.PlaneGeometry(14,15,56,60);ground.rotateX(-Math.PI/2);
 const gp=ground.attributes.position,colors=[];
@@ -82,13 +108,13 @@ const skirt=new THREE.BufferGeometry();skirt.setAttribute('position',new THREE.F
 // Narrow ribbons follow the banks exactly, avoiding triangular colour bands.
 for(const side of[-1,1]){
  const bankGeo=new THREE.PlaneGeometry(14,.52,100,4);bankGeo.rotateX(-Math.PI/2);const p=bankGeo.attributes.position,c=[];
- for(let i=0;i<p.count;i++){const x=p.getX(i),u=(p.getZ(i)+.26)/.52,z=river(x)+side*(.72+u*.52);p.setXYZ(i,x,Math.max(-.065,height(x,z))+.014,z);const color=new THREE.Color(0xa1a58a).lerp(new THREE.Color(0x526b42),THREE.MathUtils.smoothstep(u,.12,1));c.push(color.r,color.g,color.b)}
+ for(let i=0;i<p.count;i++){const x=p.getX(i),u=(p.getZ(i)+.26)/.52,z=river(x)+side*(.72+u*.52);p.setXYZ(i,x,Math.max(-.095,height(x,z))+.014,z);const color=new THREE.Color(0xa1a58a).lerp(new THREE.Color(0x526b42),THREE.MathUtils.smoothstep(u,.12,1));c.push(color.r,color.g,color.b)}
  bankGeo.setAttribute('color',new THREE.Float32BufferAttribute(c,3));bankGeo.computeVertexNormals();mesh(bankGeo,mat(0xffffff,{vertexColors:true,roughness:1}));
 }
 // A transparent turquoise channel: darker centre, pale shallows and fine ripples.
 const wg=new THREE.PlaneGeometry(14,1.47,100,12);wg.rotateX(-Math.PI/2);const wp=wg.attributes.position,waterColors=[];
 for(let i=0;i<wp.count;i++){
- const x=wp.getX(i),edge=Math.abs(wp.getZ(i))/.735;wp.setZ(i,wp.getZ(i)+river(x));wp.setY(i,-.055);
+ const x=wp.getX(i),edge=Math.abs(wp.getZ(i))/.735;wp.setZ(i,wp.getZ(i)+river(x));wp.setY(i,waterHeight(x,wp.getZ(i),0));
  const c=new THREE.Color(0x21656d).lerp(new THREE.Color(0x8ab9a0),Math.pow(edge,2.2)*.82);c.multiplyScalar(.96+Math.sin(x*1.8)*.045);waterColors.push(c.r,c.g,c.b);
 }
 wg.setAttribute('color',new THREE.Float32BufferAttribute(waterColors,3));wg.computeVertexNormals();
@@ -96,12 +122,16 @@ const normalCanvas=document.createElement('canvas');normalCanvas.width=normalCan
 for(let y=0;y<128;y++)for(let x=0;x<128;x++){const i=(y*128+x)*4;normalPixels.data[i]=128+Math.sin(x*Math.PI/16+y*Math.PI/32)*17;normalPixels.data[i+1]=128+Math.cos(y*Math.PI/8+x*Math.PI/32)*10;normalPixels.data[i+2]=252;normalPixels.data[i+3]=255}
 normalCtx.putImageData(normalPixels,0,0);const waterNormals=new THREE.CanvasTexture(normalCanvas);waterNormals.wrapS=waterNormals.wrapT=THREE.RepeatWrapping;waterNormals.repeat.set(7,2);
 const water=mesh(wg,new THREE.MeshPhysicalMaterial({color:0xffffff,vertexColors:true,normalMap:waterNormals,normalScale:new THREE.Vector2(.35,.2),roughness:.23,metalness:.05,transparent:true,opacity:renderer.isSoftware?1:.84,clearcoat:.8,clearcoatRoughness:.28}));water.castShadow=false;water.material.userData.seamless=true;
-const waterOrig=Float32Array.from(wp.array),rippleMat=new THREE.LineBasicMaterial({color:0xd4eee0,transparent:true,opacity:.23,depthWrite:false});
+const waterOrig=Float32Array.from(wp.array),rippleMat=new THREE.LineBasicMaterial({color:0xd4eee0,transparent:true,opacity:.4,depthWrite:false});
 const glints=[];for(let i=0;i<34;i++){
- const x=rand()*13-6.5,z=river(x)+(rand()-.5)*1.2,length=.18+rand()*.55,pts=[];
+ const x=rand()*14-7,lane=(rand()-.5)*1.12,z=river(x)+lane,length=.3+rand()*.5,pts=[];
  for(let j=0;j<6;j++){const u=j/6,v=(j+1)/6;pts.push(new THREE.Vector3((u-.5)*length,0,Math.sin(u*3.14)*.025),new THREE.Vector3((v-.5)*length,0,Math.sin(v*3.14)*.025))}
- const m=new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts),rippleMat);m.position.set(x,-.027,z);world.add(m);glints.push({m,x,z,phase:rand()*6});
+ const m=new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts),rippleMat);m.position.set(x,-.027,z);world.add(m);glints.push({m,x,z,lane,length,phase:rand()*6});
 }
+const fallGeometry=new THREE.PlaneGeometry(1.44,1.08,10,14),fallPos=fallGeometry.attributes.position,fallColors=[];
+for(let i=0;i<fallPos.count;i++){const across=fallPos.getX(i),down=.54-fallPos.getY(i);fallPos.setXYZ(i,7.012+Math.sin(down*2)*.035,-.045-down,river(7)+across);const color=new THREE.Color(0x498e91).lerp(new THREE.Color(0xbed9cb),Math.abs(across)/.72*.4);fallColors.push(color.r,color.g,color.b)}
+fallGeometry.setAttribute('color',new THREE.Float32BufferAttribute(fallColors,3));fallGeometry.computeVertexNormals();const fall=mesh(fallGeometry,new THREE.MeshPhysicalMaterial({color:0xffffff,vertexColors:true,side:THREE.DoubleSide,normalMap:waterNormals,normalScale:new THREE.Vector2(.2,.3),roughness:.28,transparent:true,opacity:renderer.isSoftware?1:.78}));fall.castShadow=false;fall.material.userData.seamless=true;
+const fallingRills=[];for(let i=0;i<9;i++){const lane=(i/8-.5)*1.25,geo=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(7.06,-.1,river(7)+lane),new THREE.Vector3(7.06,-.32,river(7)+lane)]),m=new THREE.LineSegments(geo,rippleMat);world.add(m);fallingRills.push({m,lane,phase:i/9})}
 // Pebbles occur in loose clusters instead of a regular necklace along the banks.
 for(let i=0;i<42;i++){const x=rand()*13-6.5,side=rand()>.5?1:-1,z=river(x)+side*(.77+rand()*.48);rock(x,z,.055+Math.pow(rand(),2)*.24)}
 // Board lines float just above the landscape, without adding movement restrictions.
@@ -202,15 +232,20 @@ const originalCapture=game.board.setPointerCapture.bind(game.board);game.board.s
 canvas.onpointermove=e=>{if(panDrag){if(e.pointerId!==panDrag.id)return;const r=canvas.getBoundingClientRect();panX-=(e.clientX-panDrag.x)/r.width*2*viewSpan*viewAspect/zoom;panY+=(e.clientY-panDrag.y)/r.height*2*viewSpan/zoom;panX=Math.max(-6,Math.min(6,panX));panY=Math.max(-6,Math.min(6,panY));panDrag.x=e.clientX;panDrag.y=e.clientY;updateCamera();return}game.board.onpointermove(e)};
 canvas.onpointerup=e=>{if(panDrag){panDrag=null;return}game.board.onpointerup(e)};
 canvas.onpointercancel=e=>{if(panDrag){panDrag=null;return}game.board.onpointercancel(e)};
-function setActive(value){active=value;host.classList.toggle('view3d',value);document.getElementById('land-caption').hidden=!value;document.getElementById('terrain-status').textContent=value?(renderer.isSoftware?'Clairière · rendu léger · terre +1':'Clairière · terre +1'):'Terrain '+game.snapshot().terrain+' · +1 élément';}
+function setActive(value){active=value;if(!value)placementLens.hidden=true;host.classList.toggle('view3d',value);document.getElementById('land-caption').hidden=!value;document.getElementById('terrain-status').textContent=value?(renderer.isSoftware?'Clairière · rendu léger · terre +1':'Clairière · terre +1'):'Terrain '+game.snapshot().terrain+' · +1 élément';}
 function resize(){const r=host.getBoundingClientRect(),aspect=r.width/Math.max(r.height,1);renderer.setSize(r.width,r.height,false);const span=Math.max(8.9,7.1/aspect);viewSpan=span;viewAspect=aspect;camera.left=-span*aspect;camera.right=span*aspect;camera.top=span;camera.bottom=-span;updateCamera()}
 function configure(){quality=document.getElementById('quality').value;light=renderer.isSoftware||quality==='light'||quality==='auto'&&(matchMedia('(max-width:700px)').matches||navigator.hardwareConcurrency<=4);moving=quality!=='still'&&!matchMedia('(prefers-reduced-motion:reduce)').matches;renderer.setPixelRatio(Math.min(devicePixelRatio||1,light?1.25:1.8));renderer.shadowMap.enabled=!light;grass.count=renderer.isSoftware?Math.min(200,grassCount):light?Math.min(650,grassCount):grassCount;motes.visible=!light&&moving;windAmount.value=moving?1:0;resize()}
 document.getElementById('quality').addEventListener('change',configure);matchMedia('(prefers-reduced-motion:reduce)').addEventListener('change',configure);new ResizeObserver(resize).observe(host);document.addEventListener('visibilitychange',()=>{paused=document.hidden});
 canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();setActive(false);document.getElementById('terrain-status').textContent='Affichage de secours · recharge la page pour retrouver la 3D'});
-window.HackeniaView={get active(){return active},cellAt,sync,setActive};configure();sync();
+window.HackeniaView={get active(){return active},cellAt,sync,setActive,updateLens};configure();sync();
 function frame(now){requestAnimationFrame(frame);if(paused||!active||now-lastFrame<(renderer.isSoftware?100:light?32:16))return;const dt=Math.min((now-lastFrame)/1000,.06);lastFrame=now;const t=moving?now/1000:0;
- wind.value=t;waterNormals.offset.set(-t*.012,t*.006);for(let i=0;i<wp.count;i++){const x=waterOrig[i*3],z=waterOrig[i*3+2];wp.setY(i,-.055+Math.sin(x*3+z*5+t*1.3)*.008+Math.cos(x*6-t)*.004)}wp.needsUpdate=true;
- for(const g of glints){g.m.position.x=moving?((g.x+6.5+t*.06)%13)-6.5:g.x;g.m.position.z=river(g.m.position.x)+(g.z-river(g.x));g.m.scale.x=.85+Math.sin(t*.7+g.phase)*.12}
+ wind.value=t;waterNormals.offset.set(-t*.032,t*.013);
+ for(let i=0;i<wp.count;i++){const x=waterOrig[i*3],z=waterOrig[i*3+2];wp.setY(i,waterHeight(x,z,t))}wp.needsUpdate=true;if(!renderer.isSoftware)wg.computeVertexNormals();
+ for(const g of glints){
+  const center=moving?((g.x+7+t*.24)%14)-7:g.x,p=g.m.geometry.attributes.position;g.m.position.set(0,0,0);g.m.scale.set(1,1,1);
+  for(let i=0;i<p.count;i++){const u=Math.floor(i/2)/6+(i%2)/6,x=Math.max(-7,Math.min(7,center+(u-.5)*g.length)),z=river(x)+g.lane+Math.sin(u*3.14+g.phase)*.014;p.setXYZ(i,x,waterHeight(x,z,t)+.013,z)}p.needsUpdate=true;
+ }
+ for(const rill of fallingRills){const down=moving?((t*.35+rill.phase)%1)*.83:rill.phase*.83,p=rill.m.geometry.attributes.position;for(let i=0;i<2;i++){const y=-.06-down-i*.17;p.setXYZ(i,7.065+Math.sin(-y*2)*.035,y,river(7)+rill.lane)}p.needsUpdate=true}
  motes.rotation.y=moving?Math.sin(t*.08)*.06:0;
  const target=-state.rzCur*Math.PI/180;if(!moving)currentAngle=target;currentAngle+=Math.atan2(Math.sin(target-currentAngle),Math.cos(target-currentAngle))*Math.min(1,dt*5);world.rotation.y=currentAngle;world.updateMatrixWorld(true);
  for(const zone of zoneLabels){const point=world.localToWorld(new THREE.Vector3(0,.35,zone.z)).project(camera),rect=host.getBoundingClientRect();zone.el.style.left=((point.x+1)*rect.width/2)+'px';zone.el.style.top=((1-point.y)*rect.height/2)+'px';zone.el.hidden=point.x<-.9||point.x>.9||point.y<-.86||point.y>.9;}
@@ -218,7 +253,7 @@ function frame(now){requestAnimationFrame(frame);if(paused||!active||now-lastFra
  for(const tile of tiles.values()){let progress=1;const a=tile.an,A=state.anim;if(a&&A&&moving){progress=Math.max(0,Math.min(1,(Date.now()-A.t0-a.d*220)/450))}tile.pivot.visible=progress>0;const eased=1-Math.pow(1-progress,3);tile.pivot.scale.setScalar(Math.max(.001,eased));tile.pivot.position.y=.22+(1-eased)*.55;tile.pivot.rotation.x=a?.c==='u-d'?(1-eased)*Math.PI/2:a?.c==='u-u'?-(1-eased)*Math.PI/2:0;tile.pivot.rotation.z=a?.c==='u-r'?-(1-eased)*Math.PI/2:a?.c==='u-l'?(1-eased)*Math.PI/2:0}
  for(const g of creatures.values()){const k=g.userData.k;g.position.lerp(g.userData.target,moving?Math.min(1,dt*9):1);g.rotation.y=k.o?Math.PI:0;const spawn=state.anim?.o[k.x+','+k.y];g.visible=!spawn||Date.now()>state.anim.t0+spawn.d*220+300;const body=g.children[1];body.position.y=.35+(moving?Math.sin(t*2+k.id)*.012:0);}
  if(dieGroup.visible){dieGroup.position.copy(dieGroup.userData.target);dieGroup.position.y+=moving?Math.sin(t*2)*.08:0;dieGroup.rotation.y=moving&&state.cubeCls!=='land'?t*.7:0;dieGroup.scale.setScalar(state.cubeCls==='poof'?.35:1)}
- highlights.children.forEach(m=>m.material.opacity=moving?.32+Math.sin(t*3)*.09:.4);renderer.render(scene,camera);
+ highlights.children.forEach(m=>m.material.opacity=moving?.32+Math.sin(t*3)*.09:.4);renderer.render(scene,camera);drawPlacementLens();
 }
 requestAnimationFrame(frame);
 }
