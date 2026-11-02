@@ -535,7 +535,7 @@ Hd.onpointerdown=e=>{const c=e.target.closest('.dc');if(!c||c.classList.contains
  const i=+c.dataset.i,g=document.createElement('div');g.id='gh';g.innerHTML=dragDieMarkup(pl[cur].h[i]);document.body.append(g);
  dg={i,x0:e.clientX,y0:e.clientY,mv:0,g};Hd.setPointerCapture(e.pointerId);gh(e)};
 Hd.onpointermove=e=>{if(!dg)return;if(Math.hypot(e.clientX-dg.x0,e.clientY-dg.y0)>10)dg.mv=1;gh(e);
- if(dg.mv){const[x,y]=cellAt(e);hov=inb(x,y)?{x,y}:null;lz=hov;die=pl[cur].h[dg.i];rot=cur?0:2;mode='d';rBoard()}};
+ if(dg.mv){const[x,y]=cellAt(e);hov=inb(x,y)?{x,y}:null;lz=hov;die=pl[cur].h[dg.i];rot=cur?0:2;mode='d';dg.g.style.opacity=hov?'0':'1';rBoard()}};
 const fdrop=e=>{if(!dg)return;const d=dg;dg=null;lz=null;d.g.remove();
  if(d.mv&&e.type=='pointerup'){const[x,y]=cellAt(e),m=pl[cur].h[d.i];mode='i';hov=null;
   if(inb(x,y)&&ok(cellsOf(m,cur?0:2,{x,y}),M[m].lv)){hi=d.i;die=m;rot=cur?0:2;pc={x,y};mode='p';$('roll').textContent='';$('roll').className='';msg='Le dé est posé, fermé. Touche « Lancer » (ou déplace-le d’abord).'+bm()}
@@ -615,9 +615,9 @@ window.hackeniaGame={
  pause:()=>{gamePaused=true;clearTimeout(aiT);aiT=0;document.getElementById('placement-lens')?.setAttribute('hidden','')},
  resume:()=>{gamePaused=false;render()},isPlaying:()=>!gamePaused,hasMatch:()=>matchStarted,
  portrait:i=>handPortrait(i),modelInfo:async i=>{await manifestReady;return MAN?.creatures?.[cid(M[i])]||null},loadModelViewer:loadMV,
- snapshot:()=>({b,cr,cur,mode,pc,die,rot,sel,anim,cubeCls,rzCur,cu,lastJ,over,ai,drag,dg,moved,terrain:TL[TER],blocked:TL[TER]==='feu'?FIRE_VENTS:[],preview:cells(),valid:cells().length?!!ok(cells()):false,reachable:mode==='i'&&sel?bfs(sel):null}),isBlocked:blocked,power:pw,elementColors:EC,monsters:M,board:BQ,tap:(x,y)=>{tap(x,y);render()},refresh:render};
+ snapshot:()=>({b,cr,cur,mode,pc,hov,die,rot,sel,anim,cubeCls,rzCur,cu,lastJ,over,ai,drag,dg,moved,terrain:TL[TER],blocked:TL[TER]==='feu'?FIRE_VENTS:[],preview:cells(),valid:cells().length?!!ok(cells()):false,reachable:mode==='i'&&sel?bfs(sel):null}),isBlocked:blocked,power:pw,elementColors:EC,monsters:M,board:BQ,tap:(x,y)=>{tap(x,y);render()},refresh:render};
 init();
-</script><script src="assets/pouch-opening.js?v=20261102-first-discovery"></script><script src="assets/portal.js?v=20261102-first-discovery"></script><script type="module" src="assets/clearing.js?v=20261102-camera-slim" onerror="document.getElementById('terrain-status').textContent='Affichage de secours · module 3D indisponible'"></script></body></html>
+</script><script src="assets/pouch-opening.js?v=20261102-first-discovery"></script><script src="assets/portal.js?v=20261102-first-discovery"></script><script type="module" src="assets/clearing.js?v=20261102-drag-real3d" onerror="document.getElementById('terrain-status').textContent='Affichage de secours · module 3D indisponible'"></script></body></html>
 
 
 
