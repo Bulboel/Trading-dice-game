@@ -279,10 +279,10 @@ function updateCamera(){
  camera.position.copy(new THREE.Vector3(8,15,16).add(offset));camera.lookAt(offset);camera.zoom=zoom;camera.updateProjectionMatrix();camera.updateMatrixWorld(true);
 }
 function changeZoom(value,anchor){
- const next=Math.round(Math.max(1,Math.min(2.4,value))*100)/100;
+ const next=Math.round(Math.max(1,Math.min(8,value))*100)/100;
  if(anchor){const r=canvas.getBoundingClientRect(),nx=(anchor.clientX-r.left)/r.width*2-1,ny=1-(anchor.clientY-r.top)/r.height*2;panX+=nx*viewSpan*viewAspect*(1/zoom-1/next);panY+=ny*viewSpan*(1/zoom-1/next)}
  zoom=next;if(zoom===1){panX=0;panY=0}panX=Math.max(-6,Math.min(6,panX));panY=Math.max(-6,Math.min(6,panY));
- document.getElementById('zoom-level').textContent=Math.round(zoom*100)+' %';document.getElementById('zoom-out').disabled=zoom<=1;document.getElementById('zoom-in').disabled=zoom>=2.4;updateCamera();
+ document.getElementById('zoom-level').textContent=Math.round(zoom*100)+' %';document.getElementById('zoom-out').disabled=zoom<=1;document.getElementById('zoom-in').disabled=zoom>=8;updateCamera();
 }
 function resetView(){panX=panY=0;changeZoom(1)}
 document.getElementById('zoom-in').onclick=()=>changeZoom(zoom+.2);
