@@ -527,7 +527,7 @@ function render(){$('bq').classList.toggle('selmode',!!(mode=='i'&&sel));rzCur=(
  if(inf&&inf.at===msg)$('msg').innerHTML=inf.html;
  $('ct').innerHTML=over?'<button onclick="init()">Rejouer</button>':mode=='p'&&me?'<button onclick="lancer()">🎲 Lancer le dé</button>'+(bonus[cur]?'<button class="'+(useB?'on':'')+'" onclick="useB=!useB;render()">✨ Dé bonus</button>':'')+'<button onclick="annuler()">Annuler</button>':'';
  $('hl').textContent=over?'':mode=='i'&&me?'Main de '+P[hp]+' : glisse un dé sur le damier':'';
- $('hand').innerHTML=over?'':pl[hp].h.map((m,i)=>'<div class="dc l'+M[m].lv+(mode=='i'&&me?'':' off')+'" data-i="'+i+'" style="border-bottom-color:'+EC[M[m].el]+'">'+cube(m,34)+svg(m,hp?0:2,16,0)+'<b>'+M[m].em+' '+M[m].n+'</b><span>Niv.'+M[m].lv+' · '+M[m].c.length+'f</span><span>'+(M[m].nd>1?'🎲🎲':'🎲')+' '+M[m].need+'+</span></div>').join('');
+ $('hand').innerHTML=over?'':pl[hp].h.map((m,i)=>'<div class="dc l'+M[m].lv+(mode=='i'&&me?'':' off')+'" data-i="'+i+'" style="border-bottom-color:'+EC[M[m].el]+'">'+cube(m,34)+svg(m,hp?0:2,16,0)+'<b>'+M[m].em+' '+M[m].cn+'</b><span>'+M[m].n+' · Niv.'+M[m].lv+' · '+M[m].c.length+'f</span><span>'+(M[m].nd>1?'🎲🎲':'🎲')+' '+M[m].need+'+</span></div>').join('');
  const sc=over||(mode=='p'&&me);$('ct').style.display=sc?'flex':'none';$('hand').style.display=sc?'none':'flex';$('vs').textContent=ai?'🤖 IA':'👥 2J';
  if(!gamePaused&&ai&&cur==1&&mode=='i'&&!over&&!busy&&!aiT){const g=gid;aiT=setTimeout(()=>{aiT=0;if(g==gid)ia()},900)}}
 window.hackeniaGame={
