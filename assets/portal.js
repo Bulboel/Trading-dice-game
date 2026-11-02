@@ -19,7 +19,7 @@ function wallet(){const el=$('portal-gold'),value=profile.gold.toLocaleString('f
 function currency(n){return `<span class="currency-inline"><img src="assets/bubulle.webp" width="20" height="20" alt="" aria-hidden="true"><span>${bubulles(n)}</span></span>`}
 function navigate(next,focus=false){view=next;game.pause();document.body.classList.add('portal-open');document.body.dataset.portalView=next;window.scrollTo({top:0,left:0,behavior:'instant'});document.documentElement.scrollLeft=0;document.body.scrollLeft=0;location.hash=next==='home'?'accueil':next;
  $('portal-back').hidden=next==='home';$('profile-backup').hidden=next!=='options';$('portal-content').hidden=false;$('portal-content').classList.toggle('home-resume',next==='home');
- document.querySelectorAll('[data-view]').forEach(b=>{if(b.dataset.view===next)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
+ document.querySelectorAll('[data-view]').forEach(b=>{if(b.dataset.view===next)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});$('portal-nav').scrollLeft=0;
  $('portal-notice').textContent=recovery?'Sauvegarde locale indisponible : achats et modifications désactivés.':'';render();wallet();
  if(focus){if(next==='home')$('portal-nav').querySelector('button').focus({preventScroll:true});else $('portal-content').focus({preventScroll:true})}
 }
