@@ -1,6 +1,6 @@
 /* Presentation adapter. Game legality, turns, decks and combat stay in index.html. */
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
-import { createCrater } from './crater.js?v=20261102-braise';
+import { createCrater } from './crater.js?v=20261102-lave-relief';
 
 const game=window.hackeniaGame, host=document.getElementById('bw');
 try { initClearing(); } catch(error) {
@@ -223,7 +223,7 @@ for(const object of[petals,stems,centres,flowerLeaves]){object.receiveShadow=tru
 const moteGeo=new THREE.BufferGeometry(),motePos=[];for(let i=0;i<22;i++)motePos.push(rand()*12-6,.5+rand()*2.3,rand()*12-6);moteGeo.setAttribute('position',new THREE.Float32BufferAttribute(motePos,3));const motes=new THREE.Points(moteGeo,new THREE.PointsMaterial({color:0xffe3a1,size:.045,transparent:true,opacity:.6,depthWrite:false}));world.add(motes);
 // Retain the same grid and score zones while switching scenery.
 const forest=new THREE.Group(),shared=new Set([grid,...world.children.filter(o=>o.geometry?.type==='PlaneGeometry'&&o.geometry.parameters.width===8&&o.geometry.parameters.height===1)]);for(const o of [...world.children])if(!shared.has(o))forest.add(o);world.add(forest);
-const crater=createCrater(world,game.snapshot().terrain==='feu'?game.snapshot().blocked:[[1,2],[6,7],[5,2],[2,7],[2,4],[5,5]],!!renderer.isSoftware);
+let crater=null;
 const pieces=new THREE.Group(),highlights=new THREE.Group();world.add(pieces,highlights);
 const tileGeo=new THREE.BoxGeometry(.94,1,.94),topGeo=new THREE.PlaneGeometry(.86,.86),highlightGeo=new THREE.PlaneGeometry(.91,.91),textures=new Map(),tileMats=new Map(),creatureMats=new Map();
 const eyeMaterial=mat(0x172d26);
@@ -301,7 +301,7 @@ canvas.onpointermove=e=>{if(panDrag){if(e.pointerId!==panDrag.id)return;const r=
 canvas.onpointerup=e=>{if(panDrag){panDrag=null;return}game.board.onpointerup(e)};
 canvas.onpointercancel=e=>{if(panDrag){panDrag=null;return}game.board.onpointercancel(e)};
 let sceneryKey='';
-function setActive(value){active=value;const type=game.snapshot().terrain,fire=type==='feu';if(!value)placementLens.hidden=true;host.classList.toggle('view3d',value);document.getElementById('land-caption').hidden=!value;forest.visible=!fire;crater.root.visible=fire;
+function setActive(value){active=value;const type=game.snapshot().terrain,fire=type==='feu';if(!value)placementLens.hidden=true;host.classList.toggle('view3d',value);document.getElementById('land-caption').hidden=!value;forest.visible=!fire;if(fire&&value&&!crater)crater=createCrater(world,game.snapshot().blocked,!!renderer.isSoftware);if(crater)crater.root.visible=fire;
  if(sceneryKey!==type){sceneryKey=type;renderer.setClearColor(fire?0x221b20:0x172c25,1);scene.fog.color.set(fire?0x392328:0x304d3d);sky.color.set(fire?0xf1c6ab:0xe9f0d5);sky.groundColor.set(fire?0x3e2023:0x3c5034);sun.color.set(fire?0xffb16a:0xffe1a0);sun.intensity=fire?2.5:3.1;const caption=document.getElementById('land-caption');caption.querySelector('span').textContent=fire?'LES LÈVRES DU BRASIER':'LE SANCTUAIRE VERDOYANT';caption.querySelector('small').textContent=fire?'La roche respire. Les évents sont impraticables.':'La rivière murmure. Le duel commence.';canvas.setAttribute('aria-label',fire?'Plateau 3D au bord du cratère, six évents fumants impraticables':'Plateau 3D de la Clairière des murmures, huit colonnes et dix lignes')}
  document.getElementById('terrain-status').textContent=value?(fire?'Feu +1 · 6 évents fumants impraticables':(renderer.isSoftware?'Clairière · rendu léger · terre +1':'Clairière · terre +1')):'Terrain '+type+' · +1 élément';}
 
@@ -318,7 +318,7 @@ function frame(now){requestAnimationFrame(frame);if(paused||!game.isPlaying()||!
   for(let i=0;i<p.count;i++){const u=Math.floor(i/2)/6+(i%2)/6,x=Math.max(-7,Math.min(7,center+(u-.5)*g.length)),z=river(x)+g.lane+Math.sin(u*3.14+g.phase)*.014;p.setXYZ(i,x,waterHeight(x,z,t)+.013,z)}p.needsUpdate=true;
  }
  for(const rill of fallingRills){const down=moving?((t*.35+rill.phase)%1)*.83:rill.phase*.83,p=rill.m.geometry.attributes.position;for(let i=0;i<2;i++){const y=-.06-down-i*.17;p.setXYZ(i,rill.side*(7.065+Math.sin(-y*2)*.035),y,river(rill.side*7)+rill.lane)}p.needsUpdate=true}
- motes.rotation.y=moving?Math.sin(t*.08)*.06:0;}else crater.update(t,light,moving);
+ motes.rotation.y=moving?Math.sin(t*.08)*.06:0;}else crater?.update(t,light,moving);
  const target=-state.rzCur*Math.PI/180;if(!moving)currentAngle=target;currentAngle+=Math.atan2(Math.sin(target-currentAngle),Math.cos(target-currentAngle))*Math.min(1,dt*5);world.rotation.y=currentAngle;world.updateMatrixWorld(true);
  for(const zone of zoneLabels){const point=world.localToWorld(new THREE.Vector3(0,.35,zone.z)).project(camera),rect=host.getBoundingClientRect();zone.el.style.left=((point.x+1)*rect.width/2)+'px';zone.el.style.top=((1-point.y)*rect.height/2)+'px';zone.el.hidden=point.x<-.9||point.x>.9||point.y<-.86||point.y>.9;}
 

@@ -29,3 +29,11 @@ La clairière et le cratère partagent les mêmes unités et le cache GLB. Les a
 - `node tests/scoring.cjs`
 - Vérification de syntaxe des quatre modules JS modifiés/ajoutés.
 - Navigateur : personnalisation et persistance des options, achat en Bubulles, journal simplifié, terrain sélectionnable, rendu lave/fissures/évents et préservation des nouvelles cartes en main.
+
+## Refonte visuelle de la lave et de l’ouverture
+
+Le cratère est construit à la première sélection du terrain Feu, pour éviter de générer sa texture pendant l’ouverture du menu. Le sol combine une texture procédurale de plaques de basalte et de fissures fines, des veines modelées en relief, des coulées à cœur lumineux et bords refroidis, une mare de convection, des fragments de croûte, des flammèches et des braises. Le renderer de secours utilise la même texture sur un fond projeté. Les six évents et toutes les règles restent identiques.
+
+`assets/pouch-opening.js` remplace l’apparition des cartes de résultat par une scène continue. La cordelette se desserre, la bouche s’ouvre, les trois dés partent ensemble de cette bouche, passent derrière une copie masquée de l’avant du cuir, puis suivent des arcs et des rotations différents, avec impacts, rebonds et ombres au sol. Les noms et raretés apparaissent à l’arrêt. L’achat est bloqué pendant l’animation. Les résultats sont sauvegardés avant celle-ci ; quitter la boutique n’annule pas le gain et ne bloque pas la prochaine ouverture. Les fiches des trois dés restent accessibles au clic. Le mode sans animations affiche directement les résultats.
+
+Vérifications navigateur : achat et solde, révélation différée, consultation d’un dé révélé, ouverture sans animations, départ puis retour à la boutique pendant l’ouverture, sélection et rendu du terrain Feu. Les tests de règles de feu, d’attaque et de score passent.
