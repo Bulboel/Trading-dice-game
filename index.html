@@ -338,7 +338,9 @@ function unitSnapshot(c,x=c.x,y=c.y){
  const tile=b[y]?.[x],D=c.mi>=0?M[c.mi]:null,number=tile&&!tile.f?tile.v:1,terrainBonus=tile&&!tile.f&&tile.el===TL[TER]?1:0,neighborBonus=tile&&!tile.f&&tile.el&&D4.some(([dx,dy])=>b[y+dy]?.[x+dx]?.el===BT[tile.el])?1:0;
  return{name:D?.cn||(c.mi===-1?'Dragon de Fusion':c.mn||'Créature'),camp:P[c.o],level:creatureLevel(c),element:D?.el||tile?.el||'sans élément',square:squareName(x,y),tileOwner:tile?P[tile.o]:'aucun',tileElement:tile?.el||'sans élément',number,terrainBonus,neighborBonus,attack:pwc(c,x,y)};
 }
+let victoryRewardIssued=false;
 function recordEvent(type,text,units=[]){
+ if(type==='Victoire'&&!victoryRewardIssued){victoryRewardIssued=true;if(text.startsWith(P[0]+' gagne'))window.dispatchEvent(new Event('hackenia-player-victory'))}
  gameEvents.push({id:gameEvents.length+1,turn:turnNumber,camp:P[cur],type,text,units:units.map(u=>({...u}))});
  $('history-count').textContent=String(gameEvents.filter(e=>!['Tour','Dalles'].includes(e.type)).length);window.HackeniaSettings?.play(type);if($('history-panel').open)drawHistory();
 }
@@ -354,7 +356,7 @@ function logCombat(left,right,kind){const winner=left.attack>right.attack?left:l
 }
 function openHistory(){drawHistory(true);$('history-panel').showModal()}
 function closeHistory(){$('history-panel').close()}
-function init(){clearTimeout(aiT);bonus=[0,0];kills=[0,0];rzU=0;useB=0;gid++;busy=0;b=[...Array(H)].map(()=>Array(W).fill(null));cr=[];over=0;sel=null;drag=0;pc=null;hov=null;anim=null;cubeCls='';aiT=0;
+function init(){victoryRewardIssued=false;clearTimeout(aiT);bonus=[0,0];kills=[0,0];rzU=0;useB=0;gid++;busy=0;b=[...Array(H)].map(()=>Array(W).fill(null));cr=[];over=0;sel=null;drag=0;pc=null;hov=null;anim=null;cubeCls='';aiT=0;
  pl=[0,1].map((_,o)=>{const d=o===0&&chosenDeck?sh([...chosenDeck]):mkDeck();return{h:d.splice(0,5),q:d,s:0}});
  cur=0;mode='i';moved=0;$('roll').textContent='';$('roll').className='';
  cu={x:3,y:H-3};lastJ=0;theme();gameEvents.length=0;turnNumber=1;recordEvent('Partie',TERR[TL[TER]].n+' : +1 attaque aux dés '+TL[TER]+'. Gagnez avec '+WIN+' créatures entrées dans le camp adverse ou '+KW+' combats remportés.'+(TL[TER]==='feu'?' Les évents fumants bloquent les invocations et les déplacements.':''));msg=TERR[TL[TER]].em+' '+TERR[TL[TER]].n+' : +1 aux dés '+TL[TER]+'. Victoire : 2 monstres passés dans la zone adverse, ou 3 ennemis vaincus en duel. Glisse un dé de ta main sur le damier, puis lance-le.';render()}
@@ -617,7 +619,7 @@ window.hackeniaGame={
  portrait:i=>handPortrait(i),modelInfo:async i=>{await manifestReady;return MAN?.creatures?.[cid(M[i])]||null},loadModelViewer:loadMV,
  snapshot:()=>({b,cr,cur,mode,pc,hov,die,rot,sel,anim,cubeCls,rzCur,cu,lastJ,over,ai,drag,dg,moved,terrain:TL[TER],blocked:TL[TER]==='feu'?FIRE_VENTS:[],preview:cells(),valid:cells().length?!!ok(cells()):false,reachable:mode==='i'&&sel?bfs(sel):null}),isBlocked:blocked,power:pw,elementColors:EC,monsters:M,board:BQ,tap:(x,y)=>{tap(x,y);render()},refresh:render};
 init();
-</script><script src="assets/pouch-opening.js?v=20261102-first-discovery"></script><script src="assets/portal.js?v=20261102-challenges-menu"></script><script type="module" src="assets/clearing.js?v=20261102-no-zone-labels" onerror="document.getElementById('terrain-status').textContent='Affichage de secours · module 3D indisponible'"></script></body></html>
+</script><script src="assets/pouch-opening.js?v=20261102-first-discovery"></script><script src="assets/portal.js?v=20261102-bubulles-rewards"></script><script type="module" src="assets/clearing.js?v=20261102-no-zone-labels" onerror="document.getElementById('terrain-status').textContent='Affichage de secours · module 3D indisponible'"></script></body></html>
 
 
 
