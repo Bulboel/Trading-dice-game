@@ -414,6 +414,7 @@ function openCard(k){const D=k.mi>=0?M[k.mi]:null,cl=b[k.y][k.x],el=(D&&D.el)||(
   '<div><b>Case actuelle</b>'+(cl&&!cl.f?'n° '+cl.v+(nv>cl.v?' (+'+(nv-cl.v)+' bonus)':''):'case colorée')+'</div><div><b>Attaque</b>'+pwc(k,k.x,k.y)+(cl&&!cl.f?' (dalle de '+P[cl.o]+')':' (case sans numéro)')+'</div>'+
   '<div><b>Fort contre</b>'+(BT[el]||'—')+'</div><div><b>Faible contre</b>'+(weak||'—')+'</div></div><p class="lo">« '+lo+' »</p><button onclick="closeCard()">Fermer</button></div>';
  try3d(D);$('fiche').hidden=false}
+function openHandCard(i){const m=pl[cur]?.h?.[i],D=M[m];if(!D)return;const el=D.el,col=EC[el]||'#c9a227',weak=Object.keys(BT).find(e=>BT[e]===el);$('fc').style.setProperty('--ec',col);$('fc').innerHTML='<div class="fh"><b>'+D.em+' '+D.cn+'</b><span class="tg" style="background:'+col+'">'+el+'</span></div><div class="st"><div class="fl"></div><div class="sc"><div class="fg">'+figure(D.fk,col,D.t)+'</div></div></div><div class="fb"><div class="gr"><div><b>Statut</b>Dans votre main · pas encore invoqué</div><div><b>Dé d’origine</b>'+D.n+' · niv. '+D.lv+' · '+D.c.length+' faces</div><div><b>Invocation</b>'+D.nd+' dé'+(D.nd>1?'s':'')+' · résultat '+D.need+'+</div><div><b>Fort contre</b>'+(BT[el]||'—')+'</div><div><b>Faible contre</b>'+(weak||'—')+'</div></div><p class="lo">« '+D.lo+' »</p><button onclick="closeCard()">Fermer</button></div>';try3d(D);$('fiche').hidden=false}
 function closeCard(){$('fiche').hidden=true}
 function inspect(x,y,card=true){if(!inb(x,y))return;const c=b[y][x],k=at(x,y),z=y<Z?' · Zone Orange':y>=H-Z?' · Zone Vert':'';let h;
  if(!c)h='<b>Case vide</b>'+z;
@@ -460,7 +461,7 @@ const fdrop=e=>{if(!dg)return;const d=dg;dg=null;lz=null;d.g.remove();
  if(d.mv&&e.type=='pointerup'){const[x,y]=cellAt(e),m=pl[cur].h[d.i];mode='i';hov=null;
   if(inb(x,y)&&ok(cellsOf(m,cur?0:2,{x,y}),M[m].lv)){hi=d.i;die=m;rot=cur?0:2;pc={x,y};mode='p';$('roll').textContent='';$('roll').className='';msg='Le dé est posé, fermé. Touche « Lancer » (ou déplace-le d’abord).'+bm()}
   else msg=inb(x,y)?'Placement impossible : '+why(cellsOf(m,cur?0:2,{x,y}),M[m].lv):'Dépose le dé sur le damier.'}
- else if(!d.mv&&e.type=='pointerup')pick(d.i);
+ else if(!d.mv&&e.type=='pointerup')openHandCard(d.i);
  else{mode='i';hov=null}
  render()};
 Hd.onpointerup=fdrop;Hd.onpointercancel=fdrop;
