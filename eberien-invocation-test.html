@@ -31,7 +31,7 @@ const plate=new THREE.Mesh(new THREE.BoxGeometry(1.3,.045,1.3),blue);body.add(pl
 const border=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1.31,.052,1.31)),new THREE.LineBasicMaterial({color:0xc4d5e7}));body.add(border);
 const medallion=new THREE.Mesh(new THREE.TorusGeometry(.32,.045,8,40),gold);medallion.rotation.x=Math.PI/2;medallion.position.y=.029;body.add(medallion);
 if(axis==='top'){hinge.position.set(half,half,0);body.position.set(-half,0,0);panels.push({hinge,axis,side});}
-else if(axis==='bottom'){hinge.position.set(0,-half,0);body.position.set(0,0,0);panels.push({hinge,axis,side});}
+else if(axis==='bottom'){hinge.position.set(-half,-half,0);body.position.set(half,0,0);panels.push({hinge,axis,side});}
 else if(axis==='x'){hinge.position.set(side*half,-half,0);body.position.set(0,half,0);body.rotation.z=Math.PI/2;panels.push({hinge,axis,side});}
 else{hinge.position.set(0,-half,side*half);body.position.set(0,half,0);body.rotation.x=Math.PI/2;panels.push({hinge,axis,side});}
 }
@@ -61,7 +61,7 @@ try{
 }catch(e){status.textContent='Impossible de charger '+name+' : '+e.message;console.error(e)}
 }
 function ease(t){return t*t*(3-2*t)}
-function pose(t){const unfold=ease(Math.max(0,Math.min(1,(t-.08)/.36)));for(const p of panels){if(p.axis==='top')p.hinge.rotation.z=-unfold*Math.PI*.5;else if(p.axis==='bottom')p.hinge.rotation.x=0;else if(p.axis==='x')p.hinge.rotation.z=-p.side*unfold*Math.PI*.5;else p.hinge.rotation.x=p.side*unfold*Math.PI*.5}
+function pose(t){const unfold=ease(Math.max(0,Math.min(1,(t-.08)/.36)));for(const p of panels){if(p.axis==='top')p.hinge.rotation.z=-unfold*Math.PI*.5;else if(p.axis==='bottom')p.hinge.rotation.z=-unfold*Math.PI*.5;else if(p.axis==='x')p.hinge.rotation.z=-p.side*unfold*Math.PI*.5;else p.hinge.rotation.x=p.side*unfold*Math.PI*.5}
 const appear=ease(Math.max(0,Math.min(1,(t-.40)/.46)));character.visible=appear>.005;character.position.y=-1.8+appear*1.8;character.scale.setScalar(.45+.55*appear);cube.visible=t<.38;light.intensity=6*Math.sin(Math.PI*Math.max(0,Math.min(1,(t-.22)/.68)));glow.material.opacity=.26*Math.sin(Math.PI*Math.max(0,Math.min(1,(t-.2)/.7)));glow.scale.setScalar(1+appear*1.5);}
 async function start(){if(!ready)return;btn.open.disabled=true;btn.again.disabled=true;btn.spell.disabled=false;btn.victory.disabled=false;await change('idle');playing=true;progress=0;character.visible=false;cube.visible=true;pose(0);status.textContent='Le dé s’ouvre…';}
 btn.open.addEventListener('click',start);btn.again.addEventListener('click',start);
