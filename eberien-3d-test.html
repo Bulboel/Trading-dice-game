@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Atelier 3D — Eberien</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#101a2a;color:#f4e7cb;font:15px system-ui,sans-serif}main{max-width:900px;margin:auto;padding:16px}h1{font-size:1.5rem}#view{height:min(68vh,650px);min-height:350px;border:1px solid #806c4a;border-radius:14px;overflow:hidden;background:radial-gradient(ellipse at 50% 35%,#334666,#101725)}#view canvas{display:block;width:100%;height:100%}.controls{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}button{background:#263f5c;border:1px solid #ad8b50;color:#fff1d4;padding:12px 16px;border-radius:9px;cursor:pointer}button[aria-pressed=true]{background:#83612d}#status{min-height:2em;color:#e5d3ae}p{line-height:1.5}
+</style></head><body><main><h1>✦ Atelier 3D — Eberien</h1><p>Prévisualisation indépendante : aucune règle du jeu n'est modifiée.</p><div id="view" role="img" aria-label="Modèle 3D animé d'Eberien"></div><div class="controls"><button data-clip="idle" aria-pressed="true">Attente</button><button data-clip="spell" aria-pressed="false">Lancer un sort</button><button data-clip="victory" aria-pressed="false">Victoire</button><button id="reset">Recentrer</button></div><div id="status" role="status">Chargement…</div><p>Glisse pour faire tourner le personnage, utilise la molette ou le pincement pour zoomer. Les animations sont chargées à la demande pour économiser les données mobiles.</p></main>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+const files={idle:'Eberien Idle.glb',spell:'Eberien Spell cast.glb',victory:'Eberien Victory.glb'};
+const base='./assets/Models/Characters/';
+const view=document.querySelector('#view'),status=document.querySelector('#status');
+const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(35,1,.01,100);
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;
+view.appendChild(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0xe6f2ff,0x2b2738,2.3));
+const key=new THREE.DirectionalLight(0xffe5bf,2.8);key.position.set(3,6,5);scene.add(key);
+const fill=new THREE.DirectionalLight(0x9fbaff,1.5);fill.position.set(-4,2,-3);scene.add(fill);
+const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.minDistance=.7;controls.maxDistance=15;
+const loader=new GLTFLoader();const clock=new THREE.Clock();let model=null,mixer=null,active=null,request=0;
+function dispose(root){root.traverse(o=>{if(o.isMesh){o.geometry?.dispose();const mats=Array.isArray(o.material)?o.material:[o.material];mats.forEach(m=>{if(!m)return;for(const value of Object.values(m))if(value?.isTexture)value.dispose();m.dispose()})}})}
+function frame(obj){const bounds=new THREE.Box3().setFromObject(obj),size=bounds.getSize(new THREE.Vector3()),center=bounds.getCenter(new THREE.Vector3());const span=Math.max(size.y,size.x, size.z, .1);controls.target.copy(center);camera.position.set(center.x+span*.65,center.y+span*.18,center.z+span*2.1);camera.near=Math.max(.01,span/100);camera.far=Math.max(100,span*30);camera.updateProjectionMatrix();controls.update()}
+async function show(name){const ticket=++request;status.textContent='Chargement de '+name+'…';document.querySelectorAll('[data-clip]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.clip===name)));try{const gltf=await loader.loadAsync(base+encodeURIComponent(files[name]));if(ticket!==request){dispose(gltf.scene);return}if(mixer){mixer.stopAllAction();mixer.uncacheRoot(model)}if(model){scene.remove(model);dispose(model)}model=gltf.scene;scene.add(model);mixer=new THREE.AnimationMixer(model);const clip=gltf.animations[0];if(clip){const action=mixer.clipAction(clip);action.reset().play();active=name;status.textContent='Animation : '+clip.name+' ('+Math.round(clip.duration*10)/10+' s)'}else status.textContent='Modèle chargé, aucune animation trouvée';frame(model)}catch(err){if(ticket===request){status.textContent='Impossible de charger '+files[name]+'. Vérifie le nom du fichier et sa présence sur GitHub.';console.error(err)}}}
+document.querySelectorAll('[data-clip]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.clip)));
+document.querySelector('#reset').addEventListener('click',()=>{if(model)frame(model)});
+function resize(){const w=view.clientWidth,h=view.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false)}new ResizeObserver(resize).observe(view);resize();
+function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.05);mixer?.update(dt);controls.update();renderer.render(scene,camera)}animate();show('idle');
+</script></body></html>
