@@ -36,12 +36,12 @@ function drawPlacementLens(){
 }
 
 const navigation=document.createElement('div');navigation.id='board-navigation';navigation.setAttribute('role','group');navigation.setAttribute('aria-label','Vue du plateau');
-navigation.innerHTML='<button type="button" id="zoom-out" aria-label="Dézoomer le plateau" title="Dézoomer">−</button><output id="zoom-level" aria-live="polite">110 %</output><button type="button" id="zoom-in" aria-label="Zoomer le plateau" title="Zoomer">+</button><button type="button" id="pan-view" aria-label="Déplacer la vue" aria-pressed="false" title="Déplacer la vue : active puis fais glisser le terrain">✥</button><button type="button" id="reset-view" aria-label="Vue entière du plateau" title="Vue entière">⌖</button><div class="board-pan-pad" aria-label="Explorer le plateau"><button type="button" data-pan="up" title="Vers le haut">↑</button><button type="button" data-pan="left" title="Vers la gauche">←</button><button type="button" data-pan="down" title="Vers le bas">↓</button><button type="button" data-pan="right" title="Vers la droite">→</button></div>';
+navigation.innerHTML='<button type="button" id="zoom-out" aria-label="Dézoomer le plateau" title="Dézoomer">−</button><output id="zoom-level" aria-live="polite">110 %</output><button type="button" id="zoom-in" aria-label="Zoomer le plateau" title="Zoomer">+</button><button type="button" id="pan-view" aria-label="Déplacer la vue" aria-pressed="false" title="Déplacer la vue : active puis fais glisser le terrain">✥</button><button type="button" id="reset-view" aria-label="Vue entière du plateau" title="Vue entière">⌖</button><button type="button" id="orbit-view" aria-label="Tourner la caméra" aria-pressed="false" title="Tourner autour du plateau : active puis fais glisser">⟳</button><div class="board-pan-pad" aria-label="Explorer le plateau"><button type="button" data-pan="up" title="Vers le haut">↑</button><button type="button" data-pan="left" title="Vers la gauche">←</button><button type="button" data-pan="down" title="Vers le bas">↓</button><button type="button" data-pan="right" title="Vers la droite">→</button></div>';
 host.append(navigation);
-const panStyle=document.createElement('style');panStyle.textContent='#board-navigation{display:flex;align-items:center;gap:5px;flex-wrap:wrap;max-width:min(96%,540px)}#board-navigation .board-pan-pad{display:grid;grid-template-columns:repeat(3,25px);grid-template-rows:repeat(3,23px);gap:1px;margin-left:5px;border-left:1px solid #c6b68a55;padding-left:9px}#board-navigation .board-pan-pad button{font-size:15px;line-height:1;min-width:25px;width:25px;height:23px;padding:0;border:1px solid #bba97955;border-radius:5px;background:#17362ce8;color:#eadab1;cursor:pointer}#board-navigation .board-pan-pad button:hover{background:#3e624b}#board-navigation .board-pan-pad [data-pan=up]{grid-column:2;grid-row:1}#board-navigation .board-pan-pad [data-pan=left]{grid-column:1;grid-row:2}#board-navigation .board-pan-pad [data-pan=down]{grid-column:2;grid-row:3}#board-navigation .board-pan-pad [data-pan=right]{grid-column:3;grid-row:2}@media(max-width:600px){#board-navigation{max-width:100%;gap:3px}#board-navigation .board-pan-pad{margin-left:0;padding-left:4px}}';document.head.append(panStyle);
+const panStyle=document.createElement('style');panStyle.textContent='#board-navigation #orbit-view[aria-pressed=true]{background:#5b7251;color:#fff2bf;box-shadow:0 0 0 1px #e1c781}canvas.orbiting{cursor:grab}canvas.orbiting:active{cursor:grabbing}#board-navigation{display:flex;align-items:center;gap:5px;flex-wrap:wrap;max-width:min(96%,540px)}#board-navigation .board-pan-pad{display:grid;grid-template-columns:repeat(3,25px);grid-template-rows:repeat(3,23px);gap:1px;margin-left:5px;border-left:1px solid #c6b68a55;padding-left:9px}#board-navigation .board-pan-pad button{font-size:15px;line-height:1;min-width:25px;width:25px;height:23px;padding:0;border:1px solid #bba97955;border-radius:5px;background:#17362ce8;color:#eadab1;cursor:pointer}#board-navigation .board-pan-pad button:hover{background:#3e624b}#board-navigation .board-pan-pad [data-pan=up]{grid-column:2;grid-row:1}#board-navigation .board-pan-pad [data-pan=left]{grid-column:1;grid-row:2}#board-navigation .board-pan-pad [data-pan=down]{grid-column:2;grid-row:3}#board-navigation .board-pan-pad [data-pan=right]{grid-column:3;grid-row:2}@media(max-width:600px){#board-navigation{max-width:100%;gap:3px}#board-navigation .board-pan-pad{margin-left:0;padding-left:4px}}';document.head.append(panStyle);
 
 const zoneLabels=[{owner:1,z:-5.65,title:'Zone orange',hint:'Entrée des Verts : +1 point'},{owner:0,z:5.65,title:'Zone verte',hint:'Entrée des Oranges : +1 point'}].map(data=>{const el=document.createElement('div');el.className='score-zone score-zone-'+data.owner;el.innerHTML='<b>'+data.title+'</b><span>'+data.hint+'</span>';host.append(el);return{...data,el}});
-let zoom=1.1,panX=0,panY=0,panEnabled=false,panDrag=null,viewSpan=9,viewAspect=1;
+let zoom=1.1,panX=0,panY=0,panEnabled=false,panDrag=null,viewSpan=9,viewAspect=1,orbitYaw=Math.atan2(8,16),orbitPitch=Math.atan2(15,Math.hypot(8,16));
 
 const scene=new THREE.Scene(),world=new THREE.Group();scene.add(world);scene.fog=new THREE.Fog(0x304d3d,25,58);
 const camera=new THREE.OrthographicCamera(-10,10,10,-10,.1,100);camera.position.set(8,15,16);camera.lookAt(0,0,0);
@@ -284,8 +284,13 @@ function cellAt(e){const r=canvas.getBoundingClientRect();if(e.clientX<r.left||e
  const hits=raycaster.intersectObjects(pieces.children,true);for(const h of hits){let o=h.object;while(o&&o.parent!==pieces)o=o.parent;if(!o||o===dieGroup)continue;const k=o.userData.k;if(k)return[k.x,k.y];const t=[...tiles.values()].find(t=>t.pivot===o);if(t)return[t.x,t.y]}
  if(!raycaster.ray.intersectPlane(pickPlane,hit))return[-1,-1];world.worldToLocal(hit);const x=Math.floor(hit.x+4),y=Math.floor(hit.z+5);return x>=0&&x<8&&y>=0&&y<10?[x,y]:[-1,-1]}
 function updateCamera(){
- const right=new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld,0),up=new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld,1),offset=right.multiplyScalar(panX).add(up.multiplyScalar(panY));
- camera.position.copy(new THREE.Vector3(8,15,16).add(offset));camera.lookAt(offset);camera.zoom=zoom;camera.updateProjectionMatrix();camera.updateMatrixWorld(true);
+ const distance=Math.hypot(8,15,16),cp=Math.cos(orbitPitch);
+ const direction=new THREE.Vector3(Math.sin(orbitYaw)*cp,Math.sin(orbitPitch),Math.cos(orbitYaw)*cp);
+ const right=new THREE.Vector3(Math.cos(orbitYaw),0,-Math.sin(orbitYaw));
+ const up=new THREE.Vector3().crossVectors(direction,right).normalize();
+ const offset=right.multiplyScalar(panX).add(up.multiplyScalar(panY));
+ camera.position.copy(direction.multiplyScalar(distance).add(offset));camera.up.set(0,1,0);camera.lookAt(offset);
+ camera.zoom=zoom;camera.updateProjectionMatrix();camera.updateMatrixWorld(true);
 }
 function changeZoom(value,anchor){
  const next=Math.round(Math.max(1,Math.min(8,value))*100)/100;
@@ -293,21 +298,25 @@ function changeZoom(value,anchor){
  zoom=next;if(zoom===1){panX=0;panY=0}panX=Math.max(-18,Math.min(18,panX));panY=Math.max(-18,Math.min(18,panY));
  document.getElementById('zoom-level').textContent=Math.round(zoom*100)+' %';document.getElementById('zoom-out').disabled=zoom<=1;document.getElementById('zoom-in').disabled=zoom>=8;updateCamera();
 }
-function resetView(){panX=panY=0;changeZoom(1)}
+function resetView(){panX=panY=0;orbitYaw=Math.atan2(8,16);orbitPitch=Math.atan2(15,Math.hypot(8,16));changeZoom(1)}
 document.getElementById('zoom-in').onclick=()=>changeZoom(zoom+.2);
 document.getElementById('zoom-out').onclick=()=>changeZoom(zoom-.2);
 document.getElementById('reset-view').onclick=resetView;
 navigation.querySelectorAll('[data-pan]').forEach(button=>button.onclick=()=>{const step=Math.max(.35,viewSpan/zoom*.32),dir=button.dataset.pan;if(dir==='left')panX-=step;if(dir==='right')panX+=step;if(dir==='up')panY+=step;if(dir==='down')panY-=step;panX=Math.max(-18,Math.min(18,panX));panY=Math.max(-18,Math.min(18,panY));updateCamera()});
-document.getElementById('pan-view').onclick=()=>{panEnabled=!panEnabled;document.getElementById('pan-view').setAttribute('aria-pressed',String(panEnabled));canvas.classList.toggle('panning',panEnabled)};
+let orbitEnabled=false;document.getElementById('orbit-view').onclick=()=>{orbitEnabled=!orbitEnabled;document.getElementById('orbit-view').setAttribute('aria-pressed',String(orbitEnabled));canvas.classList.toggle('orbiting',orbitEnabled);if(orbitEnabled&&panEnabled)document.getElementById('pan-view').click()};
+document.getElementById('pan-view').onclick=()=>{panEnabled=!panEnabled;if(panEnabled&&orbitEnabled)document.getElementById('orbit-view').click();document.getElementById('pan-view').setAttribute('aria-pressed',String(panEnabled));canvas.classList.toggle('panning',panEnabled)};
 canvas.addEventListener('wheel',e=>{if(!active||e.ctrlKey)return;e.preventDefault();changeZoom(zoom*Math.exp(-e.deltaY*.0015),e)},{passive:false});
 canvas.addEventListener('contextmenu',e=>{if(active)e.preventDefault()});
 canvas.onpointerdown=e=>{
- if(panEnabled||e.button===2||e.shiftKey){e.preventDefault();canvas.setPointerCapture(e.pointerId);panDrag={id:e.pointerId,x:e.clientX,y:e.clientY};return}
+ if(panEnabled||orbitEnabled||e.button===2||e.shiftKey||e.altKey){e.preventDefault();canvas.setPointerCapture(e.pointerId);panDrag={id:e.pointerId,x:e.clientX,y:e.clientY,orbit:orbitEnabled||e.altKey};return}
  if(state.over||(state.ai&&state.cur===1))return;e.preventDefault();canvas.setPointerCapture(e.pointerId);game.board.onpointerdown({clientX:e.clientX,clientY:e.clientY,pointerId:e.pointerId,preventDefault(){}})
 };
 // Keep capture on the visible canvas, including when the board is magnified.
 const originalCapture=game.board.setPointerCapture.bind(game.board);game.board.setPointerCapture=id=>active?canvas.setPointerCapture(id):originalCapture(id);
-canvas.onpointermove=e=>{if(panDrag){if(e.pointerId!==panDrag.id)return;const r=canvas.getBoundingClientRect();panX-=(e.clientX-panDrag.x)/r.width*2*viewSpan*viewAspect/zoom;panY+=(e.clientY-panDrag.y)/r.height*2*viewSpan/zoom;panX=Math.max(-6,Math.min(6,panX));panY=Math.max(-6,Math.min(6,panY));panDrag.x=e.clientX;panDrag.y=e.clientY;updateCamera();return}game.board.onpointermove(e)};
+canvas.onpointermove=e=>{if(panDrag){if(e.pointerId!==panDrag.id)return;const r=canvas.getBoundingClientRect(),dx=e.clientX-panDrag.x,dy=e.clientY-panDrag.y;
+ if(panDrag.orbit){orbitYaw-=dx/r.width*Math.PI*2;orbitPitch=Math.max(.035,Math.min(Math.PI/2-.035,orbitPitch+dy/r.height*Math.PI));}
+ else{panX-=dx/r.width*2*viewSpan*viewAspect/zoom;panY+=dy/r.height*2*viewSpan/zoom;panX=Math.max(-18,Math.min(18,panX));panY=Math.max(-18,Math.min(18,panY));}
+ panDrag.x=e.clientX;panDrag.y=e.clientY;updateCamera();return}game.board.onpointermove(e)};
 canvas.onpointerup=e=>{if(panDrag){panDrag=null;return}game.board.onpointerup(e)};
 canvas.onpointercancel=e=>{if(panDrag){panDrag=null;return}game.board.onpointercancel(e)};
 let sceneryKey='';
