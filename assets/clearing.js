@@ -36,8 +36,10 @@ function drawPlacementLens(){
 }
 
 const navigation=document.createElement('div');navigation.id='board-navigation';navigation.setAttribute('role','group');navigation.setAttribute('aria-label','Vue du plateau');
-navigation.innerHTML='<button type="button" id="zoom-out" aria-label="Dézoomer le plateau" title="Dézoomer">−</button><output id="zoom-level" aria-live="polite">110 %</output><button type="button" id="zoom-in" aria-label="Zoomer le plateau" title="Zoomer">+</button><button type="button" id="pan-view" aria-label="Déplacer la vue" aria-pressed="false" title="Déplacer la vue : active puis fais glisser le terrain">✥</button><button type="button" id="reset-view" aria-label="Vue entière du plateau" title="Vue entière">⌖</button>';
+navigation.innerHTML='<button type="button" id="zoom-out" aria-label="Dézoomer le plateau" title="Dézoomer">−</button><output id="zoom-level" aria-live="polite">110 %</output><button type="button" id="zoom-in" aria-label="Zoomer le plateau" title="Zoomer">+</button><button type="button" id="pan-view" aria-label="Déplacer la vue" aria-pressed="false" title="Déplacer la vue : active puis fais glisser le terrain">✥</button><button type="button" id="reset-view" aria-label="Vue entière du plateau" title="Vue entière">⌖</button><div class="board-pan-pad" aria-label="Explorer le plateau"><button type="button" data-pan="up" title="Vers le haut">↑</button><button type="button" data-pan="left" title="Vers la gauche">←</button><button type="button" data-pan="down" title="Vers le bas">↓</button><button type="button" data-pan="right" title="Vers la droite">→</button></div>';
 host.append(navigation);
+const panStyle=document.createElement('style');panStyle.textContent='#board-navigation{display:flex;align-items:center;gap:5px;flex-wrap:wrap;max-width:min(96%,540px)}#board-navigation .board-pan-pad{display:grid;grid-template-columns:repeat(3,25px);grid-template-rows:repeat(3,23px);gap:1px;margin-left:5px;border-left:1px solid #c6b68a55;padding-left:9px}#board-navigation .board-pan-pad button{font-size:15px;line-height:1;min-width:25px;width:25px;height:23px;padding:0;border:1px solid #bba97955;border-radius:5px;background:#17362ce8;color:#eadab1;cursor:pointer}#board-navigation .board-pan-pad button:hover{background:#3e624b}#board-navigation .board-pan-pad [data-pan=up]{grid-column:2;grid-row:1}#board-navigation .board-pan-pad [data-pan=left]{grid-column:1;grid-row:2}#board-navigation .board-pan-pad [data-pan=down]{grid-column:2;grid-row:3}#board-navigation .board-pan-pad [data-pan=right]{grid-column:3;grid-row:2}@media(max-width:600px){#board-navigation{max-width:100%;gap:3px}#board-navigation .board-pan-pad{margin-left:0;padding-left:4px}}';document.head.append(panStyle);
+
 const zoneLabels=[{owner:1,z:-5.65,title:'Zone orange',hint:'Entrée des Verts : +1 point'},{owner:0,z:5.65,title:'Zone verte',hint:'Entrée des Oranges : +1 point'}].map(data=>{const el=document.createElement('div');el.className='score-zone score-zone-'+data.owner;el.innerHTML='<b>'+data.title+'</b><span>'+data.hint+'</span>';host.append(el);return{...data,el}});
 let zoom=1.1,panX=0,panY=0,panEnabled=false,panDrag=null,viewSpan=9,viewAspect=1;
 
@@ -239,7 +241,7 @@ async function attachCreatureModel(g,k){
  if(!modelCache.has(url))modelCache.set(url,(async()=>{const exists=await fetch(url,{method:'HEAD'});if(!exists.ok)return null;const tools=await getModelTools();const gltf=await tools.loader.loadAsync(url);return{gltf,clone:tools.clone}})().catch(()=>null));
  const asset=await modelCache.get(url);if(!asset||!g.parent||g.userData.modelId!==mi)return;
  const root=asset.clone(asset.gltf.scene),holder=new THREE.Group();holder.userData.imported=true;holder.add(root);if(mi===36||mi===37)holder.rotation.y=Math.PI;root.updateMatrixWorld(true);const bounds=new THREE.Box3().setFromObject(root),size=bounds.getSize(new THREE.Vector3());if(!Number.isFinite(size.y)||size.y<=0)return;
- const heroModel=mi===36||mi===37;const scale=heroModel?2.22/size.y:Math.min(.95/size.y,.78/Math.max(size.x,.01),.78/Math.max(size.z,.01));root.scale.setScalar(scale);root.position.set(-(bounds.min.x+bounds.max.x)*scale/2,-bounds.min.y*scale+.1,-(bounds.min.z+bounds.max.z)*scale/2);if(mi===37){root.updateMatrixWorld(true);const centeredBounds=new THREE.Box3().setFromObject(root);const center=centeredBounds.getCenter(new THREE.Vector3());root.position.x-=center.x;root.position.z-=center.z;}
+ const heroModel=mi===36||mi===37;const scale=heroModel?2.22/size.y:Math.min(.95/size.y,.78/Math.max(size.x,.01),.78/Math.max(size.z,.01));root.scale.setScalar(scale);root.position.set(-(bounds.min.x+bounds.max.x)*scale/2,-bounds.min.y*scale+.1,-(bounds.min.z+bounds.max.z)*scale/2);if(mi===37){holder.updateMatrixWorld(true);const centeredBounds=new THREE.Box3().setFromObject(holder);const center=centeredBounds.getCenter(new THREE.Vector3());holder.position.x-=center.x-g.position.x;holder.position.z-=center.z-g.position.z;}
  root.traverse(o=>{o.userData.imported=true;if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});g.children.forEach((o,i)=>{if(i>0)o.visible=false});g.add(holder);g.userData.model=holder;
  if(asset.gltf.animations.length){const mixer=new THREE.AnimationMixer(root),idle=asset.gltf.animations.find(a=>/idle|stand|breath/i.test(a.name))||asset.gltf.animations[0];mixer.clipAction(idle).play();g.userData.mixer=mixer}
  }catch(error){console.info('Figurine provisoire conservée pour ce modèle.',mi)}
@@ -267,7 +269,14 @@ function sync(){state=game.snapshot();setActive(state.terrain==='terre'||state.t
 }
 function matForElement(el){if(!tileMats.has(el))tileMats.set(el,mat(game.elementColors[el],{roughness:.38,metalness:.2}));return tileMats.get(el)}
 const dieGroup=new THREE.Group();pieces.add(dieGroup);dieGroup.visible=false;const dieBody=mesh(new THREE.BoxGeometry(.72,.72,.72),gold,dieGroup);const dieLabel=new THREE.Mesh(new THREE.PlaneGeometry(.64,.64),label(1,''));dieLabel.rotation.x=-Math.PI/2;dieLabel.position.y=.365;dieGroup.add(dieLabel);
-const edges=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(.735,.735,.735)),new THREE.LineBasicMaterial({color:0xe1dbb4}));dieGroup.add(edges);
+const edges=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(.755,.755,.755)),new THREE.LineBasicMaterial({color:0xe9d4a2}));dieGroup.add(edges);
+const dieMetal=new THREE.MeshStandardMaterial({color:0xcbb47c,metalness:.83,roughness:.24}),dieDark=new THREE.MeshStandardMaterial({color:0x213e34,metalness:.38,roughness:.35});
+for(const axis of ['x','y','z'])for(const a of[-.365,.365])for(const b of[-.365,.365]){const bar=mesh(new THREE.CylinderGeometry(.019,.019,.74,8),dieMetal,dieGroup);if(axis==='x'){bar.rotation.z=Math.PI/2;bar.position.set(0,a,b)}else if(axis==='y')bar.position.set(a,0,b);else{bar.rotation.x=Math.PI/2;bar.position.set(a,b,0)}}
+for(const x of[-.355,.355])for(const y of[-.355,.355])for(const z of[-.355,.355]){const stud=mesh(new THREE.SphereGeometry(.045,8,6),dieMetal,dieGroup);stud.position.set(x,y,z)}
+for(const sign of[-1,1]){const ring=mesh(new THREE.TorusGeometry(.235,.012,6,36),dieMetal,dieGroup);ring.position.y=sign*.369;ring.rotation.x=Math.PI/2}
+const sideSigil=new THREE.Group();dieGroup.add(sideSigil);for(const z of[-.375,.375]){const ring=mesh(new THREE.TorusGeometry(.19,.012,6,32),dieMetal,sideSigil);ring.position.z=z;const rune=mesh(new THREE.OctahedronGeometry(.085),dieMetal,sideSigil);rune.position.z=z+Math.sign(z)*.01}
+for(const x of[-.375,.375]){const ring=mesh(new THREE.TorusGeometry(.19,.012,6,32),dieMetal,sideSigil);ring.position.x=x;ring.rotation.y=Math.PI/2}
+
 // Raycasting is shared by board clicks, drag and drop, and touch placement.
 const raycaster=new THREE.Raycaster(),mouse=new THREE.Vector2(),pickPlane=new THREE.Plane(new THREE.Vector3(0,1,0),-.22),hit=new THREE.Vector3();
 function cellAt(e){const r=canvas.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)return[-1,-1];mouse.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);raycaster.setFromCamera(mouse,camera);
@@ -281,18 +290,19 @@ function updateCamera(){
 function changeZoom(value,anchor){
  const next=Math.round(Math.max(1,Math.min(8,value))*100)/100;
  if(anchor){const r=canvas.getBoundingClientRect(),nx=(anchor.clientX-r.left)/r.width*2-1,ny=1-(anchor.clientY-r.top)/r.height*2;panX+=nx*viewSpan*viewAspect*(1/zoom-1/next);panY+=ny*viewSpan*(1/zoom-1/next)}
- zoom=next;if(zoom===1){panX=0;panY=0}panX=Math.max(-6,Math.min(6,panX));panY=Math.max(-6,Math.min(6,panY));
+ zoom=next;if(zoom===1){panX=0;panY=0}panX=Math.max(-18,Math.min(18,panX));panY=Math.max(-18,Math.min(18,panY));
  document.getElementById('zoom-level').textContent=Math.round(zoom*100)+' %';document.getElementById('zoom-out').disabled=zoom<=1;document.getElementById('zoom-in').disabled=zoom>=8;updateCamera();
 }
 function resetView(){panX=panY=0;changeZoom(1)}
 document.getElementById('zoom-in').onclick=()=>changeZoom(zoom+.2);
 document.getElementById('zoom-out').onclick=()=>changeZoom(zoom-.2);
 document.getElementById('reset-view').onclick=resetView;
+navigation.querySelectorAll('[data-pan]').forEach(button=>button.onclick=()=>{const step=Math.max(.35,viewSpan/zoom*.32),dir=button.dataset.pan;if(dir==='left')panX-=step;if(dir==='right')panX+=step;if(dir==='up')panY+=step;if(dir==='down')panY-=step;panX=Math.max(-18,Math.min(18,panX));panY=Math.max(-18,Math.min(18,panY));updateCamera()});
 document.getElementById('pan-view').onclick=()=>{panEnabled=!panEnabled;document.getElementById('pan-view').setAttribute('aria-pressed',String(panEnabled));canvas.classList.toggle('panning',panEnabled)};
 canvas.addEventListener('wheel',e=>{if(!active||e.ctrlKey)return;e.preventDefault();changeZoom(zoom*Math.exp(-e.deltaY*.0015),e)},{passive:false});
 canvas.addEventListener('contextmenu',e=>{if(active)e.preventDefault()});
 canvas.onpointerdown=e=>{
- if(panEnabled||e.button===2){e.preventDefault();canvas.setPointerCapture(e.pointerId);panDrag={id:e.pointerId,x:e.clientX,y:e.clientY};return}
+ if(panEnabled||e.button===2||e.shiftKey){e.preventDefault();canvas.setPointerCapture(e.pointerId);panDrag={id:e.pointerId,x:e.clientX,y:e.clientY};return}
  if(state.over||(state.ai&&state.cur===1))return;e.preventDefault();canvas.setPointerCapture(e.pointerId);game.board.onpointerdown({clientX:e.clientX,clientY:e.clientY,pointerId:e.pointerId,preventDefault(){}})
 };
 // Keep capture on the visible canvas, including when the board is magnified.
