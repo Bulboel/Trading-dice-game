@@ -102,6 +102,7 @@
       "glb": "models/fusion.glb",
       "nom": "Dragon de Fusion"
     },
+    "kala": {"glb":"Models/Characters/kala idle.glb","nom":"Kala","animations":{"idle":"Models/Characters/kala idle.glb","spell":"Models/Characters/Kala attaque.glb","victory":"Models/Characters/kala victoire.glb"}},
     "eberien": {
       "glb": "Models/Characters/Eberien Idle.glb",
       "nom": "Eberien",
