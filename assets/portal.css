@@ -308,3 +308,54 @@ body[data-portal-view="home"] #portal #portal-nav .portal-tab:before{width:250px
  }
  body[data-portal-view="home"] #portal #portal-nav .portal-tab:last-child{grid-column:auto!important}
 }
+
+/* Mobile shell repair: lock all page-level widths and restore a compact, elegant header. */
+@media screen and (max-width:700px){
+ html:has(body.portal-open),html:has(body.portal-open) body{width:100%!important;max-width:100%!important;min-width:0!important;overflow-x:clip!important}
+ body.portal-open #portal{position:relative!important;box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-width:0!important;margin:0!important;padding:0 10px 16px!important;overflow-x:clip!important}
+ body.portal-open #portal .portal-head{
+  position:relative!important;display:grid!important;
+  grid-template-columns:minmax(0,1fr) 100px!important;
+  grid-template-rows:auto auto!important;
+  align-items:center!important;gap:4px 8px!important;
+  box-sizing:border-box!important;width:100%!important;max-width:100%!important;
+  min-width:0!important;min-height:0!important;
+  padding:8px 0 9px!important;margin:0!important;
+  overflow:visible!important;border-bottom:1px solid #d8bc7e38!important;
+ }
+ body.portal-open #portal .portal-brand{grid-column:1!important;grid-row:1!important;min-width:0!important;max-width:100%!important;overflow:hidden!important}
+ body.portal-open #portal .portal-brand h1{
+  font:500 clamp(20px,5.8vw,29px)/1.05 Georgia,'Times New Roman',serif!important;
+  letter-spacing:clamp(1.4px,.65vw,3px)!important;
+  white-space:nowrap!important;max-width:100%!important;
+  margin:0!important;color:#f1dfb4!important;
+  text-shadow:0 1px 0 #fff2,0 2px 8px #0007!important;
+ }
+ body.portal-open #portal .portal-brand small{
+  display:block!important;font:500 clamp(8px,2.15vw,10px)/1.4 system-ui,sans-serif!important;
+  letter-spacing:clamp(.7px,.35vw,1.6px)!important;
+  margin:4px 0 0!important;white-space:nowrap!important;color:#a7bcb0!important;
+ }
+ body.portal-open #portal .portal-head .wallet{
+  grid-column:2!important;grid-row:1!important;justify-self:end!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  box-sizing:border-box!important;width:100px!important;min-width:100px!important;
+  max-width:100px!important;height:48px!important;min-height:48px!important;
+  margin:0!important;padding:4px 5px!important;gap:4px!important;
+  border-radius:11px!important;overflow:hidden!important;
+ }
+ body.portal-open #portal .wallet-bubble{flex:0 0 26px!important;width:26px!important;height:26px!important}
+ body.portal-open #portal .wallet-copy{flex:1 1 0!important;min-width:0!important;max-width:58px!important;align-items:center!important}
+ body.portal-open #portal #portal-gold{font:700 15px/1.1 system-ui,sans-serif!important;white-space:nowrap!important;text-align:center!important}
+ body.portal-open #portal .wallet-copy small{font:9px/1.2 system-ui,sans-serif!important;white-space:nowrap!important;text-align:center!important}
+ body.portal-open #portal .portal-back:not([hidden]){
+  grid-column:1/-1!important;grid-row:2!important;
+  justify-self:start!important;min-height:29px!important;height:29px!important;
+  padding:3px 10px!important;margin:0!important;font-size:11px!important;
+ }
+ body.portal-open #portal .portal-back[hidden]{display:none!important}
+ body.portal-open #portal #portal-nav{box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-width:0!important}
+ body.portal-open #portal #portal-content{box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-width:0!important;margin-left:0!important;margin-right:0!important}
+ body.portal-open #portal #portal-content>*{max-width:100%;min-width:0}
+ body.portal-open:not([data-portal-view="home"]) #portal #portal-nav{overscroll-behavior-x:contain!important}
+}
