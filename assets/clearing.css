@@ -81,3 +81,29 @@ body:not(.portal-open):has(#bw.t-feu){background:radial-gradient(ellipse at 50% 
 #bw.view3d #board-navigation.show-pan-arrows .board-pan-pad{display:grid}
 #bw.view3d #board-navigation .board-pan-pad button{width:27px;min-width:27px;height:26px;min-height:26px;border-radius:6px}
 @media(max-width:700px){#bw.view3d #board-navigation{top:7px;right:7px;max-width:calc(100% - 14px);padding:3px 4px;gap:1px;border-radius:10px}#bw.view3d #board-navigation>button{width:27px;min-width:27px;flex-basis:27px;height:28px;min-height:28px;font-size:17px}#bw.view3d #board-navigation #zoom-level{min-width:36px;font-size:10px}}
+
+/* Phone battle HUD: all five dice must remain visible, with no sideways clipping. */
+@media(max-width:600px){
+ #bot{box-sizing:border-box;width:100%;height:auto;min-height:0;padding:3px 0 5px;overflow:visible}
+ #hand.row{display:flex;flex-wrap:nowrap!important;justify-content:space-between;align-items:stretch;gap:3px;width:100%;max-width:100%;min-width:0;margin:3px 0}
+ #hand .dc{box-sizing:border-box;flex:1 1 0!important;width:0;min-width:0!important;max-width:none!important;padding:4px 2px!important;border-radius:7px;overflow:hidden}
+ #hand .dc .dice-head{height:30px;overflow:hidden}
+ #hand .dc .dice-head svg{max-width:100%;height:23px}
+ #hand .dc .dice-art{height:32px;min-height:0;overflow:hidden}
+ #hand .dc .hand-portrait{width:33px;height:32px;max-width:100%}
+ #hand .dc .dice-name{font-size:clamp(8px,2.5vw,10px);line-height:1.15;overflow-wrap:anywhere}
+ #hand .dc .dice-type{font-size:8px;line-height:1.1;overflow-wrap:anywhere}
+ #hand .dc .dice-details{font-size:7px;line-height:1.15;overflow-wrap:anywhere}
+ #hand .dc .dice-roll{font-size:9px;line-height:1.1}
+ #mr{box-sizing:border-box;min-height:47px!important;height:auto!important;padding:4px 8px!important;margin:3px 0!important;gap:8px!important;border-radius:9px!important}
+ #mr .roll-pedestal{min-width:0!important;flex:0 0 auto!important;gap:2px}
+ #mr .roll-eyebrow{font-size:7px;letter-spacing:.7px}
+ #mr .roll-socket{min-height:32px}
+ #mr #roll.roll-dice-tray{min-height:34px;padding:1px 2px;gap:5px}
+ #mr .roll-wood-die{width:31px;height:31px;flex-basis:31px}
+ #mr .roll-wood-face{width:30px;height:30px;border-width:2px;border-radius:6px}
+ #mr .roll-wood-face b{font-size:17px;line-height:17px}
+ #mr .roll-wood-ornament{font-size:7px;line-height:5px}
+ #mr #msg{font-size:10px;line-height:1.25;max-height:39px;overflow:auto}
+ #bw.view3d #landscape{touch-action:none}
+}
