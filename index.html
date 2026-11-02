@@ -233,7 +233,7 @@ body{margin:0;padding:0;max-width:none;height:100%;overflow:hidden;font-size:14p
 #rot button{width:42px;height:42px;min-height:0;padding:0;border-radius:50%;font-size:19px;line-height:1;color:#fff;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);opacity:.6}
 #rot button:active{opacity:1}
 @media(prefers-reduced-motion:reduce){.pin{animation:none}}
-</style><link rel="stylesheet" href="assets/clearing.css?v=20261102-fleurs"></head><body><div id="app"><header id="identity"><div><span class="eyebrow">LES DÉS D’HACKÉNIA</span><h1 id="land-name">Clairière des murmures</h1></div><div class="land-note"><span></span>Terrain vivant</div></header><div id="top"><button id="vs" onclick="ai=!ai;init()" title="Changer de mode"></button><button id="tr" onclick="TER=(TER+1)%6;init()" title="Changer de terrain"></button><div id="hd"></div></div><div id="bw"><div id="land-caption"><span>LE SANCTUAIRE VERDOYANT</span><small>La rivière murmure. Le duel commence.</small></div><div id="cam"><div id="sc"></div><div id="bq"><div id="slab"><i class="a"></i><i class="b"></i><i class="c1"></i><i class="d"></i></div><div id="bd"></div><div id="ent"></div><div id="crl"></div><div id="fly"><div id="fx"><div class="fsh"></div><div class="fb"><div class="blk fc3"></div></div></div></div></div></div><div id="pins"></div><div id="rot"><button onclick="rotV(-90)" title="Pivoter à gauche">⟲</button><button onclick="rotV(0)" title="Recentrer">⌖</button><button onclick="rotV(90)" title="Pivoter à droite">⟳</button></div><div id="pad"><i></i></div></div><div id="terrain-tools"><span id="terrain-status" role="status">Clairière · terre +1</span><label>Ambiance <select id="quality" aria-label="Qualité de l’ambiance"><option value="auto">Auto</option><option value="rich">Détaillée</option><option value="light">Légère</option><option value="still">Sans mouvement</option></select></label></div><div id="mr"><div id="roll"></div><div id="msg"></div></div><div id="bot"><div class="row" id="ct"></div><div class="row" id="hand"></div></div><div id="hl" hidden></div></div><div id="lens" hidden></div><div id="fiche" hidden onclick="if(event.target===this)closeCard()"><div id="fc"></div></div><script>
+</style><link rel="stylesheet" href="assets/clearing.css?v=20261102-journal"></head><body><div id="app"><header id="identity"><div><span class="eyebrow">LES DÉS D’HACKÉNIA</span><h1 id="land-name">Clairière des murmures</h1></div><div class="header-actions"><div class="land-note"><span></span>Terrain vivant</div><button id="history-button" type="button" onclick="openHistory()" aria-haspopup="dialog">Historique <span id="history-count">0</span></button></div></header><div id="top"><button id="vs" onclick="ai=!ai;init()" title="Changer de mode"></button><button id="tr" onclick="TER=(TER+1)%6;init()" title="Changer de terrain"></button><div id="hd"></div></div><div id="bw"><div id="land-caption"><span>LE SANCTUAIRE VERDOYANT</span><small>La rivière murmure. Le duel commence.</small></div><div id="cam"><div id="sc"></div><div id="bq"><div id="slab"><i class="a"></i><i class="b"></i><i class="c1"></i><i class="d"></i></div><div id="bd"></div><div id="ent"></div><div id="crl"></div><div id="fly"><div id="fx"><div class="fsh"></div><div class="fb"><div class="blk fc3"></div></div></div></div></div></div><div id="pins"></div><div id="rot"><button onclick="rotV(-90)" title="Pivoter à gauche">⟲</button><button onclick="rotV(0)" title="Recentrer">⌖</button><button onclick="rotV(90)" title="Pivoter à droite">⟳</button></div><div id="pad"><i></i></div></div><div id="terrain-tools"><span id="terrain-status" role="status">Clairière · terre +1</span><label>Ambiance <select id="quality" aria-label="Qualité de l’ambiance"><option value="auto">Auto</option><option value="rich">Détaillée</option><option value="light">Légère</option><option value="still">Sans mouvement</option></select></label></div><div id="mr"><div id="roll"></div><div id="msg"></div></div><div id="bot"><div class="row" id="ct"></div><div class="row" id="hand"></div></div><div id="hl" hidden></div></div><div id="lens" hidden></div><dialog id="history-panel" aria-labelledby="history-title"><header><div><h2 id="history-title">Journal de partie</h2><p id="history-summary"></p></div><button type="button" onclick="closeHistory()" aria-label="Fermer l’historique">✕</button></header><label class="history-filter-label">Afficher <select id="history-filter" onchange="drawHistory(true)"><option value="">Tous les événements</option><option value="combat">Combats et disparitions</option><option value="Déplacement">Déplacements</option><option value="dice">Dés et déploiements</option><option value="score">Points et victoire</option></select></label><p class="history-help">Les statistiques sont conservées telles qu’elles étaient au moment de chaque action, même après la disparition d’un monstre. Le journal repart à zéro à chaque nouvelle partie.</p><section id="history-events" aria-label="Événements de la partie"></section></dialog><div id="fiche" hidden onclick="if(event.target===this)closeCard()"><div id="fc"></div></div><script>
 const W=8,H=10,Z=1,WIN=2,KW=3,P=['Vert','Orange'],D4=[[1,0],[-1,0],[0,1],[0,-1]];
 const EC={eau:'#1e4fa0',feu:'#d22',glace:'#7de',terre:'#8a5a2b',vent:'#4c4',foudre:'#a3d'};
 const BT={eau:'foudre',foudre:'vent',vent:'terre',terre:'glace',glace:'feu',feu:'eau'};
@@ -263,10 +263,29 @@ function mkDeck(){const pk=(l,n)=>sh([0,1,2,3,4,5]).slice(0,n).map(e=>(l-1)*6+e)
 let b,pl,cr,cur,mode,rot,pc,hov,die,hi,msg,moved,over,drag,sel,anim,cubeCls='',ai=true,gid=0,aiT=0,busy=0,dg=null,lz=null,down=0,DID=0,bonus=[0,0],kills=[0,0],rzU=0,rzCur=0,useB=0,inf=null,TER=0,cu=null,lastJ=0,jv=null,jx=0,jy=0,jt=0;
 const $=i=>document.getElementById(i),at=(x,y)=>cr.find(c=>c.x==x&&c.y==y),inb=(x,y)=>x>=0&&y>=0&&x<W&&y<H;
 const homeRow=()=>cur?0:H-1,inZone=(o,y)=>o?y<Z:y>=H-Z,full=k=>b.flat().filter(c=>c&&c.f&&c.o==k).length>=4,sh=a=>a.sort(()=>Math.random()-.5);
+const gameEvents=[];let turnNumber=1;
+const escHistory=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const squareName=(x,y)=>String.fromCharCode(65+x)+(y+1);
+function unitSnapshot(c,x=c.x,y=c.y){
+ const tile=b[y]?.[x],D=c.mi>=0?M[c.mi]:null,number=tile&&!tile.f?tile.v:1,terrainBonus=tile&&!tile.f&&tile.el===TL[TER]?1:0,neighborBonus=tile&&!tile.f&&tile.el&&D4.some(([dx,dy])=>b[y+dy]?.[x+dx]?.el===BT[tile.el])?1:0;
+ return{name:D?.cn||(c.mi===-1?'Dragon de Fusion':c.mn||'Créature'),camp:P[c.o],level:c.lv||D?.lv||1,element:D?.el||tile?.el||'sans élément',square:squareName(x,y),tileOwner:tile?P[tile.o]:'aucun',tileElement:tile?.el||'sans élément',number,terrainBonus,neighborBonus,attack:pwc(c,x,y)};
+}
+function recordEvent(type,text,units=[]){
+ gameEvents.push({id:gameEvents.length+1,turn:turnNumber,camp:P[cur],type,text,units:units.map(u=>({...u}))});
+ $('history-count').textContent=String(gameEvents.length);if($('history-panel').open)drawHistory();
+}
+function drawHistory(reset=false){
+ const body=$('history-events'),expanded=new Set([...body.querySelectorAll('details[open]')].map(e=>e.dataset.event)),top=body.scrollTop,height=body.scrollHeight,filter=$('history-filter').value;
+ const events=gameEvents.filter(e=>!filter||(filter==='combat'?['Combat','Disparition','Écrasement','Fusion'].includes(e.type):filter==='dice'?['Lancer','Déploiement','Dalles','Bonus'].includes(e.type):filter==='score'?['Point','Victoire'].includes(e.type):e.type===filter));
+ body.innerHTML=events.length?events.slice().reverse().map(e=>'<article class="history-event"><div class="history-meta">Tour '+e.turn+' · '+escHistory(e.camp)+' <span>'+escHistory(e.type)+'</span></div><p>'+escHistory(e.text)+'</p>'+(e.units.length?'<details data-event="'+e.id+'"'+(expanded.has(String(e.id))?' open':'')+'><summary>Voir les statistiques au moment de l’action ('+e.units.length+')</summary>'+e.units.map(u=>'<div class="history-unit"><strong>'+escHistory(u.name)+' · '+escHistory(u.camp)+'</strong><span>Case '+escHistory(u.square)+' · dalle de '+escHistory(u.tileOwner)+' · élément '+escHistory(u.tileElement)+'</span><span>Base '+u.number+' + '+u.terrainBonus+' terrain + '+u.neighborBonus+' voisin = <b>'+u.attack+' d’attaque</b></span><small>Créature '+escHistory(u.element)+' · niveau '+u.level+'</small></div>').join('')+'</details>':'')+'</article>').join(''):'<p class="history-empty">Aucun événement dans cette catégorie.</p>';
+ $('history-summary').textContent=gameEvents.length+' événements · partie en cours';body.scrollTop=reset?0:top>0?top+Math.max(0,body.scrollHeight-height):0;
+}
+function openHistory(){drawHistory(true);$('history-panel').showModal()}
+function closeHistory(){$('history-panel').close()}
 function init(){bonus=[0,0];kills=[0,0];rzU=0;useB=0;gid++;busy=0;b=[...Array(H)].map(()=>Array(W).fill(null));cr=[];over=0;sel=null;drag=0;pc=null;hov=null;anim=null;cubeCls='';aiT=0;
  pl=[0,1].map(()=>{const d=mkDeck();return{h:d.splice(0,5),q:d,s:0}});
  cur=0;mode='i';moved=0;$('roll').textContent='';$('roll').className='';
- cu={x:3,y:H-3};lastJ=0;theme();msg=TERR[TL[TER]].em+' '+TERR[TL[TER]].n+' : +1 aux dés '+TL[TER]+'. Victoire : 2 monstres passés dans la zone adverse, ou 3 ennemis vaincus en duel. Glisse un dé de ta main sur le damier, puis lance-le.';render()}
+ cu={x:3,y:H-3};lastJ=0;theme();gameEvents.length=0;turnNumber=1;recordEvent('Partie','Début de partie. Terrain : '+TERR[TL[TER]].n+'. Victoire à '+WIN+' points ou '+KW+' ennemis vaincus.');msg=TERR[TL[TER]].em+' '+TERR[TL[TER]].n+' : +1 aux dés '+TL[TER]+'. Victoire : 2 monstres passés dans la zone adverse, ou 3 ennemis vaincus en duel. Glisse un dé de ta main sur le damier, puis lance-le.';render()}
 function net(m,r){let c=M[m].c.map(a=>[...a]);for(let i=0;i<r;i++)c=c.map(([x,y,v])=>[-y,x,v]);
  const mx=Math.min(...c.map(a=>a[0])),my=Math.min(...c.map(a=>a[1]));return c.map(([x,y,v])=>[x-mx,y-my,v])}
 function cellsOf(m,r,p){const n=net(m,r),f=n[0];return n.map(([x,y,v])=>[x-f[0]+p.x,y-f[1]+p.y,v])}
@@ -275,7 +294,7 @@ function split(cs,lv=M[die].lv){const put=[],lost=[];for(const a of cs){if(inb(a
 function ok(cs,lv=M[die].lv){const{put}=split(cs,lv),f=cs[0];if(!f||!put.includes(f))return 0;let adj=0;for(const[x,y]of put){if(Math.abs(y-homeRow())<=1)adj=1;const c1=b[y][x];if(c1&&c1.o==cur&&!c1.f)adj=1;
  for(const[dx,dy]of D4){const c=(b[y+dy]||[])[x+dx];if(c&&c.o==cur&&!c.f)adj=1}}return adj}
 function pw(x,y){const c=b[y][x];if(!c)return 0;let v=c.v;if(c.el){if(c.el===TL[TER])v++;for(const[dx,dy]of D4){const n=(b[y+dy]||[])[x+dx];if(n&&n.el==BT[c.el]){v++;break}}}return v}
-function pwc(c,x,y){const cl=b[y][x];return cl&&cl.id===c.id?pw(x,y):1}
+function pwc(c,x,y){const cl=b[y][x];return cl&&!cl.f?pw(x,y):1}
 function why(cs,lv){const f=cs[0];if(!f||!inb(f[0],f[1]))return 'la case où tu poses le dé doit être sur le plateau.';
  if(cr.some(c=>c.x==f[0]&&c.y==f[1]&&(c.lv||1)>=lv))return 'une créature de niveau supérieur ou égal à ton dé occupe cette case.';
  return 'le dé doit toucher les abords de ta zone ou un de tes dés déjà posés.'}
@@ -293,36 +312,37 @@ function svg(m,r,hh,pp){const n=net(m,r),w=Math.max(...n.map(a=>a[0]))+1,h=Math.
 const HEAD='<svg viewBox="0 0 24 24" width="100%" height="100%"><circle cx="12" cy="12" r="10.5" fill="#e53935" stroke="#7a0f0f" stroke-width="1.5"/><path d="M5.5 8.5l5 2.2M18.5 8.5l-5 2.2" stroke="#2b0505" stroke-width="2" stroke-linecap="round"/><circle cx="8.6" cy="12.6" r="1.5" fill="#fff"/><circle cx="15.4" cy="12.6" r="1.5" fill="#fff"/><path d="M8 18c1.2-1.6 6.8-1.6 8 0" stroke="#2b0505" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>';
 function cube(m,sz){const c=EC[M[m].el],t=M[m].el=='glace'?'#123':'#fff';
  return '<svg class="cube" viewBox="0 0 40 40"'+(sz?' width="'+sz+'" height="'+sz+'"':'')+'><g stroke="#fff" stroke-opacity=".7" stroke-width="1" stroke-linejoin="round"><polygon points="3,12 20,21 20,39 3,30" fill="'+c+'"/><polygon points="37,12 20,21 20,39 37,30" fill="'+c+'"/><polygon points="37,12 20,21 20,39 37,30" fill="#000" fill-opacity=".25" stroke="none"/><polygon points="20,3 37,12 20,21 3,12" fill="'+c+'"/><polygon points="20,3 37,12 20,21 3,12" fill="#fff" fill-opacity=".3" stroke="none"/></g><text x="20" y="15.5" text-anchor="middle" font-size="9" font-weight="800" fill="'+t+'">'+M[m].lv+'</text></svg>'}
-function valide(x,y,sc){const k=sc?sc.o:cur;pl[k].s++;const st=[[x,y],...D4.map(([dx,dy])=>[x+dx,y+dy])],seen={};
- while(st.length){const[i,j]=st.pop();if(!inb(i,j)||seen[[i,j]])continue;const c=b[j][i];if(!c||c.o!=k||c.f)continue;seen[[i,j]]=1;b[j][i]=null;
+function valide(x,y,sc){const k=sc?sc.o:cur;pl[k].s++;let cleared=0;const removed=[];const scorer=sc?unitSnapshot(sc):null;const st=[[x,y],...D4.map(([dx,dy])=>[x+dx,y+dy])],seen={};
+ while(st.length){const[i,j]=st.pop();if(!inb(i,j)||seen[[i,j]])continue;const c=b[j][i];if(!c||c.o!=k||c.f)continue;seen[[i,j]]=1;cleared++;for(const gone of cr.filter(a=>a.x==i&&a.y==j))removed.push(unitSnapshot(gone));b[j][i]=null;
   cr=cr.filter(a=>!(a.x==i&&a.y==j));D4.forEach(([dx,dy])=>st.push([i+dx,j+dy]))}
  if(sc)cr=cr.filter(a=>a!==sc);
- msg='Point pour '+P[k]+' ('+pl[k].s+'/'+WIN+') ! Un monstre est passé dans la zone adverse, son trajet disparaît.';if(pl[k].s>=WIN){over=1;msg='🏆 '+P[k]+' gagne la partie !'}return msg}
+ recordEvent('Point',P[k]+' marque un point ('+pl[k].s+'/'+WIN+'). '+cleared+' dalles de son trajet effacées. Le tracé adverse est conservé.',scorer?[scorer]:[]);if(removed.length)recordEvent('Disparition','Les créatures sur le trajet effacé quittent le plateau après le point.',removed);
+ msg='Point pour '+P[k]+' ('+pl[k].s+'/'+WIN+') ! Un monstre est passé dans la zone adverse, son trajet disparaît.';if(pl[k].s>=WIN){over=1;recordEvent('Victoire',P[k]+' gagne avec '+pl[k].s+' points.');msg='🏆 '+P[k]+' gagne la partie !'}return msg}
 function scoreArrival(c){if(over||!cr.includes(c)||!inZone(1-c.o,c.y))return '';return valide(c.x,c.y,c)}
-function chkKills(){for(const o of[0,1])if(!over&&kills[o]>=KW){over=1;return' 🏆 '+P[o]+' gagne : '+KW+' ennemis vaincus en duel !'}return''}
+function chkKills(){for(const o of[0,1])if(!over&&kills[o]>=KW){over=1;recordEvent('Victoire',P[o]+' gagne avec '+kills[o]+' ennemis vaincus.');return' 🏆 '+P[o]+' gagne : '+KW+' ennemis vaincus en duel !'}return''}
 function resolve(c,d=0){if(d>4||!cr.includes(c))return '';let t='';
  for(const[dx,dy]of D4){const e=at(c.x+dx,c.y+dy);if(!e||e===c)continue;
-  if(e.o!=c.o){const a=pwc(c,c.x,c.y),v=pwc(e,e.x,e.y),f=' Combat '+c.em+' '+a+' contre '+e.em+' '+v;
+  if(e.o!=c.o){const a=pwc(c,c.x,c.y),v=pwc(e,e.x,e.y),f=' Combat '+c.em+' '+a+' contre '+e.em+' '+v;const left=unitSnapshot(c),right=unitSnapshot(e);recordEvent('Combat','Combat de proximité : '+left.name+' ('+P[c.o]+', '+a+') contre '+right.name+' ('+P[e.o]+', '+v+'). '+(a>v?right.name+' disparaît.':a<v?left.name+' disparaît.':'Égalité : aucune disparition.'),[left,right]);
    if(a>v){cr=cr.filter(z=>z!==e);kills[c.o]++;return t+f+' : la créature adverse disparaît.'+resolve(c,d+1)}
    if(a<v){cr=cr.filter(z=>z!==c);kills[e.o]++;return t+f+' : ta créature disparaît.'}
    t+=f+' : égalité, rien ne se passe.'}
   else return t+fuse(c,e,d)}
  return t}
-function fuse(c,e,d){const v1=pwc(c,c.x,c.y),v2=pwc(e,e.x,e.y),k=c.o,p=v2>v1?e:c,q=p===c?e:c,cp=b[p.y][p.x],cq=b[q.y][q.x],id=++DID,
+function fuse(c,e,d){const parents=[unitSnapshot(c),unitSnapshot(e)];const v1=pwc(c,c.x,c.y),v2=pwc(e,e.x,e.y),k=c.o,p=v2>v1?e:c,q=p===c?e:c,cp=b[p.y][p.x],cq=b[q.y][q.x],id=++DID,
   el=(cp&&cp.el)||(cq&&cq.el)||undefined,lv=Math.max((cp&&cp.lv)||2,(cq&&cq.lv)||2),nv=Math.min(6,v1+v2),n={o:k,x:p.x,y:p.y,em:'🐉',id,mn:'Fusion',mi:-1,lv:Math.max(c.lv||1,e.lv||1),fresh:1},nw=[[p.x,p.y]];
  cr=cr.filter(z=>z!==c&&z!==e);cr.push(n);b[p.y][p.x]={o:k,el,v:nv,lv,id,mn:'Fusion'};
  for(const[dx,dy]of D4){const X=p.x+dx,Y=p.y+dy;if(inb(X,Y)&&!b[Y][X]){b[Y][X]={o:k,el,v:3,lv,id,mn:'Fusion'};nw.push([X,Y])}}
  const o={};nw.forEach((a,i)=>{o[[a[0],a[1]]]={d:i?1:0,c:'u-b'}});anim={o,t0:Date.now(),tot:700};
  let t=' Fusion ! '+c.em+' + '+e.em+' → 🐉 (case '+nv+', '+(nw.length-1)+' nouvelle'+(nw.length>2?'s':'')+' case'+(nw.length>2?'s':'')+').';
- const point=scoreArrival(n);return t+(point?' '+point:resolve(n,d+1))}
-function mv(c,x,y){const e=at(x,y);if(e&&e.o==c.o){msg='Case occupée par ta propre créature.';return}
+ recordEvent('Fusion',parents[0].name+' et '+parents[1].name+' fusionnent en Dragon de Fusion. Nouvelle dalle : '+nv+'.',[...parents,unitSnapshot(n)]);const point=scoreArrival(n);return t+(point?' '+point:resolve(n,d+1))}
+function mv(c,x,y){const before=unitSnapshot(c),startX=c.x,startY=c.y;const e=at(x,y);if(e&&e.o==c.o){msg='Case occupée par ta propre créature.';return}
  const par=bfs(c)[[x,y]];if(!par){msg='Impossible : case non colorée ou trop loin (3 pas max).';return}
- if(e){const a=pwc(c,par[0],par[1]),d=pwc(e,x,y);
+ if(e){const a=pwc(c,par[0],par[1]),d=pwc(e,x,y),attacker=unitSnapshot(c,par[0],par[1]),defender=unitSnapshot(e,x,y);recordEvent('Combat','Attaque depuis '+attacker.square+' : '+attacker.name+' ('+a+') contre '+defender.name+' ('+d+') en '+defender.square+'. '+(a>d?defender.name+' disparaît ; l’attaquant prend sa case.':a<d?attacker.name+' disparaît.':'Égalité : personne ne bouge.'),[attacker,defender]);
   if(a>d){cr=cr.filter(z=>z!=e);kills[c.o]++;c.x=x;c.y=y;msg='Attaque réussie ! '+a+' contre '+d+'. La créature adverse disparaît.'}
   else if(a<d){cr=cr.filter(z=>z!=c);kills[e.o]++;msg='Attaque ratée : '+a+' contre '+d+'. La créature attaquante disparaît.'}
   else msg='Égalité '+a+'-'+d+' : personne ne bouge.'}
  else{c.x=x;c.y=y;msg='Créature avancée.'}
- moved=1;sel=null;const k=b[c.y]&&b[c.y][c.x];scoreArrival(c);if(!over&&cr.includes(c)){const t=resolve(c);if(t)msg+=t}msg+=chkKills()}
+ if(cr.includes(c)&&(c.x!==startX||c.y!==startY)){const after=unitSnapshot(c);recordEvent('Déplacement',before.name+' : '+before.square+' → '+after.square+'. Attaque '+before.attack+' → '+after.attack+'.',[before,after])}moved=1;sel=null;const k=b[c.y]&&b[c.y][c.x];scoreArrival(c);if(!over&&cr.includes(c)){const t=resolve(c);if(t)msg+=t}msg+=chkKills()}
 function firstValid(m,r){const ys=[...Array(H).keys()];if(!cur)ys.reverse();for(const y of ys)for(const x of[3,4,2,5,1,6,0,7])if(ok(cellsOf(m,r,{x,y}),M[m].lv))return{x,y};return null}
 function pick(i){const m=pl[cur].h[i],p=firstValid(m,cur?0:2);if(!p){msg='Aucun emplacement possible pour ce dé.';return}
  hi=i;die=m;rot=cur?0:2;pc=p;mode='p';sel=null;$('roll').textContent='';$('roll').className='';
@@ -330,22 +350,22 @@ function pick(i){const m=pl[cur].h[i],p=firstValid(m,cur?0:2);if(!p){msg='Aucun 
 function rotV(d){rzU=d?rzU+d:0;render()}
 function annuler(){useB=0;mode='i';pc=null;hov=null;msg='Choisis un dé ou avance une créature.';render()}
 function lancer(){if(mode!='p')return;const all=cells(),sp=split(all,M[die].lv),cs=sp.put,lost=sp.lost.length;if(!ok(all)){msg='Placement impossible : '+why(all,M[die].lv);render();return}
- mode='r';cubeCls='';const g=gid,lv=M[die].need,ub=(useB&&bonus[cur])?1:0,nd=M[die].nd+ub,rs=[...Array(nd)].map(()=>1+Math.floor(Math.random()*6)),r=Math.max(...rs),rt=rs.join('·'),R=$('roll'),k=cur,m=die;if(ub)bonus[k]=0;useB=0;let n=0;msg=(ub?'✨ ':'')+'Lancer du dé '+M[m].n+'… il faut '+lv+' ou plus'+(nd>1?' avec l’un des '+nd+' dés':'')+'.';render();
+ mode='r';cubeCls='';const g=gid,lv=M[die].need,ub=(useB&&bonus[cur])?1:0,nd=M[die].nd+ub,rs=[...Array(nd)].map(()=>1+Math.floor(Math.random()*6)),r=Math.max(...rs),rt=rs.join('·'),R=$('roll'),k=cur,m=die;if(ub)bonus[k]=0;useB=0;let n=0;recordEvent('Lancer',P[k]+' lance '+M[m].n+' en '+squareName(pc.x,pc.y)+' : seuil '+lv+'+, '+nd+' dé'+(nd>1?'s':'')+(ub?' dont un bonus.':'.'));msg=(ub?'✨ ':'')+'Lancer du dé '+M[m].n+'… il faut '+lv+' ou plus'+(nd>1?' avec l’un des '+nd+' dés':'')+'.';render();
  const t=setInterval(()=>{if(g!=gid){clearInterval(t);return}n++;R.textContent=n<14?[...Array(nd)].map(()=>1+Math.floor(Math.random()*6)).join('·'):rt;R.className=n<14?'rl':(r>=lv?'win':'lose');
   if(n<14)return;clearInterval(t);
-  if(r>=lv){const f1=cs[0],u=unfoldOrder(all);sp.lost.forEach(a=>{delete u.o[[a[0],a[1]]]});const did=++DID;let pl2=cs.slice(),dropped=0;const under=cr.filter(c=>pl2.some(a=>a[0]==c.x&&a[1]==c.y)),crushed=under.length;
+  if(r>=lv){recordEvent('Lancer','Résultat '+rt+' : réussite (seuil '+lv+'+).');const f1=cs[0],u=unfoldOrder(all);sp.lost.forEach(a=>{delete u.o[[a[0],a[1]]]});const did=++DID;let pl2=cs.slice(),dropped=0;const under=cr.filter(c=>pl2.some(a=>a[0]==c.x&&a[1]==c.y)),crushed=under.length;const underStats=under.map(c=>unitSnapshot(c));
    for(const c of under){const gone=[],own=pl2.find(a=>a[0]==c.x&&a[1]==c.y);if(own&&own!==f1)gone.push(own);
     while(gone.length<2){const far=pl2.filter(a=>a!==f1&&!gone.includes(a)).sort((p,q)=>((u.o[[q[0],q[1]]]||{d:0}).d)-((u.o[[p[0],p[1]]]||{d:0}).d))[0];if(!far)break;gone.push(far)}
     gone.forEach(a=>delete u.o[[a[0],a[1]]]);pl2=pl2.filter(a=>!gone.includes(a));dropped+=gone.length}
-   cr=cr.filter(c=>!under.includes(c));for(const[x,y,v]of pl2)b[y][x]={o:k,el:M[m].el,v,lv:M[m].lv,id:did,mn:M[m].n};const top=pl2.reduce((a,c)=>c[2]>=a[2]?c:a),nc={o:k,x:top[0],y:top[1],em:M[m].em,id:did,mn:M[m].n,mi:m,lv:M[m].lv,fresh:1};cr.push(nc);
+   if(underStats.length)recordEvent('Écrasement',underStats.length+' créature(s) écrasée(s) par le dé. '+dropped+' faces du dé perdues en conséquence.',underStats);const covered=pl2.filter(([x,y])=>b[y][x]).map(([x,y,v])=>squareName(x,y)+' : '+P[b[y][x].o]+' '+b[y][x].v+' → '+P[k]+' '+v);if(covered.length)recordEvent('Dalles','Dalles recouvertes : '+covered.join(' ; ')+'.');cr=cr.filter(c=>!under.includes(c));for(const[x,y,v]of pl2)b[y][x]={o:k,el:M[m].el,v,lv:M[m].lv,id:did,mn:M[m].n};const top=pl2.reduce((a,c)=>c[2]>=a[2]?c:a),nc={o:k,x:top[0],y:top[1],em:M[m].em,id:did,mn:M[m].n,mi:m,lv:M[m].lv,fresh:1};cr.push(nc);recordEvent('Déploiement',M[m].cn+' apparaît en '+squareName(nc.x,nc.y)+'. '+pl2.length+' dalles posées'+(lost?' ; '+lost+' faces hors plateau ou non recouvrables perdues':'')+'.',[unitSnapshot(nc)]);
    anim={o:u.o,t0:Date.now()+400,tot:u.max*220+450};landCube();msg='Lancer : '+rt+' ✔ Le dé se pose, puis se déploie !';render();setTimeout(()=>{if(g!=gid)return;pc=null;cubeCls='';render()},400);
    setTimeout(()=>{if(g!=gid)return;let s='Lancer : '+rt+' ✔ Le dé s’est déployé, une créature apparaît !'+(crushed?' ('+crushed+' créature'+(crushed>1?'s':'')+' écrasée'+(crushed>1?'s':'')+', le dé perd '+dropped+' face'+(dropped>1?'s':'')+')':'')+(lost?' ('+lost+' face'+(lost>1?'s':'')+' perdue'+(lost>1?'s':'')+')':'');let kw='';if(!over){const point=scoreArrival(nc);s+=point?' '+point:resolve(nc);kw=chkKills();s+=kw}fin();if(!over)msg=s+' '+msg;else if(kw)msg=s;render()},anim.tot+900)}
-  else{cubeCls='poof';msg='Lancer : '+rt+' ✘ Le dé retourne dans ta main…';render();
-   setTimeout(()=>{if(g!=gid)return;pc=null;cubeCls='';const gain=!bonus[k];if(gain)bonus[k]=1;const s='Lancer : '+rt+' ✘ Le dé revient dans ta main.'+(gain?' ✨ Tu gagnes un dé bonus pour ton prochain lancer.':'');
+  else{recordEvent('Lancer','Résultat '+rt+' : échec (seuil '+lv+'+). Le dé revient dans la main.');cubeCls='poof';msg='Lancer : '+rt+' ✘ Le dé retourne dans ta main…';render();
+   setTimeout(()=>{if(g!=gid)return;pc=null;cubeCls='';const gain=!bonus[k];if(gain){bonus[k]=1;recordEvent('Bonus',P[k]+' gagne un dé bonus pour un prochain lancer.')}const s='Lancer : '+rt+' ✘ Le dé revient dans ta main.'+(gain?' ✨ Tu gagnes un dé bonus pour ton prochain lancer.':'');
     fin(true);msg=s+' '+msg;render()},650)}},80)}
 function fin(keep){useB=0;rzU=0;const p=pl[cur];if(!keep)p.q.push(p.h.splice(hi,1)[0]);busy=0;hov=null;cubeCls='';
  if(over){mode='x';return}
- cur=1-cur;moved=0;mode='i';pc=null;sel=null;const n=pl[cur];while(n.h.length<5&&n.q.length)n.h.push(n.q.shift());
+ cur=1-cur;turnNumber++;recordEvent('Tour','Début du tour de '+P[cur]+'.');moved=0;mode='i';pc=null;sel=null;const n=pl[cur];while(n.h.length<5&&n.q.length)n.h.push(n.q.shift());
  msg=ai&&cur?'Tour de l’IA…':P[cur]+' : glisse un dé sur le damier, ou avance une créature.'}
 function colorAI(){let best=null,bs=-1;for(let y=0;y<H;y++)for(let x=0;x<W;x++){if(b[y][x])continue;
  if(!D4.some(([dx,dy])=>{const c=(b[y+dy]||[])[x+dx];return c&&c.o==cur})&&y!=homeRow())continue;const s=(cur?y:-y)+Math.random();if(s>bs){bs=s;best=[x,y]}}
@@ -385,11 +405,11 @@ function try3d(D){const e=MAN&&MAN.creatures&&MAN.creatures[cid(D)];if(!e||!e.gl
  mv.style.cssText='position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .4s;--poster-color:transparent;background:transparent';
  mv.addEventListener('load',()=>{mv.style.opacity=1;const f=st.querySelector('.sc');if(f)f.style.visibility='hidden'});mv.addEventListener('error',()=>mv.remove());st.append(mv)}
 function openCard(k){const D=k.mi>=0?M[k.mi]:null,cl=b[k.y][k.x],el=(D&&D.el)||(cl&&cl.el)||'',col=EC[el]||'#c9a227',own=cl&&cl.id===k.id,nv=cl&&!cl.f?pw(k.x,k.y):0,
- nm=D?D.cn:'Dragon de Fusion',lo=D?D.lo:'Né de l’union de deux alliés, il veille sur les cases qu’il a éveillées. Sa force est la somme de celle de ses parents.',weak=Object.keys(BT).find(e=>BT[e]===el);
+ nm=D?D.cn:'Dragon de Fusion',lo=D?D.lo:'Né de l’union de deux alliés, il veille sur les cases qu’il a éveillées. Sa dalle de naissance reçoit la force de ses parents, puis son attaque suit la dalle sur laquelle il se déplace.',weak=Object.keys(BT).find(e=>BT[e]===el);
  $('fc').style.setProperty('--ec',col);
  $('fc').innerHTML='<div class="fh"><b>'+k.em+' '+nm+'</b><span class="tg" style="background:'+col+'">'+(el||'sans élément')+'</span></div><div class="st"><div class="fl"></div><div class="sc"><div class="fg">'+figure(D?D.fk:-1,col,D?D.t:0)+'</div></div></div><div class="fb"><div class="gr">'+
   '<div><b>Camp</b>'+P[k.o]+'</div><div><b>Dé d’origine</b>'+(D?D.n+' · niv. '+D.lv+(D.lv>5?' (divin)':D.lv>4?' (légendaire)':'')+' · '+D.c.length+' faces · lancer '+D.need+'+'+(D.nd>1?' avec 2 dés':''):'Fusion')+'</div>'+
-  '<div><b>Case actuelle</b>'+(cl&&!cl.f?'n° '+cl.v+(nv>cl.v?' (+'+(nv-cl.v)+' bonus)':''):'case colorée')+'</div><div><b>Attaque</b>'+pwc(k,k.x,k.y)+(own?'':' (hors de son dé)')+'</div>'+
+  '<div><b>Case actuelle</b>'+(cl&&!cl.f?'n° '+cl.v+(nv>cl.v?' (+'+(nv-cl.v)+' bonus)':''):'case colorée')+'</div><div><b>Attaque</b>'+pwc(k,k.x,k.y)+(cl&&!cl.f?' (dalle de '+P[cl.o]+')':' (case sans numéro)')+'</div>'+
   '<div><b>Fort contre</b>'+(BT[el]||'—')+'</div><div><b>Faible contre</b>'+(weak||'—')+'</div></div><p class="lo">« '+lo+' »</p><button onclick="closeCard()">Fermer</button></div>';
  try3d(D);$('fiche').hidden=false}
 function closeCard(){$('fiche').hidden=true}
@@ -397,7 +417,7 @@ function inspect(x,y,card=true){if(!inb(x,y))return;const c=b[y][x],k=at(x,y),z=
  if(!c)h='<b>Case vide</b>'+z;
  else if(c.f)h='<b>Case colorée · '+P[c.o]+'</b>'+z+'<br>Permanente : tout le monde peut la traverser.';
  else{const q=pw(x,y);h='<b>Case de '+P[c.o]+' · dé '+(c.mn||'?')+' (niv. '+c.lv+')</b>'+z+'<br>Numéro '+c.v+' · '+(c.el||'sans élément')+' · attaque de la case : '+q+(q>c.v?' ('+(c.el===TL[TER]?'+1 terrain ':'')+(q-c.v-(c.el===TL[TER]?1:0)?'+1 case de '+BT[c.el]+' voisine':'')+')':'')}
- if(k){h+='<br>'+k.em+' Créature de '+P[k.o]+' · attaque '+pwc(k,x,y)+(c&&!c.f&&c.id===k.id?'':' (1 : hors de son dé)');if(k===sel&&!moved)h+='<br>Touche une case à point jaune pour avancer.'}
+ if(k){h+='<br>'+k.em+' Créature de '+P[k.o]+' · attaque '+pwc(k,x,y)+(c&&!c.f?' (valeur de la dalle actuelle)':' (case sans numéro)');if(k===sel&&!moved)h+='<br>Touche une case à point jaune pour avancer.'}
  inf={html:h,at:msg,x,y};if(k&&card)openCard(k)}
 const B=$('bd'),BQ=$('bq'),Hd=$('hand'),cellAt=e=>{if(window.HackeniaView?.active)return window.HackeniaView.cellAt(e);const el=document.elementFromPoint(e.clientX,e.clientY),t=el&&el.closest&&el.closest('[data-x]');return t?[+t.dataset.x,+t.dataset.y]:[-1,-1]};
 BQ.onpointerdown=e=>{if(over||(ai&&cur==1))return;e.preventDefault();const[x,y]=cellAt(e);if(!inb(x,y))return;
@@ -453,7 +473,7 @@ let UID=0;const CRL=$('crl');
 function upCr(k,x,y,c,pop,A,now,live){k.uid=k.uid||++UID;let e=CRL.querySelector('[data-uid="'+k.uid+'"]');
  if(!e){e=document.createElement('i');e.dataset.uid=k.uid;e.className='cr'+(pop?' pop':'');e.textContent=k.em;if(pop)e.style.animationDelay=((A.tot-(now-A.t0))/1000)+'s';CRL.append(e);k.fresh=0}
  e.dataset.x=x;e.dataset.y=y;e.style.left=((x+.5)/W*100)+'%';e.style.top=((y+.5)/H*100)+'%';e.style.setProperty('--cz',((c&&!c.f)?bhOf(c):0)+'px');e.classList.toggle('sel',k===sel);live.add(String(k.uid))}
-const bhOf=c=>(0.14+0.06*c.v)*(B.clientWidth/W);
+const bhOf=c=>0.28*(B.clientWidth/W);
 function blk(c,x,y,q,an,A,now){return '<div class="blk'+(an?' '+an.c:'')+'" data-x="'+x+'" data-y="'+y+'" style="left:'+(x*100/W)+'%;top:'+(y*100/H)+'%;--bh:'+bhOf(c)+'px;--bc:'+(c.o?'#e0661a':'#2f9a5f')+(an?';animation-delay:'+((an.d*220-(now-A.t0))/1000)+'s':'')+'"><i class="tp">'+(q>c.v?c.v+'<small>+'+(q-c.v)+'</small>':c.v)+(c.el?'<u style="background:'+EC[c.el]+'"></u>':'')+'</i><i class="sf"></i><i class="sb"></i><i class="sl"></i><i class="sr"></i></div>'}
 function landCube(){const C=$('fx').querySelector('.fc3');if(!C)return;const m=new DOMMatrix(getComputedStyle(C).transform),a=Math.atan2(m.b,m.a)*180/Math.PI;C.style.setProperty('--a0',a+'deg');C.style.setProperty('--a1',(Math.round(a/90)*90)+'deg');cubeCls='land'}
 function rFly(){const FX=$('fx'),p=(mode=='p'||mode=='r')&&pc?pc:null;if(!p){FX.style.display='none';return}
@@ -510,5 +530,5 @@ function render(){$('bq').classList.toggle('selmode',!!(mode=='i'&&sel));rzCur=(
  if(ai&&cur==1&&mode=='i'&&!over&&!busy&&!aiT){const g=gid;aiT=setTimeout(()=>{aiT=0;if(g==gid)ia()},900)}}
 window.hackeniaGame={snapshot:()=>({b,cr,cur,mode,pc,die,rot,sel,anim,cubeCls,rzCur,cu,lastJ,over,ai,drag,dg,moved,terrain:TL[TER],preview:cells(),valid:cells().length?!!ok(cells()):false,reachable:mode==='i'&&sel?bfs(sel):null}),power:pw,elementColors:EC,monsters:M,board:BQ,tap:(x,y)=>{tap(x,y);render()},refresh:render};
 init();
-</script><script type="module" src="assets/clearing.js?v=20261102-fleurs" onerror="document.getElementById('terrain-status').textContent='Affichage de secours · module 3D indisponible'"></script></body></html>
+</script><script type="module" src="assets/clearing.js?v=20261102-journal" onerror="document.getElementById('terrain-status').textContent='Affichage de secours · module 3D indisponible'"></script></body></html>
 
