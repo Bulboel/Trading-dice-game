@@ -1,0 +1,27 @@
+:root{--bg:#101d19;--tx:#ecede0;--ce:#21382d;--ln:#54634a;--bt:#293e32;color-scheme:dark}
+body{background:radial-gradient(ellipse at 50% 30%,#2c4335,#101b17 78%);font-family:Georgia,'Times New Roman',serif}
+#app{max-width:1180px;padding:18px 28px 12px;gap:8px;height:100dvh}
+#identity{display:flex;align-items:center;justify-content:space-between;text-align:left;padding:0 2px 8px;border-bottom:1px solid #c6b78336}
+.eyebrow{font:10px/1.5 system-ui,sans-serif;letter-spacing:3px;color:#c5b987}
+h1{font-size:clamp(19px,2.8vw,29px);font-weight:400;margin:3px 0 0;letter-spacing:.3px;color:#f1ebd3}
+.land-note{font:11px system-ui;color:#c2cead;display:flex;align-items:center;gap:7px}.land-note span{width:5px;height:5px;background:#b7ce8e;border-radius:50%;box-shadow:0 0 9px #b7ce8e}
+button,select{font-family:system-ui,sans-serif;background:linear-gradient(#334b3c,#23372d);border:1px solid #bca87955;color:#eee9d7;box-shadow:0 2px 5px #0002;cursor:pointer}
+button:hover{border-color:#d4c184;background:#3e5743}button:focus-visible,select:focus-visible{outline:2px solid #f0d588;outline-offset:2px}
+#top{min-height:32px}#top button{border-radius:6px}#hd{font-family:system-ui,sans-serif;font-size:12px;letter-spacing:.2px;padding-left:8px}
+#bw{isolation:isolate;border:1px solid #b5a77942;border-radius:8px;background:radial-gradient(ellipse at center,#647b4d,#223e32 80%);min-height:180px;box-shadow:0 12px 38px #0004,inset 0 0 50px #0004;perspective:1200px}
+#land-caption{position:absolute;left:20px;top:17px;z-index:3;pointer-events:none;text-align:left;text-shadow:0 2px 6px #071d18}
+#land-caption span{display:block;font:9px system-ui;letter-spacing:2px;color:#e9e2be}#land-caption small{display:block;font-size:12px;font-style:italic;margin-top:6px;color:#d7dfc4}
+#landscape{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;z-index:1}
+#bw.view3d #cam,#bw.view3d #pins{visibility:hidden;pointer-events:none}#bw.view3d #lens{display:none}body:has(#bw.view3d)>#lens{display:none!important}
+#bw:not(.view3d) #landscape{display:none}
+#rot,#pad{z-index:4}#rot{left:12px;bottom:12px}#rot button{opacity:1;background:#172e25d9;border-color:#c6b78366;width:36px;height:36px;font-size:21px}
+#pad{right:12px;bottom:12px;background:#172e2566;border-color:#d5dfba44;width:70px;height:70px}#pad i{background:#e0e8c444;width:27px;height:27px}
+#terrain-tools{display:flex;align-items:center;justify-content:space-between;font:11px system-ui;color:#b9c6ad;padding:0 3px;min-height:24px;text-align:left;gap:8px}#terrain-tools label{white-space:nowrap}#quality{font-size:11px;padding:3px 6px;border-radius:5px;margin-left:5px;max-width:120px}
+#mr{height:48px;gap:12px;padding:4px 5px}#msg{font:12px/1.4 system-ui;color:#d1dbc6}#roll{background:#24392d;border-color:#b7a675;border-radius:8px}
+#bot{height:104px;flex-shrink:0}#ct{height:70px;gap:8px}#ct button{font-size:14px;border-radius:8px}#hand{gap:8px;width:100%;max-width:650px;align-self:center}
+.dc{max-width:none;padding:5px 5px 4px;border-radius:8px;background:linear-gradient(150deg,#3b5140,#1d3127);box-shadow:inset 0 1px #e5d69d18,0 3px 8px #0003}.dc b{font-size:10px;font-family:system-ui}.dc span{font-family:system-ui;font-size:10px;color:#bfccb4}.dc svg{height:29px}.dc svg+svg{height:14px;margin:3px auto}.dc.off{opacity:.5}
+#fiche{backdrop-filter:blur(6px)}#fc{background:#1e3228;color:#eee9d5}.fb:not(#fx .fb){font-family:system-ui}#fc>.fb{position:static;animation:none}#fc .lo{color:#c9d3bd}
+@media(min-width:800px){#bw{min-height:250px}#top{padding:0 3px}#hd{font-size:13px}.dc b{font-size:11px}}
+@media(max-width:600px){#app{padding:10px 9px 6px;gap:5px}#identity{padding-bottom:5px}.eyebrow{font-size:8px;letter-spacing:2px}h1{font-size:20px}.land-note{font-size:9px}.land-note span{display:none}#hd{font-size:10px;padding-left:2px}#top{gap:4px}#top button{font-size:11px;padding:3px 6px}#land-caption{left:12px;top:12px}#land-caption span{font-size:8px}#land-caption small{font-size:10px}#bot{height:99px}#hand{gap:4px}.dc{padding:4px 2px}.dc b,.dc span{font-size:9px}#mr{height:51px}#msg{font-size:11px}#terrain-tools{font-size:10px}#quality{font-size:10px}#pad{width:58px;height:58px}#rot button{width:32px;height:32px}}
+@media(max-height:650px){#identity{padding-bottom:3px}h1{font-size:18px}.land-note,#land-caption small{display:none}#app{padding-top:5px;gap:3px}#bot{height:89px}#mr{height:40px}#bw{min-height:130px}.dc svg{height:23px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.land-note span{box-shadow:none}}
