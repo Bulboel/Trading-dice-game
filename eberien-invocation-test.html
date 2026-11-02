@@ -36,6 +36,13 @@ else if(axis==='x'){hinge.position.set(side*half,-half,0);body.position.set(0,ha
 else{hinge.position.set(0,-half,side*half);body.position.set(0,half,0);body.rotation.x=Math.PI/2;panels.push({hinge,axis,side});}
 }
 panel('top',1);panel('bottom',1);panel('x',1);panel('x',-1);panel('z',1);panel('z',-1);
+const magicLid=panels[0];
+const dustCount=340,dustPositions=new Float32Array(dustCount*3),dustColors=new Float32Array(dustCount*3),dustOrigins=new Float32Array(dustCount*3),dustDrifts=new Float32Array(dustCount*3);
+const palette=[0xff80c9,0x80e8ff,0xf8e685,0xa68dff,0x9bffc7,0xffffff];
+for(let i=0;i<dustCount;i++){const j=i*3;dustOrigins[j]=(Math.random()-.5)*1.28;dustOrigins[j+1]=half;dustOrigins[j+2]=(Math.random()-.5)*1.28;dustDrifts[j]=(Math.random()-.5)*1.9;dustDrifts[j+1]=.5+Math.random()*1.6;dustDrifts[j+2]=(Math.random()-.5)*1.9;const c=new THREE.Color(palette[i%palette.length]);dustColors[j]=c.r;dustColors[j+1]=c.g;dustColors[j+2]=c.b;}
+const dustGeometry=new THREE.BufferGeometry();dustGeometry.setAttribute('position',new THREE.BufferAttribute(dustPositions,3));dustGeometry.setAttribute('color',new THREE.BufferAttribute(dustColors,3));
+const dustMaterial=new THREE.PointsMaterial({size:.045,vertexColors:true,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending,sizeAttenuation:true});
+const dust=new THREE.Points(dustGeometry,dustMaterial);cube.add(dust);dust.visible=false;
 const light=new THREE.PointLight(0x76caff,0,5);light.position.set(0,.9,0);scene.add(light);
 const glow=new THREE.Mesh(new THREE.SphereGeometry(.65,24,16),new THREE.MeshBasicMaterial({color:0x86d6ff,transparent:true,opacity:0,depthWrite:false}));glow.position.set(0,.8,0);scene.add(glow);
 const character=new THREE.Group();scene.add(character);
@@ -61,7 +68,9 @@ try{
 }catch(e){status.textContent='Impossible de charger '+name+' : '+e.message;console.error(e)}
 }
 function ease(t){return t*t*(3-2*t)}
-function pose(t){const unfold=ease(Math.max(0,Math.min(1,(t-.08)/.62)));for(const p of panels){if(p.axis==='top')p.hinge.rotation.x=-unfold*Math.PI*.5;else if(p.axis==='bottom')p.hinge.rotation.x=0;else if(p.axis==='x')p.hinge.rotation.z=-p.side*unfold*Math.PI*.5;else p.hinge.rotation.x=p.side*unfold*Math.PI*.5}
+function pose(t){const unfold=ease(Math.max(0,Math.min(1,(t-.08)/.62)));for(const p of panels){if(p===magicLid){p.hinge.rotation.x=0;continue;}if(p.axis==='bottom')p.hinge.rotation.x=0;else if(p.axis==='x')p.hinge.rotation.z=-p.side*unfold*Math.PI*.5;else p.hinge.rotation.x=p.side*unfold*Math.PI*.5;}
+const fade=Math.max(0,Math.min(1,(t-.08)/.23));magicLid.hinge.visible=fade<.92;dust.visible=fade>0&&fade<1;dustMaterial.opacity=Math.sin(Math.PI*fade)*.9;
+if(dust.visible){for(let i=0;i<dustCount;i++){const j=i*3;dustPositions[j]=dustOrigins[j]+dustDrifts[j]*fade;dustPositions[j+1]=dustOrigins[j+1]+dustDrifts[j+1]*fade;dustPositions[j+2]=dustOrigins[j+2]+dustDrifts[j+2]*fade;}dustGeometry.attributes.position.needsUpdate=true;}
 const appear=ease(Math.max(0,Math.min(1,(t-.77)/.20)));character.visible=appear>.005;character.position.y=-1.8+appear*1.8;character.scale.setScalar(.45+.55*appear);cube.visible=true;light.intensity=6*Math.sin(Math.PI*Math.max(0,Math.min(1,(t-.22)/.68)));glow.material.opacity=.26*Math.sin(Math.PI*Math.max(0,Math.min(1,(t-.2)/.7)));glow.scale.setScalar(1+appear*1.5);}
 async function start(){if(!ready)return;btn.open.disabled=true;btn.again.disabled=true;btn.spell.disabled=false;btn.victory.disabled=false;await change('idle');playing=true;progress=0;character.visible=false;cube.visible=true;pose(0);status.textContent='Le dé s’ouvre…';}
 btn.open.addEventListener('click',start);btn.again.addEventListener('click',start);
