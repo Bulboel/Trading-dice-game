@@ -26,16 +26,24 @@ const silver=new THREE.MeshStandardMaterial({color:0xb8c9db,metalness:.75,roughn
 const blue=new THREE.MeshStandardMaterial({color:0x17436e,metalness:.35,roughness:.3,side:THREE.DoubleSide});
 const gold=new THREE.MeshStandardMaterial({color:0xe6c27d,metalness:.8,roughness:.2});
 const panels=[];const half=.68;
-function panel(axis,side){const hinge=new THREE.Group();cube.add(hinge);const body=new THREE.Group();hinge.add(body);
-const plate=new THREE.Mesh(new THREE.BoxGeometry(1.3,.045,1.3),blue);body.add(plate);
-const border=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1.31,.052,1.31)),new THREE.LineBasicMaterial({color:0xc4d5e7}));body.add(border);
-const medallion=new THREE.Mesh(new THREE.TorusGeometry(.32,.045,8,40),gold);medallion.rotation.x=Math.PI/2;medallion.position.y=.029;body.add(medallion);
-if(axis==='top'){hinge.position.set(half,half,0);body.position.set(-half,0,0);panels.push({hinge,axis,side});}
-else if(axis==='bottom'){hinge.position.set(-half,-half,0);body.position.set(half,0,0);panels.push({hinge,axis,side});}
-else if(axis==='x'){hinge.position.set(side*half,-half,0);body.position.set(0,half,0);body.rotation.z=Math.PI/2;panels.push({hinge,axis,side});}
-else{hinge.position.set(0,-half,side*half);body.position.set(0,half,0);body.rotation.x=Math.PI/2;panels.push({hinge,axis,side});}
+function makePanel(id,position,rotation,direction){
+ const face=new THREE.Group();cube.add(face);
+ const plate=new THREE.Mesh(new THREE.BoxGeometry(1.3,.045,1.3),blue);face.add(plate);
+ const border=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1.31,.052,1.31)),new THREE.LineBasicMaterial({color:0xc4d5e7}));face.add(border);
+ const medallion=new THREE.Mesh(new THREE.TorusGeometry(.32,.045,8,40),gold);medallion.rotation.x=Math.PI/2;medallion.position.y=.029;face.add(medallion);
+ const startPos=new THREE.Vector3(...position),startQuat=new THREE.Quaternion().setFromEuler(new THREE.Euler(...rotation));
+ const endPos=new THREE.Vector3(direction[0]*1.65,-.68,direction[1]*1.65);
+ // Toutes les faces terminent à plat sur le sol, en cercle autour de l'invocation.
+ const endQuat=new THREE.Quaternion();
+ face.position.copy(startPos);face.quaternion.copy(startQuat);
+ panels.push({face,startPos,startQuat,endPos,endQuat,id});
 }
-panel('top',1);panel('bottom',1);panel('x',1);panel('x',-1);panel('z',1);panel('z',-1);
+makePanel('haut',[0,half,0],[0,0,0],[0,-1]);
+makePanel('bas',[0,-half,0],[Math.PI,0,0],[0,1]);
+makePanel('droite',[half,0,0],[0,0,-Math.PI/2],[1,0]);
+makePanel('gauche',[-half,0,0],[0,0,Math.PI/2],[-1,0]);
+makePanel('avant',[0,0,half],[Math.PI/2,0,0],[.7,.7]);
+makePanel('arriere',[0,0,-half],[-Math.PI/2,0,0],[-.7,-.7]);
 const light=new THREE.PointLight(0x76caff,0,5);light.position.set(0,.9,0);scene.add(light);
 const glow=new THREE.Mesh(new THREE.SphereGeometry(.65,24,16),new THREE.MeshBasicMaterial({color:0x86d6ff,transparent:true,opacity:0,depthWrite:false}));glow.position.set(0,.8,0);scene.add(glow);
 const character=new THREE.Group();scene.add(character);
@@ -61,7 +69,8 @@ try{
 }catch(e){status.textContent='Impossible de charger '+name+' : '+e.message;console.error(e)}
 }
 function ease(t){return t*t*(3-2*t)}
-function pose(t){const unfold=ease(Math.max(0,Math.min(1,(t-.08)/.36)));for(const p of panels){if(p.axis==='top')p.hinge.rotation.z=-unfold*Math.PI*.5;else if(p.axis==='bottom')p.hinge.rotation.z=-unfold*Math.PI*.5;else if(p.axis==='x')p.hinge.rotation.z=-p.side*unfold*Math.PI*.5;else p.hinge.rotation.x=p.side*unfold*Math.PI*.5}
+function pose(t){const unfold=ease(Math.max(0,Math.min(1,(t-.05)/.31)));
+for(const p of panels){p.face.position.lerpVectors(p.startPos,p.endPos,unfold);p.face.quaternion.copy(p.startQuat).slerp(p.endQuat,unfold);}
 const appear=ease(Math.max(0,Math.min(1,(t-.40)/.46)));character.visible=appear>.005;character.position.y=-1.8+appear*1.8;character.scale.setScalar(.45+.55*appear);cube.visible=t<.38;light.intensity=6*Math.sin(Math.PI*Math.max(0,Math.min(1,(t-.22)/.68)));glow.material.opacity=.26*Math.sin(Math.PI*Math.max(0,Math.min(1,(t-.2)/.7)));glow.scale.setScalar(1+appear*1.5);}
 async function start(){if(!ready)return;btn.open.disabled=true;btn.again.disabled=true;btn.spell.disabled=false;btn.victory.disabled=false;await change('idle');playing=true;progress=0;character.visible=false;cube.visible=true;pose(0);status.textContent='Le dé s’ouvre…';}
 btn.open.addEventListener('click',start);btn.again.addEventListener('click',start);
