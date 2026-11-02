@@ -86,25 +86,48 @@ function height(x,z){
  const bed=-.24+Math.sin(x*1.4)*.008;return THREE.MathUtils.lerp(bed,land,THREE.MathUtils.smoothstep(d,.78,1.4));
 }
 function waterHeight(x,z,t){return -.045+Math.sin(x*3.2+z*2.2-t*1.8)*.014+Math.sin(x*6.7-z*3.3-t*2.5)*.006}
-// A continuous sculpted surface, with vertex colours for grass, banks and riverbed.
-const ground=new THREE.PlaneGeometry(14,15,56,60);ground.rotateX(-Math.PI/2);
+// Layered meadow colours: moss, dry grass and a narrow, worn footpath.
+function groundNoise(x,z){
+ const ix=Math.floor(x),iz=Math.floor(z),fx=x-ix,fz=z-iz,u=fx*fx*(3-2*fx),v=fz*fz*(3-2*fz),hash=(a,b)=>{const n=Math.sin(a*127.1+b*311.7)*43758.5453;return n-Math.floor(n)};
+ return THREE.MathUtils.lerp(THREE.MathUtils.lerp(hash(ix,iz),hash(ix+1,iz),u),THREE.MathUtils.lerp(hash(ix,iz+1),hash(ix+1,iz+1),u),v);
+}
+const meadowCanvas=document.createElement('canvas');meadowCanvas.width=meadowCanvas.height=256;const meadowCtx=meadowCanvas.getContext('2d');meadowCtx.fillStyle='#d6d4b7';meadowCtx.fillRect(0,0,256,256);
+for(let i=0;i<14000;i++){const x=rand()*256,y=rand()*256;meadowCtx.strokeStyle=i%4?'#6e805932':'#fff4c54d';meadowCtx.lineWidth=.35+rand()*.5;meadowCtx.beginPath();meadowCtx.moveTo(x,y);meadowCtx.lineTo(x+(rand()-.5)*2,y-1-rand()*3);meadowCtx.stroke()}
+const meadowTexture=new THREE.CanvasTexture(meadowCanvas);meadowTexture.colorSpace=THREE.SRGBColorSpace;meadowTexture.wrapS=meadowTexture.wrapT=THREE.RepeatWrapping;meadowTexture.repeat.set(9,10);meadowTexture.anisotropy=4;meadowTexture.userData.pixels=meadowCtx.getImageData(0,0,256,256).data;
+const ground=new THREE.PlaneGeometry(14,15,80,86);ground.rotateX(-Math.PI/2);
 const gp=ground.attributes.position,colors=[];
 for(let i=0;i<gp.count;i++){
  const x=gp.getX(i),z=gp.getZ(i),d=Math.abs(z-river(x));gp.setY(i,height(x,z));
- const c=new THREE.Color(0x526b42),bank=new THREE.Color(0x9c9a73),bed=new THREE.Color(0x667b70);
- const shore=1-THREE.MathUtils.smoothstep(d,.85,1.25);c.lerp(bank,shore*.22);if(d<.85)c.lerp(bed,1-THREE.MathUtils.smoothstep(d,.48,.85));
- c.multiplyScalar(.98+Math.sin(x*2.1+z*.7)*.04+Math.cos(z*3.3-x)*.025);colors.push(c.r,c.g,c.b);
+ const broad=groundNoise(x*.48+3,z*.48+8),detail=groundNoise(x*1.4-7,z*1.4+2),c=new THREE.Color(0x5d8049);
+ c.lerp(new THREE.Color(0xa0a267),THREE.MathUtils.smoothstep(broad,.43,.78)*.72);c.lerp(new THREE.Color(0x345b3f),(1-THREE.MathUtils.smoothstep(detail,.24,.64))*.52);
+ const trail=Math.abs(x-(Math.sin(z*.62)*.65+.55)),path=(1-THREE.MathUtils.smoothstep(trail,.12,.48))*(.5+detail*.25);c.lerp(new THREE.Color(0xaaa07b),path);
+ const shore=1-THREE.MathUtils.smoothstep(d,.85,1.25);c.lerp(new THREE.Color(0x9c9a73),shore*.24);if(d<.85)c.lerp(new THREE.Color(0x667b70),1-THREE.MathUtils.smoothstep(d,.48,.85));
+ c.multiplyScalar(.98+(detail-.5)*.1);colors.push(c.r,c.g,c.b);
 }
-ground.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));ground.computeVertexNormals();mesh(ground,mat(0xffffff,{vertexColors:true}));
-const base=mesh(new THREE.CylinderGeometry(9.3,8.9,1.25,12),mat(0x3b4b34));base.scale.set(.83,1,.88);base.position.y=-1.1;base.visible=!renderer.isSoftware;
-const skirtPositions=[];
-for(let side=0;side<4;side++)for(let i=0;i<60;i++){
- const a=i/60,b=(i+1)/60;
- const edge=t=>side===0?[-7+t*14,-7.5]:side===1?[7,-7.5+t*15]:side===2?[7-t*14,7.5]:[-7,7.5-t*15];
- const [x,z]=edge(a),[xx,zz]=edge(b),y=height(x,z),yy=height(xx,zz);
- skirtPositions.push(x,y,z,xx,yy,zz,x,-1.15,z,xx,yy,zz,xx,-1.15,zz,x,-1.15,z);
+ground.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));ground.computeVertexNormals();mesh(ground,mat(0xffffff,{vertexColors:true,map:meadowTexture,bumpMap:meadowTexture,bumpScale:.035}));
+// A crafted rectangular tray replaces the protruding polygonal island base.
+const frameWood=mat(0x493327,{map:barkTex,bumpMap:barkTex,bumpScale:.035,roughness:.65}),frameDark=mat(0x251f1a,{roughness:.7}),frameBronze=mat(0xb3a16a,{metalness:.65,roughness:.4});
+const beamX=new THREE.BoxGeometry(1,1,1,30,1,1),beamZ=new THREE.BoxGeometry(1,1,1,1,1,30);
+function frameBeam(x,y,z,w,h,d,material){const m=mesh(w>d?beamX:beamZ,material);m.position.set(x,y,z);m.scale.set(w,h,d);return m}
+// Front and rear rails: dark sidewall, moulded wood cap, fine metal inlay.
+for(const z of[-7.57,7.57]){
+ frameBeam(0,-.36,z,14.7,1.55,.42,frameWood);frameBeam(0,.45,z,14.78,.12,.53,frameDark);frameBeam(0,.54,z,14.75,.1,.47,frameWood);frameBeam(0,.598,z,14.76,.025,.035,frameBronze);
+ frameBeam(0,-1.16,z,14.82,.14,.54,frameDark);
 }
-const skirt=new THREE.BufferGeometry();skirt.setAttribute('position',new THREE.Float32BufferAttribute(skirtPositions,3));skirt.computeVertexNormals();mesh(skirt,mat(0x596044,{side:THREE.DoubleSide}));
+// Keep an opening at each side for the river; its outlet remains visible.
+for(const x of[-7.08,7.08]){
+ const center=river(x<0?-7:7),low=-7.36,high=7.36,opening=.85;
+ for(const [a,b]of[[low,center-opening],[center+opening,high]]){
+  const z=(a+b)/2,d=b-a;frameBeam(x,-.36,z,.42,1.55,d,frameWood);frameBeam(x,.45,z,.53,.12,d,frameDark);frameBeam(x,.54,z,.47,.1,d,frameWood);frameBeam(x,.598,z,.035,.025,d,frameBronze);
+ }
+ frameBeam(x,-1.16,0,.54,.14,15.28,frameDark);
+ // Recessed spillway backing and bronze fittings finish the opening cleanly.
+ frameBeam(x<0?-6.985:6.985,-.66,center,.025,1.08,1.7,frameDark);
+ for(const z of[center-opening,center+opening])frameBeam(x,-.32,z,.48,1.62,.045,frameBronze);
+}
+for(const x of[-7.08,7.08])for(const z of[-7.57,7.57]){
+ frameBeam(x,.545,z,.53,.13,.53,frameBronze);const pin=mesh(new THREE.CylinderGeometry(.055,.055,.024,10),gold);pin.position.set(x,.623,z);
+}
 // Narrow ribbons follow the banks exactly, avoiding triangular colour bands.
 for(const side of[-1,1]){
  const bankGeo=new THREE.PlaneGeometry(14,.52,100,4);bankGeo.rotateX(-Math.PI/2);const p=bankGeo.attributes.position,c=[];
