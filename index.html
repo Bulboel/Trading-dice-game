@@ -263,7 +263,7 @@ const homeRow=()=>cur?0:H-1,inZone=(o,y)=>o?y<Z:y>=H-Z,full=k=>b.flat().filter(c
 function init(){bonus=[0,0];kills=[0,0];rzU=0;useB=0;gid++;busy=0;b=[...Array(H)].map(()=>Array(W).fill(null));cr=[];over=0;sel=null;drag=0;pc=null;hov=null;anim=null;cubeCls='';aiT=0;
  pl=[0,1].map(()=>{const d=mkDeck();return{h:d.splice(0,5),q:d,s:0}});
  cur=0;mode='i';moved=0;$('roll').textContent='';$('roll').className='';
- cu={x:3,y:H-3};lastJ=0;theme();msg=TERR[TL[TER]].em+' '+TERR[TL[TER]].n+' : +1 aux dés '+TL[TER]+'. Victoire : 2 points, ou 3 ennemis vaincus en duel. Glisse un dé de ta main sur le damier, puis lance-le.';render()}
+ cu={x:3,y:H-3};lastJ=0;theme();msg=TERR[TL[TER]].em+' '+TERR[TL[TER]].n+' : +1 aux dés '+TL[TER]+'. Victoire : 2 monstres passés dans la zone adverse, ou 3 ennemis vaincus en duel. Glisse un dé de ta main sur le damier, puis lance-le.';render()}
 function net(m,r){let c=M[m].c.map(a=>[...a]);for(let i=0;i<r;i++)c=c.map(([x,y,v])=>[-y,x,v]);
  const mx=Math.min(...c.map(a=>a[0])),my=Math.min(...c.map(a=>a[1]));return c.map(([x,y,v])=>[x-mx,y-my,v])}
 function cellsOf(m,r,p){const n=net(m,r),f=n[0];return n.map(([x,y,v])=>[x-f[0]+p.x,y-f[1]+p.y,v])}
@@ -290,10 +290,11 @@ function svg(m,r,hh,pp){const n=net(m,r),w=Math.max(...n.map(a=>a[0]))+1,h=Math.
 const HEAD='<svg viewBox="0 0 24 24" width="100%" height="100%"><circle cx="12" cy="12" r="10.5" fill="#e53935" stroke="#7a0f0f" stroke-width="1.5"/><path d="M5.5 8.5l5 2.2M18.5 8.5l-5 2.2" stroke="#2b0505" stroke-width="2" stroke-linecap="round"/><circle cx="8.6" cy="12.6" r="1.5" fill="#fff"/><circle cx="15.4" cy="12.6" r="1.5" fill="#fff"/><path d="M8 18c1.2-1.6 6.8-1.6 8 0" stroke="#2b0505" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>';
 function cube(m,sz){const c=EC[M[m].el],t=M[m].el=='glace'?'#123':'#fff';
  return '<svg class="cube" viewBox="0 0 40 40"'+(sz?' width="'+sz+'" height="'+sz+'"':'')+'><g stroke="#fff" stroke-opacity=".7" stroke-width="1" stroke-linejoin="round"><polygon points="3,12 20,21 20,39 3,30" fill="'+c+'"/><polygon points="37,12 20,21 20,39 37,30" fill="'+c+'"/><polygon points="37,12 20,21 20,39 37,30" fill="#000" fill-opacity=".25" stroke="none"/><polygon points="20,3 37,12 20,21 3,12" fill="'+c+'"/><polygon points="20,3 37,12 20,21 3,12" fill="#fff" fill-opacity=".3" stroke="none"/></g><text x="20" y="15.5" text-anchor="middle" font-size="9" font-weight="800" fill="'+t+'">'+M[m].lv+'</text></svg>'}
-function valide(x,y){const k=cur;pl[k].s++;const st=[[x,y]],seen={};
+function valide(x,y,sc){const k=cur;pl[k].s++;const st=[[x,y],...D4.map(([dx,dy])=>[x+dx,y+dy])],seen={};
  while(st.length){const[i,j]=st.pop();if(!inb(i,j)||seen[[i,j]])continue;const c=b[j][i];if(!c||c.o!=k||c.f)continue;seen[[i,j]]=1;b[j][i]=null;
   cr=cr.filter(a=>!(a.x==i&&a.y==j));D4.forEach(([dx,dy])=>st.push([i+dx,j+dy]))}
- msg='Point pour '+P[k]+' ('+pl[k].s+'/'+WIN+') ! Son trajet disparaît.';if(pl[k].s>=WIN){over=1;msg='🏆 '+P[k]+' gagne la partie !'}}
+ if(sc)cr=cr.filter(a=>a!==sc);
+ msg='Point pour '+P[k]+' ('+pl[k].s+'/'+WIN+') ! Un monstre est passé dans la zone adverse, son trajet disparaît.';if(pl[k].s>=WIN){over=1;msg='🏆 '+P[k]+' gagne la partie !'}}
 function chkKills(){for(const o of[0,1])if(!over&&kills[o]>=KW){over=1;return' 🏆 '+P[o]+' gagne : '+KW+' ennemis vaincus en duel !'}return''}
 function resolve(c,d=0){if(d>4||!cr.includes(c))return '';let t='';
  for(const[dx,dy]of D4){const e=at(c.x+dx,c.y+dy);if(!e||e===c)continue;
@@ -309,7 +310,6 @@ function fuse(c,e,d){const v1=pwc(c,c.x,c.y),v2=pwc(e,e.x,e.y),k=c.o,p=v2>v1?e:c
  for(const[dx,dy]of D4){const X=p.x+dx,Y=p.y+dy;if(inb(X,Y)&&!b[Y][X]){b[Y][X]={o:k,el,v:3,lv,id,mn:'Fusion'};nw.push([X,Y])}}
  const o={};nw.forEach((a,i)=>{o[[a[0],a[1]]]={d:i?1:0,c:'u-b'}});anim={o,t0:Date.now(),tot:700};
  let t=' Fusion ! '+c.em+' + '+e.em+' → 🐉 (case '+nv+', '+(nw.length-1)+' nouvelle'+(nw.length>2?'s':'')+' case'+(nw.length>2?'s':'')+').';
- const z=k==cur?nw.find(a=>inZone(1-k,a[1])):null;if(z){valide(z[0],z[1]);return t+' '+msg}
  return t+resolve(n,d+1)}
 function mv(c,x,y){const e=at(x,y);if(e&&e.o==c.o){msg='Case occupée par ta propre créature.';return}
  const par=bfs(c)[[x,y]];if(!par){msg='Impossible : case non colorée ou trop loin (3 pas max).';return}
@@ -318,7 +318,7 @@ function mv(c,x,y){const e=at(x,y);if(e&&e.o==c.o){msg='Case occupée par ta pro
   else if(a<d){cr=cr.filter(z=>z!=c);kills[e.o]++;msg='Attaque ratée : '+a+' contre '+d+'. La créature attaquante disparaît.'}
   else msg='Égalité '+a+'-'+d+' : personne ne bouge.'}
  else{c.x=x;c.y=y;msg='Créature avancée.'}
- moved=1;sel=null;const k=b[c.y]&&b[c.y][c.x];if(cr.includes(c)&&k&&k.o==cur&&!k.f&&inZone(1-cur,c.y))valide(c.x,c.y);if(!over&&cr.includes(c)){const t=resolve(c);if(t)msg+=t}msg+=chkKills()}
+ moved=1;sel=null;const k=b[c.y]&&b[c.y][c.x];if(cr.includes(c)&&inZone(1-cur,c.y))valide(c.x,c.y,c);if(!over&&cr.includes(c)){const t=resolve(c);if(t)msg+=t}msg+=chkKills()}
 function firstValid(m,r){const ys=[...Array(H).keys()];if(!cur)ys.reverse();for(const y of ys)for(const x of[3,4,2,5,1,6,0,7])if(ok(cellsOf(m,r,{x,y}),M[m].lv))return{x,y};return null}
 function pick(i){const m=pl[cur].h[i],p=firstValid(m,cur?0:2);if(!p){msg='Aucun emplacement possible pour ce dé.';return}
  hi=i;die=m;rot=cur?0:2;pc=p;mode='p';sel=null;$('roll').textContent='';$('roll').className='';
@@ -335,7 +335,7 @@ function lancer(){if(mode!='p')return;const all=cells(),sp=split(all,M[die].lv),
     gone.forEach(a=>delete u.o[[a[0],a[1]]]);pl2=pl2.filter(a=>!gone.includes(a));dropped+=gone.length}
    cr=cr.filter(c=>!under.includes(c));for(const[x,y,v]of pl2)b[y][x]={o:k,el:M[m].el,v,lv:M[m].lv,id:did,mn:M[m].n};const top=pl2.reduce((a,c)=>c[2]>=a[2]?c:a),nc={o:k,x:top[0],y:top[1],em:M[m].em,id:did,mn:M[m].n,mi:m,lv:M[m].lv,fresh:1};cr.push(nc);
    anim={o:u.o,t0:Date.now()+400,tot:u.max*220+450};landCube();msg='Lancer : '+rt+' ✔ Le dé se pose, puis se déploie !';render();setTimeout(()=>{if(g!=gid)return;pc=null;cubeCls='';render()},400);
-   setTimeout(()=>{if(g!=gid)return;let s='Lancer : '+rt+' ✔ Le dé s’est déployé, une créature apparaît !'+(crushed?' ('+crushed+' créature'+(crushed>1?'s':'')+' écrasée'+(crushed>1?'s':'')+', le dé perd '+dropped+' face'+(dropped>1?'s':'')+')':'')+(lost?' ('+lost+' face'+(lost>1?'s':'')+' perdue'+(lost>1?'s':'')+')':'');const z=pl2.find(a=>inZone(1-k,a[1]));if(z){valide(z[0],z[1]);s+=' '+msg}let kw='';if(!over){s+=resolve(nc);kw=chkKills();s+=kw}fin();if(!over)msg=s+' '+msg;else if(kw)msg=s;render()},anim.tot+900)}
+   setTimeout(()=>{if(g!=gid)return;let s='Lancer : '+rt+' ✔ Le dé s’est déployé, une créature apparaît !'+(crushed?' ('+crushed+' créature'+(crushed>1?'s':'')+' écrasée'+(crushed>1?'s':'')+', le dé perd '+dropped+' face'+(dropped>1?'s':'')+')':'')+(lost?' ('+lost+' face'+(lost>1?'s':'')+' perdue'+(lost>1?'s':'')+')':'');let kw='';if(!over){s+=resolve(nc);kw=chkKills();s+=kw}fin();if(!over)msg=s+' '+msg;else if(kw)msg=s;render()},anim.tot+900)}
   else{cubeCls='poof';msg='Lancer : '+rt+' ✘ Le dé retourne dans ta main…';render();
    setTimeout(()=>{if(g!=gid)return;pc=null;cubeCls='';const gain=!bonus[k];if(gain)bonus[k]=1;const s='Lancer : '+rt+' ✘ Le dé revient dans ta main.'+(gain?' ✨ Tu gagnes un dé bonus pour ton prochain lancer.':'');
     fin(true);msg=s+' '+msg;render()},650)}},80)}
@@ -348,12 +348,12 @@ function colorAI(){let best=null,bs=-1;for(let y=0;y<H;y++)for(let x=0;x<W;x++){
  if(best)b[best[1]][best[0]]={o:cur,f:1,v:0}}
 function ia(){if(over||mode!='i'||cur!=1)return;busy=1;const g=gid;let bs=-1e9,best=null;
  for(const c of cr.filter(z=>z.o==cur)){const R=bfs(c);for(const k in R){if(R[k]===null)continue;const[x,y]=k.split(',').map(Number),e=at(x,y);if(e&&e.o==cur)continue;
-  let sc=y*2+Math.random();const cl=b[y][x];if(cl&&cl.o==cur&&!cl.f&&inZone(0,y))sc+=200;
+  let sc=y*2+Math.random();const cl=b[y][x];if(inZone(0,y))sc+=200;
   if(e)sc+=pwc(c,R[k][0],R[k][1])>pwc(e,x,y)?150:-500;if(sc>bs){bs=sc;best=[c,x,y]}}}
  if(best&&bs>best[0].y*2+1)mv(best[0],best[1],best[2]);render();if(over){mode='x';return}
  setTimeout(()=>{if(g!=gid)return;const h=pl[cur].h;let bb=null,bc=-1e9;
   h.forEach((m,i)=>{for(let x=0;x<W;x++)for(let y=0;y<H;y++){const all=cellsOf(m,0,{x,y});if(!ok(all,M[m].lv))continue;const cs=split(all,M[m].lv).put;
-   const sc=(Math.max(...cs.map(a=>a[1]))*2+Math.random()*3+(cs.some(a=>inZone(0,a[1]))?100:0)+cs.filter(a=>b[a[1]][a[0]]&&b[a[1]][a[0]].o!=cur).length*8-cs.filter(a=>b[a[1]][a[0]]&&b[a[1]][a[0]].o==cur).length*5-cr.filter(c=>c.o==cur&&cs.some(a=>a[0]==c.x&&a[1]==c.y)).length*60)*pOk(m);if(sc>bc){bc=sc;bb=[i,x,y]}}});
+   const sc=(Math.max(...cs.map(a=>a[1]))*2+Math.random()*3+(cs.some(a=>inZone(0,a[1]))?25:0)+cs.filter(a=>b[a[1]][a[0]]&&b[a[1]][a[0]].o!=cur).length*8-cs.filter(a=>b[a[1]][a[0]]&&b[a[1]][a[0]].o==cur).length*5-cr.filter(c=>c.o==cur&&cs.some(a=>a[0]==c.x&&a[1]==c.y)).length*60)*pOk(m);if(sc>bc){bc=sc;bb=[i,x,y]}}});
   if(!bb){hi=0;fin(true);msg='L’IA ne peut poser aucun dé. '+msg;render();return}
   hi=bb[0];die=h[hi];rot=0;pc={x:bb[1],y:bb[2]};mode='p';msg='L’IA pose son dé '+M[die].n+'…';render();setTimeout(()=>{if(g==gid){if(bonus[cur])useB=1;lancer()}},1000)},900)}
 function bx(w,h,d,x,y,z,c){const f=(n,a,b,t)=>'<i class="f'+n+'" style="width:'+a+'px;height:'+b+'px;margin:'+(-b/2)+'px 0 0 '+(-a/2)+'px;background:'+c+';transform:'+t+'"></i>';
