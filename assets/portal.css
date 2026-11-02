@@ -261,3 +261,25 @@ body[data-portal-view="home"] #portal #portal-nav .portal-tab:before{width:250px
  body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab{--menu-size:29px!important;padding:2px!important}
  body.portal-open[data-portal-view="home"] #portal #portal-nav .menu-die-visual{margin:0 auto 10px!important}
 }
+
+/* Portrait phones: two columns and four rows, fitted within the available viewport. */
+@media(max-width:700px) and (orientation:portrait){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-template-rows:repeat(4,minmax(0,1fr))!important;
+  gap:clamp(4px,1.2dvh,10px)!important;
+  padding:clamp(4px,1dvh,10px)!important;
+  margin:5px 0!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab{
+  --menu-size:clamp(34px, min(11vw, 7dvh), 62px)!important;
+  padding:3px 5px!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .menu-die-visual{
+  margin:2px auto clamp(9px,1.7dvh,16px)!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab strong{
+  font-size:clamp(11px,3.1vw,14px)!important;
+  line-height:1.2!important;
+ }
+}
