@@ -283,3 +283,28 @@ body[data-portal-view="home"] #portal #portal-nav .portal-tab:before{width:250px
   line-height:1.2!important;
  }
 }
+
+/* Mobile home definitive 2 x 4 layout; do not depend on orientation detection. */
+@media screen and (max-width:700px){
+ body[data-portal-view="home"] #portal #portal-nav,
+ body.portal-open[data-portal-view="home"] #portal #portal-nav{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-template-rows:repeat(4,minmax(0,1fr))!important;
+  grid-auto-flow:row!important;
+  height:calc(100dvh - 112px)!important;
+  min-height:0!important;max-height:none!important;
+  gap:6px!important;
+  padding:6px!important;margin:5px 0!important;
+  align-items:stretch!important;align-content:stretch!important;
+  justify-content:stretch!important;overflow:hidden!important;
+ }
+ body[data-portal-view="home"] #portal #portal-nav .portal-tab,
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab{
+  grid-column:auto!important;grid-row:auto!important;
+  width:100%!important;height:100%!important;
+  min-height:0!important;max-height:none!important;
+  --menu-size:clamp(34px,10vw,55px)!important;
+ }
+ body[data-portal-view="home"] #portal #portal-nav .portal-tab:last-child{grid-column:auto!important}
+}
