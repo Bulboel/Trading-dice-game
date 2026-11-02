@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Les Dés d'Hackénia — Invocation d'Kala</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1422;color:#f6e7c8;font:15px/1.45 system-ui,sans-serif}main{max-width:940px;margin:auto;padding:12px}h1{font-size:clamp(20px,4vw,30px);margin:8px 0}p{margin:7px 0 12px;color:#cbbfae}#stage{position:relative;height:min(70dvh,650px);min-height:340px;overflow:hidden;border:1px solid #9c7c4a;border-radius:16px;background:radial-gradient(ellipse at 50% 55%,#34465d,#101725 75%)}canvas{display:block;width:100%;height:100%}.controls{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}button{font:inherit;background:linear-gradient(#425778,#20344f);color:#fff1d1;border:1px solid #bc9553;border-radius:9px;padding:12px 16px;cursor:pointer}button:disabled{opacity:.5;cursor:wait}#status{color:#e9d0a1;min-height:1.5em}a{color:#f2ca78}
+</style></head><body><main><h1>✦ Invocation d'Kala</h1><p>Prototype visuel indépendant : dé mécanique, lumière magique et apparition animée.</p><div id="stage" aria-label="Scène 3D d'invocation"></div><div class="controls"><button id="open" disabled>Ouvrir le dé</button><button id="again" disabled>Rejouer</button><button id="spell" disabled>Lancer un sort</button><button id="victory" disabled>Victoire</button></div><div id="status" role="status">Chargement d'Kala…</div><p>Glisse pour tourner autour de la scène, pince ou utilise la molette pour zoomer. <a href="./kala-3d-test.html">Retour à l'atelier d'animations</a></p></main>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {clone as cloneSkeleton} from 'three/addons/utils/SkeletonUtils.js';
+const stage=document.querySelector('#stage'),status=document.querySelector('#status');
+const btn={open:document.querySelector('#open'),again:document.querySelector('#again'),spell:document.querySelector('#spell'),victory:document.querySelector('#victory')};
+const paths={idle:'kala idle.glb',spell:'Kala attaque.glb',victory:'kala victoire.glb'};
+const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(38,1,.05,100),renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;stage.appendChild(renderer.domElement);
+camera.position.set(4.3,3.5,7.5);const orbit=new OrbitControls(camera,renderer.domElement);orbit.target.set(0,1.1,0);orbit.enableDamping=true;orbit.minDistance=3;orbit.maxDistance=13;orbit.update();
+scene.add(new THREE.HemisphereLight(0xdce9ff,0x242139,2.3));
+const sun=new THREE.DirectionalLight(0xffe3ae,3);sun.position.set(3,6,5);scene.add(sun);
+const rim=new THREE.DirectionalLight(0x83a9ff,2);rim.position.set(-3,3,-4);scene.add(rim);
+const floor=new THREE.Mesh(new THREE.CircleGeometry(3.3,64),new THREE.MeshStandardMaterial({color:0x293e45,roughness:.95}));floor.rotation.x=-Math.PI/2;floor.position.y=-.025;scene.add(floor);
+const ring=new THREE.Mesh(new THREE.RingGeometry(1.2,1.24,80),new THREE.MeshBasicMaterial({color:0x99df77,transparent:true,opacity:.48,side:THREE.DoubleSide}));ring.rotation.x=-Math.PI/2;ring.position.y=.015;scene.add(ring);
+const cube=new THREE.Group();scene.add(cube);cube.position.y=.7;
+const silver=new THREE.MeshStandardMaterial({color:0xb8c9db,metalness:.75,roughness:.24,side:THREE.DoubleSide});
+const blue=new THREE.MeshStandardMaterial({color:0x294d2b,metalness:.35,roughness:.3,side:THREE.DoubleSide});
+const gold=new THREE.MeshStandardMaterial({color:0xe6c27d,metalness:.8,roughness:.2});
+const panels=[];const half=.68;
+function panel(axis,side){const hinge=new THREE.Group();cube.add(hinge);const body=new THREE.Group();hinge.add(body);
+const plate=new THREE.Mesh(new THREE.BoxGeometry(1.3,.045,1.3),blue);body.add(plate);
+const border=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1.31,.052,1.31)),new THREE.LineBasicMaterial({color:0xc4d5e7}));body.add(border);
+// Small golden lyres on both faces, instead of Eberien's circular medallions.
+function addLyre(y,flip){const points=[[-.22,.22],[-.27,.05],[-.23,-.13],[-.12,-.24],[0,-.28],[.12,-.24],[.23,-.13],[.27,.05],[.22,.22]];const group=new THREE.Group();for(let i=0;i<points.length-1;i++){const p=points[i],q=points[i+1];const d=new THREE.Vector3(q[0]-p[0],q[1]-p[1],0);const bar=new THREE.Mesh(new THREE.CylinderGeometry(.023,.023,d.length(),7),gold);bar.position.set((p[0]+q[0])/2,(p[1]+q[1])/2,0);bar.rotation.z=-Math.atan2(d.x,d.y);group.add(bar)}for(const x of [-.11,0,.11]){const string=new THREE.Mesh(new THREE.CylinderGeometry(.009,.009,.39,6),gold);string.position.set(x,.02,0);group.add(string)}const cross=new THREE.Mesh(new THREE.BoxGeometry(.55,.035,.035),gold);cross.position.y=.22;group.add(cross);const stem=new THREE.Mesh(new THREE.BoxGeometry(.07,.18,.04),gold);stem.position.y=-.34;group.add(stem);group.rotation.x=flip?-Math.PI/2:Math.PI/2;group.position.y=y;body.add(group)}addLyre(.092,false);addLyre(-.092,true);
+if(axis==='top'){hinge.position.set(0,half,0);body.position.set(0,0,0);panels.push({hinge,axis,side});}
+else if(axis==='bottom'){hinge.position.set(0,-half,0);body.position.set(0,0,0);panels.push({hinge,axis,side});}
+else if(axis==='x'){hinge.position.set(side*half,-half,0);body.position.set(0,half,0);body.rotation.z=Math.PI/2;panels.push({hinge,axis,side});}
+else{hinge.position.set(0,-half,side*half);body.position.set(0,half,0);body.rotation.x=Math.PI/2;panels.push({hinge,axis,side});}
+}
+panel('top',1);panel('bottom',1);panel('x',1);panel('x',-1);panel('z',1);panel('z',-1);
+const magicLid=panels[0];
+const dustCount=1300,dustPositions=new Float32Array(dustCount*3),dustColors=new Float32Array(dustCount*3),dustOrigins=new Float32Array(dustCount*3),dustDrifts=new Float32Array(dustCount*3);
+const palette=[0x7fd46e,0xc5e879,0xf8d37d,0x6bbd8a,0xe5c66b,0xffffff];
+for(let i=0;i<dustCount;i++){const j=i*3;dustOrigins[j]=(Math.random()-.5)*1.28;dustOrigins[j+1]=half+.55;dustOrigins[j+2]=(Math.random()-.5)*1.28;dustDrifts[j]=(Math.random()-.5)*1.9;dustDrifts[j+1]=.8+Math.random()*2.2;dustDrifts[j+2]=(Math.random()-.5)*1.9;const c=new THREE.Color(palette[i%palette.length]);dustColors[j]=c.r;dustColors[j+1]=c.g;dustColors[j+2]=c.b;}
+const dustGeometry=new THREE.BufferGeometry();dustGeometry.setAttribute('position',new THREE.BufferAttribute(dustPositions,3));dustGeometry.setAttribute('color',new THREE.BufferAttribute(dustColors,3));
+const dustMaterial=new THREE.PointsMaterial({size:.065,vertexColors:true,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending,sizeAttenuation:true});
+const dust=new THREE.Points(dustGeometry,dustMaterial);cube.add(dust);dust.visible=false;
+const light=new THREE.PointLight(0x91d76a,0,5);light.position.set(0,.9,0);scene.add(light);
+const glow=new THREE.Mesh(new THREE.SphereGeometry(.65,24,16),new THREE.MeshBasicMaterial({color:0x9de17d,transparent:true,opacity:0,depthWrite:false}));glow.position.set(0,.8,0);scene.add(glow);
+const character=new THREE.Group();scene.add(character);
+let model=null,mixer=null,progress=0,playing=false,ready=false,activeAction=null,animationTicket=0;
+const loader=new GLTFLoader(), loaded={};
+async function get(name){if(!loaded[name])loaded[name]=loader.loadAsync('./assets/Models/Characters/'+encodeURIComponent(paths[name]));return loaded[name]}
+function normalize(root){root.updateMatrixWorld(true);const box=new THREE.Box3().setFromObject(root),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());const scale=2.8/Math.max(size.y,.01);root.scale.multiplyScalar(scale);root.position.set(-center.x*scale,-box.min.y*scale,-center.z*scale);return root}
+async function change(name){
+const ticket=++animationTicket;status.textContent='Chargement : '+name+'…';
+try{
+ const data=await get(name);
+ if(ticket!==animationTicket)return;
+ if(!model){model=normalize(data.scene);character.add(model);mixer=new THREE.AnimationMixer(model);}
+ if(!data.animations.length)throw new Error('Animation absente');
+ const clip=data.animations[0];
+ // Les trois exports Meshy utilisent les mêmes noms d'os ; une seule copie du modèle reste affichée.
+ const action=mixer.clipAction(clip,model);
+ if(activeAction&&activeAction!==action){activeAction.fadeOut(.18);}
+ action.reset().setEffectiveWeight(1).setEffectiveTimeScale(1);
+ action.setLoop(name==='idle'?THREE.LoopRepeat:THREE.LoopOnce,name==='idle'?Infinity:1);
+ action.clampWhenFinished=name!=='idle';action.fadeIn(.18).play();activeAction=action;
+ status.textContent='Animation : '+clip.name;
+}catch(e){status.textContent='Impossible de charger '+name+' : '+e.message;console.error(e)}
+}
+function ease(t){return t*t*(3-2*t)}
+function pose(t){const unfold=ease(Math.max(0,Math.min(1,(t-.08)/.62)));for(const p of panels){if(p===magicLid){p.hinge.rotation.x=0;continue;}if(p.axis==='bottom')p.hinge.rotation.x=0;else if(p.axis==='x')p.hinge.rotation.z=-p.side*unfold*Math.PI*.5;else p.hinge.rotation.x=p.side*unfold*Math.PI*.5;}
+const lift=ease(Math.max(0,Math.min(1,(t-.08)/.35)));
+const dissolve=Math.max(0,Math.min(1,(t-.40)/.36));
+magicLid.hinge.position.set(0,half+lift*.55,0);
+magicLid.hinge.rotation.set(0,0,0);
+magicLid.hinge.visible=dissolve<.01;
+magicLid.hinge.scale.setScalar(1);
+dust.visible=dissolve>0&&dissolve<1;
+dustMaterial.opacity=dissolve<.8?Math.min(1,dissolve*8):Math.max(0,(1-dissolve)/.2);
+if(dust.visible){for(let i=0;i<dustCount;i++){const j=i*3;dustPositions[j]=dustOrigins[j]+dustDrifts[j]*dissolve;dustPositions[j+1]=dustOrigins[j+1]+dustDrifts[j+1]*dissolve;dustPositions[j+2]=dustOrigins[j+2]+dustDrifts[j+2]*dissolve;}dustGeometry.attributes.position.needsUpdate=true;}
+const appear=ease(Math.max(0,Math.min(1,(t-.77)/.20)));character.visible=appear>.005;character.position.y=-1.8+appear*1.8;character.scale.setScalar(.45+.55*appear);cube.visible=true;light.intensity=6*Math.sin(Math.PI*Math.max(0,Math.min(1,(t-.22)/.68)));glow.material.opacity=.26*Math.sin(Math.PI*Math.max(0,Math.min(1,(t-.2)/.7)));glow.scale.setScalar(1+appear*1.5);}
+async function start(){if(!ready)return;btn.open.disabled=true;btn.again.disabled=true;btn.spell.disabled=false;btn.victory.disabled=false;await change('idle');playing=true;progress=0;character.visible=false;cube.visible=true;pose(0);status.textContent='Le dé s’ouvre…';}
+btn.open.addEventListener('click',start);btn.again.addEventListener('click',start);
+btn.spell.addEventListener('click',()=>{change('spell')});btn.victory.addEventListener('click',()=>{change('victory')});
+function resize(){const w=stage.clientWidth,h=stage.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false)}new ResizeObserver(resize).observe(stage);resize();
+const clock=new THREE.Clock();function render(){requestAnimationFrame(render);const dt=Math.min(clock.getDelta(),.1);if(playing){progress=Math.min(1,progress+dt/3);pose(progress);if(progress>=1){playing=false;cube.visible=true;btn.again.disabled=false;btn.spell.disabled=false;btn.victory.disabled=false;status.textContent='Kala est apparu !'}}mixer?.update(dt);orbit.update();renderer.render(scene,camera)}render();
+await change('idle');if(model){ready=true;character.visible=false;btn.open.disabled=false;status.textContent='Kala est prêt. Clique sur Ouvrir le dé.'}
+</script></body></html>
