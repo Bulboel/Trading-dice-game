@@ -1,0 +1,126 @@
+{
+ "version": 1,
+ "note": "Chaque créature pointe vers un fichier .glb dans assets/models/. Un fichier absent est simplement ignoré (la figurine provisoire reste affichée).",
+ "creatures": {
+  "foudre-petit": {
+   "glb": "models/foudre-petit.glb",
+   "nom": "Abeille Étincelle"
+  },
+  "vent-petit": {
+   "glb": "models/vent-petit.glb",
+   "nom": "Moineau Brise"
+  },
+  "terre-petit": {
+   "glb": "models/terre-petit.glb",
+   "nom": "Fourmi Caillou"
+  },
+  "glace-petit": {
+   "glb": "models/glace-petit.glb",
+   "nom": "Lapin Givre"
+  },
+  "eau-petit": {
+   "glb": "models/eau-petit.glb",
+   "nom": "Poisson Goutte"
+  },
+  "feu-petit": {
+   "glb": "models/feu-petit.glb",
+   "nom": "Poussin Braise"
+  },
+  "foudre-moyen": {
+   "glb": "models/foudre-moyen.glb",
+   "nom": "Salamandre Voltaïque"
+  },
+  "vent-moyen": {
+   "glb": "models/vent-moyen.glb",
+   "nom": "Canard des Cimes"
+  },
+  "terre-moyen": {
+   "glb": "models/terre-moyen.glb",
+   "nom": "Tortue des Racines"
+  },
+  "glace-moyen": {
+   "glb": "models/glace-moyen.glb",
+   "nom": "Pingouin du Givre"
+  },
+  "eau-moyen": {
+   "glb": "models/eau-moyen.glb",
+   "nom": "Poulpe des Marées"
+  },
+  "feu-moyen": {
+   "glb": "models/feu-moyen.glb",
+   "nom": "Renard Braise"
+  },
+  "foudre-legendaire": {
+   "glb": "models/foudre-legendaire.glb",
+   "nom": "Rex Foudroyant"
+  },
+  "vent-legendaire": {
+   "glb": "models/vent-legendaire.glb",
+   "nom": "Cygne Tempête"
+  },
+  "terre-legendaire": {
+   "glb": "models/terre-legendaire.glb",
+   "nom": "Rhinocéros de Granit"
+  },
+  "glace-legendaire": {
+   "glb": "models/glace-legendaire.glb",
+   "nom": "Éléphant des Glaciers"
+  },
+  "eau-legendaire": {
+   "glb": "models/eau-legendaire.glb",
+   "nom": "Requin Abyssal"
+  },
+  "feu-legendaire": {
+   "glb": "models/feu-legendaire.glb",
+   "nom": "Lion Solaire"
+  },
+  "foudre-divin": {
+   "glb": "models/foudre-divin.glb",
+   "nom": "Dragon de la Foudre"
+  },
+  "vent-divin": {
+   "glb": "models/vent-divin.glb",
+   "nom": "Dragon des Vents"
+  },
+  "terre-divin": {
+   "glb": "models/terre-divin.glb",
+   "nom": "Dragon des Montagnes"
+  },
+  "glace-divin": {
+   "glb": "models/glace-divin.glb",
+   "nom": "Dragon des Glaces"
+  },
+  "eau-divin": {
+   "glb": "models/eau-divin.glb",
+   "nom": "Dragon des Abysses"
+  },
+  "feu-divin": {
+   "glb": "models/feu-divin.glb",
+   "nom": "Dragon du Feu"
+  },
+  "fusion": {
+   "glb": "models/fusion.glb",
+   "nom": "Dragon de Fusion"
+  }
+ },
+ "terrains": {
+  "foudre": {
+   "plateau": "terrains/foudre.webp"
+  },
+  "vent": {
+   "plateau": "terrains/vent.webp"
+  },
+  "terre": {
+   "plateau": "terrains/terre.webp"
+  },
+  "glace": {
+   "plateau": "terrains/glace.webp"
+  },
+  "eau": {
+   "plateau": "terrains/eau.webp"
+  },
+  "feu": {
+   "plateau": "terrains/feu.webp"
+  }
+ }
+}
