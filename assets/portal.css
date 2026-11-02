@@ -212,3 +212,52 @@ body[data-portal-view="home"] #portal #portal-nav .portal-tab:before{width:250px
  #portal .portal-head{grid-template-columns:minmax(0,1fr) 108px!important;overflow:hidden}
  #portal .portal-brand h1{max-width:100%;font-size:clamp(18px,5vw,25px)!important;letter-spacing:1px!important}
 }
+
+/* Phone HOME: the eight dice form a single-screen 4 × 2 dashboard.
+   Scoped to home only; inner navigation and desktop are unchanged. */
+@media(max-width:700px){
+ body.portal-open[data-portal-view="home"] #portal{min-height:100dvh!important;padding:0 8px 10px!important;display:flex!important;flex-direction:column!important}
+ body.portal-open[data-portal-view="home"] #portal .portal-head{flex:0 0 auto!important;min-height:0!important;padding:7px 2px!important}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav{
+  box-sizing:border-box!important;display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  grid-template-rows:repeat(2,minmax(0,1fr))!important;
+  flex:1 1 auto!important;align-content:stretch!important;
+  justify-content:stretch!important;align-items:stretch!important;
+  width:100%!important;max-width:100%!important;min-height:0!important;
+  height:auto!important;margin:8px 0 4px!important;
+  padding:8px 5px!important;gap:7px 5px!important;
+  overflow:visible!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab{
+  --menu-size:clamp(29px,8vw,46px)!important;
+  box-sizing:border-box!important;grid-column:auto!important;
+  width:100%!important;min-width:0!important;max-width:100%!important;
+  height:100%!important;min-height:0!important;max-height:none!important;
+  display:flex!important;flex-direction:column!important;
+  justify-content:center!important;align-items:center!important;
+  padding:5px 2px!important;margin:0!important;
+  border-radius:10px!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .menu-die-visual{
+  width:var(--menu-size)!important;height:var(--menu-size)!important;
+  flex:0 0 auto!important;margin:3px auto 14px!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .menu-die-shadow{
+  top:calc(50% + 12px)!important;width:50px!important;max-width:75%!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab strong{
+  font:500 clamp(9px,2.7vw,12px)/1.18 Georgia,serif!important;
+  overflow-wrap:normal!important;word-break:normal!important;
+  text-align:center!important;max-width:100%!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-content:not([hidden]){
+  flex:0 0 auto!important;margin:0!important;padding:6px!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-content[hidden]{display:none!important}
+}
+@media(max-width:700px) and (max-height:600px){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav{gap:4px!important;padding:4px!important;margin:4px 0!important}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab{--menu-size:29px!important;padding:2px!important}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .menu-die-visual{margin:0 auto 10px!important}
+}
