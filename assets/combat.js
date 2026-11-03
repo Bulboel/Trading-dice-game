@@ -1,0 +1,25 @@
+/* Combat presentation queues immutable board snapshots. Rules resolve in the engine. */
+(()=>{'use strict';let active=null,queue=[],waiters=[],sequence=0,last=0;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let panel;
+function reduced(){return window.HackeniaSettings?.get().motion===false||window.HackeniaSettings?.get().quality==='still'||matchMedia('(prefers-reduced-motion:reduce)').matches}
+function ensurePanel(){if(panel)return;panel=document.createElement('aside');panel.id='combat-banner';panel.hidden=true;panel.setAttribute('role','status');panel.setAttribute('aria-live','polite');document.getElementById('bw').append(panel)}
+function breakdown(s){return `Dalle ${s.number}${s.terrainBonus?' + 1 terrain':''}${s.neighborBonus?' + 1 élément voisin':''}`}
+function begin(){if(!queue.length)return;ensurePanel();active=queue.shift();active.sequence=++sequence;active.elapsed=0;active.progress=0;active.reduced=reduced();active.duration=active.reduced?1250:2500;active.resultShown=false;last=performance.now();document.body.classList.add('combat-running');panel.hidden=false;
+ panel.innerHTML=`<div class="combat-heading">Combat <span id="combat-phase">Préparation</span></div><div class="combat-match">${active.stats.map((s,i)=>`<div class="combat-fighter camp-${active.fighters[i].o}" style="--combat-element:${window.hackeniaGame.elementColors[s.element]||'#c9d9dc'}"><span class="combat-portrait" aria-hidden="true">${active.fighters[i].em}</span><div><strong>${esc(s.name)}</strong><small>${breakdown(s)}</small></div><b>${s.attack}</b></div>${i===0?'<span class="combat-versus" aria-hidden="true">⚔</span>':''}`).join('')}</div><p id="combat-result">Les deux créatures s’affrontent.</p>`;
+}
+function enqueue(data){const previous=queue[queue.length-1]||active;if(previous&&data.stats[0].attack===data.stats[1].attack&&previous.stats[0].attack===data.stats[0].attack&&previous.stats[1].attack===data.stats[1].attack&&previous.fighters[0].id===data.fighters[0].id&&previous.fighters[1].id===data.fighters[1].id)return;queue.push(data);if(!active){begin();queueMicrotask(()=>window.hackeniaGame?.refresh())}}
+function finish(){active=null;if(queue.length){begin();window.hackeniaGame?.refresh();return}document.body.classList.remove('combat-running');if(panel)panel.hidden=true;const ready=waiters;waiters=[];ready.forEach(f=>f());window.hackeniaGame?.refresh()}
+function reset(){active=null;queue=[];sequence++;document.body.classList.remove('combat-running');if(panel)panel.hidden=true;const ready=waiters;waiters=[];ready.forEach(f=>f())}
+function pose(c,unit){const a=c.fighters[0],d=c.fighters[1],isA=unit.id===a.id,isD=unit.id===d.id;if(!isA&&!isD)return null;const p=c.progress,dx=d.x-a.x,dy=d.y-a.y,len=Math.hypot(dx,dy)||1,ux=dx/len,uy=dy/len,attack=Math.sin(Math.PI*Math.min(1,Math.max(0,(p-.13)/.37))),hit=Math.sin(Math.PI*Math.min(1,Math.max(0,(p-.44)/.21))),loser=c.stats[0].attack===c.stats[1].attack?-1:c.stats[0].attack>c.stats[1].attack?1:0,defeat=Math.max(0,Math.min(1,(p-.66)/.22));let x=unit.x,y=unit.y,scale=1,lift=0;
+ if(!c.reduced){if(isA){x+=ux*attack*.42;y+=uy*attack*.42;lift=Math.sin(Math.PI*attack)*.08}else{x+=ux*hit*.16;y+=uy*hit*.16}if((isA&&loser===0)||(isD&&loser===1)){scale=1-defeat*.97;lift-=defeat*.3}}
+ return{x,y,scale,lift,angle:Math.atan2(isA?dx:-dx,isA?dy:-dy),hit:p>.44&&p<.65,loser:(isA&&loser===0)||(isD&&loser===1),defeat:((isA&&loser===0)||(isD&&loser===1))?(c.reduced?(p>.66?1:0):defeat):0};
+}
+function tick(now){requestAnimationFrame(tick);const dt=Math.max(0,now-last);last=now;if(!active||document.hidden||!window.hackeniaGame?.isPlaying())return;active.elapsed+=dt;active.progress=Math.min(1,active.elapsed/active.duration);const p=active.progress;if(p>.44&&!active.resultShown){active.resultShown=true;const [a,b]=active.stats;document.getElementById('combat-phase').textContent='Impact';document.getElementById('combat-result').textContent=a.attack===b.attack?'Égalité : les deux créatures restent en jeu.':`${a.attack>b.attack?a.name:b.name} remporte le combat. ${a.attack>b.attack?b.name:a.name} est vaincu.`}
+ if(p>.68)document.getElementById('combat-phase').textContent='Résultat';
+ for(const unit of active.fighters){const el=document.querySelector('#crl [data-creature-id="'+unit.id+'"]');if(!el)continue;const f=pose(active,unit);el.classList.add('combat-duelist');el.classList.toggle('combat-hit',f.hit);el.style.left=((f.x+.5)/8*100)+'%';el.style.top=((f.y+.5)/10*100)+'%';el.style.scale=String(f.scale);el.style.opacity=String(1-f.defeat);}
+ if(p>=1)finish()}
+window.HackeniaCombat={enqueue,reset,resetClock:()=>{last=performance.now()},get busy(){return!!active||queue.length>0},current:()=>active,pose,whenIdle:()=>active||queue.length?new Promise(r=>waiters.push(r)):Promise.resolve(),view:base=>active?{...base,b:active.board,cr:active.creatures,mode:'combat',pc:null,sel:null,anim:null,preview:[],reachable:null}:base};
+document.addEventListener?.('visibilitychange',()=>{last=performance.now()});
+requestAnimationFrame(tick);
+})();

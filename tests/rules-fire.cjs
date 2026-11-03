@@ -1,8 +1,8 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
 const source=fs.readFileSync(require('path').join(__dirname,'../index.html'),'utf8').match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,'');
-const elements=new Map(),timers=[],intervals=[],element=()=>({style:{setProperty(){}},classList:{add(){},remove(){},toggle(){}},firstElementChild:{style:{}},setPointerCapture(){},scrollTop:0,scrollHeight:0,value:'',open:false,querySelectorAll:()=>[]}),math=Object.create(Math);math.random=()=>.999;
+const elements=new Map(),timers=[],intervals=[],element=()=>({children:[],style:{setProperty(){}},classList:{add(){},remove(){},toggle(){}},firstElementChild:{style:{}},setPointerCapture(){},scrollTop:0,scrollHeight:0,value:'',open:false,querySelectorAll:()=>[]}),math=Object.create(Math);math.random=()=>.999;
 const c=vm.createContext({window:{},document:{getElementById(id){if(!elements.has(id))elements.set(id,element());return elements.get(id)}},fetch:()=>Promise.resolve({ok:false}),setTimeout:(f,ms)=>{timers.push({f,ms});return timers.length},clearTimeout(){},setInterval:f=>{intervals.push(f);return intervals.length},clearInterval(){},console,Date,Math:math});vm.runInContext(source,c);
-vm.runInContext(`render=()=>{};landCube=()=>{};b=Array.from({length:H},()=>Array(W).fill(null));cr=[];pl=[{s:0,h:[36],q:[]},{s:0,h:[0],q:[]}];bonus=[0,0];kills=[0,0];over=0;TER=0;cur=0;hi=0;die=0;anim=null;ai=false;mode='i';
+vm.runInContext(`render=()=>{};landCube=()=>{};showRollDice=()=>{};b=Array.from({length:H},()=>Array(W).fill(null));cr=[];pl=[{s:0,h:[36],q:[]},{s:0,h:[0],q:[]}];bonus=[0,0];kills=[0,0];over=0;TER=0;cur=0;hi=0;die=0;anim=null;ai=false;mode='i';
 // Every level pairing: a deployed die crushes only strictly lower-level creatures.
 for(let attackLevel=1;attackLevel<=6;attackLevel++)for(let defendLevel=1;defendLevel<=6;defendLevel++){
  const target={x:3,y:4,o:1,mi:(defendLevel-1)*6};cr=[target];const a=[3,4,6],result=split([a],attackLevel);if(result.put.includes(a)!==(attackLevel>defendLevel))throw Error('Crushing protection failed '+attackLevel+' vs '+defendLevel);
