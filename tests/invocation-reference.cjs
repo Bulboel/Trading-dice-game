@@ -1,0 +1,5 @@
+const fs=require('fs'),path=require('path'),assert=require('assert');const root=path.join(__dirname,'..'),reference=fs.readFileSync(path.join(root,'eberien-invocation-test.html'),'utf8'),production=fs.readFileSync(path.join(root,'assets/invocation.js'),'utf8');
+function panels(s){return s.slice(s.indexOf('const cube=new THREE.Group()'),s.indexOf('let model=null'))}
+assert.equal(panels(production),panels(reference),'Production must reuse the validated panel hinges, gold circles, six faces and 1,300 particles unchanged');
+const posePrefix=s=>s.slice(s.indexOf('function pose(t)'),s.indexOf('glow.scale.setScalar(1+appear*1.5);'));
+assert.equal(posePrefix(production),posePrefix(reference),'Five panels, reduced 0.55 lid lift, dissolution and delayed character appearance must retain the validated timeline');assert.ok(production.includes('progress+dt/3'),'The original three-second opening is preserved');console.log('PASS: validated Eberien panel geometry, gold circles, 1,300-particle palette, low horizontal lid lift, dissolution, delayed character appearance and timeline are reused unchanged.');
