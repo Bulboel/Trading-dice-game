@@ -59,7 +59,7 @@
  /* Battle: allocate remaining height to the board, not to duplicate dice labels. */
  body:not(.portal-open){height:100dvh!important;min-height:0!important;max-height:100dvh!important;overflow:hidden!important}
  body:not(.portal-open) #app{box-sizing:border-box!important;display:flex!important;flex-direction:column!important;height:100dvh!important;max-height:100dvh!important;min-height:0!important;width:100%!important;max-width:100%!important;margin:0!important;padding:4px 8px max(5px,env(safe-area-inset-bottom))!important;overflow:hidden!important}
- body:not(.portal-open) #top{flex:0 0 37px!important;min-height:37px!important;max-height:37px!important;box-sizing:border-box!important;margin:0 0 4px!important;padding:2px 70px 2px 0!important;gap:4px!important}
+ body:not(.portal-open) #top{flex:0 0 37px!important;min-height:37px!important;max-height:37px!important;box-sizing:border-box!important;margin:0 0 4px!important;padding:2px 80px 2px 0!important;gap:4px!important}
  body:not(.portal-open) #top>button{width:29px!important;min-width:29px!important;height:29px!important;min-height:29px!important;padding:2px!important;font-size:11px!important}
  body:not(.portal-open) #hd{flex:1!important;min-width:0!important;font-size:10px!important;gap:4px!important;white-space:nowrap!important}
  body:not(.portal-open) #bw{flex:1 1 0!important;min-height:0!important;max-height:none!important;height:auto!important;aspect-ratio:auto!important;margin:0!important;width:100%!important}
@@ -106,3 +106,5 @@
  body:not(.portal-open) #top #vs:before{content:none}
  body:not(.portal-open) #top #tr{font-size:15px!important;white-space:nowrap!important}
 }
+
+@media(max-width:350px){body:not(.portal-open) #hd{font-size:9px!important}}
