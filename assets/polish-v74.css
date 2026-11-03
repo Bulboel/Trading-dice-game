@@ -20,3 +20,4 @@ body.portal-open[data-portal-view=shop] #portal .pouch-theatre .pouch-prop,body.
 #pouch-discovery-dialog{background:radial-gradient(ellipse at 50% 45%,color-mix(in srgb,var(--invocation-accent) 24%,#102439),#060f20 85%)}
 #pouch-discovery-dialog .discovery-runescape{opacity:1;mask-image:radial-gradient(ellipse at center,#000b,#000 65%,#0009);filter:drop-shadow(0 0 4px color-mix(in srgb,var(--invocation-accent) 65%,transparent))}
 #pouch-discovery-dialog .runic-dial{opacity:.58}#pouch-discovery-dialog .runic-dice{opacity:.9}#pouch-discovery-dialog .runic-scattered{opacity:.7}#pouch-discovery-dialog .runic-constellations{opacity:.45}
+#portal .pouch-theatre .pouch-prop-back[role=button]{pointer-events:auto!important;cursor:pointer;outline-offset:6px}
