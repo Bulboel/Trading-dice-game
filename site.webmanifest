@@ -18,19 +18,19 @@
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "assets/hackenia-app-v102-192.png",
+      "src": "assets/hackenia-app-v105-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "assets/hackenia-app-v102-512.png",
+      "src": "assets/hackenia-app-v105-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "assets/hackenia-app-maskable-v102-512.png",
+      "src": "assets/hackenia-app-maskable-v105-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
