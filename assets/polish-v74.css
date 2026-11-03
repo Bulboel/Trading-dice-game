@@ -1,0 +1,22 @@
+/* Resolved stage geometry keeps the bag clear of every revealed die, even after browser chrome resizes. */
+body.portal-open[data-portal-view=shop] #portal .pouch-theatre .pouch-prop,body.portal-open[data-portal-view=shop] #portal .pouch-theatre.pouch-revealed .pouch-prop{width:var(--pouch-w,210px)!important;height:var(--pouch-h,230px)!important;max-width:none!important;left:var(--pouch-x,50%)!important;top:var(--pouch-top,12px)!important;transition:none!important}
+#portal .pouch-theatre .draw-label{width:29%;line-height:1.2}
+#portal .pouch-theatre .draw-label strong{font-size:clamp(11px,1.8vw,19px);overflow-wrap:anywhere;margin:5px 0}
+#portal .pouch-theatre.pouch-compact-layout .draw-label{width:20%}
+#portal .pouch-theatre.pouch-compact-layout .draw-label small{font-size:7px;letter-spacing:0}
+#portal .pouch-theatre .pouch-stage-status{font-size:10px;bottom:8px}
+/* Brushed gunmetal bodies, silver chamfers and luminous enamel engraving. Keep the cube itself unfiltered. */
+#portal #portal-nav .md-face{border:1.7px solid color-mix(in srgb,var(--accent) 40%,#e7f7ff);background:linear-gradient(125deg,#e8f7ff55,transparent 18%,#02081380 40%,#ffffff25 48%,transparent 57%),repeating-linear-gradient(0deg,#ffffff08 0 1px,transparent 1px 3px),linear-gradient(145deg,color-mix(in srgb,var(--accent) 38%,#6c8293),color-mix(in srgb,var(--accent) 22%,#14202c) 60%,#09131e);box-shadow:inset 1px 2px 1px #fff9,inset -2px -3px 2px #000b,inset 0 0 0 3px #111e2d,inset 0 0 0 4px color-mix(in srgb,var(--accent) 65%,#bdefff);color:var(--accent)}
+#portal #portal-nav .md-top{background:linear-gradient(130deg,#e6f7ff88,transparent 37%,#ffffff55 48%,#0004 70%),repeating-linear-gradient(0deg,#fff1 0 1px,transparent 1px 3px),linear-gradient(145deg,color-mix(in srgb,var(--accent) 55%,#b7c9d4),color-mix(in srgb,var(--accent) 30%,#344759))}
+#portal #portal-nav .md-right{background:linear-gradient(115deg,#ddefff33,transparent 25%,#0006 70%),repeating-linear-gradient(0deg,#fff1 0 1px,transparent 1px 3px),linear-gradient(135deg,color-mix(in srgb,var(--accent) 28%,#344656),#0b1421)}
+#portal #portal-nav .md-face:before{border-color:var(--accent);box-shadow:0 0 5px color-mix(in srgb,var(--accent) 60%,transparent),inset 0 0 5px #0008;opacity:.9}
+#portal #portal-nav .menu-emblem{color:color-mix(in srgb,var(--accent) 65%,white);filter:drop-shadow(0 0 3px var(--accent))}
+#portal #portal-nav .menu-pips .pip{background:color-mix(in srgb,var(--accent) 75%,#fff);box-shadow:inset 0 1px 2px #fff8,0 0 4px var(--accent),0 1px 1px #000}
+#portal #portal-nav .md-stud{background:linear-gradient(135deg,#fff,#8093a3 55%,#d6edff);opacity:1}
+#portal #portal-nav .portal-tab:hover .menu-die-shadow:after{opacity:1;filter:blur(4px)}
+#portal-detail .character-enlarge{display:grid!important;place-items:center!important;padding:0!important;width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important}
+.character-enlarge svg{display:block;flex:none;width:20px;height:20px;margin:0;transform:none}
+.in-game-enlarge{display:flex;align-items:center;justify-content:center;gap:5px}
+#pouch-discovery-dialog{background:radial-gradient(ellipse at 50% 45%,color-mix(in srgb,var(--invocation-accent) 24%,#102439),#060f20 85%)}
+#pouch-discovery-dialog .discovery-runescape{opacity:1;mask-image:radial-gradient(ellipse at center,#000b,#000 65%,#0009);filter:drop-shadow(0 0 4px color-mix(in srgb,var(--invocation-accent) 65%,transparent))}
+#pouch-discovery-dialog .runic-dial{opacity:.58}#pouch-discovery-dialog .runic-dice{opacity:.9}#pouch-discovery-dialog .runic-scattered{opacity:.7}#pouch-discovery-dialog .runic-constellations{opacity:.45}
