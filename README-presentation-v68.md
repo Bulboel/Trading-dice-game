@@ -14,7 +14,7 @@ Le mouvement d'attente, les gestes d'ouverture et le lancement des trois dés ut
 
 Le routeur de pointeurs du plateau distingue un toucher de sélection, un glissement de figurine, un glissement du décor et un pincement à deux doigts. Un toucher simple n'est plus absorbé par la caméra. Un clic sur une destination inaccessible conserve la sélection.
 
-Une destination valide est préparée et mise en évidence. « Confirmer le déplacement » ou « Confirmer l'attaque » déclenche l'action réelle. « Annuler » ou choisir une autre case permet de corriger un mauvais clic avant de consommer l'action. Les règles restent : trois cases accessibles au maximum, un déplacement confirmé par tour ; évents et cases inaccessibles bloqués. L'IA utilise le même moteur de résolution, sans confirmation manuelle.
+Une destination valide est préparée et mise en évidence. « Confirmer le déplacement » ou « Confirmer l'attaque » déclenche l'action réelle. « Annuler » ou choisir une autre case permet de corriger un mauvais clic avant de consommer l'action. Les règles restent : distance illimitée sur les dalles déployées reliées, un déplacement confirmé par tour ; évents et cases inaccessibles bloqués. L'IA utilise le même moteur de résolution, sans confirmation manuelle.
 
 Le mouvement suit les cases du chemin. Une animation de marche Meshy peut être ajoutée dans `assets/manifest.json`, sous `creatures.<personnage>.animations.walk`, par exemple :
 

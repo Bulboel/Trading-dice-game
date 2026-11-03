@@ -19,11 +19,11 @@ const t=setup();vm.runInContext(`cur=${owner};moved=0;sel=null;mode='i';pl[cur].
 {
 const t=setup();vm.runInContext("cur=1;pl[1].s=1;rot=0;pc={x:3,y:7};b[6][3]={o:1,v:1,id:90,lv:1};",t.c);t.roll();assert.equal(vm.runInContext('pl[1].s',t.c),2);assert.equal(vm.runInContext('over',t.c),1);assert.equal(vm.runInContext('mode',t.c),'x');assert.match(vm.runInContext('msg',t.c),/Orange gagne/);
 }
-{
-const t=setup();vm.runInContext("cur=1;const c={o:1,x:3,y:8,em:'a',id:1,lv:1},e={o:1,x:3,y:9,em:'b',id:2,lv:1};cr=[c,e];b[8][3]={o:1,v:1,id:1,lv:1};b[9][3]={o:1,v:3,id:2,lv:1};fuse(c,e,0);",t.c);assert.equal(vm.runInContext('pl[1].s',t.c),1);assert.equal(vm.runInContext('cr.length',t.c),0);
-}
 for(const owner of[0,1]){
 const t=setup();vm.runInContext(`cur=${owner};mode='i';for(let y=0;y<10;y++){b[y][3]={o:cur,v:2,id:1,lv:1};b[y][4]={o:1-cur,v:3,id:2,lv:1}}const scorer={o:cur,x:3,y:cur?9:0,id:1,em:'a'},opponent={o:1-cur,x:4,y:5,id:2,em:'b'};cr=[scorer,opponent];const beforeOpponent=JSON.stringify(b.map(row=>row[4]));scoreArrival(scorer);if(JSON.stringify(b.map(row=>row[4]))!==beforeOpponent)throw Error('Opponent route changed');if(!cr.includes(opponent))throw Error('Opponent monster disappeared');if(b.some(row=>row[3]))throw Error('Scorer route remains');`,t.c);
+}
+{
+const t=setup();vm.runInContext("cur=0;rot=2;pc={x:3,y:7};b[7][2]={o:0,v:2,id:90,lv:1};cr=[{o:0,x:2,y:7,em:'a',id:90,mi:0,lv:1}];",t.c);t.roll();assert.equal(vm.runInContext('cr.length',t.c),2,'Invocation beside an ally must retain both creatures');assert.equal(vm.runInContext('cr.some(c=>c.mi===-1)',t.c),false,'Invocation must never produce a fusion creature');
 }
 console.log('PASS: direct spawn scores and clears connected route for both players; disconnected and opposing routes survive; faces alone and failed rolls do not score; moving into zone wins at two points.');
 
