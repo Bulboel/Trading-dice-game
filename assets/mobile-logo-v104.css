@@ -1,0 +1,4 @@
+/* v104 — logo plus visible dans l’en-tête sans comprimer le menu mobile */
+#portal .hackenia-logo{width:94px!important;height:94px!important}
+@media(max-width:700px){body.portal-open #portal .hackenia-logo{width:64px!important;height:64px!important}}
+@media(max-width:350px){body.portal-open #portal .hackenia-logo{width:56px!important;height:56px!important}}
