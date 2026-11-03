@@ -108,3 +108,25 @@
 }
 
 @media(max-width:350px){body:not(.portal-open) #hd{font-size:9px!important}}
+/* v70: actual deployment silhouette stays visible beside the portrait, including phones. */
+#app #hand .dc .dice-visuals{display:flex;align-items:center;justify-content:center;gap:5px;height:60px;margin:1px 0 5px}
+#app #hand .dc .dice-visuals .dice-head{display:grid;place-items:center;flex:1;min-width:0;height:52px}
+#app #hand .dc .dice-head svg.hand-net{display:block;width:100%;height:100%;max-width:58px;max-height:52px;margin:0;overflow:visible}
+#app #hand .dc .dice-visuals .dice-art{flex:0 0 36px;width:36px;height:40px;margin:0}
+#app #hand .dc .dice-visuals .hand-portrait{width:36px;height:40px}
+#portal .portal-brand{display:flex;align-items:center;gap:10px}
+#portal .hackenia-logo{flex:0 0 auto;width:64px;height:64px;filter:drop-shadow(0 0 10px #b1c4ff22)}
+#portal .portal-wordmark{min-width:0}
+@media(max-width:700px){
+ body:not(.portal-open) #hand .dc .dice-visuals{height:32px!important;min-height:0!important;gap:3px!important;margin:0!important;width:100%!important}
+ body:not(.portal-open) #hand .dc .dice-visuals .dice-head{display:grid!important;place-items:center!important;flex:1 1 0!important;min-width:0!important;height:32px!important}
+ body:not(.portal-open) #hand .dc .dice-head svg.hand-net{display:block!important;width:100%!important;height:32px!important;max-height:32px!important;max-width:42px!important;margin:0!important}
+ body:not(.portal-open) #hand .dc .dice-visuals .dice-art{flex:0 0 23px!important;width:23px!important;height:30px!important}
+ body:not(.portal-open) #hand .dc .dice-visuals .hand-portrait{width:23px!important;height:29px!important}
+ body:not(.portal-open) #hand .dc .dice-visuals .hand-generic{font-size:22px!important}
+ body.portal-open #portal .portal-brand{display:flex!important;gap:6px!important}
+ body.portal-open #portal .hackenia-logo{width:37px!important;height:37px!important}
+ body.portal-open #portal .portal-brand h1{font-size:clamp(15px,4.8vw,20px)!important;letter-spacing:1px!important}
+ body.portal-open #portal .portal-brand small{font-size:7px!important;letter-spacing:.2px!important}
+}
+@media(max-width:350px){body.portal-open #portal .hackenia-logo{width:29px!important;height:29px!important}body.portal-open #portal .portal-brand h1{font-size:15px!important}}
