@@ -1,0 +1,108 @@
+/* v67: one bounded phone viewport. Loaded after the shared portal and board styles. */
+@media screen and (max-width:700px){
+ html{padding:0!important;max-width:100%!important;min-width:0!important;width:100%!important;overflow-x:clip!important}
+ body{box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important;margin:0!important;padding:0!important;overflow-x:clip!important;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+ body.portal-open #portal{box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important;margin:0!important;padding:0 9px max(7px,env(safe-area-inset-bottom))!important}
+ body.portal-open #portal .portal-head{position:relative!important;display:grid!important;grid-template-columns:minmax(0,1fr) 32px 88px!important;grid-template-rows:auto!important;gap:6px!important;min-width:0!important;min-height:58px!important;width:100%!important;padding:6px 0!important;margin:0!important;flex:0 0 auto!important}
+ body.portal-open #portal .portal-brand{grid-column:1!important;grid-row:1!important;min-width:0!important;max-width:100%!important;overflow:hidden!important}
+ body.portal-open #portal .portal-brand h1{font-size:clamp(18px,5.4vw,23px)!important;line-height:1.15!important;letter-spacing:1.5px!important;white-space:nowrap!important;margin:0!important}
+ body.portal-open #portal .portal-brand small{font:8px/1.3 system-ui!important;letter-spacing:.45px!important;white-space:nowrap!important;margin:4px 0 0!important}
+ body.portal-open #portal .portal-head .wallet{grid-column:3!important;grid-row:1!important;box-sizing:border-box!important;display:flex!important;width:88px!important;min-width:0!important;max-width:88px!important;height:42px!important;min-height:42px!important;padding:4px!important;gap:3px!important;overflow:hidden!important;justify-self:end!important}
+ body.portal-open #portal .wallet-bubble,body.portal-open #portal .wallet-bubble-bounce,body.portal-open #portal .wallet-bubble img{width:23px!important;height:23px!important;flex:0 0 23px!important}
+ body.portal-open #portal .wallet-copy{flex:1 1 0!important;min-width:0!important;max-width:52px!important;overflow:hidden!important}
+ body.portal-open #portal #portal-gold{display:block!important;max-width:100%!important;font:700 12px/1.15 system-ui!important;letter-spacing:0!important;font-variant-numeric:tabular-nums;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+ body.portal-open #portal .wallet-copy small{font:8px/1.3 system-ui!important;letter-spacing:0!important;white-space:nowrap!important}
+ body.portal-open #portal .portal-back:not([hidden]){grid-column:2!important;grid-row:1!important;box-sizing:border-box!important;display:grid!important;place-items:center!important;width:32px!important;min-width:32px!important;height:32px!important;min-height:32px!important;padding:0!important;margin:0!important;font-size:0!important;border-radius:9px!important}
+ body.portal-open #portal .portal-back:not([hidden]):before{content:'↩';font:18px/1 system-ui}
+ body.portal-open #portal #portal-nav{box-sizing:border-box!important;min-width:0!important;max-width:100%!important;width:100%!important}
+ body.portal-open:not([data-portal-view="home"]) #portal #portal-nav{height:58px!important;min-height:58px!important;max-height:58px!important;margin:0 0 7px!important;padding:3px 0!important;gap:0!important;position:relative!important;top:auto!important;flex:0 0 58px!important;justify-content:flex-start!important}
+ body.portal-open:not([data-portal-view="home"]) #portal #portal-nav .portal-tab{--menu-size:23px!important;flex:0 0 63px!important;width:63px!important;min-width:0!important;height:51px!important;min-height:51px!important;max-height:51px!important;padding:0!important}
+ body.portal-open:not([data-portal-view="home"]) #portal #portal-nav .menu-die-visual{margin:4px auto 10px!important}
+ body.portal-open:not([data-portal-view="home"]) #portal #portal-nav .portal-tab strong{font:9px/1.1 system-ui!important;white-space:nowrap!important}
+ body.portal-open:not([data-portal-view="home"]) #portal #portal-nav .menu-die-shadow{top:25px!important;width:34px!important}
+ body.portal-open #portal #portal-content{box-sizing:border-box!important;min-width:0!important;max-width:100%!important;width:100%!important;margin-left:0!important;margin-right:0!important}
+ body.portal-open #portal .portal-title{gap:8px!important;min-width:0!important}
+ body.portal-open #portal .portal-title h2{font-size:23px!important}
+ body.portal-open[data-portal-view="home"],body.portal-open[data-portal-view="shop"]{height:100dvh!important;max-height:100dvh!important;min-height:0!important;overflow:hidden!important}
+ body.portal-open[data-portal-view="home"] #portal,body.portal-open[data-portal-view="shop"] #portal{height:100dvh!important;max-height:100dvh!important;min-height:0!important;display:flex!important;flex-direction:column!important;overflow:hidden!important}
+ body.portal-open[data-portal-view="home"] #portal .portal-head{grid-template-columns:minmax(0,1fr) 88px!important}
+ body.portal-open[data-portal-view="home"] #portal .portal-head .wallet{grid-column:2!important}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(4,minmax(0,1fr))!important;grid-auto-flow:row!important;flex:1 1 0!important;height:auto!important;min-height:0!important;max-height:none!important;width:100%!important;margin:5px 0!important;padding:6px!important;gap:5px!important;align-content:stretch!important;align-items:stretch!important;overflow:hidden!important}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab{--menu-size:clamp(27px,min(11vw,7.5dvh),53px)!important;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:3px!important;grid-column:auto!important;grid-row:auto!important;flex:none!important}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .menu-die-visual{margin:2px auto clamp(9px,2dvh,16px)!important;flex:0 0 auto!important}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab strong{font:500 clamp(10px,2.9vw,13px)/1.2 system-ui!important;white-space:normal!important;max-width:100%!important}
+ body.portal-open[data-portal-view="home"] #portal #portal-content:not([hidden]){flex:0 0 auto!important;min-height:0!important;padding:3px!important;margin:0!important}
+ body.portal-open[data-portal-view="home"] #portal .home-resume button{min-height:30px!important;padding:5px 12px!important;font-size:11px!important}
+ /* The pouch is the purchase control on phones; the toolbar keeps price and customization. */
+ body.portal-open[data-portal-view="shop"] #portal #portal-nav{margin-bottom:4px!important}
+ body.portal-open[data-portal-view="shop"] #portal #portal-content{display:flex!important;flex-direction:column!important;flex:1 1 0!important;min-height:0!important;height:auto!important;max-height:none!important;padding:7px!important;overflow:hidden!important}
+ body.portal-open[data-portal-view="shop"] #portal #portal-content>.portal-title:first-child{flex:0 0 auto!important;margin:0 0 5px!important;align-items:center!important}
+ body.portal-open[data-portal-view="shop"] #portal #portal-content>.portal-title:first-child h2{font-size:21px!important;line-height:1.2!important}
+ body.portal-open[data-portal-view="shop"] #portal #portal-content>.portal-title:first-child .portal-muted{font-size:8px!important;max-width:15ch!important;text-align:right!important;line-height:1.25!important}
+ body.portal-open[data-portal-view="shop"] #portal .shop-theatre-intro{display:flex!important;flex:0 0 auto!important;height:27px!important;min-height:27px!important;gap:5px!important;margin:0 0 4px!important}
+ body.portal-open[data-portal-view="shop"] #portal .shop-theatre-intro>div:first-child{display:none!important}
+ body.portal-open[data-portal-view="shop"] #portal .shop-theatre-intro .deck-actions{display:flex!important;align-items:center!important;justify-content:space-between!important;width:100%!important;margin:0!important;gap:8px!important}
+ body.portal-open[data-portal-view="shop"] #portal .shop-theatre-intro [data-action="buy"]{display:none!important}
+ body.portal-open[data-portal-view="shop"] #portal .shop-cost{display:block!important;font:11px/1.3 system-ui;color:#ddce9e}
+ body.portal-open[data-portal-view="shop"] #portal .shop-theatre-intro [data-action="options"]{height:27px!important;min-height:27px!important;padding:3px 9px!important;font-size:10px!important}
+ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre{flex:1 1 0!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;overflow:hidden!important;--pd-size:clamp(31px,9.5vw,43px)}
+ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre .pouch-prop{width:min(36vw,calc((100dvh - 200px) * .34),170px)!important;top:5%!important}
+ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre .pouch-contact-shadow{top:46%!important;width:36%!important}
+ body.portal-open[data-portal-view="shop"] #portal .pouch-stage-heading{display:none!important}
+ body.portal-open[data-portal-view="shop"] #portal .pouch-stage-status{bottom:7px!important;left:5px!important;right:5px!important;font-size:9px!important;line-height:1.25!important;min-height:12px!important;max-height:25px!important}
+ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre.pouch-can-buy:after{content:'Touchez ou faites glisser la bourse pour ouvrir';top:49%!important;bottom:auto!important;font:500 9px/1.2 system-ui!important;letter-spacing:0!important;left:5px!important;right:5px!important}
+ body.portal-open[data-portal-view="shop"] #portal .pouch-prop-back[role="button"]{pointer-events:auto!important;touch-action:none!important;cursor:pointer}
+ body.portal-open[data-portal-view="shop"] #portal .draw-label{max-width:30%!important}
+ body.portal-open[data-portal-view="shop"] #portal .draw-label strong{font:500 12px/1.15 Georgia!important;margin:5px 0 3px!important;overflow-wrap:anywhere}
+ body.portal-open[data-portal-view="shop"] #portal .draw-label small{font-size:7px!important;letter-spacing:.4px!important}
+ body.portal-open[data-portal-view="shop"] #portal .draw-label>span{display:none!important}
+ /* Battle: allocate remaining height to the board, not to duplicate dice labels. */
+ body:not(.portal-open){height:100dvh!important;min-height:0!important;max-height:100dvh!important;overflow:hidden!important}
+ body:not(.portal-open) #app{box-sizing:border-box!important;display:flex!important;flex-direction:column!important;height:100dvh!important;max-height:100dvh!important;min-height:0!important;width:100%!important;max-width:100%!important;margin:0!important;padding:4px 8px max(5px,env(safe-area-inset-bottom))!important;overflow:hidden!important}
+ body:not(.portal-open) #top{flex:0 0 37px!important;min-height:37px!important;max-height:37px!important;box-sizing:border-box!important;margin:0 0 4px!important;padding:2px 70px 2px 0!important;gap:4px!important}
+ body:not(.portal-open) #top>button{width:29px!important;min-width:29px!important;height:29px!important;min-height:29px!important;padding:2px!important;font-size:11px!important}
+ body:not(.portal-open) #hd{flex:1!important;min-width:0!important;font-size:10px!important;gap:4px!important;white-space:nowrap!important}
+ body:not(.portal-open) #bw{flex:1 1 0!important;min-height:0!important;max-height:none!important;height:auto!important;aspect-ratio:auto!important;margin:0!important;width:100%!important}
+ body:not(.portal-open) #land-caption{display:none!important}
+ body:not(.portal-open) #terrain-tools{box-sizing:border-box!important;flex:0 0 25px!important;min-height:25px!important;max-height:25px!important;padding:2px 1px!important;margin:0!important;font-size:9px!important;gap:5px!important}
+ body:not(.portal-open) #terrain-tools label{font-size:9px!important;gap:4px!important}
+ body:not(.portal-open) #quality{height:21px!important;min-height:21px!important;font-size:9px!important;padding:1px 4px!important}
+ body:not(.portal-open) #mr{flex:0 0 45px!important;height:45px!important;min-height:45px!important;max-height:45px!important;margin:0!important;padding:3px 7px!important;overflow:hidden!important}
+ body:not(.portal-open) #mr #msg{max-height:34px!important;font-size:9px!important;line-height:1.25!important}
+ body:not(.portal-open) #bot{box-sizing:border-box!important;flex:0 0 108px!important;height:108px!important;min-height:0!important;max-height:108px!important;padding:4px 0 0!important;margin:0!important;overflow:hidden!important}
+ body:not(.portal-open) #hand.row{box-sizing:border-box!important;display:flex!important;flex-wrap:nowrap!important;gap:3px!important;width:100%!important;max-width:100%!important;min-width:0!important;height:104px!important;padding:0!important;margin:0!important;align-items:stretch!important}
+ body:not(.portal-open) #hand .dc{box-sizing:border-box!important;display:grid!important;grid-template-rows:32px 24px 12px 14px!important;align-content:center!important;gap:2px!important;flex:1 1 0!important;width:0!important;min-width:0!important;max-width:none!important;height:104px!important;min-height:0!important;max-height:104px!important;padding:4px 2px!important;margin:0!important;border-radius:8px!important;overflow:hidden!important}
+ body:not(.portal-open) #hand .dc .dice-head,body:not(.portal-open) #hand .dc .dice-type{display:none!important}
+ body:not(.portal-open) #hand .dc .dice-art{height:32px!important;min-height:0!important;margin:0!important;display:grid!important;place-items:center!important;overflow:hidden!important}
+ body:not(.portal-open) #hand .dc .hand-generic{font-size:27px!important;line-height:1!important}
+ body:not(.portal-open) #hand .dc .hand-portrait{height:32px!important;width:34px!important;max-width:100%!important}
+ body:not(.portal-open) #hand .dc .dice-name{font:600 9.5px/1.15 system-ui!important;min-height:0!important;margin:0!important;max-height:24px!important;display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden!important;overflow-wrap:anywhere!important;align-self:center!important}
+ body:not(.portal-open) #hand .dc .dice-details{display:block!important;font:7.5px/12px system-ui!important;white-space:nowrap!important;margin:0!important;letter-spacing:-.1px!important}
+ body:not(.portal-open) #hand .dc .dice-element-icon{display:none!important}
+ body:not(.portal-open) #hand .dc .dice-roll{display:block!important;font:600 9.5px/14px system-ui!important;margin:0!important;white-space:nowrap!important}
+ body:not(.portal-open) #pad{width:55px!important;height:55px!important;right:8px!important;bottom:8px!important}
+ body:not(.portal-open) #rot{bottom:7px!important;left:7px!important;gap:4px!important}
+ body:not(.portal-open) #rot button{width:27px!important;height:27px!important;min-width:27px!important;min-height:27px!important;padding:0!important;font-size:16px!important}
+}
+.shop-cost{display:none}
+/* Decorative layers must never intercept a tap intended for the pouch. */
+#pouch-theatre .pouch-mouth-glow,#pouch-theatre .pouch-prop-front,#pouch-theatre .pouch-prop-front *,#pouch-theatre .pouch-contact-shadow,#pouch-theatre .pouch-glints,#pouch-theatre .pouch-table-lines{pointer-events:none!important}
+@media(max-width:700px){
+ body.portal-open[data-portal-view="shop"] #portal #portal-content,
+ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre{overflow:clip!important}
+ body.portal-open[data-portal-view="shop"] #portal .pouch-discovery{min-height:0;overflow:clip;padding:12px}
+ body.portal-open[data-portal-view="shop"] #portal .pouch-discovery-title,
+ body.portal-open[data-portal-view="shop"] #portal .pouch-discovery-next{flex:0 0 auto}
+ body.portal-open[data-portal-view="shop"] #portal .pouch-discovery model-viewer{flex:1 1 0;min-height:0!important;height:auto!important;max-height:65%;width:80%}
+}
+@media(max-width:700px){
+ body:not(.portal-open) #hand.row[style*="display: none"]{display:none!important}
+ body:not(.portal-open) #bot:has(#ct[style*="display: flex"]){flex-basis:44px!important;height:44px!important;max-height:44px!important}
+ body:not(.portal-open) #ct{margin:0!important;gap:5px!important}
+ body:not(.portal-open) #ct button{min-height:34px!important;padding:5px 10px!important;font-size:11px!important}
+}
+@media(max-width:700px){
+ body:not(.portal-open) #top #vs{font:600 9px/1 system-ui!important;white-space:nowrap!important}
+ body:not(.portal-open) #top #vs:before{content:none}
+ body:not(.portal-open) #top #tr{font-size:15px!important;white-space:nowrap!important}
+}
