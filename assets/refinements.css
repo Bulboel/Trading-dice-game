@@ -90,3 +90,28 @@ body[data-portal-view=decks] #portal-content{padding-bottom:150px!important}
 .fallback-still .fallback-floor>i:not(:first-child){animation:none!important;transform:var(--panel-open)!important}.fallback-still .fallback-lid,.fallback-still .fallback-dust{display:none!important}.fallback-still .fallback-character{animation:none!important;opacity:1;transform:translate(-50%,-50%)}
 @media(max-width:650px){#pouch-discovery-dialog header{padding:16px}#pouch-discovery-dialog h2{font-size:25px}#pouch-discovery-dialog footer{padding:12px}#pouch-discovery-dialog .discovery-status{font-size:10px}.fallback-floor{top:68%}.fallback-lid{top:68%}}
 @media(prefers-reduced-motion:reduce){.fallback-floor>i:not(:first-child){animation:none!important;transform:var(--panel-open)!important}.fallback-lid,.fallback-dust{display:none!important}.fallback-character{animation:none!important;opacity:1;transform:translate(-50%,-50%)}}
+/* v72: a separate instruction row cannot be covered by the pouch artwork. */
+#portal .pouch-theatre.pouch-can-buy:after{content:none!important;display:none!important}
+#portal .pouch-open-hint{box-sizing:border-box;flex:0 0 auto;display:grid;place-items:center;min-height:29px;margin:7px 0 0!important;padding:7px 12px;border:1px solid #b8a47a28;border-radius:8px;background:linear-gradient(100deg,#e0c08808,#13233280,#e0c08808);color:#d6cbb1;font:10px/1.3 system-ui;text-align:center;pointer-events:none}
+/* Sapphire undertone with element-coloured engraving, kept behind the character. */
+#pouch-discovery-dialog{--invocation-accent:#55b5ff;background:radial-gradient(ellipse at 50% 45%,color-mix(in srgb,var(--invocation-accent) 11%,#14283c),#081525 78%)}
+#pouch-discovery-dialog .invocation-host{isolation:isolate;background:radial-gradient(ellipse at 50% 58%,color-mix(in srgb,var(--invocation-accent) 9%,transparent),transparent 65%)}
+#pouch-discovery-dialog header small{color:color-mix(in srgb,var(--invocation-accent) 64%,#d8e7e9)}
+#pouch-discovery-dialog .discovery-next{border-color:color-mix(in srgb,var(--invocation-accent) 50%,#8aafbf);background:linear-gradient(135deg,color-mix(in srgb,var(--invocation-accent) 17%,#1c3244),#142b3b)}
+#pouch-discovery-dialog .discovery-runescape{position:absolute;inset:0;width:100%;height:100%;z-index:0;color:var(--invocation-accent);pointer-events:none;opacity:.7;mask-image:radial-gradient(ellipse at center,#000a,#000 65%,#0005);filter:drop-shadow(0 0 3px color-mix(in srgb,var(--invocation-accent) 25%,transparent))}
+.runic-constellations{opacity:.22}.runic-dial{opacity:.24;transform-origin:300px 400px;animation:runic-dial-drift 140s linear infinite}.runic-dice{opacity:.48;animation:runic-quiet-float 23s ease-in-out infinite alternate}.runic-scattered{opacity:.28;animation:runic-quiet-float 29s ease-in-out -9s infinite alternate}
+@keyframes runic-dial-drift{to{transform:rotate(360deg)}}
+@keyframes runic-quiet-float{from{transform:translateY(-6px)}to{transform:translateY(8px)}}
+/* No duplicate placeholder cube may be painted while code or GLB is loading. */
+#pouch-discovery-dialog .invocation-loading>.invocation-fallback,#pouch-discovery-dialog .invocation-loading>canvas{visibility:hidden!important}
+#pouch-discovery-dialog .invocation-fallback{z-index:3}
+#pouch-discovery-dialog .invocation-fallback[hidden]{display:none!important}
+#pouch-discovery-dialog .fallback-character{width:clamp(130px,40vw,190px);height:clamp(150px,27dvh,210px);top:45%;font-size:clamp(105px,21dvh,160px);line-height:1;overflow:visible;filter:drop-shadow(0 0 18px color-mix(in srgb,var(--invocation-accent) 28%,transparent))}
+#pouch-discovery-dialog .fallback-character>svg{display:block;width:100%;height:100%;max-height:100%;overflow:visible}
+#pouch-discovery-dialog .fallback-character>.hand-generic{display:grid;place-items:center;font-size:inherit;line-height:1;width:100%;height:100%}
+#pouch-discovery-dialog .fallback-portrait-only .fallback-character{top:40%;left:50%;translate:-50% -50%;transform-origin:center}
+#pouch-discovery-dialog .fallback-playing .fallback-floor>i:not(:first-child){animation-delay:0s}
+#pouch-discovery-dialog .fallback-playing .fallback-lid{animation-delay:0s}
+@media(max-width:700px){body.portal-open[data-portal-view=shop] #portal .pouch-open-hint{font-size:9px!important;min-height:28px!important;margin:5px 0 0!important;padding:5px 9px!important}}
+@media(prefers-reduced-motion:reduce){.runic-dial,.runic-dice,.runic-scattered{animation:none!important}}
+.no-motion .runic-dial,.no-motion .runic-dice,.no-motion .runic-scattered{animation:none!important}
