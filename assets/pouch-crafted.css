@@ -29,3 +29,13 @@
 #bd .c.move-target{outline:3px solid #f8df94;outline-offset:-3px;box-shadow:inset 0 0 18px #ffe9ad80}
 .no-motion #portal .pouch-crafted,.no-motion #portal .pouch-drawstring{animation:none!important}
 @media(prefers-reduced-motion:reduce){#portal .pouch-crafted,#portal .pouch-drawstring{animation:none!important}}
+
+/* v76: lower the pouch and align the launch with its rendered mouth; rarity trails stay in step with each die. */
+body.portal-open[data-portal-view="shop"] #portal .pouch-theatre .pouch-prop{top:clamp(42px,11dvh,62px)!important}
+@media(max-width:700px){body.portal-open[data-portal-view="shop"] #portal .pouch-theatre .pouch-prop{top:clamp(40px,10dvh,56px)!important}}
+.pouch-glints .die-trail-particle{position:absolute;display:block;width:var(--trail-size);height:var(--trail-size);padding:0;margin:0;z-index:8;pointer-events:none;font:700 var(--trail-size)/1 Georgia,serif;text-align:center;text-shadow:0 0 5px currentColor,0 0 11px currentColor;animation:die-trail-fade var(--trail-life) ease-out both}
+.pouch-glints .trail-rare{color:#ffd36d}
+.pouch-glints .trail-legendary{color:transparent;background:linear-gradient(110deg,#ff6a77,#ffe26d,#61f2a7,#71baff,#e27dff);background-clip:text;-webkit-background-clip:text}
+.pouch-glints .trail-divine{color:#fff;background:conic-gradient(#fff1a6,#ff7b77,#86ffd4,#9b9bff,#ffb9f3,#fff1a6);background-clip:text;-webkit-background-clip:text;filter:hue-rotate(var(--trail-hue)) drop-shadow(0 0 7px #fff)}
+.pouch-glints .trail-divine:before{content:"";position:absolute;left:50%;top:50%;width:clamp(16px,5vw,28px);height:3px;border-radius:50%;background:linear-gradient(90deg,transparent,#fff 35%,#a8fff0 65%,transparent);filter:blur(1px);transform:translate(-50%,-50%) rotate(var(--trail-angle));box-shadow:0 0 8px #dffcff}
+@keyframes die-trail-fade{0%{opacity:0;transform:translate(-50%,-50%) scale(.45)}16%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--trail-dx)),calc(-50% + var(--trail-dy))) scale(.05);filter:blur(1px)}}
