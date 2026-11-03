@@ -1,0 +1,31 @@
+/* Sculpted leather asset + independent metal and braided drawstring layers. */
+.dice-pouch.pouch-crafted{aspect-ratio:320/350;position:relative;max-width:100%;filter:drop-shadow(0 13px 12px #0005)}
+.dice-pouch.pouch-crafted>svg{display:block;width:100%;height:auto;max-width:100%;overflow:visible}
+.pouch-theatre .pouch-prop-front{clip-path:inset(12% 0 0 0)}
+.pouch-theatre .pouch-mouth{transform-origin:160px 33px}
+.pouch-theatre .pouch-drawstring{transform-origin:160px 80px}
+#portal .settings-bag-preview .pouch-crafted{width:min(100%,230px);margin:auto}
+#portal .pouch-theatre{background:radial-gradient(ellipse at 50% 14%,#8d745029,transparent 60%),radial-gradient(ellipse at 50% 85%,#52667420,transparent 65%),linear-gradient(150deg,#17222b,#101c26 70%);border-color:#ac947e40;box-shadow:inset 0 0 80px #02090e55,0 12px 25px #0002}
+#portal .pouch-table-lines{background:repeating-linear-gradient(95deg,transparent 0 60px,#cfd7ca05 61px,transparent 62px 120px),repeating-linear-gradient(2deg,transparent 0 3px,#0000000c 4px,transparent 5px 10px);border-top-color:#b7b69320}
+#portal .pouch-theatre .pouch-contact-shadow{background:#02080ec7;filter:blur(9px)}
+#portal .pouch-theatre.pouch-can-buy .pouch-prop-back:hover{filter:drop-shadow(0 0 14px #e7bf7930)}
+#portal .pouch-prop-back[role="button"]:focus-visible{outline:1px solid #e2c28b;outline-offset:8px;border-radius:22px}
+#portal .collect-card{border-radius:14px;background:radial-gradient(ellipse at 50% 20%,color-mix(in srgb,var(--ec) 10%,transparent),transparent 65%),linear-gradient(145deg,#1c2b32,#132128);border-color:color-mix(in srgb,var(--rim) 55%,#34434b);box-shadow:inset 0 1px #ffffff08,0 6px 16px #0002}
+#portal .collect-card .collect-art{background:radial-gradient(ellipse at center,color-mix(in srgb,var(--ec) 12%,transparent),transparent 70%);border-radius:12px}
+#portal .collect-card h3{font-weight:500}
+#portal .collect-card .owned-count{border:1px solid #d3e1d518;border-radius:6px}
+@media(max-width:700px){
+ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre .pouch-prop{width:min(40vw,calc((100dvh - 200px) * .36),180px)!important;top:4%!important}
+ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre .pouch-contact-shadow{top:47%!important;width:40%!important}
+ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre.pouch-can-buy:after{top:50%!important;font-size:9px!important;color:#d5bd96}
+}
+#portal .portal-tools label.check{display:flex;align-items:center;gap:7px;font-size:11px}
+#portal .portal-tools label.check input{width:16px!important;min-width:16px!important;height:16px!important;min-height:16px!important;flex:0 0 16px;accent-color:#bdcaa0}
+@media(max-width:700px){body.portal-open[data-portal-view="shop"] #portal .pouch-theatre .pouch-prop{width:min(45vw,calc((100dvh - 200px) * .40),190px)!important}}
+@keyframes crafted-pouch-rest{0%,100%{transform:translateY(0) rotate(-.35deg)}50%{transform:translateY(-3px) rotate(.35deg)}}
+@keyframes crafted-cord-rest{0%,100%{transform:rotate(-.5deg)}50%{transform:rotate(1deg)}}
+#portal .pouch-theatre.pouch-can-buy .pouch-prop .dice-pouch{animation:crafted-pouch-rest 4.6s ease-in-out infinite;transform-origin:50% 90%}
+#portal .pouch-theatre.pouch-can-buy .pouch-drawstring{animation:crafted-cord-rest 4.6s ease-in-out infinite;transform-origin:230px 78px}
+#bd .c.move-target{outline:3px solid #f8df94;outline-offset:-3px;box-shadow:inset 0 0 18px #ffe9ad80}
+.no-motion #portal .pouch-crafted,.no-motion #portal .pouch-drawstring{animation:none!important}
+@media(prefers-reduced-motion:reduce){#portal .pouch-crafted,#portal .pouch-drawstring{animation:none!important}}
