@@ -6,7 +6,7 @@ Le niveau d’une créature la protège contre l’écrasement par un dé posé 
 
 La protection utilise maintenant le niveau de la définition de la créature si son instance ne contient pas de niveau ; une seconde vérification protège la résolution de l’écrasement. Le scénario précis signalé n’a pas été reproduit comme un écrasement illégal. Les tests couvrent les 36 combinaisons de niveaux et un combat légal III contre IV.
 
-Le journal distingue lancers, invocations, écrasements, combats, fusions et passages. Il affiche immédiatement les noms, niveaux, attaques et bonus au moment des combats, ainsi que la progression vers trois victoires. Les coordonnées, changements de numéros et annonces de tour supplémentaires sont masqués. Les entrées de passage expliquent le retrait des créatures présentes sur le trajet effacé, sans les compter comme des combats. Victoire : deux passages OU trois combats gagnés.
+Le journal distingue lancers, invocations, écrasements, combats et passages. Il affiche immédiatement les noms, niveaux, attaques et bonus au moment des combats, ainsi que la progression vers trois victoires. Les coordonnées, changements de numéros et annonces de tour supplémentaires sont masqués. Les entrées de passage expliquent le retrait des créatures présentes sur le trajet effacé, sans les compter comme des combats. Victoire : deux passages OU trois combats gagnés.
 
 ## Options et monnaie
 
@@ -18,7 +18,7 @@ La monnaie affichée est Bubulles, avec « une bubulle » à l’unité. Le cham
 
 Le terrain de feu existant est remplacé par un diorama de cratère procédural (`assets/crater.js`), partagé avec le renderer 3D de la clairière : cadrage, sélection, figurines et déplacements identiques. Le bonus reste +1 pour les dalles Feu.
 
-Six évents fixes, symétriques par rotation, empêchent les invocations, le recouvrement et les déplacements. Une face secondaire qui tombe sur un évent n’est pas posée ; le reste du dé suit les règles habituelles de placement partiel. L’ancrage d’un dé sur un évent est refusé. Les invocations, la recherche de trajet, les fusions et l’IA utilisent la même interdiction. Les deux couloirs centraux et les zones de départ restent ouverts. La fumée devient statique quand les animations sont désactivées ; les marquages d’interdiction restent visibles.
+Six évents fixes, symétriques par rotation, empêchent les invocations, le recouvrement et les déplacements. Une face secondaire qui tombe sur un évent n’est pas posée ; le reste du dé suit les règles habituelles de placement partiel. L’ancrage d’un dé sur un évent est refusé. Les invocations, la recherche de trajet, l’IA utilisent la même interdiction. Les deux couloirs centraux et les zones de départ restent ouverts. La fumée devient statique quand les animations sont désactivées ; les marquages d’interdiction restent visibles.
 
 La clairière et le cratère partagent les mêmes unités et le cache GLB. Les autres terrains conservent leur rendu antérieur. Le renderer de secours respecte l’ordre de dessin du sol et des coulées pour éviter les grands triangles masquant le terrain dans les navigateurs sans WebGL.
 

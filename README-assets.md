@@ -42,7 +42,7 @@ Si un fichier manque, le jeu garde sa figurine provisoire : tu peux donc les ajo
 | `glace-divin.glb` | 🐲 Dragon des Glaces | glace | Divin (niv. 6) |
 | `eau-divin.glb` | 🐲 Dragon des Abysses | eau | Divin (niv. 6) |
 | `feu-divin.glb` | 🐲 Dragon du Feu | feu | Divin (niv. 6) |
-| `fusion.glb` | 🐉 Dragon de Fusion | — | issu de la fusion de deux alliés |
+| `fusion.glb` | 🐉 Dragon de Fusion | — | modèle réservé ; fusion désactivée depuis v69 |
 
 ## Export depuis Meshy
 - Format : **GLB** (un seul fichier avec les textures et, si tu en as, les animations).
@@ -62,3 +62,4 @@ sont mieux en modèles 3D séparés que peints sur le sol.
 - En local : ouvre un terminal dans le dossier et lance `python3 -m http.server`, puis va sur http://localhost:8000
   (un double-clic sur index.html ne charge pas les fichiers).
 - La version publiée dans l'aperçu de Claude ne peut pas charger tes fichiers : utilise GitHub Pages.
+
