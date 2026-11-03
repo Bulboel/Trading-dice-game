@@ -39,3 +39,11 @@ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre .pouch-prop{top
 .pouch-glints .trail-divine{color:#fff;background:conic-gradient(#fff1a6,#ff7b77,#86ffd4,#9b9bff,#ffb9f3,#fff1a6);background-clip:text;-webkit-background-clip:text;filter:hue-rotate(var(--trail-hue)) drop-shadow(0 0 7px #fff)}
 .pouch-glints .trail-divine:before{content:"";position:absolute;left:50%;top:50%;width:clamp(16px,5vw,28px);height:3px;border-radius:50%;background:linear-gradient(90deg,transparent,#fff 35%,#a8fff0 65%,transparent);filter:blur(1px);transform:translate(-50%,-50%) rotate(var(--trail-angle));box-shadow:0 0 8px #dffcff}
 @keyframes die-trail-fade{0%{opacity:0;transform:translate(-50%,-50%) scale(.45)}16%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--trail-dx)),calc(-50% + var(--trail-dy))) scale(.05);filter:blur(1px)}}
+
+/* v80: responsive launch height, compact rarity and element tags. */
+body.portal-open[data-portal-view="shop"] #portal .pouch-theatre .pouch-prop{top:var(--pouch-top,clamp(46px,16dvh,100px))!important}
+@media(max-width:700px){body.portal-open[data-portal-view="shop"] #portal .pouch-theatre .pouch-prop{top:var(--pouch-top,clamp(52px,19dvh,112px))!important}}
+#portal .pouch-theatre .draw-label{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:86px;max-width:128px;padding:5px 10px 6px;border:1px solid #d9d4bf48;border-radius:999px;background:linear-gradient(135deg,#101b20ed,#263a36eb);box-shadow:0 4px 12px #0008,inset 0 1px #ffffff16;color:#f4eedb;font:600 clamp(10px,2.7vw,13px)/1.1 Georgia,serif;text-shadow:0 1px 3px #000;white-space:nowrap;pointer-events:none}
+#portal .pouch-theatre .draw-rarity{display:flex;align-items:center;gap:7px;color:var(--label-metal);font-weight:700;letter-spacing:.03em}
+#portal .pouch-theatre .draw-rarity i{font-style:normal;font-size:1.25em;line-height:1;text-shadow:0 0 8px currentColor}
+#portal .pouch-theatre .draw-element{font:500 9px/1.05 system-ui,sans-serif;color:#d5e5dc;letter-spacing:.08em;text-transform:uppercase}

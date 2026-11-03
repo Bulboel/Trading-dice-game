@@ -11,3 +11,6 @@ img.character-portrait{object-fit:contain;object-position:center bottom;vertical
 #portal .collect-card .collect-art:has(.character-portrait){height:88px;min-height:88px;max-height:88px}
 body:not(.portal-open) #app #hand .dc .dice-visuals .dice-art .character-portrait{width:32px!important;height:40px!important;max-width:100%!important}
 @media(max-width:650px){#portal .collect-card .collect-art:has(.character-portrait){height:76px;min-height:76px;max-height:76px}}
+
+/* v80: recognizable face crop on character dice carried in hand. */
+body:not(.portal-open) #app #hand .dc .dice-visuals .dice-art .character-portrait{width:54px!important;height:43px!important;max-width:calc(100% - 4px)!important;object-fit:cover!important;object-position:center 24%!important;border-radius:9px;filter:drop-shadow(0 2px 5px #4bd3ff75);}
