@@ -245,11 +245,12 @@ async function attachCreatureModel(g,k){
  const heroModel=mi===36||mi===37;const scale=heroModel?2.22/size.y:Math.min(.95/size.y,.78/Math.max(size.x,.01),.78/Math.max(size.z,.01));root.scale.setScalar(scale);root.position.set(-(bounds.min.x+bounds.max.x)*scale/2,-bounds.min.y*scale+.1,-(bounds.min.z+bounds.max.z)*scale/2);if(mi===37){/* Le modèle est déjà centré dans root.position avant rotation. Ne pas le décaler une seconde fois. */holder.position.z=.42;}
  root.traverse(o=>{o.userData.imported=true;if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});g.children.forEach((o,i)=>{if(i>0)o.visible=false});g.add(holder);g.userData.model=holder;
  g.userData.animationInfo=info;g.userData.modelRoot=root;
- if(asset.gltf.animations.length){const mixer=new THREE.AnimationMixer(root),idle=asset.gltf.animations.find(a=>/idle|stand|breath/i.test(a.name))||asset.gltf.animations[0];g.userData.idleAction=mixer.clipAction(idle);g.userData.idleAction.play();g.userData.activeAction=g.userData.idleAction;g.userData.mixer=mixer;for(const kind of ['spell','victory'])if(info.animations?.[kind])getCombatClip(info.animations[kind]).catch(()=>null)}
+ if(asset.gltf.animations.length){const mixer=new THREE.AnimationMixer(root),idle=asset.gltf.animations.find(a=>/idle|stand|breath/i.test(a.name))||asset.gltf.animations[0];g.userData.idleAction=mixer.clipAction(idle);g.userData.idleAction.play();g.userData.activeAction=g.userData.idleAction;g.userData.mixer=mixer;for(const kind of ['spell','victory','walk'])if(info.animations?.[kind])getCombatClip(info.animations[kind]).catch(()=>null)}
  }catch(error){console.info('Figurine provisoire conservée pour ce modèle.',mi)}
 }
 async function getCombatClip(path){const url='assets/'+path;if(!combatClipCache.has(url))combatClipCache.set(url,getModelTools().then(tools=>tools.loader.loadAsync(url)).then(data=>data.animations[0]||null).catch(()=>null));return combatClipCache.get(url)}
 async function playCombatClip(g,kind,combat){const tag=combat.sequence+':'+kind;if(g.userData.combatClipTag===tag)return;g.userData.combatClipTag=tag;const path=g.userData.animationInfo?.animations?.[kind];if(!path||!g.userData.mixer)return;const clip=await getCombatClip(path);if(!clip||!g.parent||g.userData.combatClipTag!==tag||window.HackeniaCombat?.current()?.sequence!==combat.sequence)return;if(kind==='spell'&&combat.progress>.65)return;const next=g.userData.mixer.clipAction(clip,g.userData.modelRoot),previous=g.userData.activeAction;if(previous!==next)previous?.fadeOut(.12);next.reset().setLoop(THREE.LoopOnce,1);next.clampWhenFinished=true;next.fadeIn(.12).play();g.userData.activeAction=next}
+async function playWalkClip(g,k){if(g.userData.walkTag===k.walk.started)return;g.userData.walkTag=k.walk.started;const path=g.userData.animationInfo?.animations?.walk;if(!path||!g.userData.mixer)return;const clip=await getCombatClip(path);if(!clip||!g.parent||g.userData.walkTag!==k.walk.started||Date.now()>k.walk.started+k.walk.duration)return;const next=g.userData.mixer.clipAction(clip,g.userData.modelRoot);g.userData.activeAction?.fadeOut(.12);next.reset().setLoop(THREE.LoopRepeat,Infinity);next.clampWhenFinished=false;next.fadeIn(.12).play();g.userData.activeAction=next}
 const combatFX=new THREE.Group();world.add(combatFX);
 const combatRingMaterial=new THREE.MeshBasicMaterial({color:0xffdfa4,transparent:true,opacity:.8,side:THREE.DoubleSide,depthWrite:false});
 const combatRings=[0,1].map(()=>{const ring=new THREE.Mesh(new THREE.RingGeometry(.35,.40,40),combatRingMaterial.clone());ring.rotation.x=-Math.PI/2;combatFX.add(ring);return ring});
@@ -276,6 +277,7 @@ function sync(){state=game.snapshot();setActive(state.terrain==='terre'||state.t
  for(const[key,g]of creatures)if(!liveCr.has(key)){pieces.remove(g);g.userData.mixer?.stopAllAction();g.traverse(o=>{if(o.isMesh&&!o.userData.imported&&o.geometry!==sphere)o.geometry.dispose()});creatures.delete(key)}
  disposeHighlights();for(const a of state.preview)if(a[0]>=0&&a[0]<8&&a[1]>=0&&a[1]<10&&!game.isBlocked(a[0],a[1])){const c=state.b[a[1]][a[0]];highlight(a[0],a[1],state.valid?0xf2d880:0xf17964,.24+(c&&!c.f?.28:0))}
  if(state.reachable)for(const key of Object.keys(state.reachable)){if(state.reachable[key]===null)continue;const[x,y]=key.split(',').map(Number),k=state.cr.find(c=>c.x===x&&c.y===y);if(k&&k.o===state.cur)continue;const c=state.b[y][x];highlight(x,y,k?0xed806d:0xa5e2d2,.25+(c&&!c.f?.28:0))}
+ if(state.movePlan){const p=state.movePlan,c=state.b[p.y]?.[p.x];highlight(p.x,p.y,0xffe4a0,.28+(c&&!c.f?.28:0))}
  if(state.sel)highlight(state.sel.x,state.sel.y,0xffe7a5,.26+(state.b[state.sel.y][state.sel.x]&&!state.b[state.sel.y][state.sel.x].f?.28:0));
  if(state.cu&&Date.now()-state.lastJ<3000){const c=state.b[state.cu.y][state.cu.x];highlight(state.cu.x,state.cu.y,0xe8efb5,.26+(c&&!c.f?.28:0))}
  const show=(state.mode==='p'||state.mode==='r'||state.mode==='d')&&(state.pc||(state.mode==='d'&&state.hov));dieGroup.visible=!!show;if(show){const D=game.monsters[state.die];dieGroup.userData.target=new THREE.Vector3((state.pc||state.hov).x-3.5,.95,(state.pc||state.hov).y-4.5);dieBody.material=matForElement(D.el);dieLabel.material=label(D.lv,D.el);dieMetal.color.setHex(D.lv>=6?0xe7d6f5:D.lv>=3?0xe4b85f:D.lv===2?0xd4dce1:0xa97e4d)}
@@ -325,19 +327,47 @@ const touchPointers=new Map();let pinchDistance=0;
 function touchPoint(e){return{x:e.clientX,y:e.clientY}}
 function touchPinch(){const p=[...touchPointers.values()];return Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y)}
 function moveTouchCamera(dx,dy){const r=canvas.getBoundingClientRect();if(orbitEnabled){orbitYaw-=dx/r.width*Math.PI*2;orbitPitch=Math.max(.035,Math.min(Math.PI/2-.035,orbitPitch+dy/r.height*Math.PI))}else{panX-=dx/r.width*2*viewSpan*viewAspect/zoom;panY+=dy/r.height*2*viewSpan/zoom;panX=Math.max(-18,Math.min(18,panX));panY=Math.max(-18,Math.min(18,panY))}updateCamera()}
+let touchGesture=null,mouseGesture=null;
 canvas.onpointerdown=e=>{
- if(e.pointerType==='touch'){touchPointers.set(e.pointerId,touchPoint(e));canvas.setPointerCapture(e.pointerId);if(touchPointers.size===2){pinchDistance=touchPinch();panDrag=null}if(touchPointers.size>1||(!state.pc&&state.mode!=='d'&&state.mode!=='p')){e.preventDefault();return}}
+ if(e.pointerType==='touch'){
+  touchPointers.set(e.pointerId,touchPoint(e));canvas.setPointerCapture(e.pointerId);
+  if(touchPointers.size>1){if(touchGesture)touchGesture.multiple=true;pinchDistance=touchPinch();panDrag=null;if(touchPointers.size===2)game.board.onpointercancel(e);e.preventDefault();return}
+  const [x,y]=cellAt(e),unit=state.cr.find(c=>c.x===x&&c.y===y&&c.o===state.cur);
+  touchGesture={id:e.pointerId,x:e.clientX,y:e.clientY,unit:unit||null,moved:false,multiple:false,dragUnit:false,placing:state.mode==='p'||state.mode==='d'};
+ }
+ if(e.pointerType!=='touch'){const [x,y]=cellAt(e);mouseGesture={x:e.clientX,y:e.clientY,unit:state.cr.find(c=>c.x===x&&c.y===y&&c.o===state.cur),dragUnit:false}}
  if(panEnabled||orbitEnabled||e.button===2||e.shiftKey||e.altKey){e.preventDefault();canvas.setPointerCapture(e.pointerId);panDrag={id:e.pointerId,x:e.clientX,y:e.clientY,orbit:orbitEnabled||e.altKey};return}
- if(state.over||(state.ai&&state.cur===1))return;e.preventDefault();canvas.setPointerCapture(e.pointerId);game.board.onpointerdown({clientX:e.clientX,clientY:e.clientY,pointerId:e.pointerId,preventDefault(){}})
+ if(state.over||(state.ai&&state.cur===1)||window.HackeniaCombat?.busy)return;e.preventDefault();canvas.setPointerCapture(e.pointerId);game.board.onpointerdown({clientX:e.clientX,clientY:e.clientY,pointerId:e.pointerId,preventDefault(){}})
 };
-// Keep capture on the visible canvas, including when the board is magnified.
+// Visible canvas owns capture; a tap must still reach creature selection.
 const originalCapture=game.board.setPointerCapture.bind(game.board);game.board.setPointerCapture=id=>active?canvas.setPointerCapture(id):originalCapture(id);
-canvas.onpointermove=e=>{if(e.pointerType==='touch'&&touchPointers.has(e.pointerId)){const previous=touchPointers.get(e.pointerId);touchPointers.set(e.pointerId,touchPoint(e));if(touchPointers.size>=2){const distance=touchPinch();if(pinchDistance>0)changeZoom(zoom*distance/pinchDistance);pinchDistance=distance;return}if(!state.pc&&state.mode!=='d'&&state.mode!=='p'){moveTouchCamera(e.clientX-previous.x,e.clientY-previous.y);return}}if(panDrag){if(e.pointerId!==panDrag.id)return;const r=canvas.getBoundingClientRect(),dx=e.clientX-panDrag.x,dy=e.clientY-panDrag.y;
- if(panDrag.orbit){orbitYaw-=dx/r.width*Math.PI*2;orbitPitch=Math.max(.035,Math.min(Math.PI/2-.035,orbitPitch+dy/r.height*Math.PI));}
- else{panX-=dx/r.width*2*viewSpan*viewAspect/zoom;panY+=dy/r.height*2*viewSpan/zoom;panX=Math.max(-18,Math.min(18,panX));panY=Math.max(-18,Math.min(18,panY));}
- panDrag.x=e.clientX;panDrag.y=e.clientY;updateCamera();return}game.board.onpointermove(e)};
-canvas.onpointerup=e=>{if(e.pointerType==='touch'){touchPointers.delete(e.pointerId);pinchDistance=0;if(!state.pc&&state.mode!=='d'&&state.mode!=='p')return}if(panDrag){panDrag=null;return}game.board.onpointerup(e)};
-canvas.onpointercancel=e=>{if(e.pointerType==='touch'){touchPointers.delete(e.pointerId);pinchDistance=0;if(!state.pc&&state.mode!=='d'&&state.mode!=='p')return}if(panDrag){panDrag=null;return}game.board.onpointercancel(e)};
+canvas.onpointermove=e=>{
+ if(e.pointerType==='touch'&&touchPointers.has(e.pointerId)){
+  const previous=touchPointers.get(e.pointerId);touchPointers.set(e.pointerId,touchPoint(e));
+  if(touchPointers.size>=2){const distance=touchPinch();if(pinchDistance>0)changeZoom(zoom*distance/pinchDistance);pinchDistance=distance;return}
+  const g=touchGesture;if(g&&Math.hypot(e.clientX-g.x,e.clientY-g.y)>8)g.moved=true;
+  if(g?.multiple)return;
+  if(g&&!g.placing&&!panDrag&&g.moved){
+   if(g.unit&&!state.moved&&!state.over&&(!state.ai||state.cur===0)&&!window.HackeniaCombat?.busy){if(!g.dragUnit){g.dragUnit=true;if(state.sel?.id!==g.unit.id)game.tap(g.unit.x,g.unit.y)}return}
+   moveTouchCamera(e.clientX-previous.x,e.clientY-previous.y);return
+  }
+ }
+ if(mouseGesture?.unit&&!panDrag&&state.mode==='i'&&!state.moved&&!state.over&&(!state.ai||state.cur===0)&&!window.HackeniaCombat?.busy&&Math.hypot(e.clientX-mouseGesture.x,e.clientY-mouseGesture.y)>8){if(!mouseGesture.dragUnit){mouseGesture.dragUnit=true;if(state.sel?.id!==mouseGesture.unit.id)game.tap(mouseGesture.unit.x,mouseGesture.unit.y)}return}
+ if(panDrag){if(e.pointerId!==panDrag.id)return;const r=canvas.getBoundingClientRect(),dx=e.clientX-panDrag.x,dy=e.clientY-panDrag.y;if(panDrag.orbit){orbitYaw-=dx/r.width*Math.PI*2;orbitPitch=Math.max(.035,Math.min(Math.PI/2-.035,orbitPitch+dy/r.height*Math.PI))}else{panX-=dx/r.width*2*viewSpan*viewAspect/zoom;panY+=dy/r.height*2*viewSpan/zoom;panX=Math.max(-18,Math.min(18,panX));panY=Math.max(-18,Math.min(18,panY))}panDrag.x=e.clientX;panDrag.y=e.clientY;updateCamera();return}
+ game.board.onpointermove(e)
+};
+canvas.onpointerup=e=>{
+ const mouse=mouseGesture;mouseGesture=null;if(e.pointerType!=='touch'&&mouse?.dragUnit&&!panDrag){const [x,y]=cellAt(e);if(x!==mouse.unit.x||y!==mouse.unit.y)game.tap(x,y);return}
+ if(e.pointerType==='touch'){
+  touchPointers.delete(e.pointerId);pinchDistance=0;const g=touchGesture;
+  if(g?.multiple){if(!touchPointers.size)touchGesture=null;panDrag=null;return}
+  touchGesture=null;if(panDrag){panDrag=null;return}
+  if(g?.dragUnit){const [x,y]=cellAt(e);if(x!==g.unit.x||y!==g.unit.y)game.tap(x,y);return}
+  if(g?.moved&&!g.placing)return
+ }
+ if(panDrag){panDrag=null;return}game.board.onpointerup(e)
+};
+canvas.onpointercancel=e=>{mouseGesture=null;if(e.pointerType==='touch'){touchPointers.delete(e.pointerId);pinchDistance=0;touchGesture=null}panDrag=null;game.board.onpointercancel(e)};
 let sceneryKey='';
 function setActive(value){active=value;const type=game.snapshot().terrain,fire=type==='feu';if(!value)placementLens.hidden=true;host.classList.toggle('view3d',value);document.getElementById('land-caption').hidden=!value;forest.visible=!fire;if(fire&&value&&!crater)crater=createCrater(world,game.snapshot().blocked,!!renderer.isSoftware);if(crater)crater.root.visible=fire;
  if(sceneryKey!==type){sceneryKey=type;renderer.setClearColor(fire?0x221b20:0x172c25,1);scene.fog.color.set(fire?0x392328:0x304d3d);sky.color.set(fire?0xf1c6ab:0xe9f0d5);sky.groundColor.set(fire?0x3e2023:0x3c5034);sun.color.set(fire?0xffb16a:0xffe1a0);sun.intensity=fire?2.5:3.1;const caption=document.getElementById('land-caption');caption.querySelector('span').textContent=fire?'LES LÈVRES DU BRASIER':'LE SANCTUAIRE VERDOYANT';caption.querySelector('small').textContent=fire?'La roche respire. Les évents sont impraticables.':'La rivière murmure. Le duel commence.';canvas.setAttribute('aria-label',fire?'Plateau 3D au bord du cratère, six évents fumants impraticables':'Plateau 3D de la Clairière des murmures, huit colonnes et dix lignes')}
@@ -365,6 +395,9 @@ function frame(now){requestAnimationFrame(frame);if(paused||!game.isPlaying()||!
  for(const g of creatures.values()){const k=g.userData.k,f=combat?window.HackeniaCombat.pose(combat,k):null;g.position.lerp(g.userData.target,moving?Math.min(1,dt*9):1);g.rotation.set(0,k.o?Math.PI:0,0);g.scale.setScalar(1);const spawn=state.anim?.o[k.x+','+k.y];g.visible=!spawn||Date.now()>state.anim.t0+spawn.d*220+300;const body=g.children[1];body.position.y=.35+(moving?Math.sin(t*2+k.id)*.012:0);
  if(f){g.visible=f.defeat<1;g.position.set(f.x-3.5,g.userData.target.y+f.lift,f.y-4.5);g.rotation.y=f.angle;g.scale.setScalar(f.scale);if(!combat.reduced){if(k.id===combat.fighters[0].id&&combat.progress<.65)playCombatClip(g,'spell',combat);if(!f.loser&&combat.progress>.7&&combat.stats[0].attack!==combat.stats[1].attack)playCombatClip(g,'victory',combat);if(f.loser)g.rotation.z=f.defeat*.55}}
  else if(g.userData.combatClipTag){g.userData.combatClipTag=null;g.userData.activeAction?.fadeOut(.15);g.userData.idleAction?.reset().fadeIn(.15).play();g.userData.activeAction=g.userData.idleAction}
+ const walk=!combat&&moving&&k.walk&&Date.now()<k.walk.started+k.walk.duration?k.walk:null;
+ if(walk){const t=Math.max(0,(Date.now()-walk.started)/walk.duration)*(walk.points.length-1),i=Math.min(walk.points.length-2,Math.floor(t)),a=walk.points[i],b=walk.points[i+1],p=t-i;const ca=state.b[a[1]]?.[a[0]],cb=state.b[b[1]]?.[b[0]],ya=.23+(ca&&!ca.f?.28:0),yb=.23+(cb&&!cb.f?.28:0);g.position.set(a[0]+(b[0]-a[0])*p-3.5,ya+(yb-ya)*p+Math.sin(t*7)*.025,a[1]+(b[1]-a[1])*p-4.5);g.rotation.y=Math.atan2(b[0]-a[0],b[1]-a[1]);playWalkClip(g,k)}
+ else if(g.userData.walkTag){g.userData.walkTag=null;if(!combat){g.userData.activeAction?.fadeOut(.12);g.userData.idleAction?.reset().fadeIn(.12).play();g.userData.activeAction=g.userData.idleAction}}
  if(g.userData.mixer&&(moving||(f&&!combat.reduced)))g.userData.mixer.update(dt);}
 
  if(dieGroup.visible){dieGroup.position.copy(dieGroup.userData.target);dieGroup.position.y+=moving?Math.sin(t*2)*.08:0;dieGroup.rotation.y=moving&&state.cubeCls!=='land'?t*.7:0;dieGroup.scale.setScalar(state.cubeCls==='poof'?.35:1)}
