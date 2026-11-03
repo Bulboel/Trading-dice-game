@@ -30,6 +30,17 @@ function rock(x,z,size=.3,height=.5){const o=mesh(rocks[Math.floor(rnd()*rocks.l
 // Molten ribbons have a raised viscous centre, red cooling edges, gold cores and darker floating crust.
 function ribbon(points,width,amount=1){const across=software?5:8,verts=[],cols=[],uv=[],idx=[],len=points.length;for(let j=0;j<len;j++){const [x,z]=points[j],next=points[Math.min(j+1,len-1)],prev=points[Math.max(j-1,0)],dx=next[0]-prev[0],dz=next[1]-prev[1],d=Math.hypot(dx,dz)||1,w=width*(.68+smooth(-.5,.65,noise(x*1.5,z*.8))*.7);for(let a=0;a<=across;a++){const q=a/across,s=q*2-1,X=x-dz/d*w*s,Z=z+dx/d*w*s,flow=noise(j*.39+amount,q*6),Y=surfaceHeight(X,Z)+.023+Math.pow(Math.max(0,1-s*s),1.5)*(.028+width*.13)+flow*.009;verts.push(X,Y,Z);const heat=Math.max(0,Math.min(1,.22+Math.pow(1-Math.abs(s),.55)*.57+flow*.22));const c=lavaColor(heat);cols.push(c.r,c.g,c.b);uv.push(q,j/len);if(j&&a){const n=j*(across+1)+a;idx.push(n-across-2,n-1,n-across-1,n-across-1,n-1,n)}}}const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));g.setAttribute('color',new THREE.Float32BufferAttribute(cols,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(idx);g.computeVertexNormals();const m=new THREE.MeshBasicMaterial({color:0xffffff,vertexColors:true,side:THREE.DoubleSide});m.userData.seamless=true;flowMaterials.push(m);const o=mesh(g,m);o.renderOrder=-2;return o}
 for(const side of[-1,1]){const path=[];const steps=software?54:96;for(let i=0;i<steps;i++){const z=-6.9+i*13.8/(steps-1),x=side*(5.05+noise(z*.55,side*2)*.55+noise(z*1.7,side+5)*.16);path.push([x,z])}ribbon(path,.105,side);for(let k=0;k<9;k++){const o=mesh(new THREE.SphereGeometry(1,5,3),hot);o.scale.set(.024,.009,.10);currents.push({o,path,phase:rnd(),speed:.018+rnd()*.013})}for(let i=2;i<steps-2;i+=software?4:3){const [x,z]=path[i],bank=side*(.27+rnd()*.1);if(!nearCrater(x+bank,z))rock(x+bank,z,.12+rnd()*.14,.7);if(i%2===0&&!nearCrater(x,z)){const o=rock(x+(rnd()-.5)*.22,z,.045+rnd()*.09,.25);o.position.y=surfaceHeight(x,z)+.08}}}
+
+// Thin molten tongues escape the crater lips and follow the sloped basalt toward the arena.
+for(const c of craterSites){
+ const large=c.s>.7,branches=large?2:1;
+ for(let branch=0;branch<branches;branch++){
+  const angle=Math.atan2(-c.z,-c.x)+(branch?-.28:.12),length=(large?2.65:1.2)*(branch?.72:1),steps=software?28:46,path=[];
+  for(let i=0;i<steps;i++){const t=i/(steps-1),bend=Math.sin(t*Math.PI*1.45+branch*1.7)*(.12+t*.2),dist=c.s*(1.16+.16*t)+length*t,x=c.x+Math.cos(angle)*dist-Math.sin(angle)*bend,z=c.z+Math.sin(angle)*dist+Math.cos(angle)*bend;path.push([x,z])}
+  ribbon(path,large?(branch?.048:.078):.036,c.x+c.z+branch);
+  for(let k=0;k<(large?7:4);k++){const o=mesh(new THREE.SphereGeometry(1,5,3),hot);o.scale.set(large?.017:.012,.006,large?.055:.034);currents.push({o,path,phase:rnd(),speed:.024+rnd()*.018})}
+ }
+}
 // The luminous network comes from shared plate boundaries, not independent painted ribbons.
 // Small flamelets sample the same vein field and therefore emerge from actual cracks.
 const flameSites=[];for(let i=0;i<900&&flameSites.length<28;i++){const u=.06+rnd()*.88,v=.06+rnd()*.88;field.sample(u,v,f);if(f.crack>.6&&f.core>.28)flameSites.push([u*14-7,v*15-7.5])}
