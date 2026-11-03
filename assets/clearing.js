@@ -41,6 +41,7 @@ host.append(navigation);
 const panStyle=document.createElement('style');panStyle.textContent='#board-navigation #orbit-view[aria-pressed=true]{background:#5b7251;color:#fff2bf;box-shadow:0 0 0 1px #e1c781}canvas.orbiting{cursor:grab}canvas.orbiting:active{cursor:grabbing}#board-navigation{display:flex;align-items:center;gap:5px;flex-wrap:wrap;max-width:min(96%,540px)}#board-navigation .board-pan-pad{display:grid;grid-template-columns:repeat(3,25px);grid-template-rows:repeat(3,23px);gap:1px;margin-left:5px;border-left:1px solid #c6b68a55;padding-left:9px}#board-navigation .board-pan-pad button{font-size:15px;line-height:1;min-width:25px;width:25px;height:23px;padding:0;border:1px solid #bba97955;border-radius:5px;background:#17362ce8;color:#eadab1;cursor:pointer}#board-navigation .board-pan-pad button:hover{background:#3e624b}#board-navigation .board-pan-pad [data-pan=up]{grid-column:2;grid-row:1}#board-navigation .board-pan-pad [data-pan=left]{grid-column:1;grid-row:2}#board-navigation .board-pan-pad [data-pan=down]{grid-column:2;grid-row:3}#board-navigation .board-pan-pad [data-pan=right]{grid-column:3;grid-row:2}@media(max-width:600px){#board-navigation{max-width:100%;gap:3px}#board-navigation .board-pan-pad{margin-left:0;padding-left:4px}}';document.head.append(panStyle);
 
 
+let combatFocus=0;const combatCenter=new THREE.Vector3();
 let zoom=1.1,panX=0,panY=0,panEnabled=false,panDrag=null,viewSpan=9,viewAspect=1,orbitYaw=Math.atan2(8,16),orbitPitch=Math.atan2(15,Math.hypot(8,16));
 
 const scene=new THREE.Scene(),world=new THREE.Group();scene.add(world);scene.fog=new THREE.Fog(0x304d3d,25,58);
@@ -232,7 +233,7 @@ const eyeMaterial=mat(0x172d26);
 const green=mat(0x3c7959,{roughness:.56}),orange=mat(0xb97844,{roughness:.56});
 function label(value,element,bonus=0){const key=value+':'+element+':'+bonus;if(textures.has(key))return textures.get(key);const c=document.createElement('canvas');c.width=c.height=128;const ctx=c.getContext('2d');ctx.strokeStyle='#f0dfb280';ctx.lineWidth=2;ctx.strokeRect(5,5,118,118);ctx.font='bold 70px Georgia';ctx.textAlign='center';ctx.fillStyle='#fff4d3';ctx.shadowColor='#10261b';ctx.shadowBlur=3;ctx.fillText(value,64,87);if(element){ctx.beginPath();ctx.arc(108,20,8,0,7);ctx.fillStyle=game.elementColors[element];ctx.fill();ctx.strokeStyle='#fff4cf';ctx.stroke()}if(bonus){ctx.font='bold 24px sans-serif';ctx.fillStyle='#f5db84';ctx.fillText('+'+bonus,103,114)}const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;const material=new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false});textures.set(key,material);return material}
 let state,active=true,quality='auto',moving=true,light=false,paused=false,lastFrame=0,currentAngle=0;
-const tiles=new Map(),creatures=new Map(),modelCache=new Map();
+const tiles=new Map(),creatures=new Map(),modelCache=new Map(),combatClipCache=new Map();
 let modelTools;
 function getModelTools(){return modelTools??=Promise.all([import('https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js'),import('https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/utils/SkeletonUtils.js')]).then(([a,b])=>({loader:new a.GLTFLoader(),clone:b.clone}))}
 async function attachCreatureModel(g,k){
@@ -243,8 +244,20 @@ async function attachCreatureModel(g,k){
  const root=asset.clone(asset.gltf.scene),holder=new THREE.Group();holder.userData.imported=true;holder.add(root);if(mi===36||mi===37)holder.rotation.y=Math.PI;root.updateMatrixWorld(true);const bounds=new THREE.Box3().setFromObject(root),size=bounds.getSize(new THREE.Vector3());if(!Number.isFinite(size.y)||size.y<=0)return;
  const heroModel=mi===36||mi===37;const scale=heroModel?2.22/size.y:Math.min(.95/size.y,.78/Math.max(size.x,.01),.78/Math.max(size.z,.01));root.scale.setScalar(scale);root.position.set(-(bounds.min.x+bounds.max.x)*scale/2,-bounds.min.y*scale+.1,-(bounds.min.z+bounds.max.z)*scale/2);if(mi===37){/* Le modèle est déjà centré dans root.position avant rotation. Ne pas le décaler une seconde fois. */holder.position.z=.42;}
  root.traverse(o=>{o.userData.imported=true;if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});g.children.forEach((o,i)=>{if(i>0)o.visible=false});g.add(holder);g.userData.model=holder;
- if(asset.gltf.animations.length){const mixer=new THREE.AnimationMixer(root),idle=asset.gltf.animations.find(a=>/idle|stand|breath/i.test(a.name))||asset.gltf.animations[0];mixer.clipAction(idle).play();g.userData.mixer=mixer}
+ g.userData.animationInfo=info;g.userData.modelRoot=root;
+ if(asset.gltf.animations.length){const mixer=new THREE.AnimationMixer(root),idle=asset.gltf.animations.find(a=>/idle|stand|breath/i.test(a.name))||asset.gltf.animations[0];g.userData.idleAction=mixer.clipAction(idle);g.userData.idleAction.play();g.userData.activeAction=g.userData.idleAction;g.userData.mixer=mixer;for(const kind of ['spell','victory'])if(info.animations?.[kind])getCombatClip(info.animations[kind]).catch(()=>null)}
  }catch(error){console.info('Figurine provisoire conservée pour ce modèle.',mi)}
+}
+async function getCombatClip(path){const url='assets/'+path;if(!combatClipCache.has(url))combatClipCache.set(url,getModelTools().then(tools=>tools.loader.loadAsync(url)).then(data=>data.animations[0]||null).catch(()=>null));return combatClipCache.get(url)}
+async function playCombatClip(g,kind,combat){const tag=combat.sequence+':'+kind;if(g.userData.combatClipTag===tag)return;g.userData.combatClipTag=tag;const path=g.userData.animationInfo?.animations?.[kind];if(!path||!g.userData.mixer)return;const clip=await getCombatClip(path);if(!clip||!g.parent||g.userData.combatClipTag!==tag||window.HackeniaCombat?.current()?.sequence!==combat.sequence)return;if(kind==='spell'&&combat.progress>.65)return;const next=g.userData.mixer.clipAction(clip,g.userData.modelRoot),previous=g.userData.activeAction;if(previous!==next)previous?.fadeOut(.12);next.reset().setLoop(THREE.LoopOnce,1);next.clampWhenFinished=true;next.fadeIn(.12).play();g.userData.activeAction=next}
+const combatFX=new THREE.Group();world.add(combatFX);
+const combatRingMaterial=new THREE.MeshBasicMaterial({color:0xffdfa4,transparent:true,opacity:.8,side:THREE.DoubleSide,depthWrite:false});
+const combatRings=[0,1].map(()=>{const ring=new THREE.Mesh(new THREE.RingGeometry(.35,.40,40),combatRingMaterial.clone());ring.rotation.x=-Math.PI/2;combatFX.add(ring);return ring});
+const impactRing=new THREE.Mesh(new THREE.RingGeometry(.24,.31,48),combatRingMaterial.clone());impactRing.rotation.x=-Math.PI/2;combatFX.add(impactRing);
+const combatOrb=new THREE.Mesh(new THREE.SphereGeometry(.11,10,8),new THREE.MeshBasicMaterial({color:0xffe8aa}));combatFX.add(combatOrb);combatFX.visible=false;
+function updateCombatFX(combat){combatFX.visible=!!combat;if(!combat)return;const p=combat.progress,[a,d]=combat.fighters,col=game.elementColors[combat.stats[0].element]||'#ffe2a0';for(let i=0;i<2;i++){const unit=combat.fighters[i],ring=combatRings[i];ring.position.set(unit.x-3.5,.525,unit.y-4.5);ring.material.color.set(i===0?col:'#f7a77b');ring.scale.setScalar(combat.reduced?1:1+Math.sin(p*12)*.06);ring.material.opacity=.55}
+ const flight=Math.min(1,Math.max(0,(p-.25)/.20));combatOrb.visible=!combat.reduced&&p>.25&&p<.47;combatOrb.material.color.set(col);combatOrb.position.set(a.x-3.5+(d.x-a.x)*flight,.92+Math.sin(flight*Math.PI)*.2,a.y-4.5+(d.y-a.y)*flight);
+ const shock=Math.max(0,(p-.44)/.21);impactRing.visible=p>.44&&p<.65;impactRing.position.set(d.x-3.5,.54,d.y-4.5);impactRing.material.color.set(col);impactRing.scale.setScalar(combat.reduced?1:1+shock*2.5);impactRing.material.opacity=1-Math.min(1,shock);
 }
 function disposeHighlights(){for(const m of [...highlights.children]){highlights.remove(m);m.material.dispose()}}
 function highlight(x,y,color,level=.235){const m=new THREE.Mesh(highlightGeo,new THREE.MeshBasicMaterial({color,transparent:true,opacity:.36,side:THREE.DoubleSide,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.set(x-3.5,level,y-4.5);highlights.add(m)}
@@ -289,8 +302,8 @@ function updateCamera(){
  const right=new THREE.Vector3(Math.cos(orbitYaw),0,-Math.sin(orbitYaw));
  const up=new THREE.Vector3().crossVectors(direction,right).normalize();
  const offset=right.multiplyScalar(panX).add(up.multiplyScalar(panY));
- camera.position.copy(direction.multiplyScalar(distance).add(offset));camera.up.set(0,1,0);camera.lookAt(offset);
- camera.zoom=zoom;camera.updateProjectionMatrix();camera.updateMatrixWorld(true);
+ offset.lerp(combatCenter,combatFocus);camera.position.copy(direction.multiplyScalar(distance).add(offset));camera.up.set(0,1,0);camera.lookAt(offset);
+ camera.zoom=zoom+(Math.max(zoom,3.2)-zoom)*combatFocus;camera.updateProjectionMatrix();camera.updateMatrixWorld(true);
 }
 function changeZoom(value,anchor){
  const next=Math.round(Math.max(1,Math.min(8,value))*100)/100;
@@ -347,7 +360,13 @@ function frame(now){requestAnimationFrame(frame);if(paused||!game.isPlaying()||!
  const target=-state.rzCur*Math.PI/180;if(!moving)currentAngle=target;currentAngle+=Math.atan2(Math.sin(target-currentAngle),Math.cos(target-currentAngle))*Math.min(1,dt*5);world.rotation.y=currentAngle;world.updateMatrixWorld(true);
 
  for(const tile of tiles.values()){let progress=1;const a=tile.an,A=state.anim;if(a&&A&&moving){progress=Math.max(0,Math.min(1,(Date.now()-A.t0-a.d*220)/450))}tile.pivot.visible=progress>0;const eased=1-Math.pow(1-progress,3);tile.pivot.scale.setScalar(Math.max(.001,eased));tile.pivot.position.y=.22+(1-eased)*.55;tile.pivot.rotation.x=a?.c==='u-d'?(1-eased)*Math.PI/2:a?.c==='u-u'?-(1-eased)*Math.PI/2:0;tile.pivot.rotation.z=a?.c==='u-r'?-(1-eased)*Math.PI/2:a?.c==='u-l'?(1-eased)*Math.PI/2:0}
- for(const g of creatures.values()){const k=g.userData.k;g.position.lerp(g.userData.target,moving?Math.min(1,dt*9):1);g.rotation.y=k.o?Math.PI:0;const spawn=state.anim?.o[k.x+','+k.y];g.visible=!spawn||Date.now()>state.anim.t0+spawn.d*220+300;const body=g.children[1];body.position.y=.35+(moving?Math.sin(t*2+k.id)*.012:0);if(g.userData.mixer&&moving)g.userData.mixer.update(dt);}
+ const combat=window.HackeniaCombat?.current();updateCombatFX(combat);
+ const focusTarget=combat&&!combat.reduced?Math.min(1,combat.progress/.14,(1-combat.progress)/.12):0;combatFocus+=(focusTarget-combatFocus)*Math.min(1,dt*10);if(combat){const [a,d]=combat.fighters;combatCenter.copy(world.localToWorld(new THREE.Vector3((a.x+d.x)/2-3.5,.65,(a.y+d.y)/2-4.5)))}if(combatFocus>.001||focusTarget)updateCamera();else if(combatFocus!==0){combatFocus=0;updateCamera()}
+ for(const g of creatures.values()){const k=g.userData.k,f=combat?window.HackeniaCombat.pose(combat,k):null;g.position.lerp(g.userData.target,moving?Math.min(1,dt*9):1);g.rotation.set(0,k.o?Math.PI:0,0);g.scale.setScalar(1);const spawn=state.anim?.o[k.x+','+k.y];g.visible=!spawn||Date.now()>state.anim.t0+spawn.d*220+300;const body=g.children[1];body.position.y=.35+(moving?Math.sin(t*2+k.id)*.012:0);
+ if(f){g.visible=f.defeat<1;g.position.set(f.x-3.5,g.userData.target.y+f.lift,f.y-4.5);g.rotation.y=f.angle;g.scale.setScalar(f.scale);if(!combat.reduced){if(k.id===combat.fighters[0].id&&combat.progress<.65)playCombatClip(g,'spell',combat);if(!f.loser&&combat.progress>.7&&combat.stats[0].attack!==combat.stats[1].attack)playCombatClip(g,'victory',combat);if(f.loser)g.rotation.z=f.defeat*.55}}
+ else if(g.userData.combatClipTag){g.userData.combatClipTag=null;g.userData.activeAction?.fadeOut(.15);g.userData.idleAction?.reset().fadeIn(.15).play();g.userData.activeAction=g.userData.idleAction}
+ if(g.userData.mixer&&(moving||(f&&!combat.reduced)))g.userData.mixer.update(dt);}
+
  if(dieGroup.visible){dieGroup.position.copy(dieGroup.userData.target);dieGroup.position.y+=moving?Math.sin(t*2)*.08:0;dieGroup.rotation.y=moving&&state.cubeCls!=='land'?t*.7:0;dieGroup.scale.setScalar(state.cubeCls==='poof'?.35:1)}
  highlights.children.forEach(m=>m.material.opacity=moving?.32+Math.sin(t*3)*.09:.4);renderer.render(scene,camera);drawPlacementLens();
 }
