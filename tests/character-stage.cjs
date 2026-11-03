@@ -2,7 +2,7 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
 const src=fs.readFileSync(path.join(__dirname,'../assets/character-stage.js'),'utf8').replace(/^import .*;\n/gm,'').replace('export async function','async function');
 class Vec{constructor(x=0,y=0,z=0){this.set(x,y,z)}set(x,y,z){this.x=x;this.y=y;this.z=z;return this}clone(){return new Vec(this.x,this.y,this.z)}copy(v){return this.set(v.x,v.y,v.z)}sub(v){this.x-=v.x;this.y-=v.y;this.z-=v.z;return this}add(v){this.x+=v.x;this.y+=v.y;this.z+=v.z;return this}setScalar(n){return this.set(n,n,n)}length(){return Math.hypot(this.x,this.y,this.z)}setLength(n){const ratio=n/(this.length()||1);return this.set(this.x*ratio,this.y*ratio,this.z*ratio)}}
-class Obj{constructor(){this.position=new Vec();this.quaternion=new Vec();this.scale=new Vec(1,1,1)}add(){}traverse(fn){fn(this)}updateMatrixWorld(){}}
+class Obj{constructor(){this.rotation=new Vec();this.position=new Vec();this.quaternion=new Vec();this.scale=new Vec(1,1,1)}add(){}traverse(fn){fn(this)}updateMatrixWorld(){}}
 const stats={poses:0,stops:0,plays:0,disposes:0,contexts:0,removed:0},root=new Obj(),mesh=new Obj();mesh.isMesh=true;mesh.isSkinnedMesh=true;mesh.skeleton={pose(){stats.poses++}};mesh.geometry={dispose(){stats.disposes++}};mesh.material={dispose(){stats.disposes++}};root.traverse=fn=>{fn(root);fn(mesh)};
 class Box{constructor(){this.min=new Vec(0,0,0)}setFromObject(){return this}getSize(v){return v.set(1,2,1)}getCenter(v){return v.set(0,1,0)}}
 class Renderer{constructor(){this.domElement={style:{},setAttribute(){},remove(){stats.removed++}}}setPixelRatio(){}setClearColor(){}setSize(){}render(){}dispose(){stats.disposes++}forceContextLoss(){stats.contexts++}}
