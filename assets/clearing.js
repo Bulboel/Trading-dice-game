@@ -1,7 +1,7 @@
 /* Presentation adapter. Game legality, turns, decks and combat stay in index.html. */
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
 import { orientBoardModel } from './model-facing.js?v=20261103-v73';
-import { createCrater } from './crater.js?v=20261103-v73';
+import { createCrater } from './crater.js?v=20261103-v74';
 
 const game=window.hackeniaGame, host=document.getElementById('bw');
 try { initClearing(); } catch(error) {
