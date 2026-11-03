@@ -1,7 +1,7 @@
 /* Presentation adapter. Game legality, turns, decks and combat stay in index.html. */
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
-import { alignModelForward } from './model-facing.js?v=20261103-v71';
-import { createCrater } from './crater.js?v=20261102-lave-relief';
+import { orientBoardModel } from './model-facing.js?v=20261103-v73';
+import { createCrater } from './crater.js?v=20261103-v73';
 
 const game=window.hackeniaGame, host=document.getElementById('bw');
 try { initClearing(); } catch(error) {
@@ -242,10 +242,10 @@ async function attachCreatureModel(g,k){
  try{const info=await game.modelInfo(mi);if(!info?.glb)return;const url='assets/'+info.glb+(mi===37?'?revision=kala-idle-dc1986a2':mi===36?'?revision=eberien-idle-14d7089a':'');
  if(!modelCache.has(url))modelCache.set(url,(async()=>{const exists=await fetch(url,{method:'HEAD'});if(!exists.ok)return null;const tools=await getModelTools();const gltf=await tools.loader.loadAsync(url);return{gltf,clone:tools.clone}})().catch(()=>null));
  const asset=await modelCache.get(url);if(!asset||!g.parent||g.userData.modelId!==mi)return;
- const root=asset.clone(asset.gltf.scene),holder=new THREE.Group();holder.userData.imported=true;holder.add(root);root.updateMatrixWorld(true);const bounds=new THREE.Box3().setFromObject(root),size=bounds.getSize(new THREE.Vector3());if(!Number.isFinite(size.y)||size.y<=0)return;
+ const root=asset.clone(asset.gltf.scene),holder=new THREE.Group();holder.userData.imported=true;g.userData.idleModelYaw=mi===36||mi===37?Math.PI:0;holder.rotation.y=g.userData.idleModelYaw;holder.add(root);root.updateMatrixWorld(true);const bounds=new THREE.Box3().setFromObject(root),size=bounds.getSize(new THREE.Vector3());if(!Number.isFinite(size.y)||size.y<=0)return;
  const heroModel=mi===36||mi===37;const scale=heroModel?2.22/size.y:Math.min(.95/size.y,.78/Math.max(size.x,.01),.78/Math.max(size.z,.01));root.scale.setScalar(scale);root.position.set(-(bounds.min.x+bounds.max.x)*scale/2,-bounds.min.y*scale+.1,-(bounds.min.z+bounds.max.z)*scale/2);if(mi===37){/* Le modèle est déjà centré dans root.position avant rotation. Ne pas le décaler une seconde fois. */holder.position.z=.42;}
  root.traverse(o=>{o.userData.imported=true;if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});g.children.forEach((o,i)=>{if(i>0)o.visible=false});g.add(holder);g.userData.model=holder;
- g.userData.animationInfo=info;g.userData.modelRoot=root;alignModelForward(root,holder,THREE);
+ g.userData.animationInfo=info;g.userData.modelRoot=root;
  if(asset.gltf.animations.length){const mixer=new THREE.AnimationMixer(root),idle=asset.gltf.animations.find(a=>/idle|stand|breath/i.test(a.name))||asset.gltf.animations[0];g.userData.idleAction=mixer.clipAction(idle);g.userData.idleAction.play();g.userData.activeAction=g.userData.idleAction;g.userData.mixer=mixer;for(const kind of ['spell','victory','walk'])if(info.animations?.[kind])getCombatClip(info.animations[kind]).catch(()=>null)}
  }catch(error){console.info('Figurine provisoire conservée pour ce modèle.',mi)}
 }
@@ -399,7 +399,7 @@ function frame(now){requestAnimationFrame(frame);if(paused||!game.isPlaying()||!
  const walk=!combat&&moving&&k.walk&&Date.now()<k.walk.started+k.walk.duration?k.walk:null;
  if(walk){const t=Math.max(0,(Date.now()-walk.started)/walk.duration)*(walk.points.length-1),i=Math.min(walk.points.length-2,Math.floor(t)),a=walk.points[i],b=walk.points[i+1],p=t-i;const ca=state.b[a[1]]?.[a[0]],cb=state.b[b[1]]?.[b[0]],ya=.23+(ca&&!ca.f?.28:0),yb=.23+(cb&&!cb.f?.28:0);g.position.set(a[0]+(b[0]-a[0])*p-3.5,ya+(yb-ya)*p+Math.sin(t*7)*.025,a[1]+(b[1]-a[1])*p-4.5);g.rotation.y=Math.atan2(b[0]-a[0],b[1]-a[1]);playWalkClip(g,k)}
  else if(g.userData.walkTag){g.userData.walkTag=null;if(!combat){g.userData.activeAction?.fadeOut(.12);g.userData.idleAction?.reset().fadeIn(.12).play();g.userData.activeAction=g.userData.idleAction}}
- if(g.userData.mixer&&(moving||(f&&!combat.reduced)))g.userData.mixer.update(dt);if(g.userData.modelRoot&&g.userData.model)alignModelForward(g.userData.modelRoot,g.userData.model,THREE);}
+ if(g.userData.mixer&&(moving||(f&&!combat.reduced)))g.userData.mixer.update(dt);if(g.userData.modelRoot&&g.userData.model)orientBoardModel(g.userData.modelRoot,g.userData.model,f,g.userData.idleModelYaw||0,THREE);}
 
  if(dieGroup.visible){dieGroup.position.copy(dieGroup.userData.target);dieGroup.position.y+=moving?Math.sin(t*2)*.08:0;dieGroup.rotation.y=moving&&state.cubeCls!=='land'?t*.7:0;dieGroup.scale.setScalar(state.cubeCls==='poof'?.35:1)}
  highlights.children.forEach(m=>m.material.opacity=moving?.32+Math.sin(t*3)*.09:.4);renderer.render(scene,camera);drawPlacementLens();
@@ -435,7 +435,7 @@ function LandscapeCanvasRenderer(canvas){
  tempColor.copy(material.color||new THREE.Color('white'));if(vc&&material.vertexColors){const count=ids.length;tempColor.multiply(new THREE.Color(ids.reduce((s,id)=>s+vc.getX(id),0)/count,ids.reduce((s,id)=>s+vc.getY(id),0)/count,ids.reduce((s,id)=>s+vc.getZ(id),0)/count))}
  if(o.isInstancedMesh)tempColor.multiply(instanceTint);
  const texture=material.map,uv=geo.attributes.uv;
- if(texture?.userData.pixels&&uv){const id=ids[0],tx=((uv.getX(id)*texture.repeat.x+texture.offset.x)%1+1)%1,ty=((uv.getY(id)*texture.repeat.y+texture.offset.y)%1+1)%1,ix=(Math.floor((1-ty)*255)*256+Math.floor(tx*255))*4,pixels=texture.userData.pixels;tempColor.multiply(new THREE.Color(pixels[ix]/255,pixels[ix+1]/255,pixels[ix+2]/255))}
+ if(texture?.userData.pixels&&uv){const id=ids[0],tx=((uv.getX(id)*texture.repeat.x+texture.offset.x)%1+1)%1,ty=((uv.getY(id)*texture.repeat.y+texture.offset.y)%1+1)%1,tw=texture.image.width,th=texture.image.height,ix=(Math.floor((1-ty)*(th-1))*tw+Math.floor(tx*(tw-1)))*4,pixels=texture.userData.pixels;tempColor.multiply(new THREE.Color(pixels[ix]/255,pixels[ix+1]/255,pixels[ix+2]/255))}
  if(norm&&!material.isMeshBasicMaterial){normal.fromBufferAttribute(norm,ids[0]).applyMatrix3(nmat).normalize();tempColor.multiplyScalar(.72+Math.max(0,normal.dot(light))*.45)}
  faces.push({p,depth,layer:o.renderOrder||0,color:'#'+tempColor.getHexString(),alpha:material.opacity??1,line:step===2,seamless:!!material.userData.seamless});
  }

@@ -376,11 +376,14 @@ function why(cs,lv){const f=cs[0];if(!f||!inb(f[0],f[1]))return 'la case où tu 
  if(blocked(f[0],f[1]))return 'cet évent fumant est impraticable : aucune invocation ici.';
  if(cr.some(c=>c.x==f[0]&&c.y==f[1]&&creatureLevel(c)>=lv))return 'une créature de niveau supérieur ou égal à ton dé occupe cette case.';
  return 'le dé doit toucher les abords de ta zone ou un de tes dés déjà posés.'}
-// Allies may be crossed, enemies are reachable endpoints and never transit squares.
+// First orthogonal contact ends a route. An occupied enemy square remains an explicit attack target.
+function enemyNear(c,x,y){for(const[dx,dy]of D4){const e=at(x+dx,y+dy);if(e&&e.o!==c.o)return e}return null}
+function moveEnemy(c,x,y){const e=at(x,y);return e&&e.o!==c.o?e:enemyNear(c,x,y)}
 function bfs(c){const par={},q=[[c.x,c.y]];par[[c.x,c.y]]=null;
- for(let i=0;i<q.length;i++){const[x,y]=q[i];
+ for(let i=0;i<q.length;i++){const[x,y]=q[i],contact=enemyNear(c,x,y);
   for(const[dx,dy]of D4){const X=x+dx,Y=y+dy;if(!inb(X,Y)||blocked(X,Y)||!b[Y][X]||par[[X,Y]]!==undefined)continue;
-   par[[X,Y]]=[x,y];const occupant=at(X,Y);if(!occupant||occupant.o===c.o)q.push([X,Y])}}return par}
+   const occupant=at(X,Y);if(contact&&(!occupant||occupant.o===c.o))continue;
+   par[[X,Y]]=[x,y];if(!occupant||(occupant.o===c.o&&!enemyNear(c,X,Y)))q.push([X,Y])}}return par}
 function unfoldOrder(cs){const f=cs[0],o={},q=[[f[0],f[1]]];o[[f[0],f[1]]]={d:0,c:'u-b'};let max=0;
  while(q.length){const[x,y]=q.shift();for(const[dx,dy]of D4){const X=x+dx,Y=y+dy;if(o[[X,Y]]||!cs.some(a=>a[0]==X&&a[1]==Y))continue;
   const d=o[[x,y]].d+1;max=Math.max(max,d);o[[X,Y]]={d,c:dx==1?'u-r':dx==-1?'u-l':dy==1?'u-d':'u-u'};q.push([X,Y])}}
@@ -418,7 +421,7 @@ function mv(c,x,y){const before=unitSnapshot(c),startX=c.x,startY=c.y;const e=at
   else if(a<d){cr=cr.filter(z=>z!=c);kills[e.o]++;msg='Attaque ratée : '+a+' contre '+d+'. La créature attaquante disparaît.'}
   else msg='Égalité '+a+'-'+d+' : personne ne bouge.'}
  else{const route=[];let step=[x,y];while(step){route.unshift(step);step=paths[step]}c.walk={points:route,started:Date.now(),duration:Math.max(1,route.length-1)*240};c.x=x;c.y=y;msg='Créature avancée.'}
- if(cr.includes(c)&&(c.x!==startX||c.y!==startY)){const after=unitSnapshot(c);recordEvent('Déplacement',before.name+' avance.'+(before.attack!==after.attack?' Son attaque passe de '+before.attack+' à '+after.attack+'.':' Attaque : '+after.attack+'.'),[before,after])}moved=1;sel=null;const k=b[c.y]&&b[c.y][c.x];scoreArrival(c);if(!over&&cr.includes(c)){const t=resolve(c);if(t)msg+=t}msg+=chkKills()}
+ if(cr.includes(c)&&(c.x!==startX||c.y!==startY)){const after=unitSnapshot(c);recordEvent('Déplacement',before.name+' avance.'+(before.attack!==after.attack?' Son attaque passe de '+before.attack+' à '+after.attack+'.':' Attaque : '+after.attack+'.'),[before,after])}moved=1;sel=null;if(!over&&cr.includes(c)){const t=resolve(c);if(t)msg+=t}msg+=chkKills();if(!over&&cr.includes(c))scoreArrival(c)}
 function firstValid(m,r){const ys=[...Array(H).keys()];if(!cur)ys.reverse();for(const y of ys)for(const x of[3,4,2,5,1,6,0,7])if(ok(cellsOf(m,r,{x,y}),M[m].lv))return{x,y};return null}
 function pick(i){movePlan=null;const m=pl[cur].h[i],p=firstValid(m,cur?0:2);if(!p){msg='Aucun emplacement possible pour ce dé.';return}
  hi=i;die=m;rot=cur?0:2;pc=p;mode='p';sel=null;$('roll').textContent='';$('roll').className='';
@@ -439,7 +442,7 @@ function lancer(){if(window.HackeniaCombat?.busy||mode!='p')return;const all=cel
     gone.forEach(a=>delete u.o[[a[0],a[1]]]);pl2=pl2.filter(a=>!gone.includes(a));dropped+=gone.length}
    if(underStats.length)recordEvent('Écrasement',M[m].cn+' : dé de niveau '+M[m].lv+'. '+underStats.map(u=>u.name+' (niveau '+u.level+')').join(', ')+(underStats.length>1?' sont écrasés':' est écrasé')+' car de niveau inférieur. Le dé perd '+dropped+' dalles. Cet écrasement ne compte pas comme un combat remporté.',underStats);cr=cr.filter(c=>!under.includes(c));for(const[x,y,v]of pl2)b[y][x]={o:k,el:M[m].el,v,lv:M[m].lv,id:did,mn:M[m].n};const top=pl2.reduce((a,c)=>c[2]>=a[2]?c:a),nc={o:k,x:top[0],y:top[1],em:M[m].em,id:did,mn:M[m].n,mi:m,lv:M[m].lv,fresh:1};cr.push(nc);recordEvent('Déploiement',M[m].cn+' entre en jeu : niveau '+M[m].lv+', attaque '+pwc(nc,nc.x,nc.y)+'. '+pl2.length+' dalles déployées'+(lost?' ; '+lost+' dalles ne peuvent pas être posées (bord, évent ou créature protégée)':'')+'.',[unitSnapshot(nc)]);
    anim={o:u.o,t0:Date.now()+400,tot:u.max*220+450};landCube();msg=(outcome.magic?outcome.label+' ':'')+'Lancer : '+rt+' ✔ Le dé se pose, puis se déploie !';render();setTimeout(()=>{if(g!=gid)return;pc=null;cubeCls='';render()},400);
-   setTimeout(()=>{if(g!=gid)return;let s=(outcome.magic?outcome.label+' ':'')+'Lancer : '+rt+' ✔ Le dé s’est déployé, une créature apparaît !'+(crushed?' ('+crushed+' créature'+(crushed>1?'s':'')+' écrasée'+(crushed>1?'s':'')+', le dé perd '+dropped+' face'+(dropped>1?'s':'')+')':'')+(lost?' ('+lost+' face'+(lost>1?'s':'')+' perdue'+(lost>1?'s':'')+')':'');let kw='';if(!over){const point=scoreArrival(nc);s+=point?' '+point:resolve(nc);kw=chkKills();s+=kw}fin();if(!over)msg=s+' '+msg;else if(kw)msg=s;render()},anim.tot+900)}
+   setTimeout(()=>{if(g!=gid)return;let s=(outcome.magic?outcome.label+' ':'')+'Lancer : '+rt+' ✔ Le dé s’est déployé, une créature apparaît !'+(crushed?' ('+crushed+' créature'+(crushed>1?'s':'')+' écrasée'+(crushed>1?'s':'')+', le dé perd '+dropped+' face'+(dropped>1?'s':'')+')':'')+(lost?' ('+lost+' face'+(lost>1?'s':'')+' perdue'+(lost>1?'s':'')+')':'');let kw='';if(!over){s+=resolve(nc);kw=chkKills();s+=kw;if(!over&&cr.includes(nc)){const point=scoreArrival(nc);if(point)s+=' '+point}}fin();if(!over)msg=s+' '+msg;else if(kw)msg=s;render()},anim.tot+900)}
   else{recordEvent('Lancer',M[m].cn+' : '+rt+' au lancer, '+lv+'+ requis. Échec : le dé revient en main.');cubeCls='poof';msg='Lancer : '+rt+' ✘ Le dé retourne dans ta main…';render();
    setTimeout(()=>{if(g!=gid)return;pc=null;cubeCls='';const gain=!bonus[k];if(gain){bonus[k]=1;recordEvent('Bonus',P[k]+' gagne un dé bonus pour un prochain lancer.')}const s='Lancer : '+rt+' ✘ Le dé revient dans ta main.'+(gain?' ✨ Tu gagnes un dé bonus pour ton prochain lancer.':'');
     fin(true);msg=s+' '+msg;render()},650)}},80)}
@@ -510,14 +513,14 @@ BQ.onpointerdown=e=>{if(window.HackeniaCombat?.busy||over||(ai&&cur==1))return;e
  
  render()};
 BQ.onpointermove=e=>{if(drag||(down&&sel)){const[x,y]=cellAt(e);if(inb(x,y)){lz={x,y};if(drag)pc={x,y};rBoard()}}};BQ.onpointercancel=()=>{drag=0;down=0;lz=null;render()};
-const selMsg=c=>Object.keys(bfs(c)).length>1?'Créature choisie : touche une case lumineuse ou fais glisser la figurine, puis confirme. Distance illimitée sur les dalles reliées ; arrêt sur un ennemi.':'Cette créature ne peut pas avancer : elle ne marche que sur des dalles déployées reliées.';
+const selMsg=c=>Object.keys(bfs(c)).length>1?'Créature choisie : touche une case lumineuse ou fais glisser la figurine, puis confirme. Distance illimitée sur les dalles reliées ; arrêt au contact d’un ennemi.':'Cette créature ne peut pas avancer : elle ne marche que sur des dalles déployées reliées.';
 function confirmMove(){const plan=movePlan;movePlan=null;if(!plan||mode!=='i'||over||moved||window.HackeniaCombat?.busy||!cr.includes(plan.unit)||plan.unit.o!==cur){render();return}mv(plan.unit,plan.x,plan.y);render()}
 function cancelMove(){movePlan=null;msg=sel&&cr.includes(sel)?selMsg(sel):'Choisis une créature.';render()}
 function tap(x,y){if(window.HackeniaCombat?.busy)return;const me=!ai||cur==0,canI=over||(ai&&cur==1)||mode=='i'||mode=='r'||mode=='x';if(!inb(x,y)||!canI)return;if(blocked(x,y)){movePlan=null;msg='Évent fumant : invocation et déplacement impossibles sur cette dalle.';return}const c=at(x,y);
  if(mode=='i'&&me&&!over){
   if(sel){
    if(c===sel){if(movePlan){movePlan=null;msg=selMsg(sel)}else openCard(sel)}
-   else if(bfs(sel)[[x,y]]!==undefined&&!(c&&c.o==cur)){movePlan={unit:sel,x,y};inf=null;msg=c?'Attaque préparée. Confirme ou choisis une autre case.':'Déplacement préparé. Confirme ou choisis une autre case.'}
+   else if(bfs(sel)[[x,y]]!==undefined&&!(c&&c.o==cur)){movePlan={unit:sel,x,y};inf=null;msg=moveEnemy(sel,x,y)?'Combat préparé : arrêt au contact de l’ennemi. Confirme ou choisis une autre case.':'Déplacement préparé. Confirme ou choisis une autre case.'}
    else if(c&&c.o==cur&&!moved){movePlan=null;sel=c;msg=selMsg(c)}
    else{movePlan=null;inf=null;msg='Déplacement impossible sur cette case. La créature reste sélectionnée ; choisis une case lumineuse.'}
   }else if(c&&c.o==cur&&!moved){movePlan=null;sel=c;msg=selMsg(c)}
@@ -617,7 +620,7 @@ function render(){$('bq').classList.toggle('selmode',!!(mode=='i'&&sel));rzCur=w
  $('hl').textContent=over?'':mode=='i'&&me?'Main de '+P[hp]+' : glisse un dé sur le damier':'';
  $('hand').innerHTML=over?'':pl[hp].h.map((m,i)=>'<div class="dc l'+M[m].lv+(mode=='i'&&me?'':' off')+'" data-i="'+i+'" style="--dice-element:'+EC[M[m].el]+'"><div class="dice-visuals"><div class="dice-head">'+handNet(m,hp?0:2)+'</div><div class="dice-art">'+handPortrait(m)+'</div></div><b class="dice-name">'+M[m].cn+'</b><span class="dice-details"><span class="dice-element-icon">'+(ELEMENT_ICONS[M[m].el]||'✦')+'</span> '+M[m].el.charAt(0).toUpperCase()+M[m].el.slice(1)+' · Niv. '+M[m].lv+'</span><span class="dice-roll">'+M[m].nd+' dé'+(M[m].nd>1?'s':'')+' · '+M[m].need+'+</span></div>').join('');
  const sc=over||(mode=='p'&&me);$('ct').style.display=sc?'flex':'none';$('hand').style.display=sc?'none':'flex';$('vs').textContent=ai?'🤖 IA':'👥 2J';
- if(movePlan&&!over){$('ct').innerHTML='<button onclick="confirmMove()">'+(at(movePlan.x,movePlan.y)?'Confirmer l’attaque':'Confirmer le déplacement')+'</button><button onclick="cancelMove()">Annuler</button>';$('ct').style.display='flex';$('hand').style.display='none'}
+ if(movePlan&&!over){$('ct').innerHTML='<button onclick="confirmMove()">'+(moveEnemy(movePlan.unit,movePlan.x,movePlan.y)?'Confirmer l’attaque':'Confirmer le déplacement')+'</button><button onclick="cancelMove()">Annuler</button>';$('ct').style.display='flex';$('hand').style.display='none'}
  if(!window.HackeniaCombat?.busy&&!gamePaused&&ai&&cur==1&&mode=='i'&&!over&&!busy&&!aiT){const g=gid;aiT=setTimeout(()=>{aiT=0;if(g==gid&&!window.HackeniaCombat?.busy)ia()},900)}}
 window.hackeniaGame={
  start:(deck=null,terrain=null)=>{chosenDeck=Array.isArray(deck)&&deck.length===10&&deck.every(i=>Number.isInteger(i)&&i>=0&&i<M.length)?[...deck]:null;gamePaused=false;matchStarted=true;ai=true;TER=typeof terrain==='string'&&TL.includes(terrain)?TL.indexOf(terrain):Math.floor(Math.random()*TL.length);init()},
@@ -626,7 +629,7 @@ window.hackeniaGame={
  portrait:i=>handPortrait(i),modelInfo:async i=>{await manifestReady;return MAN?.creatures?.[cid(M[i])]||null},loadModelViewer:loadMV,
  snapshot:()=>({movePlan,b,cr,cur,mode,pc,hov,die,rot,sel,anim,cubeCls,rzCur,cu,lastJ,over,ai,drag,dg,moved,terrain:TL[TER],blocked:TL[TER]==='feu'?FIRE_VENTS:[],preview:cells(),valid:cells().length?!!ok(cells()):false,reachable:mode==='i'&&sel?bfs(sel):null,...presentationBoard(),combat:window.HackeniaCombat?.current()}),isBlocked:blocked,power:pw,elementColors:EC,monsters:M,board:BQ,tap:(x,y)=>{tap(x,y);render()},refresh:render};
 init();
-</script><script src="assets/pouch-opening.js?v=20261103-v72"></script><script src="assets/portal.js?v=20261103-v72"></script><script type="module" src="assets/clearing.js?v=20261103-v71" onerror="document.getElementById('terrain-status').textContent='Affichage de secours · module 3D indisponible'"></script></body></html>
+</script><script src="assets/pouch-opening.js?v=20261103-v72"></script><script src="assets/portal.js?v=20261103-v73"></script><script type="module" src="assets/clearing.js?v=20261103-v73" onerror="document.getElementById('terrain-status').textContent='Affichage de secours · module 3D indisponible'"></script></body></html>
 
 
 
