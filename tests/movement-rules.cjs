@@ -14,6 +14,15 @@ const run=setup();run("cr.push({id:2,o:0,mi:1,x:3,y:4,lv:1,em:'b'})");assert.equ
 const run=setup();run("cr.push({id:2,o:1,mi:1,x:4,y:4,lv:1,em:'b'});b[4][4].v=1");assert.equal(run("bfs(cr[0])['4,4']!==undefined"),true,'Enemy is an attack destination');assert.equal(run("bfs(cr[0])['5,4']"),undefined,'Enemy blocks every cell behind it');run('mv(cr[0],7,4)');assert.equal(run('moved'),0);run('mv(cr[0],4,4)');assert.equal(run('cr[0].x'),4,'Winner stops on enemy square');assert.equal(run('kills[0]'),1);assert.equal(run('moved'),1);assert.equal(run('cr.length'),1);
 }
 {
-const run=setup();run("cr.push({id:2,o:1,mi:1,x:4,y:4,lv:1,em:'b'});for(let x=3;x<=5;x++)b[5][x]={o:0,v:2,id:3,lv:1}");assert.equal(run("bfs(cr[0])['7,4']!==undefined"),true,'An alternate route may go around an enemy');run('mv(cr[0],7,4)');assert.equal(run('cr.length'),2);assert.equal(run('cr[0].walk.points.some(([x,y])=>x===4&&y===4)'),false,'Walking route must never cross an enemy');
+const run=setup();run("cr.push({id:2,o:1,mi:1,x:4,y:4,lv:1,em:'b'});for(let x=2;x<=6;x++)b[6][x]={o:0,v:2,id:3,lv:1};for(const x of[2,6])b[5][x]={o:0,v:2,id:3,lv:1}");assert.equal(run("bfs(cr[0])['7,4']!==undefined"),true,'An alternate route may go around an enemy');run('mv(cr[0],7,4)');assert.equal(run('cr.length'),2);assert.equal(run('cr[0].walk.points.some(([x,y])=>x===4&&y===4)'),false,'Walking route must never cross an enemy');
+}
+// Side contact is a terminal square, including for AI-owned movers and tied combats.
+for(const owner of[0,1])for(const defenderPower of[1,4,6]){
+const run=setup();run(`cur=${owner};cr[0].o=cur;cr.push({id:2,o:1-cur,mi:1,x:4,y:5,lv:1,em:'b'});b[5][4]={o:1-cur,v:${defenderPower},id:2,el:'vent',lv:1}`);
+assert.equal(run("bfs(cr[0])['4,4']!==undefined"),true,'First adjacent cell must be reachable');assert.equal(run("bfs(cr[0])['5,4']"),undefined,'Cannot continue beyond side contact');run('tap(0,4);tap(4,4)');assert.match(run('msg'),/Combat préparé/);run('confirmMove()');assert.equal(run('moved'),1);assert.equal(run("gameEvents.filter(e=>e.type==='Combat').length")>=1,true,'Every side contact must engage combat');
+if(defenderPower<4){assert.equal(run('cr.length'),1);assert.equal(run('cr[0].x'),4);assert.equal(run('kills[cur]'),1)}else if(defenderPower===4){assert.equal(run('cr.length'),2);assert.equal(run('cr[0].x'),4);run('moved=0');assert.equal(run("bfs(cr[0])['5,4']"),undefined,'A tied unit cannot bypass its adjacent enemy next turn')}else{assert.equal(run('cr.length'),1);assert.equal(run('kills[1-cur]'),1)}
+}
+{
+const run=setup();run("b=Array.from({length:H},()=>Array(W).fill(null));cr=[{id:1,o:0,mi:0,x:3,y:2,lv:1,em:'a'},{id:2,o:1,mi:1,x:4,y:1,lv:1,em:'b'}];b[2][3]={o:0,v:1,id:1,lv:1};b[1][3]={o:0,v:1,id:1,lv:1};b[1][4]={o:1,v:6,id:2,lv:1};mv(cr[0],3,1)");assert.equal(run('pl[0].s'),0,'Entry in the goal zone must not skip a lethal adjacent battle');assert.equal(run('kills[1]'),1);
 }
 console.log('PASS: unlimited distance, full walking route, gaps, allied transit and occupied destination, no fusion, mandatory stop/combat at enemy, legal detour.');
