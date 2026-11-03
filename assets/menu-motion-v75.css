@@ -1,0 +1,17 @@
+/* Halo belongs to the die's own visual box, so responsive grid spacing cannot detach it. */
+#portal #portal-nav .portal-tab:before{display:none!important}
+#portal #portal-nav .menu-die-shadow{display:none!important}
+#portal #portal-nav .menu-die-visual{z-index:0;animation:menu-levitate 4.8s ease-in-out infinite;--lift:3px}
+body[data-portal-view=home] #portal #portal-nav .menu-die-visual{--lift:6px}
+#portal #portal-nav .menu-die-visual:before{content:"";position:absolute;inset:-65%;border-radius:50%;z-index:-1;pointer-events:none;background:radial-gradient(ellipse,color-mix(in srgb,var(--accent) 42%,transparent),color-mix(in srgb,var(--accent) 17%,transparent) 34%,transparent 68%);opacity:.8;transition:opacity .3s}
+#portal #portal-nav .portal-tab:hover .menu-die-visual:before,#portal #portal-nav .portal-tab:focus-visible .menu-die-visual:before{opacity:1;background:radial-gradient(ellipse,color-mix(in srgb,var(--accent) 62%,transparent),color-mix(in srgb,var(--accent) 24%,transparent) 35%,transparent 68%)}
+#portal #portal-nav .portal-tab:nth-of-type(2n) .menu-die-visual{animation-delay:-1.3s;animation-duration:5.4s}
+#portal #portal-nav .portal-tab:nth-of-type(3n) .menu-die-visual{animation-delay:-2.9s;animation-duration:5.8s}
+@keyframes menu-levitate{0%,100%{transform:translateY(var(--lift))}50%{transform:translateY(calc(var(--lift) * -1))}}
+#portal #portal-nav .menu-runic-backdrop{display:none}
+body[data-portal-view=home] #portal #portal-nav{isolation:isolate;overflow:hidden}
+body[data-portal-view=home] #portal #portal-nav .menu-runic-backdrop{display:block;position:absolute;inset:0;z-index:-1;overflow:hidden;border-radius:inherit;pointer-events:none;background:radial-gradient(ellipse at 15% 15%,#258fff15,transparent 60%),radial-gradient(ellipse at 85% 80%,#b04dff12,transparent 60%)}
+.menu-runic-backdrop:before{content:"";position:absolute;inset:-7%;background:url('./menu-runes-v75.svg') center / cover no-repeat;animation:menu-runes-breathe 20s ease-in-out infinite alternate;opacity:.8}
+@keyframes menu-runes-breathe{from{transform:translateY(-5px) rotate(-1deg) scale(1)}to{transform:translateY(5px) rotate(1deg) scale(1.025)}}
+@media(prefers-reduced-motion:reduce){#portal #portal-nav .menu-die-visual,.menu-runic-backdrop:before{animation:none!important}}
+.no-motion #portal #portal-nav .menu-die-visual,.no-motion .menu-runic-backdrop:before{animation:none!important}
