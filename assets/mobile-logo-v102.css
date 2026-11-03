@@ -1,0 +1,8 @@
+/* v102 — logo HACKENIA agrandi, avec une taille adaptée au bandeau mobile */
+#portal .hackenia-logo{width:80px!important;height:80px!important}
+@media(max-width:700px){
+ body.portal-open #portal .hackenia-logo{width:50px!important;height:50px!important}
+}
+@media(max-width:350px){
+ body.portal-open #portal .hackenia-logo{width:40px!important;height:40px!important}
+}
