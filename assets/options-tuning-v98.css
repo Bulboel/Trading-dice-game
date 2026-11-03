@@ -1,0 +1,30 @@
+/* v98: compact pouch preview and clearer options layout on phones. */
+#portal .options-layout{grid-template-columns:190px minmax(0,1fr)!important;gap:22px!important}
+#portal .options-preview{position:sticky;top:16px!important;padding:10px!important;border:1px solid #bdc9a52b;border-radius:12px;background:linear-gradient(145deg,#1b2b28,#14221f)}
+#portal .options-preview .dice-pouch{width:min(170px,100%)!important}
+#portal .options-preview p{font:15px/1.25 Georgia,serif!important;margin:7px 0 0!important;color:#c6d0bd!important}
+#portal #options-form fieldset{margin-bottom:14px!important;padding:13px!important}
+#portal #options-form legend{font-size:17px!important}
+@media(max-width:700px){
+ body.portal-open[data-portal-view="options"] #portal .options-layout{grid-template-columns:minmax(0,1fr)!important;gap:7px!important}
+ body.portal-open[data-portal-view="options"] #portal .options-preview{
+  position:static!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;
+  gap:12px!important;width:100%!important;min-height:78px!important;height:78px!important;max-height:78px!important;
+  padding:5px 10px!important;margin:0 0 4px!important;overflow:hidden!important;text-align:left!important
+ }
+ body.portal-open[data-portal-view="options"] #portal .settings-bag-preview{
+  flex:0 0 54px!important;display:flex!important;align-items:center!important;justify-content:center!important;
+  width:54px!important;height:68px!important;overflow:hidden!important
+ }
+ body.portal-open[data-portal-view="options"] #portal .options-preview .dice-pouch{
+  flex:0 0 auto!important;width:54px!important;max-width:54px!important;max-height:68px!important;margin:0!important
+ }
+ body.portal-open[data-portal-view="options"] #portal .options-preview p{font:14px/1.2 Georgia,serif!important;margin:0!important}
+ body.portal-open[data-portal-view="options"] #portal #options-form fieldset{margin:0 0 10px!important;padding:10px 11px!important}
+ body.portal-open[data-portal-view="options"] #portal #options-form legend{font-size:15px!important}
+ body.portal-open[data-portal-view="options"] #portal #options-form fieldset:first-of-type .options-fields{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important
+ }
+ body.portal-open[data-portal-view="options"] #portal #options-form fieldset:first-of-type label{margin:4px 0 6px!important;font-size:10px!important}
+ body.portal-open[data-portal-view="options"] #portal #options-form fieldset:first-of-type select{margin-top:4px!important;padding:6px!important;min-height:34px!important;font-size:10px!important}
+}
