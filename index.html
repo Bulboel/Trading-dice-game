@@ -1,12 +1,12 @@
 <!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>HACKENIA — Trading Dice Game</title>
 <meta name="description" content="Trading Dice Game : jeu de dés à collectionner.">
-<link rel="manifest" href="/Trading-dice-game/site.webmanifest?v=20261103-v102">
+<link rel="manifest" href="/Trading-dice-game/site.webmanifest?v=20261104-v105">
 <meta name="theme-color" content="#10211d">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Hackénia">
-<link rel="icon" type="image/png" sizes="192x192" href="/Trading-dice-game/assets/hackenia-app-v102-192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/Trading-dice-game/assets/hackenia-app-v102-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/Trading-dice-game/assets/hackenia-app-v105-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/Trading-dice-game/assets/hackenia-app-v105-180.png">
 
 <style>
 :root{--bg:#eef2f5;--tx:#1d2a33;--ce:#fbfdff;--ln:#9fb0bd;--bt:#dbe4ea;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -301,7 +301,7 @@ body{margin:0;padding:0;max-width:none;height:100%;overflow:hidden;font-size:14p
 @keyframes woodDiceSpin{0%{transform:translateY(-3px) rotate(-9deg) rotateY(-12deg)}100%{transform:translateY(3px) rotate(9deg) rotateY(12deg)}}
 @media(prefers-reduced-motion:reduce){#mr #roll.roll-dice-tray.rolling .roll-wood-die{animation:none}}
 @media(max-width:620px){#mr .roll-pedestal{min-width:72px}#mr #roll.roll-dice-tray{gap:6px}.roll-wood-die{width:40px;height:40px;flex-basis:40px}.roll-wood-face{width:39px;height:39px}.roll-wood-face b{font-size:21px;line-height:22px}}
-</style><link rel="stylesheet" href="assets/clearing.css?v=20261103-combat"><link rel="stylesheet" href="assets/portal.css?v=20261103-v68"><link rel="stylesheet" href="assets/mobile.css?v=20261103-v70"><link rel="stylesheet" href="assets/options-tuning-v98.css"><link rel="stylesheet" href="assets/header-balance-v99.css"><link rel="stylesheet" href="assets/shop-wallet-v94.css"><link rel="stylesheet" href="assets/character-sheet.css?v=20261103-v68"><link rel="stylesheet" href="assets/pouch-crafted-v97.css"><link rel="icon" type="image/svg+xml" href="assets/hackenia-logo-v101.svg?v=20261103-v101"><link rel="stylesheet" href="assets/character-inspector.css?v=20261103-v70"><script src="assets/character-inspector.js?v=20261103-v71"></script><script src="assets/settings-v98.js"></script><script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script><link rel="stylesheet" href="assets/refinements.css?v=20261103-v72"><script src="assets/purchases.js?v=20261103-v71"></script><link rel="stylesheet" href="assets/polish-v74.css?v=74.1"><link rel="stylesheet" href="assets/portraits-v80.css"><link rel="stylesheet" href="assets/menu-motion-v80.css"><link rel="stylesheet" href="assets/placement-preview-v100.css?v=20261103-v100">
+</style><link rel="stylesheet" href="assets/clearing.css?v=20261103-combat"><link rel="stylesheet" href="assets/portal.css?v=20261103-v68"><link rel="stylesheet" href="assets/mobile.css?v=20261103-v70"><link rel="stylesheet" href="assets/options-tuning-v98.css"><link rel="stylesheet" href="assets/header-balance-v99.css"><link rel="stylesheet" href="assets/shop-wallet-v94.css"><link rel="stylesheet" href="assets/character-sheet.css?v=20261103-v68"><link rel="stylesheet" href="assets/pouch-crafted-v97.css"><link rel="icon" type="image/svg+xml" href="assets/hackenia-logo-v105.svg?v=20261104-v105"><link rel="stylesheet" href="assets/character-inspector.css?v=20261103-v70"><script src="assets/character-inspector.js?v=20261103-v71"></script><script src="assets/settings-v98.js"></script><script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script><link rel="stylesheet" href="assets/refinements.css?v=20261103-v72"><script src="assets/purchases.js?v=20261103-v71"></script><link rel="stylesheet" href="assets/polish-v74.css?v=74.1"><link rel="stylesheet" href="assets/portraits-v80.css"><link rel="stylesheet" href="assets/menu-motion-v80.css"><link rel="stylesheet" href="assets/placement-preview-v100.css?v=20261103-v100">
 <link rel="stylesheet" href="assets/mobile-logo-v102.css?v=20261103-v102">
 <link rel="stylesheet" href="assets/home-circle-tips-v103.css?v=20261104-v103">
 <link rel="stylesheet" href="assets/mobile-logo-v104.css?v=20261104-v104">
@@ -640,7 +640,7 @@ window.hackeniaGame={
  portrait:i=>handPortrait(i),modelInfo:async i=>{await manifestReady;return MAN?.creatures?.[cid(M[i])]||null},loadModelViewer:loadMV,
  snapshot:()=>({movePlan,b,cr,cur,mode,pc,hov,die,rot,sel,anim,cubeCls,rzCur,cu,lastJ,over,ai,drag,dg,moved,terrain:TL[TER],blocked:TL[TER]==='feu'?FIRE_VENTS:[],preview:cells(),valid:cells().length?!!ok(cells()):false,reachable:mode==='i'&&sel?bfs(sel):null,...presentationBoard(),combat:window.HackeniaCombat?.current()}),isBlocked:blocked,power:pw,elementColors:EC,monsters:M,board:BQ,tap:(x,y)=>{tap(x,y);render()},refresh:render};
 init();
-</script><script src="assets/pouch-opening-v95.js"></script><script src="assets/portal-v104.js"></script><script type="module" src="assets/clearing-v81.js" onerror="document.getElementById('terrain-status').textContent='Affichage de secours · module 3D indisponible'"></script></body></html>
+</script><script src="assets/pouch-opening-v95.js"></script><script src="assets/portal-v105.js"></script><script type="module" src="assets/clearing-v81.js" onerror="document.getElementById('terrain-status').textContent='Affichage de secours · module 3D indisponible'"></script></body></html>
 
 
 
