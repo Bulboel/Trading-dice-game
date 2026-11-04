@@ -1,0 +1,2 @@
+/* Hide the menu before its first paint while the one-time opening is prepared. */
+(()=>{'use strict';try{window.hackeniaNeedsIntro=!localStorage.getItem('hackenia-intro-v1')}catch{window.hackeniaNeedsIntro=true}if(window.hackeniaNeedsIntro){document.documentElement.classList.add('intro-pending');setTimeout(()=>{if(!document.getElementById('launch-intro'))document.documentElement.classList.remove('intro-pending')},12000)}})();

@@ -1,7 +1,7 @@
 {
   "id": "/Trading-dice-game/",
-  "name": "Hackénia — Dés dépliables",
-  "short_name": "Hackénia",
+  "name": "Dice of Hackenia — Trading Dice Game",
+  "short_name": "Hackenia",
   "description": "Jeu de dés à collectionner de Hackénia.",
   "start_url": "/Trading-dice-game/?source=homescreen",
   "scope": "/Trading-dice-game/",
@@ -18,19 +18,19 @@
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "assets/hackenia-app-v105-192.png",
+      "src": "assets/hackenia-app-v107-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "assets/hackenia-app-v105-512.png",
+      "src": "assets/hackenia-app-v107-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "assets/hackenia-app-maskable-v105-512.png",
+      "src": "assets/hackenia-app-maskable-v107-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
