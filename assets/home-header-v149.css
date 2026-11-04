@@ -1,0 +1,16 @@
+/* Bannière plus compacte et espace préservé pour le dé supérieur sur ordinateur. */
+@media (min-width: 901px) {
+  body.portal-open[data-portal-view="home"] #portal .portal-head {
+    min-height: 90px !important;
+    padding: 8px 0 10px !important;
+  }
+
+  body.portal-open[data-portal-view="home"] #portal .hackenia-logo {
+    width: 76px !important;
+    height: 76px !important;
+  }
+
+  body.portal-open[data-portal-view="home"] #portal-nav .home-dice-ring > .portal-tab:first-child {
+    top: 10.5% !important;
+  }
+}
