@@ -1,0 +1,37 @@
+/* v125 — aperçu du vrai plateau de jeu, réutilisé avant le lancement. */
+#portal .terrain-preview{
+ display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-items:stretch;
+ margin:0;padding:12px;border:1px solid #c8d3c136;border-radius:15px;
+ background:linear-gradient(135deg,#142820,#1d302c);box-shadow:inset 0 1px #ffffff10,0 8px 18px #0002;
+}
+#portal .terrain-preview-art{
+ position:relative;width:100%;min-height:clamp(260px,42vh,460px);aspect-ratio:1.3;
+ overflow:hidden;border-radius:11px;isolation:isolate;background:#101b20;
+ box-shadow:inset 0 0 0 1px #ffffff1a;
+}
+#portal .terrain-preview-art:before,#portal .terrain-preview-art:after{display:none}
+#portal .terrain-preview-art #bw.terrain-menu-preview{
+ position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-height:0!important;
+ aspect-ratio:auto!important;margin:0!important;border:0!important;border-radius:inherit!important;
+ overflow:hidden!important;box-shadow:none!important;
+}
+#portal .terrain-preview-art #bw.terrain-menu-preview #landscape{
+ position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;
+}
+#portal .terrain-preview-art #bw.terrain-menu-preview #rot,
+#portal .terrain-preview-art #bw.terrain-menu-preview #pad,
+#portal .terrain-preview-art #bw.terrain-menu-preview #pins,
+#portal .terrain-preview-art #bw.terrain-menu-preview #land-caption,
+#portal .terrain-preview-art #bw.terrain-menu-preview #placement-lens,
+#portal .terrain-preview-art #bw.terrain-menu-preview #board-navigation{display:none!important}
+#portal .terrain-preview-art #bw.terrain-menu-preview #bd,
+#portal .terrain-preview-art #bw.terrain-menu-preview #ent,
+#portal .terrain-preview-art #bw.terrain-menu-preview #crl{display:none!important}
+#portal .terrain-preview-copy{display:flex;flex-direction:column;justify-content:center;gap:6px;min-width:0;padding:4px}
+#portal .terrain-preview-kicker{font:9px/1.2 system-ui,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#a9c5b2}
+#portal .terrain-preview-copy strong{font:20px/1.2 Georgia,serif;color:#efe2bd}
+#portal .terrain-preview-copy>span:not(.terrain-preview-kicker){font:14px/1.5 system-ui,sans-serif;color:#d0ddd2}
+#portal .terrain-preview-copy small{font:12px/1.45 system-ui,sans-serif;color:#e2cf97}
+@media(max-width:850px){#portal .terrain-preview{padding:9px}#portal .terrain-preview-art{min-height:clamp(240px,38vh,360px)}}
+@media(max-width:380px){#portal .terrain-preview-art{aspect-ratio:1.08;min-height:245px}}
+@media(prefers-reduced-motion:reduce){#portal .terrain-preview-art *{scroll-behavior:auto!important}}
