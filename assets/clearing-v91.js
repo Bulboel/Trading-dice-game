@@ -254,7 +254,7 @@ const snowMat=mat(0xd4e4ec,{roughness:.98}),snowBright=mat(0xf0f6f8,{roughness:.
 function outsideBoard(x,z){return Math.abs(x)>4.52||Math.abs(z)>5.55}
 function curvedBranch(points,radius,material,parent){
  const curve=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(p[0],p[1],p[2])));
- const m=mesh(new THREE.TubeGeometry(curve,Math.max(5,points.length*3),radius,5,false),material,parent);m.castShadow=true;return m
+ const m=mesh(new THREE.TubeGeometry(curve,14,radius,6,false),material,parent);m.castShadow=true;return m
 }
 // A frosted birch grove: slender, irregular trunks and branching crowns echo the references.
 function snowTree(x,z,s=1){
@@ -262,20 +262,20 @@ function snowTree(x,z,s=1){
  const h=(2.65+rand()*1.25)*s,bend=(rand()-.5)*.42*s,lean=(rand()-.5)*.28*s;
  curvedBranch([[0,0,0],[bend*.2,h*.3,lean*.15],[bend*.64,h*.68,lean*.48],[bend,h,lean]],.078*s,birchBark,g);
  for(const y of[.62,1.22,1.82].map(v=>v*s)){const ring=mesh(new THREE.CylinderGeometry(.065*s,.073*s,.045*s,9),birchShadow,g);ring.position.set(bend*(y/h),y,lean*(y/h));ring.rotation.y=rand()*Math.PI}
+ const twigs=[],caps=[];
  for(let tier=0;tier<6;tier++){
-  const y=(.72+tier*.39)*s,angle=rand()*Math.PI*2,side=tier%2?1:-1,length=(.58+rand()*.42)*s,dy=(.34+rand()*.25)*s;
+  const y=(.72+tier*.39)*s,angle=rand()*Math.PI*2,length=(.58+rand()*.42)*s,dy=(.34+rand()*.25)*s;
   for(const sign of[-1,1]){
    const a=angle+sign*(.62+rand()*.5),sx=bend*(y/h),sz=lean*(y/h),dx=Math.cos(a),dz=Math.sin(a);
-   const p=[[sx,y,sz],[sx+dx*length*.33,y+dy*.22,sz+dz*length*.33],[sx+dx*length*.72,y+dy*.54,sz+dz*length*.72],[sx+dx*length,y+dy*.8,sz+dz*length]];
-   curvedBranch(p,.027*s,branchMat,g);
-   if(tier>1&&rand()>.25){
-    const forkY=y+dy*.48,forkX=sx+dx*length*.62,forkZ=sz+dz*length*.62,fa=a+side*(.48+rand()*.36),fl=length*.4;
-    curvedBranch([[forkX,forkY,forkZ],[forkX+Math.cos(fa)*fl*.45,forkY+dy*.2,forkZ+Math.sin(fa)*fl*.45],[forkX+Math.cos(fa)*fl,forkY+dy*.35,forkZ+Math.sin(fa)*fl]],.013*s,branchMat,g);
-   }
-   if(rand()>.27){const cap=mesh(new THREE.SphereGeometry(1,9,7),rand()>.45?snowBright:snowMat,g);cap.position.set(sx+dx*length*.76,y+dy*.57,sz+dz*length*.76);cap.scale.set(length*.24,.055*s,.12*s);cap.rotation.y=-a;cap.rotation.z=-Math.atan2(dy,length);cap.castShadow=false}
+   const p0=[sx,y,sz],p1=[sx+dx*length*.33,y+dy*.22,sz+dz*length*.33],p2=[sx+dx*length*.72,y+dy*.54,sz+dz*length*.72],p3=[sx+dx*length,y+dy*.8,sz+dz*length];
+   twigs.push(p0,p1,p1,p2,p2,p3);
+   if(tier>1&&rand()>.25){const forkY=y+dy*.48,forkX=sx+dx*length*.62,forkZ=sz+dz*length*.62,fa=a+(sign<0?-.68:.68),fl=length*.4;twigs.push([forkX,forkY,forkZ],[forkX+Math.cos(fa)*fl*.45,forkY+dy*.2,forkZ+Math.sin(fa)*fl*.45],[forkX+Math.cos(fa)*fl*.45,forkY+dy*.2,forkZ+Math.sin(fa)*fl*.45],[forkX+Math.cos(fa)*fl,forkY+dy*.35,forkZ+Math.sin(fa)*fl])}
+   if(tier>1&&rand()>.48)caps.push([sx+dx*length*.76,y+dy*.57,sz+dz*length*.76,a,length)
   }
  }
- for(let k=0;k<3;k++){const knot=mesh(new THREE.SphereGeometry(1,7,6),birchShadow,g);knot.position.set(bend*(.24+k*.21)+.045*s,(.53+k*.82)*s,lean*(.24+k*.21));knot.scale.set(.025*s,.11*s,.012*s);knot.castShadow=false}
+ const branchGeo=new THREE.BufferGeometry().setFromPoints(twigs.map(p=>new THREE.Vector3(...p))),branchLines=new THREE.LineSegments(branchGeo,new THREE.LineBasicMaterial({color:0x4d5960,transparent:false}));branchLines.frustumCulled=false;g.add(branchLines);
+ for(const [x0,y0,z0,a0,length]of caps){const cap=mesh(new THREE.SphereGeometry(1,9,7),rand()>.45?snowBright:snowMat,g);cap.position.set(x0,y0,z0);cap.scale.set(length*.19,.052*s,.105*s);cap.rotation.y=-a0;cap.rotation.z=-.5;cap.castShadow=false}
+ for(let k=0;k<2;k++){const knot=mesh(new THREE.SphereGeometry(1,7,6),birchShadow,g);knot.position.set(bend*(.28+k*.24)+.045*s,(.65+k*.98)*s,lean*(.28+k*.24));knot.scale.set(.025*s,.095*s,.012*s);knot.castShadow=false}
  return g
 }
 // Open, varied spacing keeps the snowy grove behind the playable grid.
