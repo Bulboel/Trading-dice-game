@@ -1,0 +1,25 @@
+/* v135 — keep the pouch shop within one desktop viewport and steady between openings. */
+#portal .shop-actions{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:2px 0 6px}
+#portal .shop-followup{display:flex;justify-content:center;margin:4px 0}
+#portal .pouch-theatre{height:clamp(560px,74dvh,760px)!important;margin:2px 0 8px!important}
+#portal .pouch-stage-heading{display:none!important}
+body.portal-open[data-portal-view="shop"] #portal-content>.portal-title:first-child{display:none!important}
+body.portal-open[data-portal-view="shop"] #portal #portal-nav .portal-tab[aria-current="page"] strong{display:none!important}
+@media(min-width:701px){
+ body.portal-open[data-portal-view="shop"]{height:100dvh;overflow:hidden!important}
+ body.portal-open[data-portal-view="shop"] #portal{height:100dvh!important;max-height:100dvh!important;overflow:hidden!important;display:flex;flex-direction:column}
+ body.portal-open[data-portal-view="shop"] #portal .portal-head{flex:0 0 auto}
+ body.portal-open[data-portal-view="shop"] #portal #portal-nav{flex:0 0 auto;margin:10px 0 10px}
+ body.portal-open[data-portal-view="shop"] #portal .portal-section{flex:1 1 auto;min-height:0;overflow:hidden;padding-top:10px;padding-bottom:10px}
+ body.portal-open[data-portal-view="shop"] #portal .shop-actions{margin:0 0 4px}
+ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre{height:clamp(320px,48dvh,500px)!important;min-height:0!important;margin:0 0 4px!important}
+ body.portal-open[data-portal-view="shop"] #portal .shop-followup,
+ body.portal-open[data-portal-view="shop"] #portal .portal-section>details{display:none!important}
+ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre .pouch-prop{width:min(42vw,calc((100dvh - 250px)*.48),300px)!important}
+}
+@media(max-width:700px){
+ body.portal-open[data-portal-view="shop"] #portal .shop-actions{gap:7px;margin:0 0 5px}
+ body.portal-open[data-portal-view="shop"] #portal #portal-nav .portal-tab[aria-current="page"] strong{display:none!important}
+ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre{height:clamp(540px,74svh,700px)!important;margin:2px 0 6px!important}
+ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre .pouch-prop{width:min(76vw,calc((100svh - 80px)*.55),360px)!important}
+}
