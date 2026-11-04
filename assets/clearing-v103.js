@@ -152,6 +152,11 @@ function closeGlacierGap(x,center){
  for(const piece of pieces){world.remove(piece);glacierClosures.add(piece)}
 }
 for(const x of[-7.08,7.08])closeGlacierGap(x,river(x<0?-7:7));
+/* Continuous recessed backing closes the ice sidewalls at the river outlets. */
+for(const x of[-7.04,7.04]){
+ const backing=frameBeam(x,-.36,0,.42,1.55,15.16,frameWood);
+ world.remove(backing);glacierClosures.add(backing)
+}
 // Narrow ribbons follow the banks exactly, avoiding triangular colour bands.
 for(const side of[-1,1]){
  const bankGeo=new THREE.PlaneGeometry(14,.52,100,4);bankGeo.rotateX(-Math.PI/2);const p=bankGeo.attributes.position,c=[];
