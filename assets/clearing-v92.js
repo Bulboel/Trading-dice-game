@@ -257,24 +257,29 @@ function curvedBranch(points,radius,material,parent){
  const m=mesh(new THREE.TubeGeometry(curve,14,radius,6,false),material,parent);m.castShadow=true;return m
 }
 // A frosted birch grove: slender, irregular trunks and branching crowns echo the references.
+function mergeTubeGeometries(items){
+ const positions=[],normals=[],indices=[];let offset=0;
+ for(const geo of items){const p=geo.attributes.position.array,n=geo.attributes.normal.array;for(let i=0;i<p.length;i++)positions.push(p[i]);for(let i=0;i<n.length;i++)normals.push(n[i]);const ix=geo.index?.array;if(ix)for(let i=0;i<ix.length;i++)indices.push(ix[i]+offset);else for(let i=0;i<p.length/3;i++)indices.push(offset+i);offset+=p.length/3;geo.dispose()}
+ const merged=new THREE.BufferGeometry();merged.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));merged.setAttribute('normal',new THREE.Float32BufferAttribute(normals,3));merged.setIndex(indices);return merged
+}
 function snowTree(x,z,s=1){
  const g=new THREE.Group();g.position.set(x,height(x,z),z);g.rotation.y=(rand()-.5)*.65;iceScene.add(g);
  const h=(3.35+rand()*1.25)*s,bend=(rand()-.5)*.38*s,lean=(rand()-.5)*.24*s;
  curvedBranch([[0,0,0],[bend*.2,h*.3,lean*.15],[bend*.64,h*.68,lean*.48],[bend,h,lean]],.085*s,birchBark,g);
  for(const y of[.72,1.52,2.28].map(v=>v*s)){const ring=mesh(new THREE.CylinderGeometry(.071*s,.079*s,.052*s,9),birchShadow,g);ring.position.set(bend*(y/h),y,lean*(y/h));ring.rotation.y=rand()*Math.PI}
- const twigVertices=[],caps=[];
+ const twigVertices=[],caps=[],branchGeometries=[];
  for(let tier=0;tier<6;tier++){
   const y=(.82+tier*.43)*s,angle=rand()*Math.PI*2,length=(.62+rand()*.45)*s,dy=(.36+rand()*.3)*s;
   for(const sign of[-1,1]){
    const a=angle+sign*(.62+rand()*.5),sx=bend*(y/h),sz=lean*(y/h),dx=Math.cos(a),dz=Math.sin(a);
    const p=[[sx,y,sz],[sx+dx*length*.31,y+dy*.18,sz+dz*length*.31],[sx+dx*length*.68,y+dy*.5,sz+dz*length*.68],[sx+dx*length,y+dy*.86,sz+dz*length]];
-   curvedBranch(p,.024*s,branchMat,g);
+   const branchCurve=new THREE.CatmullRomCurve3(p.map(q=>new THREE.Vector3(...q)));branchGeometries.push(new THREE.TubeGeometry(branchCurve,12,.024*s,5,false));
    const forkY=y+dy*.48,forkX=sx+dx*length*.61,forkZ=sz+dz*length*.61,fa=a+(sign<0?-.68:.68),fl=length*.4;
    twigVertices.push([forkX,forkY,forkZ],[forkX+Math.cos(fa)*fl*.5,forkY+dy*.2,forkZ+Math.sin(fa)*fl*.5],[forkX+Math.cos(fa)*fl*.5,forkY+dy*.2,forkZ+Math.sin(fa)*fl*.5],[forkX+Math.cos(fa)*fl,forkY+dy*.34,forkZ+Math.sin(fa)*fl]);
    if(tier>1&&rand()>.35)caps.push([sx+dx*length*.76,y+dy*.59,sz+dz*length*.76,a,length])
   }
  }
- const twigGeo=new THREE.BufferGeometry().setFromPoints(twigVertices.map(p=>new THREE.Vector3(...p))),twigLines=new THREE.LineSegments(twigGeo,new THREE.LineBasicMaterial({color:0x42525c}));twigLines.frustumCulled=false;g.add(twigLines);
+ const branchMesh=mesh(mergeTubeGeometries(branchGeometries),branchMat,g);branchMesh.castShadow=true;const twigGeo=new THREE.BufferGeometry().setFromPoints(twigVertices.map(p=>new THREE.Vector3(...p))),twigLines=new THREE.LineSegments(twigGeo,new THREE.LineBasicMaterial({color:0x42525c}));twigLines.frustumCulled=false;g.add(twigLines);
  for(const [x0,y0,z0,a0,length]of caps){const cap=mesh(new THREE.SphereGeometry(1,10,7),rand()>.35?snowBright:snowMat,g);cap.position.set(x0,y0,z0);cap.scale.set(length*.21,.062*s,.115*s);cap.rotation.y=-a0;cap.rotation.z=-.48;cap.castShadow=false}
  for(let k=0;k<2;k++){const knot=mesh(new THREE.SphereGeometry(1,7,6),birchShadow,g);knot.position.set(bend*(.28+k*.24)+.045*s,(.68+k*.98)*s,lean*(.28+k*.24));knot.scale.set(.025*s,.095*s,.012*s);knot.castShadow=false}
  return g
