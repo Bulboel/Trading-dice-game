@@ -1,0 +1,23 @@
+const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert');
+const root=path.join(__dirname,'..');let tick,now=0,playing=true,refreshes=0;
+const node=()=>({hidden:false,innerHTML:'',textContent:'',style:{},classList:{add(){},remove(){},toggle(){}},append(){},setAttribute(){}}),nodes=new Map();
+const document={hidden:false,body:node(),createElement:node,getElementById(id){if(!nodes.has(id))nodes.set(id,node());return nodes.get(id)},querySelector:()=>null,querySelectorAll:()=>[]};
+const context=vm.createContext({window:{HackeniaSettings:{get:()=>({motion:true})},hackeniaGame:{isPlaying:()=>playing,refresh(){refreshes++},elementColors:{}}},document,performance:{now:()=>now},requestAnimationFrame:fn=>tick=fn,queueMicrotask:fn=>fn(),matchMedia:()=>({matches:false}),Promise,Math});
+vm.runInContext(fs.readFileSync(path.join(root,'assets/combat.js'),'utf8'),context);const ui=context.window.HackeniaCombat;
+function step(ms){now+=ms;tick(now)}
+const scorer={id:1,mi:36,x:3,y:0,o:0},ally={id:2,x:3,y:1,o:0},opponent={id:3,x:4,y:4,o:1};
+const data={board:[[null]],creatures:[scorer,ally,opponent],fighters:[scorer],stats:[{name:'Eberien'}],cells:[[3,0],[3,1]],angle:0,scores:[1,0],kills:[0,0]};
+ui.enqueuePassage(data);assert(ui.busy);const passage=ui.current();assert.equal(passage.kind,'passage');assert.equal(ui.view({cr:[]}).cr.length,3,'Pre-clear units remain visible while rules resolve');assert.equal(ui.pose(passage,scorer).winner,true);assert.equal(ui.pose(passage,ally).winner,false);assert.equal(ui.pose(passage,opponent),null,'Opposing/disconnected units are unaffected');
+playing=false;step(900);assert.equal(passage.elapsed,0,'Passage presentation pauses with game');playing=true;
+ui.holdVictory(passage.sequence,4);step(3000);assert.equal(ui.passageFade(passage),0,'Route remains visible throughout victory clip');step(1500);const fade=ui.passageFade(passage);assert(fade>0&&fade<1,'Route fades progressively after victory');assert.equal(ui.pose(passage,scorer).defeat,fade);assert(ui.busy);step(700);assert(!ui.busy);assert.equal(ui.view({cr:[]}).cr.length,0);
+// A combat victory can outlast the original 2.5-second fight; ties never acquire a hold themselves.
+const fight={...data,kind:undefined,fighters:[scorer,opponent],stats:[{name:'Eberien',attack:6},{name:'Adversaire',attack:2}]};
+ui.enqueue(fight);step(1800);ui.holdVictory(ui.current().sequence,4);step(1000);assert(ui.busy,'Combat winner must have time to celebrate');assert.equal(ui.current().progress,1);step(3200);assert(!ui.busy);
+ui.enqueuePassage({...data,travel:900,fighters:[{...scorer,walk:{points:[[3,2],[3,1],[3,0]]}}],creatures:[{...scorer,walk:{points:[[3,2],[3,1],[3,0]]}},opponent]});step(450);const arrival=ui.pose(ui.current(),ui.current().fighters[0]);assert.equal(arrival.arriving,true);assert.equal(arrival.y,1,'Scorer finishes walking into the zone before celebrating');assert.equal(ui.passageFade(ui.current()),0);step(450);assert.equal(ui.pose(ui.current(),ui.current().fighters[0]).arriving,false);ui.reset();step(5000);assert(!ui.busy,'Restart cancels queued route fades');
+// Exercise the production engine's immutable capture and final score independently of presentation.
+const captures=[],elements=new Map(),element=()=>({children:[],style:{setProperty(){}},classList:{add(){},remove(){},toggle(){}},firstElementChild:{style:{}},setPointerCapture(){}});
+const engine=vm.createContext({window:{HackeniaCombat:{enqueuePassage:x=>captures.push(x)}},document:{getElementById(id){if(!elements.has(id))elements.set(id,element());return elements.get(id)}},fetch:async()=>({ok:false}),setTimeout:()=>0,clearTimeout(){},console,Date,Math});
+const source=fs.readFileSync(path.join(root,'index.html'),'utf8').match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,'');vm.runInContext(source,engine);
+vm.runInContext("b=Array.from({length:H},()=>Array(W).fill(null));b[0][3]={o:0,v:6,id:1};b[1][3]={o:0,v:2,id:1};b[4][6]={o:1,v:4,id:2};cr=[{o:0,x:3,y:0,id:1,mi:36,em:'a'},{o:1,x:6,y:4,id:2,mi:38,em:'b'}];pl=[{s:0},{s:0}];cur=0;over=0;kills=[0,0];TER=0;scoreArrival(cr[0]);",engine);
+assert.equal(captures.length,1);assert.equal(captures[0].board[0][3].v,6);assert.equal(captures[0].creatures.length,2);assert.deepEqual(JSON.parse(JSON.stringify(captures[0].cells)).sort(),[[3,0],[3,1]]);assert.equal(vm.runInContext('pl[0].s',engine),1);assert.equal(vm.runInContext('b[0][3]',engine),null);assert.equal(vm.runInContext('b[4][6].v',engine),4);
+console.log('PASS: immutable passage snapshot, score stays immediate, victory precedes progressive route fade, other units survive, combat victory hold, pause and reset.');
