@@ -1,0 +1,10 @@
+/* v131 — give the pouch reveal more room on phone and desktop. */
+#portal .shop-actions{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:4px 0 10px}
+#portal .pouch-theatre{height:clamp(490px,62vh,580px)!important;margin:8px 0 12px!important}
+#portal .pouch-stage-heading{display:none!important}
+@media(max-width:700px){
+ body.portal-open[data-portal-view="shop"] #portal .shop-actions{gap:7px;margin:2px 0 8px}
+ body.portal-open[data-portal-view="shop"] #portal .shop-actions .shop-cost{flex:0 0 auto}
+ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre{height:clamp(480px,62svh,560px)!important;margin:6px 0 10px!important}
+ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre .pouch-prop{width:min(58vw,calc((100svh - 150px)*.42),220px)!important}
+}
