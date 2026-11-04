@@ -2,7 +2,7 @@
 (()=>{'use strict';const KEY='hackenia-intro-v1',LOGO='assets/hackenia-logo-v107.svg?v=20261104-v157';let active=null,logoPromise;
 function logo(){return logoPromise??=fetch(LOGO).then(r=>{if(!r.ok)throw Error('logo');return r.text()})}
 function createSmoke(canvas){
- let gl;try{gl=canvas.getContext('webgl',{alpha:true,antialias:false,depth:false,premultipliedAlpha:false,powerPreference:'low-power'})}catch{}if(!gl)return null;
+ let gl;try{gl=canvas.getContext('webgl',{alpha:true,antialias:false,depth:false,premultipliedAlpha:false,failIfMajorPerformanceCaveat:true,powerPreference:'low-power'})}catch{}if(!gl)return null;
  const vertex='attribute vec2 position;void main(){gl_Position=vec4(position,0.,1.);}';
  const fragment=`#ifdef GL_FRAGMENT_PRECISION_HIGH
  precision highp float;
@@ -29,6 +29,7 @@ function createSmoke(canvas){
  const uniforms={resolution:gl.getUniformLocation(program,'resolution'),time:gl.getUniformLocation(program,'time'),progress:gl.getUniformLocation(program,'progress')};
  return{draw(elapsed,progress){const dpr=Math.min(devicePixelRatio||1,1)*.7,width=Math.floor(innerWidth*dpr),height=Math.floor(innerHeight*dpr);if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;gl.viewport(0,0,width,height)}gl.uniform2f(uniforms.resolution,width,height);gl.uniform1f(uniforms.time,elapsed/1000);gl.uniform1f(uniforms.progress,progress);gl.drawArrays(gl.TRIANGLES,0,6)},dispose(){gl.deleteBuffer(buffer);gl.deleteProgram(program);gl.deleteShader(vs);gl.deleteShader(fs);gl.getExtension('WEBGL_lose_context')?.loseContext()}};
 }
+function namespacePaint(svg){const ids=new Map();for(const node of svg.querySelectorAll('defs [id]')){const id=node.getAttribute('id'),next='intro-'+id;ids.set(id,next);node.setAttribute('id',next)}for(const node of svg.querySelectorAll('*'))for(const attribute of [...node.attributes]){if(attribute.value.includes('url(#'))node.setAttribute(attribute.name,attribute.value.replace(/url\(#([^)]*)\)/g,(_,id)=>'url(#'+(ids.get(id)||id)+')'))}}
 async function play({force=false}={}){
  if(active)return active.done;let seen=false;try{seen=!!localStorage.getItem(KEY)}catch{}if(seen&&!force){document.documentElement.classList.remove('intro-pending');return}
  const panel=document.createElement('section');panel.id='launch-intro';panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');panel.setAttribute('aria-label','Bienvenue dans Dice of Hackenia');panel.tabIndex=-1;
@@ -41,13 +42,13 @@ async function play({force=false}={}){
  function key(event){if(event.key==='Escape'){event.preventDefault();finish()}if(event.key==='Tab'){const buttons=[...panel.querySelectorAll('button')].filter(button=>!button.disabled),index=buttons.indexOf(document.activeElement);event.preventDefault();buttons[(index+(event.shiftKey?-1:1)+buttons.length)%buttons.length].focus()}}
  function visibility(){panel.dataset.paused=String(document.hidden);previousTime=undefined}
  document.addEventListener('keydown',key);document.addEventListener('visibilitychange',visibility);panel.querySelectorAll('button').forEach(b=>b.onclick=finish);panel.querySelector('.intro-skip').focus({preventScroll:true});
- try{const text=await Promise.race([logo(),new Promise((_,reject)=>setTimeout(()=>reject(Error('timeout')),2500))]);if(dead)return done;const svg=new DOMParser().parseFromString(text,'image/svg+xml').documentElement;if(svg.localName!=='svg')throw Error('svg');svg.querySelectorAll('#logo-frame path').forEach(path=>{path.setAttribute('pathLength','1000');path.style.setProperty('--final-fill',path.getAttribute('fill-opacity')||'1')});panel.querySelector('.intro-emblem').append(document.importNode(svg,true))}catch{if(dead)return done;const image=document.createElement('img');image.src=LOGO;image.alt='';panel.querySelector('.intro-emblem').append(image)}
+ try{const text=await Promise.race([logo(),new Promise((_,reject)=>setTimeout(()=>reject(Error('timeout')),2500))]);if(dead)return done;const svg=new DOMParser().parseFromString(text,'image/svg+xml').documentElement;if(svg.localName!=='svg')throw Error('svg');namespacePaint(svg);svg.querySelectorAll('#logo-frame path').forEach(path=>{path.setAttribute('pathLength','1000');path.style.setProperty('--final-fill',path.getAttribute('fill-opacity')||'1')});panel.querySelector('.intro-emblem').append(document.importNode(svg,true))}catch{if(dead)return done;const image=document.createElement('img');image.src=LOGO;image.alt='';panel.querySelector('.intro-emblem').append(image)}
  if(dead)return done;
  // Start every layer together after the small vector logo is ready.
  panel.classList.add('is-playing');if(!reduced)smoke=createSmoke(panel.querySelector('canvas'));
  for(let i=0;i<(reduced?0:28);i++){const mote=document.createElement('i');mote.className='intro-mote';mote.style.cssText=`--x:${12+(i*47%76)}%;--y:${24+(i*31%57)}%;--size:${1+i%3*.6}px;--delay:${i%9*.14}s;--drift:${(i%2?1:-1)*(15+i%17)}px`;panel.append(mote)}
  const duration=reduced?1900:7200;
- function tick(now){if(dead)return;frame=requestAnimationFrame(tick);if(document.hidden){previousTime=undefined;return}if(previousTime!==undefined)elapsed+=Math.min(100,now-previousTime);previousTime=now;if(elapsed>=5200)panel.querySelector('.intro-enter').disabled=false;if(now-lastDraw>33){smoke?.draw(elapsed,Math.min(1,elapsed/duration));lastDraw=now}if(elapsed>=duration)finish()}
+ function tick(now){if(dead)return;frame=requestAnimationFrame(tick);if(document.hidden){previousTime=undefined;return}if(previousTime!==undefined)elapsed+=Math.max(0,now-previousTime);previousTime=now;if(elapsed>=5200)panel.querySelector('.intro-enter').disabled=false;if(now-lastDraw>33){smoke?.draw(elapsed,Math.min(1,elapsed/duration));lastDraw=now}if(elapsed>=duration)finish()}
  frame=requestAnimationFrame(tick);return done;
 }
 window.HackeniaIntro={play:()=>play({force:true}),get active(){return!!active}};
