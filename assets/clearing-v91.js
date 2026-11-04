@@ -292,9 +292,9 @@ const nose=mesh(new THREE.ConeGeometry(.045,.26,7),mat(0xe68c43,{roughness:.6}),
 for(const y of[.4,.62,.82]){const button=mesh(new THREE.SphereGeometry(.03,7,6),coal,snowman);button.position.set(.02,y,.37)}
 // Uneven, wind-shaped drifts replace the smooth circular snow piles.
 const driftGeo=new THREE.SphereGeometry(1,24,14),driftPos=driftGeo.attributes.position;
-for(let i=0;i<driftPos.count;i++){const x=driftPos.getX(i),y=driftPos.getY(i),z=driftPos.getZ(i),n=Math.sin(x*9+z*5)*.035+Math.cos(z*8-y*4)*.025;driftPos.setXYZ(i,x*(1+n),y*(1+n),z*(1+n))}
+for(let i=0;i<driftPos.count;i++){const x=driftPos.getX(i),y=driftPos.getY(i),z=driftPos.getZ(i),n=Math.sin(x*5.1+z*3.7)*.11+Math.cos(z*4.3-y*3.4)*.075;driftPos.setXYZ(i,x*(1+n),y*(1+n),z*(1+n))}
 driftGeo.computeVertexNormals();
-for(let i=0;i<44;i++){let x,z;for(let attempt=0;attempt<30;attempt++){x=rand()*13.8-6.9;z=rand()*14.2-7.1;if(outsideBoard(x,z))break}
+for(let i=0;i<30;i++){let x,z;for(let attempt=0;attempt<30;attempt++){x=rand()*13.8-6.9;z=rand()*14.2-7.1;if(outsideBoard(x,z))break}
  const mound=mesh(driftGeo,i%5===0?snowBright:i%4===0?snowShade:snowMat,iceScene);mound.position.set(x,height(x,z)+.025,z);mound.scale.set(.48+rand()*.92,.045+rand()*.095,.36+rand()*.78);mound.rotation.y=rand()*Math.PI;mound.castShadow=false;mound.receiveShadow=true}
 function glacierRockGeometry(seedValue){
  const geo=new THREE.SphereGeometry(1,18,12),p=geo.attributes.position,cols=[];
