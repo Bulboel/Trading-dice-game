@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "note": "Chaque créature pointe vers un fichier .glb dans assets/models/. Un fichier absent est simplement ignoré (la figurine provisoire reste affichée).",
+  "version": 2,
+  "note": "Chemins relatifs à assets, respectant la casse des fichiers. Les clips légers sont extraits des exports originaux.",
   "creatures": {
     "foudre-petit": {
       "glb": "models/foudre-petit.glb",
@@ -105,30 +105,74 @@
     "kala": {
       "glb": "Models/Characters/kala idle.glb",
       "nom": "Kala",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
       "animations": {
-        "idle": "Models/Characters/kala idle.glb",
-        "spell": "Models/Characters/Kala attaque.glb",
-        "victory": "Models/Characters/kala victoire.glb"
+        "spell": "characters/kala-spell.glb",
+        "victory": "characters/kala-victory.glb",
+        "walk": "characters/kala-walk.glb"
       }
     },
     "eberien": {
       "glb": "Models/Characters/Eberien Idle.glb",
       "nom": "Eberien",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
       "animations": {
-        "idle": "Models/Characters/Eberien Idle.glb",
-        "spell": "Models/Characters/Eberien Spell cast.glb",
-        "victory": "Models/Characters/Eberien Victory.glb"
+        "spell": "characters/eberien-spell.glb",
+        "victory": "characters/eberien-victory.glb",
+        "walk": "characters/eberien-walk.glb"
       }
     },
     "grimgors": {
       "glb": "Models/Characters/Grimgors idle.glb",
       "nom": "Grimgors",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
       "animations": {
-        "idle": "Models/Characters/Grimgors idle.glb",
-        "walk": "Models/Characters/Grimgors marche.glb",
-        "spell": "Models/Characters/Grimgors attaque.glb",
-        "victory": "Models/Characters/Grimgors victoire.glb"
+        "spell": "characters/grimgors-spell.glb",
+        "victory": "characters/grimgors-victory.glb",
+        "walk": "characters/grimgors-walk.glb"
       }
+    },
+    "jhimm": {
+      "glb": "Models/Characters/Jhimm idle.glb",
+      "nom": "Jhimm",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/jhimm-spell.glb",
+        "victory": "characters/jhimm-victory.glb",
+        "walk": "characters/jhimm-walk.glb"
+      }
+    },
+    "bolduc": {
+      "glb": "Models/Characters/Bolduc idle.glb",
+      "nom": "Bolduc",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/bolduc-spell.glb",
+        "victory": "characters/bolduc-victory.glb",
+        "walk": "characters/bolduc-walk.glb"
+      }
+    },
+    "gardienne": {
+      "glb": "Models/Characters/Gardienne du lac idle.glb",
+      "nom": "Gardienne du lac",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/gardienne-spell.glb",
+        "victory": "characters/gardienne-victory.glb",
+        "walk": "characters/gardienne-walk.glb"
+      }
+    },
+    "messire-balai": {
+      "glb": "Models/Characters/Messire balai idle.glb",
+      "nom": "Messire Balai",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05
     }
   },
   "terrains": {
