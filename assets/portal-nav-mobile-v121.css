@@ -1,0 +1,44 @@
+/* v121 — keep inner-page die navigation in one usable horizontal row on phones and narrow tablets. */
+@media screen and (max-width: 900px) {
+  body.portal-open:not([data-portal-view="home"]) #portal #portal-nav {
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    grid-template-columns: none !important;
+    grid-auto-flow: unset !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    align-content: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 58px !important;
+    min-height: 58px !important;
+    max-height: 58px !important;
+    margin: 0 0 7px !important;
+    padding: 3px 0 !important;
+    gap: 0 !important;
+    position: relative !important;
+    top: auto !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    overscroll-behavior-x: contain !important;
+    scroll-snap-type: x proximity !important;
+    scrollbar-width: none !important;
+  }
+
+  body.portal-open:not([data-portal-view="home"]) #portal #portal-nav::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  body.portal-open:not([data-portal-view="home"]) #portal #portal-nav .portal-tab {
+    flex: 0 0 63px !important;
+    width: 63px !important;
+    min-width: 63px !important;
+    max-width: 63px !important;
+    height: 51px !important;
+    min-height: 51px !important;
+    max-height: 51px !important;
+    padding: 0 !important;
+    scroll-snap-align: start !important;
+  }
+}
