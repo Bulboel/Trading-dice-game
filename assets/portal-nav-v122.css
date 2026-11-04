@@ -1,0 +1,73 @@
+/* v122 — restore the compact inner-page navigation after the home dice ring was introduced. */
+body.portal-open:not([data-portal-view="home"]) #portal #portal-nav {
+  display: flex !important;
+  flex-flow: row nowrap !important;
+  grid-template-columns: none !important;
+  grid-auto-flow: unset !important;
+  align-items: center !important;
+}
+
+body.portal-open:not([data-portal-view="home"]) #portal #portal-nav .home-dice-ring {
+  position: relative !important;
+  inset: auto !important;
+  display: flex !important;
+  flex: 0 0 auto !important;
+  flex-flow: row nowrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  width: max-content !important;
+  min-width: max-content !important;
+  max-width: none !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  transform: none !important;
+  transform-origin: center center !important;
+  touch-action: pan-x !important;
+}
+
+@media screen and (max-width: 900px) {
+  body.portal-open:not([data-portal-view="home"]) #portal #portal-nav {
+    justify-content: flex-start !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 58px !important;
+    min-height: 58px !important;
+    max-height: 58px !important;
+    margin: 0 0 7px !important;
+    padding: 3px 0 !important;
+    gap: 0 !important;
+    position: relative !important;
+    top: auto !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    overscroll-behavior-x: contain !important;
+    scroll-snap-type: x proximity !important;
+    scrollbar-width: none !important;
+  }
+
+  body.portal-open:not([data-portal-view="home"]) #portal #portal-nav::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  body.portal-open:not([data-portal-view="home"]) #portal #portal-nav .home-dice-ring {
+    height: 51px !important;
+    min-height: 51px !important;
+    gap: 0 !important;
+  }
+
+  body.portal-open:not([data-portal-view="home"]) #portal #portal-nav .portal-tab {
+    flex: 0 0 63px !important;
+    width: 63px !important;
+    min-width: 63px !important;
+    max-width: 63px !important;
+    height: 51px !important;
+    min-height: 51px !important;
+    max-height: 51px !important;
+    padding: 0 !important;
+    scroll-snap-align: start !important;
+  }
+}
