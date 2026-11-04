@@ -24,9 +24,9 @@
 #portal .terrain-preview-art #bw.terrain-menu-preview #land-caption,
 #portal .terrain-preview-art #bw.terrain-menu-preview #placement-lens,
 #portal .terrain-preview-art #bw.terrain-menu-preview #board-navigation{display:none!important}
-#portal .terrain-preview-art #bw.terrain-menu-preview #bd,
-#portal .terrain-preview-art #bw.terrain-menu-preview #ent,
-#portal .terrain-preview-art #bw.terrain-menu-preview #crl{display:none!important}
+#portal .terrain-preview-art #bw.terrain-menu-preview:not(.view3d) #cam{visibility:visible!important}
+#portal .terrain-preview-art #bw.terrain-menu-preview:not(.view3d) #bq{width:min(88cqw,80cqh)!important}
+#portal .terrain-preview-art #bw.terrain-menu-preview:not(.view3d) #bd{display:grid!important;visibility:visible!important;pointer-events:none!important}
 #portal .terrain-preview-copy{display:flex;flex-direction:column;justify-content:center;gap:6px;min-width:0;padding:4px}
 #portal .terrain-preview-kicker{font:9px/1.2 system-ui,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#a9c5b2}
 #portal .terrain-preview-copy strong{font:20px/1.2 Georgia,serif;color:#efe2bd}
