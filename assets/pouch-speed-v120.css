@@ -1,0 +1,9 @@
+/* v120 — ouverture de bourse et sortie des dés légèrement accélérées */
+#portal .pouch-releasing .pouch-body{animation-duration:.7s!important}
+#portal .pouch-releasing .pouch-drawstring{animation-duration:.7s!important}
+#portal .pouch-releasing .pouch-mouth-glow{animation-duration:2.1s!important}
+@media(prefers-reduced-motion:reduce){
+ #portal .pouch-releasing .pouch-body,
+ #portal .pouch-releasing .pouch-drawstring,
+ #portal .pouch-releasing .pouch-mouth-glow{animation-duration:.01ms!important}
+}
