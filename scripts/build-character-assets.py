@@ -42,7 +42,7 @@ def animation_only(source, name, destination):
  destination.write_bytes(struct.pack('<III',0x46546c67,2,28+len(header)+len(buffer))+struct.pack('<II',len(header),0x4e4f534a)+header+struct.pack('<II',len(buffer),0x004e4942)+buffer)
 OUTPUT.mkdir(exist_ok=True)
 for key,filename in PORTRAITS.items():
- with Image.open(SOURCE/filename) as original:
+ with Image.open(OUTPUT/'cutouts'/f'{key}.webp' if (OUTPUT/'cutouts'/f'{key}.webp').exists() else SOURCE/filename) as original:
   for size in (128,512):
    image=original.convert('RGBA');image.thumbnail((size,size),Image.Resampling.LANCZOS)
    image.save(OUTPUT/f'{key}-{size}.webp',quality=88,method=6)
