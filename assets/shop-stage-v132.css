@@ -6,6 +6,7 @@
 body.portal-open[data-portal-view="shop"] #portal-content>.portal-title:first-child{display:none!important}
 @media(max-width:700px){
  body.portal-open[data-portal-view="shop"] #portal .shop-actions{gap:7px;margin:0 0 5px}
+ body.portal-open[data-portal-view="shop"] #portal #portal-nav .portal-tab[aria-current="page"] strong{display:none!important}
  body.portal-open[data-portal-view="shop"] #portal .pouch-theatre{height:clamp(540px,74svh,700px)!important;margin:2px 0 6px!important}
- body.portal-open[data-portal-view="shop"] #portal .pouch-theatre .pouch-prop{width:min(68vw,calc((100svh - 110px)*.44),260px)!important}
+ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre .pouch-prop{width:min(76vw,calc((100svh - 80px)*.55),360px)!important}
 }
