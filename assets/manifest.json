@@ -102,7 +102,15 @@
       "glb": "models/fusion.glb",
       "nom": "Dragon de Fusion"
     },
-    "kala": {"glb":"Models/Characters/kala idle.glb","nom":"Kala","animations":{"idle":"Models/Characters/kala idle.glb","spell":"Models/Characters/Kala attaque.glb","victory":"Models/Characters/kala victoire.glb"}},
+    "kala": {
+      "glb": "Models/Characters/kala idle.glb",
+      "nom": "Kala",
+      "animations": {
+        "idle": "Models/Characters/kala idle.glb",
+        "spell": "Models/Characters/Kala attaque.glb",
+        "victory": "Models/Characters/kala victoire.glb"
+      }
+    },
     "eberien": {
       "glb": "Models/Characters/Eberien Idle.glb",
       "nom": "Eberien",
@@ -110,6 +118,16 @@
         "idle": "Models/Characters/Eberien Idle.glb",
         "spell": "Models/Characters/Eberien Spell cast.glb",
         "victory": "Models/Characters/Eberien Victory.glb"
+      }
+    },
+    "grimgors": {
+      "glb": "Models/Characters/Grimgors idle.glb",
+      "nom": "Grimgors",
+      "animations": {
+        "idle": "Models/Characters/Grimgors idle.glb",
+        "walk": "Models/Characters/Grimgors marche.glb",
+        "spell": "Models/Characters/Grimgors attaque.glb",
+        "victory": "Models/Characters/Grimgors victoire.glb"
       }
     }
   },
