@@ -1,0 +1,481 @@
+/* v107 — menu circulaire conservé, avec volutes de fumée colorées */
+/* v103 — menu circulaire, astuce centrale en fondu et ondulation douce */
+body.portal-open[data-portal-view="home"] #portal #portal-nav{
+  position:relative!important;
+  isolation:isolate!important;
+  display:block!important;
+  flex:0 1 auto!important;
+  box-sizing:border-box!important;
+  width:min(100%,78dvh,760px)!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  aspect-ratio:1 / 1!important;
+  margin:auto!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border-radius:30px!important;
+}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab{
+  --menu-size:clamp(36px,12vw,64px)!important;
+  position:absolute!important;
+  z-index:3!important;
+  display:flex!important;
+  flex:none!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  box-sizing:border-box!important;
+  width:clamp(54px,17vw,108px)!important;
+  height:clamp(66px,13vh,88px)!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:2px!important;
+  grid-area:auto!important;
+  border:0!important;
+  border-radius:18px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+  transform-origin:center!important;
+}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab[data-view="play"]{left:50%!important;top:0!important;transform:translate(-50%,0)!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab[data-view="quick"]{left:78%!important;top:12%!important;transform:translate(-50%,0)!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab[data-view="shop"]{left:89%!important;top:50%!important;transform:translate(-50%,-50%)!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab[data-view="story"]{left:78%!important;top:88%!important;transform:translate(-50%,-100%)!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab[data-view="collection"]{left:50%!important;top:100%!important;transform:translate(-50%,-100%)!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab[data-view="decks"]{left:22%!important;top:88%!important;transform:translate(-50%,-100%)!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab[data-view="challenges"]{left:11%!important;top:50%!important;transform:translate(-50%,-50%)!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab[data-view="options"]{left:22%!important;top:12%!important;transform:translate(-50%,0)!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab:hover,
+body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab:focus-visible{filter:brightness(1.18)!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab .menu-die-visual{flex:none!important;margin:0 auto 2px!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab strong{
+  display:block!important;
+  max-width:100%!important;
+  font:500 clamp(8px,2.6vw,13px)/1.08 system-ui,sans-serif!important;
+  letter-spacing:0!important;
+  text-align:center!important;
+  white-space:normal!important;
+  text-shadow:0 1px 5px #000b!important;
+}
+#portal #portal-nav .home-tip{display:none}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip{
+  position:absolute!important;
+  left:50%!important;top:50%!important;
+  z-index:5!important;
+  display:flex!important;
+  align-items:center!important;justify-content:center!important;
+  box-sizing:border-box!important;
+  width:58%!important;min-height:68px!important;max-height:90px!important;
+  margin:0!important;padding:11px 12px!important;
+  border:1px solid rgba(221,198,133,.64)!important;
+  border-radius:28px 34px 27px 33px / 34px 28px 33px 27px!important;
+  background:radial-gradient(ellipse at 50% 46%,rgba(43,67,56,.9),rgba(13,26,24,.88) 72%,rgba(9,17,19,.78))!important;
+  box-shadow:inset 0 0 18px rgba(171,216,189,.12),0 0 20px rgba(193,164,91,.16),0 8px 20px #0005!important;
+  color:#f3e8c9!important;
+  font:500 clamp(9px,1.55vw,16px)/1.3 Georgia,"Times New Roman",serif!important;
+  letter-spacing:.01em!important;
+  text-align:center!important;
+  cursor:pointer!important;
+  transform:translate(-50%,-50%)!important;
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip::before{
+  content:"";position:absolute;inset:1px;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(118deg,transparent 16%,rgba(144,223,184,.13) 34%,rgba(234,213,159,.2) 51%,rgba(138,211,180,.12) 69%,transparent 88%);
+  background-size:220% 220%;opacity:.75;animation:home-tip-liquid 7s ease-in-out infinite;
+}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip:focus-visible{outline:2px solid #d8c17c!important;outline-offset:3px}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip-text{
+  position:relative;z-index:1;display:block;opacity:1;
+  transition:opacity .28s ease,filter .28s ease,transform .28s ease;
+  animation:home-tip-wave 5.4s ease-in-out infinite;
+}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip-text.is-changing{opacity:0;filter:blur(5px);transform:translateY(4px)}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip-spark{
+  position:absolute;right:10px;bottom:5px;z-index:1;
+  color:#dec77f;font:12px/1 Georgia,serif;text-shadow:0 0 8px #eadba1;
+  opacity:.8;animation:home-tip-glint 2.8s ease-in-out infinite;
+}
+@keyframes home-tip-liquid{0%,100%{background-position:0% 45%;transform:translateY(0)}50%{background-position:100% 55%;transform:translateY(-1px)}}
+@keyframes home-tip-wave{0%,100%{transform:translateY(0) skewX(0)}50%{transform:translateY(-2px) skewX(.35deg)}}
+@keyframes home-tip-glint{0%,100%{opacity:.45}50%{opacity:1}}
+@media(max-width:700px){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav{width:min(100%,78dvh,760px)!important}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip{font-size:clamp(9px,2.75vw,13px)!important;line-height:1.25!important;padding:8px 9px!important}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .portal-tab strong{font-size:clamp(8px,2.8vw,11px)!important}
+}
+@media(max-width:350px){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip{width:58%!important;min-height:64px!important;padding:7px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip::before,
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip-text,
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip-spark{animation:none!important}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip-text{transition:none!important}
+}
+
+/* v107 — astuces entourées de volutes de fumée colorées, sans capsule */
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip{
+  width:58%!important;
+  min-height:86px!important;
+  max-height:none!important;
+  padding:12px 10px!important;
+  overflow:visible!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  isolation:isolate!important;
+}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip::before,
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip::after{
+  content:"";
+  position:absolute;
+  z-index:0;
+  pointer-events:none;
+  inset:-22% -12%;
+  border:0;
+  border-radius:46% 54% 57% 43% / 54% 42% 58% 46%;
+  filter:blur(19px);
+  mix-blend-mode:screen;
+  opacity:.78;
+}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip::before{
+  background:
+    radial-gradient(ellipse at 22% 56%,rgba(54,225,163,.46),transparent 37%),
+    radial-gradient(ellipse at 48% 32%,rgba(111,174,255,.43),transparent 42%),
+    radial-gradient(ellipse at 76% 58%,rgba(187,103,255,.43),transparent 38%);
+  animation:home-tip-smoke-a 8s ease-in-out infinite alternate;
+}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip::after{
+  inset:-28% -16%;
+  background:
+    radial-gradient(ellipse at 32% 64%,rgba(101,248,204,.34),transparent 36%),
+    radial-gradient(ellipse at 67% 38%,rgba(242,133,226,.34),transparent 38%),
+    radial-gradient(ellipse at 53% 74%,rgba(255,204,111,.26),transparent 31%);
+  filter:blur(25px);
+  opacity:.67;
+  animation:home-tip-smoke-b 11s ease-in-out infinite alternate;
+}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip-text{
+  z-index:2;
+  color:#f7edcf!important;
+  text-shadow:0 2px 5px #071413,0 0 12px rgba(139,203,197,.46),0 0 22px rgba(167,116,237,.22)!important;
+  animation:home-tip-wave 5.4s ease-in-out infinite;
+}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip-spark{
+  z-index:2;
+  right:3px;
+  bottom:0;
+  color:#f1dda0;
+  text-shadow:0 0 10px #b6e8dc,0 0 16px #c78cff;
+}
+@keyframes home-tip-smoke-a{
+  0%{transform:translate(-3%,2%) scale(.94) rotate(-2deg);background-position:0% 50%,55% 30%,100% 60%}
+  50%{transform:translate(2%,-3%) scale(1.08) rotate(2deg);background-position:35% 60%,15% 80%,60% 20%}
+  100%{transform:translate(4%,2%) scale(.98) rotate(-1deg);background-position:100% 40%,70% 45%,0% 55%}
+}
+@keyframes home-tip-smoke-b{
+  0%{transform:translate(3%,-2%) scale(1.04) rotate(2deg);background-position:100% 60%,0% 35%,30% 80%}
+  50%{transform:translate(-3%,3%) scale(.92) rotate(-2deg);background-position:40% 25%,80% 70%,100% 20%}
+  100%{transform:translate(-1%,-2%) scale(1.08) rotate(1deg);background-position:0% 65%,35% 20%,80% 45%}
+}
+@media(max-width:700px){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip{
+   width:58%!important;
+   min-height:82px!important;
+   padding:10px 6px!important;
+   font-size:clamp(12px,3.35vw,15px)!important;
+   line-height:1.25!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip::before{filter:blur(16px)}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip::after{filter:blur(21px)}
+}
+@media(max-width:350px){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip{width:58%!important;min-height:78px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip::before,
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip::after{animation:none!important}
+}
+
+/* v108 — ovale plein écran, dés solidaires de leur titre et anneau tactile */
+body.portal-open[data-portal-view="home"] #portal #portal-nav{
+  width:min(100%,78dvh,760px)!important;
+  height:min(86dvh,920px)!important;
+  min-height:0!important;
+  max-height:none!important;
+  aspect-ratio:auto!important;
+  flex:0 1 auto!important;
+  border-radius:50% / 45%!important;
+}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring{
+  position:absolute!important;
+  inset:0!important;
+  z-index:3!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  transform:rotate(var(--dice-ring-angle,0deg));
+  transform-origin:center center;
+  touch-action:none;
+  user-select:none;
+  -webkit-user-select:none;
+  cursor:grab;
+  will-change:transform;
+}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring.is-dragging{cursor:grabbing}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab{
+  left:50%!important;
+  top:50%!important;
+  width:clamp(58px,17vw,108px)!important;
+  height:clamp(78px,12vh,96px)!important;
+  padding:0 2px!important;
+  justify-content:flex-start!important;
+  transform:translate(-50%,-50%) rotate(var(--dice-ring-counter-angle,0deg))!important;
+  transition:filter .2s!important;
+}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="play"]{left:50%!important;top:6%!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="quick"]{left:81%!important;top:21%!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="shop"]{left:90%!important;top:50%!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="story"]{left:81%!important;top:79%!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="collection"]{left:50%!important;top:94%!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="decks"]{left:19%!important;top:79%!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="challenges"]{left:10%!important;top:50%!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="options"]{left:19%!important;top:21%!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab .menu-die-visual{
+  flex:none!important;
+  margin:0 auto 3px!important;
+  animation:none!important;
+  transform:none!important;
+  --lift:0px!important;
+}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab strong{
+  flex:none!important;
+  margin:2px auto 0!important;
+  font:500 clamp(10px,2.9vw,13px)/1.16 system-ui,sans-serif!important;
+  text-align:center!important;
+  white-space:normal!important;
+  text-shadow:0 2px 6px #000e,0 0 5px #000c!important;
+}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .menu-cube{
+  animation:home-dice-turn 18s linear infinite;
+  transform-origin:center center;
+  will-change:transform;
+}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab:nth-child(2) .menu-cube{animation-delay:-2.25s}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab:nth-child(3) .menu-cube{animation-delay:-4.5s}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab:nth-child(4) .menu-cube{animation-delay:-6.75s}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab:nth-child(5) .menu-cube{animation-delay:-9s}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab:nth-child(6) .menu-cube{animation-delay:-11.25s}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab:nth-child(7) .menu-cube{animation-delay:-13.5s}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab:nth-child(8) .menu-cube{animation-delay:-15.75s}
+@keyframes home-dice-turn{
+ from{transform:rotateX(-23deg) rotateY(-31deg)}
+ to{transform:rotateX(-23deg) rotateY(329deg)}
+}
+@media(max-width:700px){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav{
+  width:100%!important;
+  height:auto!important;
+  flex:1 1 0!important;
+  margin:5px 0!important;
+  border-radius:50% / 43%!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab{
+  width:clamp(54px,19vw,74px)!important;
+  height:clamp(74px,11vh,90px)!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip{
+  width:58%!important;
+  min-height:82px!important;
+ }
+}
+@media(max-width:350px){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab{
+  width:54px!important;height:74px!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .menu-cube{animation:none!important}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring{transition:none!important}
+}
+.no-motion #portal #portal-nav .home-dice-ring .menu-cube{animation:none!important}
+
+/* v109 — espace stable entre chaque dé et son intitulé */
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab .menu-die-visual{
+ margin:0 auto clamp(13px,1.8vh,20px)!important;
+}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab{
+ height:clamp(96px,13vh,112px)!important;
+}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="play"]{top:8.5%!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="quick"]{top:20%!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="story"]{top:80%!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="collection"]{top:91.5%!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="decks"]{top:80%!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="options"]{top:20%!important}
+@media(max-width:700px){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab{
+  height:clamp(108px,18vh,126px)!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab .menu-die-visual{
+  margin:0 auto 15px!important;
+ }
+}
+@media(max-width:350px){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab{
+  height:108px!important;
+ }
+}
+
+/* v111 — trajectoire ovale des dés sans cadre ni découpe ovale */
+body.portal-open[data-portal-view="home"] #portal #portal-nav{
+ border-radius:0!important;
+ overflow:visible!important;
+ border:0!important;
+ background:transparent!important;
+ box-shadow:none!important;
+}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .menu-runic-backdrop{
+ border-radius:0!important;
+ background:transparent!important;
+ overflow:visible!important;
+}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring{
+ overflow:visible!important;
+}
+
+
+/* v114 — orbite mobile contenue dans la zone visible, même pendant la rotation */
+@media(max-width:700px){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring{
+  left:50%!important;
+  top:50%!important;
+  right:auto!important;
+  bottom:auto!important;
+  inset:auto!important;
+  width:min(80vw,calc(100vw - 76px),600px)!important;
+  height:min(65vw,calc(100dvh - 220px),470px)!important;
+  transform:translate(-50%,-50%) rotate(var(--dice-ring-angle,0deg))!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab{
+  --menu-size:clamp(36px,12vw,58px)!important;
+  width:clamp(52px,12vw,78px)!important;
+  height:clamp(86px,25vw,100px)!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab .menu-die-visual{
+  margin:0 auto 5px!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab strong{
+  display:block!important;
+  max-width:min(74px,20vw)!important;
+  font-size:clamp(10px,3.05vw,13px)!important;
+  line-height:1.1!important;
+  text-align:center!important;
+  white-space:normal!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip{
+  width:min(46%,340px)!important;
+  min-height:78px!important;
+  padding:8px 5px!important;
+  font-size:clamp(11px,3vw,15px)!important;
+  line-height:1.2!important;
+ }
+}
+@media(max-width:350px){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring{
+  width:min(76vw,calc(100vw - 76px),280px)!important;
+  height:min(63vw,calc(100dvh - 200px),300px)!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab{
+  --menu-size:clamp(36px,11.5vw,44px)!important;
+  width:50px!important;
+  height:86px!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab strong{
+  max-width:68px!important;
+  font-size:10px!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip{
+  width:44%!important;
+  min-height:74px!important;
+  font-size:11px!important;
+ }
+}
+
+
+/* v115 — seuil responsive adapté aux navigateurs mobiles larges */
+@media(max-width:900px){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring{
+  left:50%!important;
+  top:50%!important;
+  right:auto!important;
+  bottom:auto!important;
+  inset:auto!important;
+  width:min(80vw,calc(100vw - 76px),600px)!important;
+  height:min(65vw,calc(100dvh - 220px),470px)!important;
+  transform:translate(-50%,-50%) rotate(var(--dice-ring-angle,0deg))!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab{
+  --menu-size:clamp(36px,12vw,58px)!important;
+  width:clamp(52px,12vw,78px)!important;
+  height:clamp(86px,25vw,100px)!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab .menu-die-visual{margin:0 auto 5px!important}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab strong{
+  display:block!important;
+  max-width:min(74px,20vw)!important;
+  font-size:clamp(10px,3.05vw,13px)!important;
+  line-height:1.1!important;
+  text-align:center!important;
+  white-space:normal!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip{
+  width:min(46%,340px)!important;
+  min-height:78px!important;
+  padding:8px 5px!important;
+  font-size:clamp(11px,3vw,15px)!important;
+  line-height:1.2!important;
+ }
+}
+@media(max-width:350px){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring{
+  width:min(76vw,calc(100vw - 76px),280px)!important;
+  height:min(63vw,calc(100dvh - 200px),300px)!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab{
+  --menu-size:clamp(36px,11.5vw,44px)!important;
+  width:50px!important;height:86px!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab strong{
+  max-width:68px!important;font-size:10px!important;
+ }
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip{
+  width:44%!important;min-height:74px!important;font-size:11px!important;
+ }
+}
+
+
+/* v116 — le centrage doit être défini dans inset lui-même */
+@media(max-width:900px){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring{
+  inset:50% auto auto 50%!important;
+  transform:translate(-50%,-50%) rotate(var(--dice-ring-angle,0deg))!important;
+ }
+}
+@media(max-width:350px){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring{
+  inset:50% auto auto 50%!important;
+  width:min(76vw,calc(100vw - 76px),280px)!important;
+  height:min(63vw,calc(100dvh - 200px),300px)!important;
+ }
+}
