@@ -270,7 +270,7 @@ function snowTree(x,z,s=1){
    const p0=[sx,y,sz],p1=[sx+dx*length*.33,y+dy*.22,sz+dz*length*.33],p2=[sx+dx*length*.72,y+dy*.54,sz+dz*length*.72],p3=[sx+dx*length,y+dy*.8,sz+dz*length];
    twigs.push(p0,p1,p1,p2,p2,p3);
    if(tier>1&&rand()>.25){const forkY=y+dy*.48,forkX=sx+dx*length*.62,forkZ=sz+dz*length*.62,fa=a+(sign<0?-.68:.68),fl=length*.4;twigs.push([forkX,forkY,forkZ],[forkX+Math.cos(fa)*fl*.45,forkY+dy*.2,forkZ+Math.sin(fa)*fl*.45],[forkX+Math.cos(fa)*fl*.45,forkY+dy*.2,forkZ+Math.sin(fa)*fl*.45],[forkX+Math.cos(fa)*fl,forkY+dy*.35,forkZ+Math.sin(fa)*fl])}
-   if(tier>1&&rand()>.48)caps.push([sx+dx*length*.76,y+dy*.57,sz+dz*length*.76,a,length)
+   if(tier>1&&rand()>.48)caps.push([sx+dx*length*.76,y+dy*.57,sz+dz*length*.76,a,length])
   }
  }
  const branchGeo=new THREE.BufferGeometry().setFromPoints(twigs.map(p=>new THREE.Vector3(...p))),branchLines=new THREE.LineSegments(branchGeo,new THREE.LineBasicMaterial({color:0x4d5960,transparent:false}));branchLines.frustumCulled=false;g.add(branchLines);
