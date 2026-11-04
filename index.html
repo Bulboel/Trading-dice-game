@@ -305,7 +305,7 @@ body{margin:0;padding:0;max-width:none;height:100%;overflow:hidden;font-size:14p
 <link rel="stylesheet" href="assets/mobile-logo-v102.css?v=20261103-v102">
 <link rel="stylesheet" href="assets/home-circle-tips-v118.css?v=20261104-v118">
 <link rel="stylesheet" href="assets/mobile-logo-v104.css?v=20261104-v104">
-<link rel="stylesheet" href="assets/pouch-speed-v120.css?v=20261104-v120"><link rel="stylesheet" href="assets/portal-nav-v122.css?v=20261104-v122"></head><body><div id="app"><header id="identity"><div><span class="eyebrow">HACKENIA · Trading Dice Game</span><h1 id="land-name">Clairière des murmures</h1></div><div class="header-actions"><div class="land-note"><span></span>Terrain vivant</div><button id="history-button" type="button" onclick="openHistory()" aria-haspopup="dialog">Historique <span id="history-count">0</span></button></div></header><div id="top"><button id="vs" onclick="ai=!ai;init()" title="Changer de mode"></button><button id="tr" onclick="TER=(TER+1)%6;init()" title="Changer de terrain"></button><div id="hd"></div></div><div id="bw"><div id="land-caption"><span>LE SANCTUAIRE VERDOYANT</span><small>La rivière murmure. Le duel commence.</small></div><div id="cam"><div id="sc"></div><div id="bq"><div id="slab"><i class="a"></i><i class="b"></i><i class="c1"></i><i class="d"></i></div><div id="bd"></div><div id="ent"></div><div id="crl"></div><div id="fly"><div id="fx"><div class="fsh"></div><div class="fb"><div class="blk fc3"></div></div></div></div></div></div><div id="pins"></div><div id="rot"><button onclick="rotV(-90)" title="Pivoter à gauche">⟲</button><button onclick="rotV(0)" title="Recentrer">⌖</button><button onclick="rotV(90)" title="Pivoter à droite">⟳</button></div><div id="pad"><i></i></div></div><div id="terrain-tools"><span id="terrain-status" role="status">Clairière · terre +1</span><label>Ambiance <select id="quality" aria-label="Qualité de l’ambiance"><option value="auto">Auto</option><option value="rich">Détaillée</option><option value="light">Légère</option><option value="still">Sans mouvement</option></select></label></div><div id="mr"><div class="roll-pedestal"><span class="roll-eyebrow">JET DE DÉ</span><div class="roll-socket"><div id="roll" aria-label="Résultat du lancer" aria-live="polite"></div></div></div><div id="msg" role="status" aria-live="polite"></div></div><div id="bot"><div class="row" id="ct"></div><div class="row" id="hand"></div></div><div id="hl" hidden></div></div><div id="lens" hidden></div><dialog id="history-panel" aria-labelledby="history-title"><header><div><h2 id="history-title">Journal de partie</h2><p id="history-summary"></p></div><button type="button" onclick="closeHistory()" aria-label="Fermer l’historique">✕</button></header><label class="history-filter-label">Afficher <select id="history-filter" onchange="drawHistory(true)"><option value="">Actions de la partie</option><option value="combat">Combats et écrasements</option><option value="Déplacement">Déplacements</option><option value="dice">Lancers et invocations</option><option value="score">Passages et victoire</option></select></label><p class="history-help">Victoire : 2 passages dans le camp adverse OU 3 combats remportés. En combat, l’attaque décide ; le niveau protège seulement contre l’écrasement par un dé posé. Les statistiques affichées sont celles de l’action.</p><section id="history-events" aria-label="Événements de la partie"></section></dialog><div id="fiche" hidden onclick="if(event.target===this)closeCard()"><div id="fc"></div></div><script src="assets/combat.js?v=20261103-combat"></script><script>
+<link rel="stylesheet" href="assets/pouch-speed-v120.css?v=20261104-v120"><link rel="stylesheet" href="assets/portal-nav-v122.css?v=20261104-v122"><link rel="stylesheet" href="assets/terrain-preview-v123.css?v=20261104-v123"></head><body><div id="app"><header id="identity"><div><span class="eyebrow">HACKENIA · Trading Dice Game</span><h1 id="land-name">Clairière des murmures</h1></div><div class="header-actions"><div class="land-note"><span></span>Terrain vivant</div><button id="history-button" type="button" onclick="openHistory()" aria-haspopup="dialog">Historique <span id="history-count">0</span></button></div></header><div id="top"><button id="vs" onclick="ai=!ai;init()" title="Changer de mode"></button><button id="tr" onclick="TER=(TER+1)%6;init()" title="Changer de terrain"></button><div id="hd"></div></div><div id="bw"><div id="land-caption"><span>LE SANCTUAIRE VERDOYANT</span><small>La rivière murmure. Le duel commence.</small></div><div id="cam"><div id="sc"></div><div id="bq"><div id="slab"><i class="a"></i><i class="b"></i><i class="c1"></i><i class="d"></i></div><div id="bd"></div><div id="ent"></div><div id="crl"></div><div id="fly"><div id="fx"><div class="fsh"></div><div class="fb"><div class="blk fc3"></div></div></div></div></div></div><div id="pins"></div><div id="rot"><button onclick="rotV(-90)" title="Pivoter à gauche">⟲</button><button onclick="rotV(0)" title="Recentrer">⌖</button><button onclick="rotV(90)" title="Pivoter à droite">⟳</button></div><div id="pad"><i></i></div></div><div id="terrain-tools"><span id="terrain-status" role="status">Clairière · terre +1</span><label>Ambiance <select id="quality" aria-label="Qualité de l’ambiance"><option value="auto">Auto</option><option value="rich">Détaillée</option><option value="light">Légère</option><option value="still">Sans mouvement</option></select></label></div><div id="mr"><div class="roll-pedestal"><span class="roll-eyebrow">JET DE DÉ</span><div class="roll-socket"><div id="roll" aria-label="Résultat du lancer" aria-live="polite"></div></div></div><div id="msg" role="status" aria-live="polite"></div></div><div id="bot"><div class="row" id="ct"></div><div class="row" id="hand"></div></div><div id="hl" hidden></div></div><div id="lens" hidden></div><dialog id="history-panel" aria-labelledby="history-title"><header><div><h2 id="history-title">Journal de partie</h2><p id="history-summary"></p></div><button type="button" onclick="closeHistory()" aria-label="Fermer l’historique">✕</button></header><label class="history-filter-label">Afficher <select id="history-filter" onchange="drawHistory(true)"><option value="">Actions de la partie</option><option value="combat">Combats et écrasements</option><option value="Déplacement">Déplacements</option><option value="dice">Lancers et invocations</option><option value="score">Passages et victoire</option></select></label><p class="history-help">Victoire : 2 passages dans le camp adverse OU 3 combats remportés. En combat, l’attaque décide ; le niveau protège seulement contre l’écrasement par un dé posé. Les statistiques affichées sont celles de l’action.</p><section id="history-events" aria-label="Événements de la partie"></section></dialog><div id="fiche" hidden onclick="if(event.target===this)closeCard()"><div id="fc"></div></div><script src="assets/combat.js?v=20261103-combat"></script><script>
 const W=8,H=10,Z=1,WIN=2,KW=3,P=['Vert','Orange'],D4=[[1,0],[-1,0],[0,1],[0,-1]];
 const EC={eau:'#1e4fa0',feu:'#d22',glace:'#7de',terre:'#8a5a2b',vent:'#4c4',foudre:'#a3d'};
 const BT={eau:'foudre',foudre:'vent',vent:'terre',terre:'glace',glace:'feu',feu:'eau'};
@@ -313,7 +313,7 @@ const TERR={terre:{n:'Clairière des murmures',em:'🌲',dec:['🌲','🌳','�
 function theme(){const el=TL[TER],T=TERR[el];$('bw').className='t-'+el;$('tr').textContent=T.em;$('tr').title=T.n+' : +1 aux dés '+el;
  $('sc').replaceChildren();
  document.getElementById('land-name').textContent=T.n;
- if(window.HackeniaView)window.HackeniaView.setActive(el==='terre'||el==='feu')}
+ if(window.HackeniaView)window.HackeniaView.setActive(el==='terre'||el==='feu'||el==='glace')}
 const ELS=['foudre','vent','terre','glace','eau','feu'],NM=['Foudre','Vent','Terre','Glace','Eau','Feu'],RN=['I','II','III','IV','V','VI'];
 const LVR=[{v:[1,2,3],need:2,nd:1},{v:[1,2,3,4],need:3,nd:1},{v:[1,2,3,4,5],need:4,nd:1},{v:[1,2,3,4,5,6],need:5,nd:1},{v:[3,4,5,6],need:5,nd:2},{v:[3,3,4,4,5,6],need:5,nd:2}];
 const SH=[
@@ -373,7 +373,7 @@ function closeHistory(){$('history-panel').close()}
 function init(){movePlan=null;window.HackeniaCombat?.reset();victoryRewardIssued=false;clearTimeout(aiT);bonus=[0,0];kills=[0,0];rzU=0;useB=0;gid++;busy=0;b=[...Array(H)].map(()=>Array(W).fill(null));cr=[];over=0;sel=null;drag=0;pc=null;hov=null;anim=null;cubeCls='';aiT=0;
  pl=[0,1].map((_,o)=>{const d=o===0&&chosenDeck?sh([...chosenDeck]):mkDeck();return{h:d.splice(0,5),q:d,s:0}});
  cur=0;mode='i';moved=0;$('roll').textContent='';$('roll').className='';
- cu={x:3,y:H-3};lastJ=0;theme();gameEvents.length=0;turnNumber=1;recordEvent('Partie',TERR[TL[TER]].n+' : +1 attaque aux dés '+TL[TER]+'. Gagnez avec '+WIN+' créatures entrées dans le camp adverse ou '+KW+' combats remportés.'+(TL[TER]==='feu'?' Les évents fumants bloquent les invocations et les déplacements.':''));msg=TERR[TL[TER]].em+' '+TERR[TL[TER]].n+' : +1 aux dés '+TL[TER]+'. Victoire : 2 monstres passés dans la zone adverse, ou 3 ennemis vaincus en duel. Glisse un dé de ta main sur le damier, puis lance-le.';render()}
+ cu={x:3,y:H-3};lastJ=0;theme();gameEvents.length=0;turnNumber=1;recordEvent('Partie',TERR[TL[TER]].n+' : +1 attaque aux dés '+TL[TER]+'. Gagnez avec '+WIN+' créatures entrées dans le camp adverse ou '+KW+' combats remportés.'+(TL[TER]==='feu'?' Les évents fumants bloquent les invocations et les déplacements.':TL[TER]==='glace'?' Le terrain gelé est glissant : les créatures continuent jusqu’au bout des dalles libres, sauf si un adversaire déclenche un combat.':''));msg=TERR[TL[TER]].em+' '+TERR[TL[TER]].n+' : +1 aux dés '+TL[TER]+'. '+(TL[TER]==='glace'?'Terrain glissant : tes créatures poursuivent leur course jusqu’au bout des dalles libres ; un adversaire les arrête et déclenche un combat. ':'')+'Victoire : 2 monstres passés dans la zone adverse, ou 3 ennemis vaincus en duel. Glisse un dé de ta main sur le damier, puis lance-le.';render()}
 function net(m,r){let c=M[m].c.map(a=>[...a]);for(let i=0;i<r;i++)c=c.map(([x,y,v])=>[-y,x,v]);
  const mx=Math.min(...c.map(a=>a[0])),my=Math.min(...c.map(a=>a[1]));return c.map(([x,y,v])=>[x-mx,y-my,v])}
 function cellsOf(m,r,p){const n=net(m,r),f=n[0];return n.map(([x,y,v])=>[x-f[0]+p.x,y-f[1]+p.y,v])}
@@ -395,6 +395,21 @@ function bfs(c){const par={},q=[[c.x,c.y]];par[[c.x,c.y]]=null;
   for(const[dx,dy]of D4){const X=x+dx,Y=y+dy;if(!inb(X,Y)||blocked(X,Y)||!b[Y][X]||par[[X,Y]]!==undefined)continue;
    const occupant=at(X,Y);if(contact&&(!occupant||occupant.o===c.o))continue;
    par[[X,Y]]=[x,y];if(!occupant||(occupant.o===c.o&&!enemyNear(c,X,Y)))q.push([X,Y])}}return par}
+function iceSlide(c,x,y,paths=bfs(c)){
+ const origin=paths[[x,y]];
+ if(TL[TER]!=='glace'||!origin)return{x,y,attackFrom:origin,slid:false};
+ const target=at(x,y);
+ if(target)return{x,y,attackFrom:origin,slid:false,enemy:target.o!==c.o};
+ const dx=x-origin[0],dy=y-origin[1];if(!dx&&!dy)return{x,y,attackFrom:origin,slid:false};
+ let sx=x,sy=y,slid=false;
+ while(true){
+  const X=sx+dx,Y=sy+dy;if(!inb(X,Y)||blocked(X,Y)||!b[Y][X])break;
+  const obstacle=at(X,Y);
+  if(obstacle){if(obstacle.o!==c.o)return{x:X,y:Y,attackFrom:[sx,sy],slid:true,enemy:true};break}
+  sx=X;sy=Y;slid=true;
+ }
+ return{x:sx,y:sy,attackFrom:paths[[sx,sy]]||origin,slid,enemy:false};
+}
 function unfoldOrder(cs){const f=cs[0],o={},q=[[f[0],f[1]]];o[[f[0],f[1]]]={d:0,c:'u-b'};let max=0;
  while(q.length){const[x,y]=q.shift();for(const[dx,dy]of D4){const X=x+dx,Y=y+dy;if(o[[X,Y]]||!cs.some(a=>a[0]==X&&a[1]==Y))continue;
   const d=o[[x,y]].d+1;max=Math.max(max,d);o[[X,Y]]={d,c:dx==1?'u-r':dx==-1?'u-l':dy==1?'u-d':'u-u'};q.push([X,Y])}}
@@ -425,14 +440,29 @@ function resolve(c,d=0){if(d>4||!cr.includes(c))return '';let t='';
    t+=f+' : égalité, rien ne se passe.'}
  }
  return t}
-function mv(c,x,y){const before=unitSnapshot(c),startX=c.x,startY=c.y;const e=at(x,y);if(e&&e.o==c.o){msg='Case occupée par ta propre créature.';return}
- const paths=bfs(c),par=paths[[x,y]];if(!par){msg='Impossible : aucune route déployée accessible vers cette case.';return}
- if(e){const a=pwc(c,par[0],par[1]),d=pwc(e,x,y),attacker=unitSnapshot(c,par[0],par[1]),defender=unitSnapshot(e,x,y);logCombat(attacker,defender,'déplacement',{...c,x:par[0],y:par[1]},e);
-  if(a>d){cr=cr.filter(z=>z!=e);kills[c.o]++;c.x=x;c.y=y;msg='Attaque réussie ! '+a+' contre '+d+'. La créature adverse disparaît.'}
-  else if(a<d){cr=cr.filter(z=>z!=c);kills[e.o]++;msg='Attaque ratée : '+a+' contre '+d+'. La créature attaquante disparaît.'}
-  else msg='Égalité '+a+'-'+d+' : personne ne bouge.'}
- else{const route=[];let step=[x,y];while(step){route.unshift(step);step=paths[step]}c.walk={points:route,started:Date.now(),duration:Math.max(1,route.length-1)*240};c.x=x;c.y=y;msg='Créature avancée.'}
- if(cr.includes(c)&&(c.x!==startX||c.y!==startY)){const after=unitSnapshot(c);recordEvent('Déplacement',before.name+' avance.'+(before.attack!==after.attack?' Son attaque passe de '+before.attack+' à '+after.attack+'.':' Attaque : '+after.attack+'.'),[before,after])}moved=1;sel=null;if(!over&&cr.includes(c)){const t=resolve(c);if(t)msg+=t}msg+=chkKills();if(!over&&cr.includes(c))scoreArrival(c)}
+function mv(c,x,y){
+ const before=unitSnapshot(c),startX=c.x,startY=c.y;
+ if(at(x,y)?.o===c.o){msg='Case occupée par ta propre créature.';return}
+ const paths=bfs(c),origin=paths[[x,y]];if(!origin){msg='Impossible : aucune route déployée accessible vers cette case.';return}
+ const slide=iceSlide(c,x,y,paths);x=slide.x;y=slide.y;
+ const e=at(x,y),par=e?slide.attackFrom:paths[[x,y]]||origin;
+ if(e){
+  const a=pwc(c,par[0],par[1]),d=pwc(e,x,y),attacker=unitSnapshot(c,par[0],par[1]),defender=unitSnapshot(e,x,y);
+  logCombat(attacker,defender,'déplacement',{...c,x:par[0],y:par[1]},e);
+  if(a>d){cr=cr.filter(z=>z!==e);kills[c.o]++;c.x=x;c.y=y;msg='Attaque réussie ! '+a+' contre '+d+'. La créature adverse disparaît.'}
+  else if(a<d){cr=cr.filter(z=>z!==c);kills[e.o]++;msg='Attaque ratée : '+a+' contre '+d+'. La créature attaquante disparaît.'}
+  else msg='Égalité '+a+'-'+d+' : personne ne bouge.'
+ }else{
+  const route=[];let step=[x,y];while(step){route.unshift(step);step=paths[step]}
+  c.walk={points:route,started:Date.now(),duration:Math.max(1,route.length-1)*240};c.x=x;c.y=y;
+  msg=slide.slid?'La glace entraîne la créature jusqu’à '+squareName(x,y)+'.':'Créature avancée.';
+ }
+ if(cr.includes(c)&&(c.x!==startX||c.y!==startY)){
+  const after=unitSnapshot(c),verb=slide.slid?' glisse jusqu’à ':' avance.';
+  recordEvent('Déplacement',before.name+verb+(slide.slid?squareName(c.x,c.y)+'.':'')+(before.attack!==after.attack?' Son attaque passe de '+before.attack+' à '+after.attack+'.':' Attaque : '+after.attack+'.'),[before,after]);
+ }
+ moved=1;sel=null;if(!over&&cr.includes(c)){const t=resolve(c);if(t)msg+=t}msg+=chkKills();if(!over&&cr.includes(c))scoreArrival(c)
+}
 function firstValid(m,r){const ys=[...Array(H).keys()];if(!cur)ys.reverse();for(const y of ys)for(const x of[3,4,2,5,1,6,0,7])if(ok(cellsOf(m,r,{x,y}),M[m].lv))return{x,y};return null}
 function pick(i){movePlan=null;const m=pl[cur].h[i],p=firstValid(m,cur?0:2);if(!p){msg='Aucun emplacement possible pour ce dé.';return}
  hi=i;die=m;rot=cur?0:2;pc=p;mode='p';sel=null;$('roll').textContent='';$('roll').className='';
@@ -524,14 +554,14 @@ BQ.onpointerdown=e=>{if(window.HackeniaCombat?.busy||over||(ai&&cur==1))return;e
  
  render()};
 BQ.onpointermove=e=>{if(drag||(down&&sel)){const[x,y]=cellAt(e);if(inb(x,y)){lz={x,y};if(drag)pc={x,y};rBoard()}}};BQ.onpointercancel=()=>{drag=0;down=0;lz=null;render()};
-const selMsg=c=>Object.keys(bfs(c)).length>1?'Créature choisie : touche une case lumineuse ou fais glisser la figurine, puis confirme. Distance illimitée sur les dalles reliées ; arrêt au contact d’un ennemi.':'Cette créature ne peut pas avancer : elle ne marche que sur des dalles déployées reliées.';
+const selMsg=c=>{const base=Object.keys(bfs(c)).length>1?'Créature choisie : touche une case lumineuse ou fais glisser la figurine, puis confirme. Distance illimitée sur les dalles reliées ; arrêt au contact d’un ennemi.':'Cette créature ne peut pas avancer : elle ne marche que sur des dalles déployées reliées.';return TL[TER]==='glace'&&Object.keys(bfs(c)).length>1?base+' Sur la glace, elle glisse jusqu’au bout du chemin libre ; un adversaire arrête sa course et déclenche un combat.':base};
 function confirmMove(){const plan=movePlan;movePlan=null;if(!plan||mode!=='i'||over||moved||window.HackeniaCombat?.busy||!cr.includes(plan.unit)||plan.unit.o!==cur){render();return}mv(plan.unit,plan.x,plan.y);render()}
 function cancelMove(){movePlan=null;msg=sel&&cr.includes(sel)?selMsg(sel):'Choisis une créature.';render()}
 function tap(x,y){if(window.HackeniaCombat?.busy)return;const me=!ai||cur==0,canI=over||(ai&&cur==1)||mode=='i'||mode=='r'||mode=='x';if(!inb(x,y)||!canI)return;if(blocked(x,y)){movePlan=null;msg='Évent fumant : invocation et déplacement impossibles sur cette dalle.';return}const c=at(x,y);
  if(mode=='i'&&me&&!over){
   if(sel){
    if(c===sel){if(movePlan){movePlan=null;msg=selMsg(sel)}else openCard(sel)}
-   else if(bfs(sel)[[x,y]]!==undefined&&!(c&&c.o==cur)){movePlan={unit:sel,x,y};inf=null;msg=moveEnemy(sel,x,y)?'Combat préparé : arrêt au contact de l’ennemi. Confirme ou choisis une autre case.':'Déplacement préparé. Confirme ou choisis une autre case.'}
+   else if(bfs(sel)[[x,y]]!==undefined&&!(c&&c.o==cur)){const paths=bfs(sel),slide=iceSlide(sel,x,y,paths),landing=at(slide.x,slide.y);movePlan={unit:sel,x,y,previewX:slide.x,previewY:slide.y};inf=null;msg=landing&&landing.o!==cur?'Glissade stoppée au contact : le combat sera déclenché à cette case. Confirme ou choisis une autre case.':slide.slid?'Sur la glace, la créature glissera jusqu’à '+squareName(slide.x,slide.y)+'. Confirme ou choisis une autre case.':'Déplacement préparé. Confirme ou choisis une autre case.'}
    else if(c&&c.o==cur&&!moved){movePlan=null;sel=c;msg=selMsg(c)}
    else{movePlan=null;inf=null;msg='Déplacement impossible sur cette case. La créature reste sélectionnée ; choisis une case lumineuse.'}
   }else if(c&&c.o==cur&&!moved){movePlan=null;sel=c;msg=selMsg(c)}
@@ -599,7 +629,7 @@ function rBoard(){const {b,cr,mode,sel,anim}=presentationBoard();$('bq').style.s
  if((mode=='p'||mode=='r'||mode=='d')&&cs.length){const f=cs[0];for(const e of cr)if(e.o!=cur&&Math.abs(f[0]-e.x)+Math.abs(f[1]-e.y)==1)thr.add(e)}
  for(let y=0;y<H;y++)for(let x=0;x<W;x++){const c=b[y][x],d=document.createElement('div'),an=A&&A.o[[x,y]];
   d.dataset.x=x;d.dataset.y=y;d.className='c'+(blocked(x,y)?' vent':'')+(y<Z?' z1':'')+(y>=H-Z?' z0':'')+(c?' o'+c.o+(c.f?' f':''):'');let h='';if(blocked(x,y)){d.title='Évent fumant · dalle impraticable';h='<span class="vent-mark">♨</span>'}if(x==3&&(y==0||y==H-1))h+='<small class="zt">'+(y?'Zone Vert':'Zone Orange')+'</small>';
-  if(movePlan&&movePlan.x===x&&movePlan.y===y)d.classList.add('move-target');
+  if(movePlan&&(movePlan.previewX??movePlan.x)===x&&(movePlan.previewY??movePlan.y)===y)d.classList.add('move-target');
   if(an){d.classList.add(an.c);d.style.animationDelay=((an.d*220-(now-A.t0))/1000)+'s'}
   if(c&&!c.f){const q=pw(x,y);ents.push(blk(c,x,y,q,an,A,now));h+='<span class="tx">'+(q>c.v?c.v+'<small>+'+(q-c.v)+'</small>':c.v)+'</span>'+(c.el?'<i class="d" style="background:'+EC[c.el]+'"></i>':'')}
   const p=fp.find(a=>a[0]==x&&a[1]==y);if(p){d.classList.add(bad?'bad':sp.lost.includes(p)?'lostc':'pv');ents.push('<div class="hl'+(bad?' rd':'')+'" style="left:'+(x*100/W)+'%;top:'+(y*100/H)+'%;--z:'+(((c&&!c.f)?bhOf(c):0)+1)+'px"></div>')}
@@ -631,7 +661,7 @@ function render(){$('bq').classList.toggle('selmode',!!(mode=='i'&&sel));rzCur=w
  $('hl').textContent=over?'':mode=='i'&&me?'Main de '+P[hp]+' : glisse un dé sur le damier':'';
  $('hand').innerHTML=over?'':pl[hp].h.map((m,i)=>'<div class="dc l'+M[m].lv+(mode=='i'&&me?'':' off')+'" data-i="'+i+'" style="--dice-element:'+EC[M[m].el]+'"><div class="dice-visuals"><div class="dice-head">'+handNet(m,hp?0:2)+'</div><div class="dice-art">'+handPortrait(m)+'</div></div><b class="dice-name">'+M[m].cn+'</b><span class="dice-details"><span class="dice-element-icon">'+(ELEMENT_ICONS[M[m].el]||'✦')+'</span> '+M[m].el.charAt(0).toUpperCase()+M[m].el.slice(1)+' · Niv. '+M[m].lv+'</span><span class="dice-roll">'+M[m].nd+' dé'+(M[m].nd>1?'s':'')+' · '+M[m].need+'+</span></div>').join('');
  const sc=over||(mode=='p'&&me);$('ct').style.display=sc?'flex':'none';$('hand').style.display=sc?'none':'flex';$('vs').textContent=ai?'🤖 IA':'👥 2J';
- if(movePlan&&!over){$('ct').innerHTML='<button onclick="confirmMove()">'+(moveEnemy(movePlan.unit,movePlan.x,movePlan.y)?'Confirmer l’attaque':'Confirmer le déplacement')+'</button><button onclick="cancelMove()">Annuler</button>';$('ct').style.display='flex';$('hand').style.display='none'}
+ if(movePlan&&!over){$('ct').innerHTML='<button onclick="confirmMove()">'+(moveEnemy(movePlan.unit,movePlan.previewX??movePlan.x,movePlan.previewY??movePlan.y)?'Confirmer l’attaque':'Confirmer le déplacement')+'</button><button onclick="cancelMove()">Annuler</button>';$('ct').style.display='flex';$('hand').style.display='none'}
  if(!window.HackeniaCombat?.busy&&!gamePaused&&ai&&cur==1&&mode=='i'&&!over&&!busy&&!aiT){const g=gid;aiT=setTimeout(()=>{aiT=0;if(g==gid&&!window.HackeniaCombat?.busy)ia()},900)}}
 window.hackeniaGame={
  start:(deck=null,terrain=null)=>{chosenDeck=Array.isArray(deck)&&deck.length===10&&deck.every(i=>Number.isInteger(i)&&i>=0&&i<M.length)?[...deck]:null;gamePaused=false;matchStarted=true;ai=true;TER=typeof terrain==='string'&&TL.includes(terrain)?TL.indexOf(terrain):Math.floor(Math.random()*TL.length);init()},
@@ -640,7 +670,7 @@ window.hackeniaGame={
  portrait:i=>handPortrait(i),modelInfo:async i=>{await manifestReady;return MAN?.creatures?.[cid(M[i])]||null},loadModelViewer:loadMV,
  snapshot:()=>({movePlan,b,cr,cur,mode,pc,hov,die,rot,sel,anim,cubeCls,rzCur,cu,lastJ,over,ai,drag,dg,moved,terrain:TL[TER],blocked:TL[TER]==='feu'?FIRE_VENTS:[],preview:cells(),valid:cells().length?!!ok(cells()):false,reachable:mode==='i'&&sel?bfs(sel):null,...presentationBoard(),combat:window.HackeniaCombat?.current()}),isBlocked:blocked,power:pw,elementColors:EC,monsters:M,board:BQ,tap:(x,y)=>{tap(x,y);render()},refresh:render};
 init();
-</script><script src="assets/pouch-opening-v120.js"></script><script src="assets/portal-v122.js"></script><script type="module" src="assets/clearing-v81.js" onerror="document.getElementById('terrain-status').textContent='Affichage de secours · module 3D indisponible'"></script></body></html>
+</script><script src="assets/pouch-opening-v120.js"></script><script src="assets/portal-v123.js"></script><script type="module" src="assets/clearing-v82.js" onerror="document.getElementById('terrain-status').textContent='Affichage de secours · module 3D indisponible'"></script></body></html>
 
 
 
