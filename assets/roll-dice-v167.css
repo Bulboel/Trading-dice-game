@@ -5,7 +5,7 @@
 #app #mr #roll.roll-volume-tray{width:max-content!important;min-width:0!important;height:auto!important;--roll-size:42px;--roll-depth:21px;min-height:64px!important;gap:21px!important;padding:8px 12px 12px!important;overflow:visible;perspective:600px}
 .roll-volume{display:block;position:relative;flex:0 0 var(--roll-size);width:var(--roll-size);height:var(--roll-size);perspective:420px}
 .roll-volume:after{content:"";position:absolute;left:5%;right:5%;bottom:-9px;height:9px;border-radius:50%;background:#0006;filter:blur(4px);z-index:-1}
-.roll-cube{position:absolute;width:100%;height:100%;transform-style:preserve-3d;transform:rotateX(-16deg) rotateY(-20deg);will-change:transform}
+.roll-cube{position:absolute;inset:0;width:100%;height:100%;transform-style:preserve-3d;transform:rotateX(-16deg) rotateY(-20deg);will-change:transform}
 .roll-plane{position:absolute;inset:0;box-sizing:border-box;border:1px solid var(--roll-edge);border-radius:5px;background:linear-gradient(138deg,var(--roll-light),var(--roll-face) 46%,var(--roll-shade));box-shadow:inset 0 0 0 1px #fff5,inset 0 0 0 3px #53482b18;backface-visibility:hidden}
 .roll-plane:before{content:"";position:absolute;inset:4px;border:1px solid var(--roll-edge);opacity:.55;border-radius:2px}
 .roll-plane:after{content:"";position:absolute;inset:0;border-radius:4px;background:linear-gradient(125deg,#fff5,transparent 37%,transparent 67%,#0002);pointer-events:none}
