@@ -1,11 +1,12 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
-const animations=[];let quiet=false;
+const animations=[],handlers={};let quiet=false;
 function node(){return{children:[],dataset:{},style:{values:{},setProperty(k,v){this.values[k]=v}},attributes:{},setAttribute(k,v){this.attributes[k]=v},append(...items){items.forEach(n=>{n.parentElement=this;this.children.push(n)})},replaceChildren(){this.children.forEach(n=>n.parentElement=null);this.children=[]},animate(frames,options){const a={frames,options,cancel(){this.cancelled=true}};animations.push(a);return a}}}
 const math=Object.create(Math);math.random=()=>{throw Error('The visual renderer must not draw random results')};
-const c=vm.createContext({window:{},Math:math,document:{createElement:node},matchMedia:()=>({matches:quiet}),getComputedStyle:()=>({transform:'matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1)'})});
-vm.runInContext(fs.readFileSync(path.join(__dirname,'../assets/roll-dice-v170.js'),'utf8'),c);const api=c.window.HackeniaRoll,host=node();
+const c=vm.createContext({window:{HackeniaSettings:{get:()=>({rollSkin:'ivory'})},addEventListener:(type,fn)=>handlers[type]=fn},Math:math,document:{createElement:node},matchMedia:()=>({matches:quiet}),getComputedStyle:()=>({transform:'matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1)'})});
+vm.runInContext(fs.readFileSync(path.join(__dirname,'../assets/roll-dice-v171.js'),'utf8'),c);const api=c.window.HackeniaRoll,host=node();
 api.render(host,[6,5,4],true);assert.equal(host.children.length,3);
 for(const wrap of host.children){const cube=wrap.children[0];assert.equal(cube.children.length,6);for(let n=1;n<=6;n++)assert.equal((cube.children[n-1].innerHTML.match(/class="roll-pip"/g)||[]).length,n);assert.equal(wrap.children[1].textContent,'')}
+const preview=node();assert(api.preview(preview,'obsidian'));assert.equal(preview.children[0].children[0].children.length,6);assert.equal(preview.style.values['--roll-face'],'#1c3332');assert.equal(host.style.values['--roll-face'],'#e6dfca');assert(animations.every(a=>!a.cancelled),'Preview cannot cancel a match roll');handlers['hackenia:settings']({detail:{rollSkin:'obsidian'}});assert.equal(host.style.values['--roll-face'],'#1c3332');handlers['hackenia:settings']({detail:{rollSkin:'ivory'}});
 assert.equal(animations.length,3);assert(animations[0].frames.at(-1).transform.includes('1080deg'),'Die must complete full rotations');
 api.render(host,[6,5,4],true);assert.equal(animations.length,3,'Animation cannot restart on each engine tick');
 api.render(host,[6,5,4],false,true);assert.equal(animations.length,3,'Result must keep the original rotation, never add a correction pivot');for(const wrap of host.children)assert.equal(wrap.children[1].textContent,'','No result before settling');animations.slice(0,3).forEach(a=>a.onfinish());
