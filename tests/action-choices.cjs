@@ -11,10 +11,17 @@ prepareAttack(4,4);if(!movePlan||movePlan.x!==4||cr[0].x!==2||moved)throw Error(
 for(let t=0;t<TL.length;t++)for(const owner of [0,1]){TER=t;const el=TL[t];b=Array.from({length:H},()=>Array(W).fill(null));b[4][4]={o:owner,el,v:6};for(const [dx,dy]of D4)b[4+dy][4+dx]={o:1-owner,el:BT[el],v:2};if(pw(4,4)!==8)throw Error('Missing stacked bonus');const u={o:owner,x:4,y:4,mi:0};const stat=unitSnapshot(u);if(stat.attack!==8||stat.terrainBonus!==1||stat.neighborBonus!==1)throw Error('Snapshot differs from power');TER=(t+1)%TL.length;if(pw(4,4)!==7||tileBonuses(4,4).neighborBonus!==1)throw Error('Neighbor bonus lost');}
 `,c);
 // Feedback follows the earner even when fin() has already handed over the turn.
-let reduced=false,animations=[],removed=0,pulses=[],nodes=[];
+let reduced=false,animations=[],removed=0,pulses=[],nodes=[];const frames=[];
 const counter=camp=>({animate:(frames)=>pulses.push(camp),getBoundingClientRect:()=>({left:camp?300:20,top:10,width:40,height:20})});
 const targets={'bonus-counter-0':counter(0),'bonus-counter-1':counter(1),roll:{getBoundingClientRect:()=>({left:150,top:400,width:60,height:60})}};
-const fx=vm.createContext({window:{},matchMedia:()=>({matches:reduced}),document:{getElementById:id=>targets[id],body:{append:n=>nodes.push(n)},createElement:()=>({style:{},setAttribute(){},remove(){if(!this.removed){this.removed=true;removed++}},animate(frames){const a={frames,cancel(){this.oncancel?.()}};animations.push(a);return a}})}});vm.runInContext(fs.readFileSync(path.join(__dirname,'../assets/action-feedback-v164.js'),'utf8'),fx);
-fx.window.HackeniaActions.bonusEarned(0);assert.equal(animations.length,1);assert(animations[0].frames.at(-1).transform.startsWith('translate(25px,5px)'));animations[0].onfinish();assert.deepEqual(pulses,[0]);
-fx.window.HackeniaActions.bonusEarned(1);fx.window.HackeniaActions.reset();assert.equal(removed,2);reduced=true;fx.window.HackeniaActions.bonusEarned(1);assert.equal(animations.length,2);assert.deepEqual(pulses,[0,1]);
-console.log('PASS: enemy sheets, explicit reachable attack choice, no accidental movement, stacked bonuses for both camps/all elements, accurate history, star destination, reduced motion and cleanup.');
+const fx=vm.createContext({window:{},requestAnimationFrame:f=>(frames.push(f),frames.length),cancelAnimationFrame(){},matchMedia:()=>({matches:reduced}),document:{querySelector:()=>null,getElementById:id=>targets[id],body:{append:n=>nodes.push(n)},createElement:()=>({style:{},setAttribute(){},remove(){if(!this.removed){this.removed=true;removed++}},animate(frames,options){const a={frames,options,cancel(){this.oncancel?.()}};animations.push(a);return a}})}});vm.runInContext(fs.readFileSync(path.join(__dirname,'../assets/action-feedback-v168.js'),'utf8'),fx);
+fx.window.HackeniaActions.bonusEarned(0);frames.shift()();assert.equal(animations.length,1);assert(animations[0].frames.at(-1).transform.startsWith('translate(25px,5px)'));animations[0].onfinish();assert.deepEqual(pulses,[0]);
+fx.window.HackeniaActions.bonusEarned(1);frames.shift()();fx.window.HackeniaActions.reset();assert.equal(removed,2);reduced=true;fx.window.HackeniaActions.bonusEarned(1);assert.equal(animations.length,2);assert.deepEqual(pulses,[0,1]);
+// New dice can be cleared or replaced when fin() renders the next turn.
+reduced=false;const origin=fx.window.HackeniaActions.captureRollOrigin();targets.roll=null;
+const count=nodes.length;fx.window.HackeniaActions.bonusEarned(0,origin);assert.equal(nodes.length,count+1,'A cleared roll must not suppress the flight');
+const flying=nodes.at(-1);assert.equal(flying.style.opacity,'1','The star must be visible before animation starts');assert(flying.style.transform.startsWith('translate(165px,415px)'));
+frames.shift()();assert.equal(animations.at(-1).options.duration,1650);assert.equal(animations.at(-1).frames[0].opacity,1);animations.at(-1).onfinish();
+// An interrupted session must also cancel a flight queued for its first paint.
+fx.window.HackeniaActions.bonusEarned(1,origin);const before=animations.length;fx.window.HackeniaActions.reset();frames.shift()();assert.equal(animations.length,before);
+console.log('PASS: enemy sheets, explicit reachable attack choice, no accidental movement, stacked bonuses for both camps/all elements, accurate history, captured 3D-die origin after redraw, first-paint visibility, slower flight, correct destination, reduced motion and cleanup.');
