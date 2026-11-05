@@ -1,0 +1,21 @@
+/* Explicit, reachable action choices on both phone and desktop. */
+body:not(.portal-open) #app #bot.has-choice{flex:0 0 auto!important;height:auto!important;min-height:112px!important;max-height:none!important;padding:8px 10px max(8px,env(safe-area-inset-bottom))!important;box-sizing:border-box;background:linear-gradient(135deg,#193a32,#101e24);border-top:1px solid #d9bf7b80;box-shadow:0 -6px 26px #0005;z-index:25}
+body:not(.portal-open) #app #bot.has-choice #ct.action-dock{height:auto!important;min-height:94px!important;width:100%;max-width:780px;margin:0 auto!important;display:flex;flex-direction:column;align-items:stretch;gap:8px!important}
+#ct.action-dock .choice-copy{display:flex;align-items:baseline;justify-content:space-between;gap:8px;color:#f4e8c9;text-align:left;font:600 14px/1.3 system-ui}
+#ct.action-dock .choice-copy small{color:#bfcec3;font:400 12px/1.3 system-ui;text-align:right}
+#ct.action-dock .choice-buttons{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap}
+body:not(.portal-open) #app #ct.action-dock button{flex:1 1 auto;min-height:46px!important;border-radius:12px!important;padding:10px 13px!important;font:600 14px/1.25 system-ui!important;box-shadow:none;letter-spacing:0;touch-action:manipulation}
+#app #ct.action-dock .action-primary,#fc .action-primary{background:linear-gradient(135deg,#efdca1,#c8a65d)!important;color:#1b261f!important;border:1px solid #fff0bd!important;box-shadow:0 0 16px #edcd6d38!important}
+#app #ct.action-dock .action-confirm{animation:choice-glow 2s ease-in-out 2}
+#app #ct.action-dock .action-cancel{flex:0 0 auto!important;color:#ced7cd!important;border:1px solid #92a79855!important;background:#142720!important}
+#app #ct.action-dock .bonus-choice{background:#283744!important;color:#ecdfb4!important;border:1px solid #acb4c45e!important}
+#app #ct.action-dock .bonus-choice.on{background:#304e43!important;border-color:#e6cc83!important;color:#fff2c4!important;box-shadow:inset 0 0 0 1px #e6cc8344!important}
+#ct button:focus-visible,#fc .action-primary:focus-visible{outline:3px solid #fff2b4;outline-offset:3px}
+.bonus-counter{display:inline-flex;align-items:center;gap:3px;margin-left:5px;padding:2px 5px;border-radius:8px;border:1px solid #b7c5be30;color:#a3b3ac;font:600 11px/1.2 system-ui;white-space:nowrap;vertical-align:middle}
+.bonus-counter.available{color:#ffe6a0;background:#b69a3b20;border-color:#e3c57370}
+.bonus-flight{position:fixed;left:0;top:0;z-index:9999;pointer-events:none;color:#fff0b7;font:30px/1 Georgia;text-shadow:0 0 7px #fff4c8,0 0 20px #eebd57;will-change:transform,opacity;filter:drop-shadow(0 0 4px #e8bd62)}
+.bonus-flight svg{width:100%;height:100%;display:block;fill:currentColor}
+@keyframes choice-glow{0%,100%{box-shadow:0 0 9px #edcd6d35}50%{box-shadow:0 0 23px #edcd6d80}}
+@media(max-width:700px){#ct.action-dock .choice-copy{font-size:12px}#ct.action-dock .choice-copy small{font-size:10px}body:not(.portal-open) #app #ct.action-dock button{font-size:12px!important;padding:9px 10px!important}.bonus-counter{font-size:9px;padding:2px 3px;margin-left:3px}}
+@media(max-width:380px){#ct.action-dock .choice-copy{align-items:flex-start;flex-direction:column;gap:2px}#ct.action-dock .choice-copy small{text-align:left}}
+@media(prefers-reduced-motion:reduce){#app #ct.action-dock .action-confirm{animation:none}}
