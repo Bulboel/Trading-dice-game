@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="16 12 208 208" fill="none">
+ <title>HACKENIA — Dé arc-en-ciel dans une bulle transparente</title>
+ <defs>
+  <linearGradient id="rim" x1="43" y1="31" x2="196" y2="205" gradientUnits="userSpaceOnUse"><stop stop-color="#f3fcff" stop-opacity=".78"/><stop offset=".19" stop-color="#dceff3" stop-opacity=".34"/><stop offset=".37" stop-color="#cad8ed" stop-opacity=".14"/><stop offset=".55" stop-color="#d7eff2" stop-opacity=".26"/><stop offset=".77" stop-color="#f2e8f6" stop-opacity=".48"/><stop offset="1" stop-color="#e6f3f9" stop-opacity=".18"/></linearGradient>
+  <radialGradient id="glass" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#eefaff" stop-opacity="0"/><stop offset=".79" stop-color="#dceef4" stop-opacity="0"/><stop offset=".92" stop-color="#d9e9ef" stop-opacity=".02"/><stop offset=".975" stop-color="#dceaf5" stop-opacity=".055"/><stop offset="1" stop-color="#e6f2fb" stop-opacity=".14"/></radialGradient>
+  <linearGradient id="gold" x1="45" y1="35" x2="198" y2="195" gradientUnits="userSpaceOnUse"><stop stop-color="#f2e1b8" /><stop offset=".21" stop-color="#d1b381" /><stop offset=".43" stop-color="#926f43" /><stop offset=".61" stop-color="#ead5a8" /><stop offset=".8" stop-color="#bd9d6b" /><stop offset="1" stop-color="#7f613e" /></linearGradient>
+  <linearGradient id="top" x1="72" y1="80" x2="165" y2="113" gradientUnits="userSpaceOnUse"><stop offset="0.0000" stop-color="#f18d9f" /><stop offset="0.1429" stop-color="#f4ac73" /><stop offset="0.2857" stop-color="#f4d77b" /><stop offset="0.4286" stop-color="#8ed88d" /><stop offset="0.5714" stop-color="#60cdd0" /><stop offset="0.7143" stop-color="#729ee7" /><stop offset="0.8571" stop-color="#aa83da" /><stop offset="1.0000" stop-color="#d98fc6" /></linearGradient>
+  <linearGradient id="left" x1="76" y1="108" x2="113" y2="171" gradientUnits="userSpaceOnUse"><stop offset="0.0000" stop-color="#e56d8b" /><stop offset="0.1429" stop-color="#ec955f" /><stop offset="0.2857" stop-color="#e4c266" /><stop offset="0.4286" stop-color="#77bc76" /><stop offset="0.5714" stop-color="#36b6ad" /><stop offset="0.7143" stop-color="#4d91c8" /><stop offset="0.8571" stop-color="#7d68bb" /><stop offset="1.0000" stop-color="#ab6eb4" /></linearGradient>
+  <linearGradient id="right" x1="164" y1="111" x2="129" y2="173" gradientUnits="userSpaceOnUse"><stop offset="0.0000" stop-color="#e57891" /><stop offset="0.1429" stop-color="#eaa067" /><stop offset="0.2857" stop-color="#dfcc70" /><stop offset="0.4286" stop-color="#82c78a" /><stop offset="0.5714" stop-color="#44bdbd" /><stop offset="0.7143" stop-color="#527fc9" /><stop offset="0.8571" stop-color="#8262b9" /><stop offset="1.0000" stop-color="#bd73b5" /></linearGradient>
+  <radialGradient id="pearl-top" cx=".25" cy=".15" r=".95"><stop stop-color="#fff9e6" stop-opacity=".42"/><stop offset=".5" stop-color="#ffffff" stop-opacity=".08"/><stop offset="1" stop-color="#211741" stop-opacity=".13"/></radialGradient>
+  <linearGradient id="pearl-side" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff2db" stop-opacity=".22"/><stop offset=".45" stop-color="#ffffff" stop-opacity="0"/><stop offset="1" stop-color="#231438" stop-opacity=".17"/></linearGradient>
+  <radialGradient id="shine"><stop stop-color="white" stop-opacity=".8" /><stop offset="1" stop-color="white" stop-opacity="0" /></radialGradient>
+  <linearGradient id="bubble-light" x1="43" y1="68" x2="105" y2="23" gradientUnits="userSpaceOnUse"><stop stop-color="#fff" stop-opacity="0"/><stop offset=".3" stop-color="#fff" stop-opacity=".7"/><stop offset=".7" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+ <linearGradient id="bubble-lower" x1="215" y1="137" x2="158" y2="205" gradientUnits="userSpaceOnUse"><stop stop-color="#b5def1" stop-opacity="0"/><stop offset=".42" stop-color="#d8d1ee" stop-opacity=".6"/><stop offset=".7" stop-color="#f4dceb" stop-opacity=".7"/><stop offset="1" stop-color="#dfecff" stop-opacity="0"/></linearGradient>
+ <filter id="shadow"><feGaussianBlur stdDeviation="4" /></filter>
+ <radialGradient id="bubble-softbox"><stop stop-color="#fff" stop-opacity=".38"/><stop offset=".48" stop-color="#f4fcff" stop-opacity=".24"/><stop offset=".8" stop-color="#effaff" stop-opacity=".07"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+ <linearGradient id="bubble-specular" x1="41" y1="71" x2="106" y2="24" gradientUnits="userSpaceOnUse"><stop stop-color="#fff" stop-opacity="0"/><stop offset=".3" stop-color="#f7fdff" stop-opacity=".25"/><stop offset=".6" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#f4fcff" stop-opacity="0"/></linearGradient>
+ <linearGradient id="bubble-caustic" x1="211" y1="142" x2="154" y2="206" gradientUnits="userSpaceOnUse"><stop stop-color="#d4e7ec" stop-opacity="0"/><stop offset=".38" stop-color="#e4edf6" stop-opacity=".13"/><stop offset=".7" stop-color="#e9e0f0" stop-opacity=".3"/><stop offset="1" stop-color="#e8f3f8" stop-opacity="0"/></linearGradient>
+ </defs><g id="logo-frame" transform="translate(120 116) scale(1.12) translate(-120 -116)"><g aria-hidden="true" stroke-linejoin="round">
+ <path d="M120 34 191 75v82l-71 41-71-41V75Z" fill="#111b2d" fill-opacity=".18" stroke="#5c462b" stroke-width="4" />
+ <path d="M120 34 191 75v82l-71 41-71-41V75Z" stroke="url(#gold)" stroke-width="2.6" />
+ <path d="M120 40 186 78v76l-66 38-66-38V78Z" stroke="url(#gold)" stroke-opacity=".5" stroke-width=".7" />
+ <path d="m120 30 4 4-4 4-4-4ZM191 71l4 4-4 4-4-4ZM191 153l4 4-4 4-4-4ZM120 194l4 4-4 4-4-4ZM49 153l4 4-4 4-4-4ZM49 71l4 4-4 4-4-4Z" fill="url(#gold)" />
+ </g>
+ </g><g id="logo-die" transform="translate(120 116) scale(1.12) translate(-120 -116)"><g transform="translate(0 -10)">
+ <g stroke-linejoin="round">
+  <path d="m120 66 53 30v59l-53 31-53-31V96Z" fill="#655c83" stroke="url(#gold)" stroke-width="3.5" />
+  <path d="m120 69 50 29-50 29-50-29Z" fill="url(#top)" />
+  <path d="m70 102 48 28v51l-48-28Z" fill="url(#left)" />
+  <path d="m123 130 47-28v51l-47 28Z" fill="url(#right)" />
+  <path d="m120 69 50 29-50 29-50-29Z" fill="url(#pearl-top)" />
+  <path d="m70 102 48 28v51l-48-28Z" fill="url(#pearl-side)" />
+  <path d="m123 130 47-28v51l-47 28Z" fill="url(#pearl-side)" />
+  <path d="m73 97 47-27 47 27M120 130v50" stroke="white" stroke-opacity=".6" stroke-width="1.2" />
+  <path d="m76 109 35 20v39l-35-20ZM131 134l31-18v32l-31 18Z" stroke="white" stroke-opacity=".17" />
+ </g>
+ <path d="m76 97 44-25 44 25-44 25Z" fill="none" stroke="#fff5cd" stroke-opacity=".5" stroke-width="1" />
+ <path d="m73 105 41 24v44l-41-24ZM127 132l39-23v40l-39 23Z" fill="none" stroke="#cbd1ff" stroke-opacity=".3" stroke-width=".9" />
+ <path d="m72 101 46 27M123 128l45-26" stroke="#fff9d8" stroke-opacity=".65" stroke-width="1.1" />
+ <g id="logo-values" fill="#fff7df" stroke="#b68b48" stroke-opacity=".5" stroke-width=".55" stroke-linejoin="round">
+ <g data-face="top" transform="matrix(.5 .29 -.5 .29 120 69)">
+  <path d="M0.0000 -10.5000 L2.7038 -3.7215 L9.9861 -3.2447 L4.3749 1.4215 L6.1717 8.4947 L0.0000 4.6000 L-6.1717 8.4947 L-4.3749 1.4215 L-9.9861 -3.2447 L-2.7038 -3.7215Z" transform="translate(26 26)"/>
+  <path d="M0.0000 -10.5000 L2.7038 -3.7215 L9.9861 -3.2447 L4.3749 1.4215 L6.1717 8.4947 L0.0000 4.6000 L-6.1717 8.4947 L-4.3749 1.4215 L-9.9861 -3.2447 L-2.7038 -3.7215Z" transform="translate(50 50)"/>
+  <path d="M0.0000 -10.5000 L2.7038 -3.7215 L9.9861 -3.2447 L4.3749 1.4215 L6.1717 8.4947 L0.0000 4.6000 L-6.1717 8.4947 L-4.3749 1.4215 L-9.9861 -3.2447 L-2.7038 -3.7215Z" transform="translate(74 74)"/>
+ </g>
+ <g data-face="left" transform="matrix(.48 .28 0 .51 70 102)">
+  <path d="M0.0000 -10.5000 L2.7038 -3.7215 L9.9861 -3.2447 L4.3749 1.4215 L6.1717 8.4947 L0.0000 4.6000 L-6.1717 8.4947 L-4.3749 1.4215 L-9.9861 -3.2447 L-2.7038 -3.7215Z" transform="translate(28 28)"/>
+  <path d="M0.0000 -10.5000 L2.7038 -3.7215 L9.9861 -3.2447 L4.3749 1.4215 L6.1717 8.4947 L0.0000 4.6000 L-6.1717 8.4947 L-4.3749 1.4215 L-9.9861 -3.2447 L-2.7038 -3.7215Z" transform="translate(72 72)"/>
+ </g>
+ <g data-face="right" transform="matrix(.47 -.28 0 .51 123 130)">
+  <path d="M0.0000 -10.5000 L2.7038 -3.7215 L9.9861 -3.2447 L4.3749 1.4215 L6.1717 8.4947 L0.0000 4.6000 L-6.1717 8.4947 L-4.3749 1.4215 L-9.9861 -3.2447 L-2.7038 -3.7215Z" transform="translate(28 28)"/>
+  <path d="M0.0000 -10.5000 L2.7038 -3.7215 L9.9861 -3.2447 L4.3749 1.4215 L6.1717 8.4947 L0.0000 4.6000 L-6.1717 8.4947 L-4.3749 1.4215 L-9.9861 -3.2447 L-2.7038 -3.7215Z" transform="translate(72 28)"/>
+  <path d="M0.0000 -10.5000 L2.7038 -3.7215 L9.9861 -3.2447 L4.3749 1.4215 L6.1717 8.4947 L0.0000 4.6000 L-6.1717 8.4947 L-4.3749 1.4215 L-9.9861 -3.2447 L-2.7038 -3.7215Z" transform="translate(28 72)"/>
+  <path d="M0.0000 -10.5000 L2.7038 -3.7215 L9.9861 -3.2447 L4.3749 1.4215 L6.1717 8.4947 L0.0000 4.6000 L-6.1717 8.4947 L-4.3749 1.4215 L-9.9861 -3.2447 L-2.7038 -3.7215Z" transform="translate(72 72)"/>
+ </g>
+</g>
+ </g>
+ </g><g id="logo-bubble">
+ <circle cx="120" cy="116" r="99" fill="url(#glass)" stroke="url(#rim)" stroke-width=".8"/>
+ <ellipse cx="76" cy="45" rx="28" ry="10" transform="rotate(-35 76 45)" fill="url(#bubble-softbox)"/>
+ <path d="M37.3 68.25 A95.5 95.5 0 0 1 103.42 21.95 A91.8 91.8 0 0 0 40.5 69.8Z" fill="url(#bubble-specular)"/>
+ <path d="M215.8 132.9 A97.3 97.3 0 0 1 156.45 206.22 A94.4 94.4 0 0 0 213.0 132.4Z" fill="url(#bubble-caustic)"/>
+ <ellipse cx="188" cy="180" rx="18" ry="4" transform="rotate(-48 188 180)" fill="url(#bubble-softbox)" opacity=".22"/>
+</g></svg>
