@@ -13,7 +13,7 @@ html.intro-pending,html.intro-active{background:#081713;overflow:hidden}
 #launch-intro #logo-die{transform-box:view-box;transform-origin:120px 116px;animation:intro-die 2s cubic-bezier(.16,.7,.2,1) both}
 #launch-intro #logo-frame{transform-box:view-box;transform-origin:120px 116px;animation:intro-frame 2.2s cubic-bezier(.2,.6,.2,1) 1.25s both}
 #launch-intro #logo-frame path{stroke-dasharray:1000;stroke-dashoffset:1000;animation:intro-gold-trace 1.9s ease-out 1.4s both}
-#launch-intro #logo-bubble{transform-box:view-box;transform-origin:120px 116px;animation:intro-bubble 2s cubic-bezier(.18,.65,.18,1) 2.9s both}
+#launch-intro #logo-bubble{transform-box:view-box;transform-origin:120px 116px;animation:intro-bubble 2.4s cubic-bezier(.22,.61,.36,1) 2.9s both}
 #launch-intro .intro-title{font:500 clamp(31px,5.6vw,62px)/1.12 Georgia,"Times New Roman",serif;letter-spacing:.045em;margin:0 12px;background:linear-gradient(105deg,#bca77a,#f4e6c4 40%,#d7c497 62%,#b9a47f);background-clip:text;-webkit-background-clip:text;color:transparent;text-shadow:0 3px 30px #a5915730;animation:intro-title 1.5s ease 4s both}
 #launch-intro .intro-subtitle{font:400 clamp(9px,1.7vw,12px)/1.5 system-ui,sans-serif;letter-spacing:.42em;text-transform:uppercase;color:#b4c6bd;margin:18px 10px 0;padding-left:.42em;animation:intro-title 1.4s ease 4.45s both}
 #launch-intro .intro-rule{width:clamp(100px,24vw,190px);height:1px;margin:20px 0 0;background:linear-gradient(90deg,transparent,#b79e6b9c,transparent);animation:intro-title 1.2s ease 4.65s both}
@@ -25,7 +25,7 @@ html.intro-pending,html.intro-active{background:#081713;overflow:hidden}
 @keyframes intro-die{0%{opacity:0;transform:rotate(-280deg) scale(.1);filter:blur(9px)}65%{opacity:1;filter:blur(0)}85%{transform:rotate(4deg) scale(1.15)}100%{opacity:1;transform:scale(1.12);filter:blur(0)}}
 @keyframes intro-frame{0%{opacity:0;filter:blur(4px);transform:scale(.94)}35%{opacity:1}100%{opacity:1;filter:blur(0);transform:scale(1.12)}}
 @keyframes intro-gold-trace{0%{stroke-dashoffset:1000;fill-opacity:0}65%{fill-opacity:0}100%{stroke-dashoffset:0;fill-opacity:var(--final-fill,1)}}
-@keyframes intro-bubble{0%{opacity:0;transform:scale(.72);filter:blur(8px)}55%{opacity:.8;filter:blur(1px)}80%{transform:scale(1.025)}100%{opacity:1;transform:scale(1);filter:blur(0)}}
+@keyframes intro-bubble{0%{opacity:0;transform:scale(.94);filter:blur(2px)}65%{opacity:.75;filter:blur(.25px)}100%{opacity:1;transform:scale(1);filter:blur(0)}}
 @keyframes intro-title{0%{opacity:0;filter:blur(8px);transform:translateY(12px)}100%{opacity:1;filter:blur(0);transform:translateY(0)}}
 @keyframes intro-halo{0%{opacity:0;transform:scale(.4)}50%{opacity:.9}100%{opacity:.6;transform:scale(1.2)}}
 @keyframes intro-mist{0%{opacity:0;transform:translate(-50%,-50%) rotate(-35deg) scale(.6)}45%{opacity:1}100%{opacity:.4;transform:translate(-50%,-50%) rotate(25deg) scale(1.3)}}
