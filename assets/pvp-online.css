@@ -1,0 +1,27 @@
+/* Anneau du menu à 9 dés (angle 40°) */
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="play"]{left:50.0%!important;top:6.0%!important;transform:translate(-50%,-50%) rotate(var(--dice-ring-counter-angle,0deg))!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="quick"]{left:75.7%!important;top:16.3%!important;transform:translate(-50%,-50%) rotate(var(--dice-ring-counter-angle,0deg))!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="pvp"]{left:89.4%!important;top:42.4%!important;transform:translate(-50%,-50%) rotate(var(--dice-ring-counter-angle,0deg))!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="shop"]{left:84.6%!important;top:72.0%!important;transform:translate(-50%,-50%) rotate(var(--dice-ring-counter-angle,0deg))!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="story"]{left:63.7%!important;top:91.3%!important;transform:translate(-50%,-50%) rotate(var(--dice-ring-counter-angle,0deg))!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="collection"]{left:36.3%!important;top:91.3%!important;transform:translate(-50%,-50%) rotate(var(--dice-ring-counter-angle,0deg))!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="decks"]{left:15.4%!important;top:72.0%!important;transform:translate(-50%,-50%) rotate(var(--dice-ring-counter-angle,0deg))!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="challenges"]{left:10.6%!important;top:42.4%!important;transform:translate(-50%,-50%) rotate(var(--dice-ring-counter-angle,0deg))!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view="options"]{left:24.3%!important;top:16.3%!important;transform:translate(-50%,-50%) rotate(var(--dice-ring-counter-angle,0deg))!important}
+
+/* Écrans PVP */
+.pvp-card{margin:12px 0;padding:14px;border:1px solid rgba(220,190,120,.28);border-radius:14px;background:rgba(10,24,22,.55)}
+.pvp-card h3{margin:0 0 8px}.pvp-card label{display:block;margin:10px 0 4px;font-size:.9rem;opacity:.85}
+.pvp-card input,.pvp-card select{width:100%;padding:11px;border-radius:10px;border:1px solid rgba(220,190,120,.35);background:rgba(0,0,0,.35);color:inherit;font:inherit;box-sizing:border-box}
+.pvp-row{display:flex;gap:8px}.pvp-row input{flex:1;text-transform:uppercase;letter-spacing:.2em}
+.pvp-error{color:#ff9a8a;margin:8px 0}.pvp-ok{color:#8fe0a8;margin:8px 0}
+.pvp-code{font-size:2.4rem;letter-spacing:.35em;text-align:center;margin:14px 0;font-weight:700}.pvp-code-inline{letter-spacing:.2em}
+.pvp-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:520px){.pvp-cols{grid-template-columns:1fr}}
+.pvp-list{list-style:none;margin:0;padding:0}.pvp-list li{padding:6px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.pvp-x{background:none;border:0;color:#ff9a8a;cursor:pointer;font-size:1rem}
+.pvp-chip{display:inline-block;padding:1px 8px;border-radius:99px;font-size:.72rem;background:rgba(255,255,255,.12)}
+.pvp-dice{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.pvp-die{padding:10px;border-radius:12px;border:1px solid rgba(220,190,120,.35);background:rgba(0,0,0,.35);color:inherit;text-align:left;cursor:pointer}
+.pvp-die small{display:block;opacity:.75}.pvp-die:disabled{opacity:.4;cursor:default}
+#pvp-hud{position:fixed;top:calc(env(safe-area-inset-top,0px) + 4px);left:50%;transform:translateX(-50%);z-index:60;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;max-width:94vw;padding:5px 10px;border-radius:99px;background:rgba(8,18,16,.82);border:1px solid rgba(220,190,120,.4);font-size:.72rem;color:#f3e6c2}
+#pvp-hud button{padding:3px 10px;border-radius:99px;border:1px solid rgba(220,190,120,.5);background:transparent;color:inherit;font:inherit;cursor:pointer}.pvp-hud-err{color:#ff9a8a}
