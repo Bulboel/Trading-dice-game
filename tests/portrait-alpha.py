@@ -10,4 +10,4 @@ for path in (root/'assets/characters').glob('*-*.webp'):
   assert sum(n>0 for n in image.getchannel('A').histogram())>8,'Antialiased edge alpha must survive export'
 svg=(root/'assets/hackenia-logo-v106.svg').read_text()
 assert '<rect x="0" y="0" width="240" height="240"' not in svg
-print('PASS: 14 portraits have transparent corners, opaque subjects and antialiased edges; logo has no background rectangle.')
+print(f'PASS: {len(list((root/"assets/characters").glob("*-*.webp")))} portraits have transparent corners, opaque subjects and antialiased edges; logo has no background rectangle.')

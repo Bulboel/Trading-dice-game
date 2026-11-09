@@ -21,6 +21,7 @@ for(const [i,[name,key,el,rarity]] of Object.entries(expected)){
  }
 }
 assert.equal(clips,30);
+for(const [i,key] of [[29,'bosco'],[10,'bulbalina'],[34,'pachie'],[25,'kayla-legendaire']]){assert.equal(defs[i].portrait,key);for(const size of [128,512])assert.ok(fs.statSync(path.join(root,`assets/characters/${key}-${size}.webp`)).size<150000,'Portrait fits the mobile budget')}
 // Les dés voisins qui partageaient l'animal gardent leur créature d'origine.
 assert.equal(defs[4].cn,'Poisson Goutte');assert.equal(defs[2].cn,'Fourmi Caillou');assert.equal(defs[18].cn,'Salamandre Voltaïque');assert.equal(defs[31].cn,'Dragon des Vents');
 (async()=>{
