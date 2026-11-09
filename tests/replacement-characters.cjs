@@ -5,7 +5,7 @@ const context=vm.createContext({window:{dispatchEvent(){}},Event,document:{getEl
 vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,''),context);
 const game=context.window.hackeniaGame,defs=game.monsters;
 // Dé existant → personnage qui le remplace (les stats, l'élément et la rareté du dé ne changent pas).
-const expected={30:['Caleizis','caleizis','foudre',6],34:['La fée Pachié','pachie','eau',6],24:['Gliska','gliska','foudre',5],25:['Kayla légendaire','kayla-legendaire','vent',5],26:['Hilam','hilam','terre',5],27:['Eberien légendaire','eberien-legendaire','glace',5],28:['Bolduc légendaire','bolduc-legendaire','eau',5],29:['Bosco','bosco','feu',5],10:['Bulbalina','bulbalina','eau',2],8:['Frolgor','frolgor','terre',2]};
+const expected={30:['Caleizis','caleizis','foudre',6],34:['La fée Pachié','pachie','eau',6],24:['Gliska','gliska','foudre',5],25:['Kayla légendaire','kayla-legendaire','vent',5],26:['Hilam','hilam','terre',5],27:['Eberien légendaire','eberien-legendaire','glace',5],28:['Bolduc légendaire','bolduc-legendaire','eau',5],29:['Bosco','bosco','feu',5],10:['Bulbalina','bulbalina','eau',2],8:['Frolgor','frolgor','terre',2],0:['Maebril','maebril','foudre',1],2:['Orven','orven','terre',1]};
 assert.equal(defs.length,55,'Only the 12 elemental dice are appended');
 function glb(file){const b=fs.readFileSync(file);assert.equal(b.readUInt32LE(0),0x46546c67);assert.equal(b.readUInt32LE(8),b.length);return JSON.parse(b.subarray(20,20+b.readUInt32LE(12)));}
 let clips=0;
@@ -20,12 +20,12 @@ for(const [i,[name,key,el,rarity]] of Object.entries(expected)){
   clips++;
  }
 }
-assert.equal(clips,30);
-for(const [i,key] of [[29,'bosco'],[10,'bulbalina'],[34,'pachie'],[25,'kayla-legendaire']]){assert.equal(defs[i].portrait,key);for(const size of [128,512])assert.ok(fs.statSync(path.join(root,`assets/characters/${key}-${size}.webp`)).size<150000,'Portrait fits the mobile budget')}
+assert.equal(clips,36);
+for(const [i,key] of [[29,'bosco'],[10,'bulbalina'],[34,'pachie'],[25,'kayla-legendaire'],[28,'bolduc-legendaire'],[30,'caleizis'],[27,'eberien-legendaire'],[8,'frolgor'],[24,'gliska'],[26,'hilam'],[0,'maebril']]){assert.equal(defs[i].portrait,key);for(const size of [128,512])assert.ok(fs.statSync(path.join(root,`assets/characters/${key}-${size}.webp`)).size<150000,'Portrait fits the mobile budget')}
 // Les dés voisins qui partageaient l'animal gardent leur créature d'origine.
-assert.equal(defs[4].cn,'Poisson Goutte');assert.equal(defs[2].cn,'Fourmi Caillou');assert.equal(defs[18].cn,'Salamandre Voltaïque');assert.equal(defs[31].cn,'Dragon des Vents');
+assert.equal(defs[4].cn,'Poisson Goutte');assert.equal(defs[1].cn,'Moineau Brise');assert.equal(defs[6].cn,'Abeille Étincelle','Level II bee keeps its animal');assert.equal(defs[18].cn,'Salamandre Voltaïque');assert.equal(defs[31].cn,'Dragon des Vents');
 (async()=>{
  for(const i of Object.keys(expected))assert.equal((await game.modelInfo(+i)).nom,defs[i].cn,'Model is requested even for peu commun dice');
- assert.equal(await game.modelInfo(4),null,'Other common dice still do not request animated models');
- console.log('PASS: 10 existing dice become characters with unchanged stats/element/rarity, 30 lightweight clips bound to each idle skeleton, neighbours untouched.');
+ assert.equal(await game.modelInfo(1),null,'Other common dice still do not request animated models');
+ console.log('PASS: 12 existing dice become characters with unchanged stats/element/rarity, 36 lightweight clips bound to each idle skeleton, neighbours untouched.');
 })().catch(e=>{console.error(e);process.exit(1)});

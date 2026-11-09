@@ -283,6 +283,76 @@
         "victory": "characters/frolgor-victory.glb",
         "walk": "characters/frolgor-walk.glb"
       }
+    },
+    "maebril": {
+      "glb": "Models/Characters/Maebril idle.glb",
+      "nom": "Maebril",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/maebril-spell.glb",
+        "victory": "characters/maebril-victory.glb",
+        "walk": "characters/maebril-walk.glb"
+      }
+    },
+    "orven": {
+      "glb": "Models/Characters/Orven idle.glb",
+      "nom": "Orven",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/orven-spell.glb",
+        "victory": "characters/orven-victory.glb",
+        "walk": "characters/orven-walk.glb"
+      }
+    },
+    "pur-foudre-1": {
+      "glb": "Models/Characters/Dé foudre v.1.glb",
+      "nom": "Éclat de foudre"
+    },
+    "pur-foudre-2": {
+      "glb": "Models/Characters/Dé foudre v.2.glb",
+      "nom": "Sentier de foudre"
+    },
+    "pur-vent-1": {
+      "glb": "Models/Characters/Dé vent v.1.glb",
+      "nom": "Éclat de vent"
+    },
+    "pur-vent-2": {
+      "glb": "Models/Characters/Dé vent v.2.glb",
+      "nom": "Sentier de vent"
+    },
+    "pur-terre-1": {
+      "glb": "Models/Characters/Dé terre v.1.glb",
+      "nom": "Éclat de terre"
+    },
+    "pur-terre-2": {
+      "glb": "Models/Characters/Dé terre v.2.glb",
+      "nom": "Sentier de terre"
+    },
+    "pur-glace-1": {
+      "glb": "Models/Characters/Dé glace v.1.glb",
+      "nom": "Éclat de glace"
+    },
+    "pur-glace-2": {
+      "glb": "Models/Characters/Dé glace V.2.glb",
+      "nom": "Sentier de glace"
+    },
+    "pur-eau-1": {
+      "glb": "Models/Characters/Dé eau v.1.glb",
+      "nom": "Éclat d’eau"
+    },
+    "pur-eau-2": {
+      "glb": "Models/Characters/Dé eau v.2.glb",
+      "nom": "Sentier d’eau"
+    },
+    "pur-feu-1": {
+      "glb": "Models/Characters/Dé Feu v.1.glb",
+      "nom": "Éclat de feu"
+    },
+    "pur-feu-2": {
+      "glb": "Models/Characters/Dé Feu v.2.glb",
+      "nom": "Sentier de feu"
     }
   },
   "terrains": {
