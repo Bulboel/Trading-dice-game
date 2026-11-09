@@ -353,6 +353,105 @@
     "pur-feu-2": {
       "glb": "Models/Characters/Dé Feu v.2.glb",
       "nom": "Sentier de feu"
+    },
+    "max": {
+      "glb": "Models/Characters/Max idle.glb",
+      "nom": "Max",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/max-spell.glb",
+        "victory": "characters/max-victory.glb",
+        "walk": "characters/max-walk.glb"
+      }
+    },
+    "max-alastor": {
+      "glb": "Models/Characters/Max & Alastor idle.glb",
+      "nom": "Max & Alastor",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/max-alastor-spell.glb",
+        "victory": "characters/max-alastor-victory.glb",
+        "walk": "characters/max-alastor-walk.glb"
+      }
+    },
+    "orcus": {
+      "glb": "Models/Characters/Orcus idle.glb",
+      "nom": "Orcus",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/orcus-spell.glb",
+        "victory": "characters/orcus-victory.glb",
+        "walk": "characters/orcus-walk.glb"
+      }
+    },
+    "pennedra": {
+      "glb": "Models/Characters/Pennedra idle.glb",
+      "nom": "Pennedra",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/pennedra-spell.glb",
+        "victory": "characters/pennedra-victory.glb",
+        "walk": "characters/pennedra-walk.glb"
+      }
+    },
+    "sameron": {
+      "glb": "Models/Characters/Sameron idle.glb",
+      "nom": "Sameron",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/sameron-spell.glb",
+        "victory": "characters/sameron-victory.glb",
+        "walk": "characters/sameron-walk.glb"
+      }
+    },
+    "soryan": {
+      "glb": "Models/Characters/Soryan idle.glb",
+      "nom": "Soryan",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/soryan-spell.glb",
+        "victory": "characters/soryan-victory.glb",
+        "walk": "characters/soryan-walk.glb"
+      }
+    },
+    "velmarys": {
+      "glb": "Models/Characters/Velmarys idle.glb",
+      "nom": "Velmarys",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/velmarys-spell.glb",
+        "victory": "characters/velmarys-victory.glb",
+        "walk": "characters/velmarys-walk.glb"
+      }
+    },
+    "ven": {
+      "glb": "Models/Characters/Ven idle.glb",
+      "nom": "Ven",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/ven-spell.glb",
+        "victory": "characters/ven-victory.glb",
+        "walk": "characters/ven-walk.glb"
+      }
+    },
+    "zackarie": {
+      "glb": "Models/Characters/Zackarie idle.glb",
+      "nom": "Zackarie",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/zackarie-spell.glb",
+        "victory": "characters/zackarie-victory.glb",
+        "walk": "characters/zackarie-walk.glb"
+      }
     }
   },
   "terrains": {

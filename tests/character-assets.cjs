@@ -4,7 +4,7 @@ const element=()=>({children:[],style:{setProperty(){}},classList:{add(){},remov
 const context=vm.createContext({window:{dispatchEvent(){}},Event,document:{getElementById(id){if(!els.has(id))els.set(id,element());return els.get(id)}},fetch:async()=>({ok:true,json:async()=>manifest}),console,Date,Math,setTimeout:()=>0,clearTimeout(){}});
 vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,''),context);
 const game=context.window.hackeniaGame,defs=game.monsters;
-assert.equal(defs.length,55);assert.deepEqual(Array.from(defs.slice(36,39),d=>d.n),['Eberien','Kala','Grimgors'],'Existing inventory IDs remain stable');
+assert.equal(defs.length,58);assert.deepEqual(Array.from(defs.slice(36,39),d=>d.n),['Eberien','Kala','Grimgors'],'Existing inventory IDs remain stable');
 for(const d of defs.slice(36,41)){assert.equal(game.rarity(d),3);assert.equal(d.need,3);assert.equal(d.nd,1);assert.equal(d.lv,2);assert.deepEqual(JSON.parse(JSON.stringify(d.c)),JSON.parse(JSON.stringify(defs[36].c)));}
 assert.deepEqual(Array.from(defs.slice(38,41),d=>d.el),['eau','vent','feu']);assert.equal(defs[42].el,'','Balai has no elemental affinity');
 const guardian=defs[41],highest=guardian.c.reduce((a,b)=>b[2]>=a[2]?b:a);assert.deepEqual(Array.from(highest),[0,2,6],'Guardian appears on the strong bottom tile of her L');
@@ -25,4 +25,4 @@ assert.equal(clips,18);
 const purchaseContext=vm.createContext({window:{hackeniaGame:game},structuredClone,Math,RangeError});vm.runInContext(fs.readFileSync(path.join(root,'assets/purchases.js'),'utf8'),purchaseContext);
 const rarePool=defs.map((d,i)=>({d,i})).filter(({d})=>game.rarity(d)===3).map(({i})=>i);
 for(const id of rarePool){let calls=0;const random=()=>++calls%2===1?.75:(rarePool.indexOf(id)+.5)/rarePool.length;const result=purchaseContext.window.HackeniaPurchases.plan({gold:10,inventory:{},boosters:0},1,random);assert.equal(result.pouchQueue[0].dice[0],id,'Every rare character can be drawn');assert.deepEqual(Array.from(result.pouchQueue[0].firstSeen),[0]);}
-(async()=>{assert.equal(await game.modelInfo(1),null,'Common dice without a character do not request animated models');for(let i=36;i<43;i++)assert.equal((await game.modelInfo(i)).nom,defs[i].cn);console.log('PASS: stable inventory IDs, rare heroes without stat changes, L spawn, 14 mobile portraits, 18 correct clips matching idle skeletons, rare draws and common model exclusion.');})().catch(e=>{console.error(e);process.exitCode=1});
+(async()=>{assert.equal(await game.modelInfo(3),null,'Common dice without a character do not request animated models');for(let i=36;i<43;i++)assert.equal((await game.modelInfo(i)).nom,defs[i].cn);console.log('PASS: stable inventory IDs, rare heroes without stat changes, L spawn, 14 mobile portraits, 18 correct clips matching idle skeletons, rare draws and common model exclusion.');})().catch(e=>{console.error(e);process.exitCode=1});
