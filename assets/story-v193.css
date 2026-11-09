@@ -48,3 +48,63 @@
 #portal .story-part.locked{opacity:.5}
 #portal .story-part.open{border-color:#e7cd8a88}
 #portal .story-part button{flex:0 0 auto;white-space:nowrap}
+/* v196 — Menu Histoire harmonisé avec les autres onglets (bleu nuit, liserés or, titres Georgia). */
+#portal .story-head{align-items:flex-start}
+#portal .story-head h2{margin-bottom:2px}
+#portal .story-progress{display:grid;gap:6px;justify-items:end;min-width:160px;color:#b9c9e1;font-size:12px}
+#portal .story-progress b{color:#f5d991;font-size:15px}
+#portal .story-progress i{display:block;width:160px;height:6px;border-radius:6px;background:#0a1426;box-shadow:inset 0 0 0 1px #839dc73b;overflow:hidden}
+#portal .story-progress em{display:block;height:100%;background:linear-gradient(90deg,#b58f47,#f5d991);border-radius:inherit}
+#portal .story-intro{max-width:760px;color:#c9d0de;margin:4px 0 16px}
+#portal .story-intro b{color:#f5d991}
+#portal .story-chapters{display:grid;gap:14px}
+#portal .story-chapter{margin:0;border:1px solid #839dc73b;border-radius:12px;background:linear-gradient(120deg,#1c2a41bd,#0a1426e0);overflow:hidden}
+#portal .story-chapter.complete{border-color:#cbb37880}
+#portal .story-chapter summary{position:relative;display:flex;align-items:flex-end;gap:12px;min-height:92px;padding:16px 18px;cursor:pointer;list-style:none;font:inherit;color:inherit;isolation:isolate}
+#portal .story-chapter summary::-webkit-details-marker{display:none}
+#portal .story-chapter summary::after{content:'⌄';font-size:20px;line-height:1;color:#e7d3a0;transition:transform .2s;text-shadow:0 1px 3px #000}
+#portal .story-chapter[open] summary::after{transform:rotate(180deg)}
+#portal .story-banner{position:absolute;inset:0;z-index:-1;background-size:cover;background-position:center 40%;opacity:.55;transition:opacity .2s}
+#portal .story-banner::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0a1426f2 0%,#0a1426b8 45%,#0a142640 100%),linear-gradient(0deg,#0a1426cc,transparent 70%)}
+#portal .story-chapter summary:hover .story-banner{opacity:.7}
+#portal .story-chapter.locked .story-banner{filter:grayscale(.7)}
+#portal .story-chapter-text{flex:1;display:grid;gap:3px;min-width:0}
+#portal .story-chapter-text small{font:600 10px/1 system-ui,sans-serif;letter-spacing:1.6px;text-transform:uppercase;color:#d3b675}
+#portal .story-chapter-text strong{font:600 20px/1.2 Georgia,serif;color:#f0e4c7;text-shadow:0 2px 6px #000}
+#portal .story-chapter-count{color:#e0e8f5;font-variant-numeric:tabular-nums;white-space:nowrap;padding:3px 10px;border-radius:999px;background:#0a1426cc;border:1px solid #839dc755;font-size:12px}
+#portal .story-chapter.complete .story-chapter-count{color:#f5d991;border-color:#cbb37899}
+#portal .story-parts{list-style:none;margin:0;padding:6px 14px 14px;display:grid;gap:8px;position:relative}
+#portal .story-part{position:relative;display:grid;grid-template-columns:30px 64px minmax(0,1fr) auto;align-items:center;gap:12px;padding:9px 12px 9px 10px;border-radius:10px;border:1px solid #839dc72b;background:#0d1830b3;transition:border-color .2s,background .2s}
+#portal .story-part:hover{border-color:#839dc766}
+#portal .story-seal{display:grid;place-items:center;width:26px;height:26px;transform:rotate(45deg);border:1.5px solid #a5bbda99;border-radius:5px;background:#0a1426;color:#c9d5e8;font:700 11px/1 system-ui,sans-serif}
+#portal .story-seal{font-size:0}
+#portal .story-seal::before{content:attr(data-n);transform:rotate(-45deg);font:700 11px/1 system-ui,sans-serif}
+#portal .story-thumb{width:64px;height:40px;border-radius:7px;background:#14223a center/cover no-repeat;box-shadow:0 0 0 1px #839dc744,0 3px 8px #0008}
+#portal .story-part-text{display:grid;gap:2px;min-width:0}
+#portal .story-part-text small{font:600 10px/1.2 system-ui,sans-serif;letter-spacing:1px;text-transform:uppercase;color:#a5b6cf}
+#portal .story-part-text strong{font:600 15.5px/1.25 Georgia,serif;color:#f0e4c7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#portal .story-kind{font-size:12px;color:#b9c6da}
+#portal .story-kind.duel{color:#e9c9a0}
+#portal .story-part button{flex:0 0 auto;white-space:nowrap;min-width:104px}
+#portal .story-part.done .story-seal{border-color:#d5bb70;background:linear-gradient(135deg,#d5bb70,#8d6a2c);color:#1a1307}
+#portal .story-part.done strong::before{content:none}
+#portal .story-part.current{border-color:#d5bb70aa;background:linear-gradient(100deg,#2a2a2acc,#0d1830cc);box-shadow:0 0 0 1px #d5bb7033,0 0 18px #d5bb7022}
+#portal .story-part.current .story-seal{border-color:#f5d991;color:#f5d991;box-shadow:0 0 10px #f5d99166}
+#portal .story-part.locked{opacity:1}
+#portal .story-part.locked .story-thumb{filter:grayscale(1) brightness(.55) blur(1.5px);opacity:.55}
+#portal .story-part.locked .story-part-text strong{color:#8f9bb0}
+#portal .story-part.locked .story-part-text small,#portal .story-part.locked .story-kind{color:#6f7b91}
+#portal .story-part.locked .story-seal{border-color:#5b6a85;color:#6f7b91}
+#portal .story-part.locked button{background:transparent;border-color:#5b6a8555;color:#6f7b91;min-width:46px}
+@media(max-width:600px){
+ #portal .story-head{flex-wrap:wrap}
+ #portal .story-progress{justify-items:start;min-width:0}
+ #portal .story-chapter summary{min-height:78px;padding:13px 14px}
+ #portal .story-chapter-text strong{font-size:16.5px}
+ #portal .story-parts{padding:4px 8px 10px;gap:7px}
+ #portal .story-part{grid-template-columns:24px minmax(0,1fr) auto;gap:9px;padding:8px 9px}
+ #portal .story-thumb{display:none}
+ #portal .story-seal{width:21px;height:21px}
+ #portal .story-part-text strong{font-size:14px;white-space:normal}
+ #portal .story-part button{min-width:0;padding-left:12px;padding-right:12px}
+}
