@@ -1,2 +1,3 @@
 /* Match completion emits once in the engine; only the two playable AI modes pay out. */
-(()=>{'use strict';function amount(won,mode){return['quick','play'].includes(mode)?won?30:5:0}function plan(profile,won,mode){const gold=amount(won,mode);if(!gold)return null;const next=structuredClone(profile);next.gold+=gold;return next}window.HackeniaMatchRewards={amount,plan};})();
+(()=>{'use strict';// Mode Jouer : la victoire rapporte selon la difficulté de l'IA ; Partie rapide : 30. Défaite : toujours 5.
+const PLAY_WIN={facile:20,moyen:30,difficile:40,divin:50};function amount(won,mode,level){if(!['quick','play'].includes(mode))return 0;if(!won)return 5;return mode==='play'?(PLAY_WIN[level]??30):30}function plan(profile,won,mode,level){const gold=amount(won,mode,level);if(!gold)return null;const next=structuredClone(profile);next.gold+=gold;return next}window.HackeniaMatchRewards={amount,plan};})();
