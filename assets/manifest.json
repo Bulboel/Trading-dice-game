@@ -173,6 +173,116 @@
       "nom": "Messire Balai",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05
+    },
+    "caleizis": {
+      "glb": "Models/Characters/Caleizis divine idle.glb",
+      "nom": "Caleizis",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/caleizis-spell.glb",
+        "victory": "characters/caleizis-victory.glb",
+        "walk": "characters/caleizis-walk.glb"
+      }
+    },
+    "pachie": {
+      "glb": "Models/Characters/La fée Pachié divine idle.glb",
+      "nom": "La fée Pachié",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/pachie-spell.glb",
+        "victory": "characters/pachie-victory.glb",
+        "walk": "characters/pachie-walk.glb"
+      }
+    },
+    "gliska": {
+      "glb": "Models/Characters/Gliska légendaire idle.glb",
+      "nom": "Gliska",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/gliska-spell.glb",
+        "victory": "characters/gliska-victory.glb",
+        "walk": "characters/gliska-walk.glb"
+      }
+    },
+    "kayla-legendaire": {
+      "glb": "Models/Characters/Kayla légendaire idle.glb",
+      "nom": "Kayla légendaire",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/kayla-legendaire-spell.glb",
+        "victory": "characters/kayla-legendaire-victory.glb",
+        "walk": "characters/kayla-legendaire-walk.glb"
+      }
+    },
+    "hilam": {
+      "glb": "Models/Characters/Hilam légendaire idle.glb",
+      "nom": "Hilam",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/hilam-spell.glb",
+        "victory": "characters/hilam-victory.glb",
+        "walk": "characters/hilam-walk.glb"
+      }
+    },
+    "eberien-legendaire": {
+      "glb": "Models/Characters/Eberien légendaire idle.glb",
+      "nom": "Eberien légendaire",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/eberien-legendaire-spell.glb",
+        "victory": "characters/eberien-legendaire-victory.glb",
+        "walk": "characters/eberien-legendaire-walk.glb"
+      }
+    },
+    "bolduc-legendaire": {
+      "glb": "Models/Characters/Bolduc légendaire idle.glb",
+      "nom": "Bolduc légendaire",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/bolduc-legendaire-spell.glb",
+        "victory": "characters/bolduc-legendaire-victory.glb",
+        "walk": "characters/bolduc-legendaire-walk.glb"
+      }
+    },
+    "bosco": {
+      "glb": "Models/Characters/Bosco légendaire idle.glb",
+      "nom": "Bosco",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/bosco-spell.glb",
+        "victory": "characters/bosco-victory.glb",
+        "walk": "characters/bosco-walk.glb"
+      }
+    },
+    "bulbalina": {
+      "glb": "Models/Characters/Bulbalina peu commune idle.glb",
+      "nom": "Bulbalina",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/bulbalina-spell.glb",
+        "victory": "characters/bulbalina-victory.glb",
+        "walk": "characters/bulbalina-walk.glb"
+      }
+    },
+    "frolgor": {
+      "glb": "Models/Characters/Frolgor peu commun idle.glb",
+      "nom": "Frolgor",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/frolgor-spell.glb",
+        "victory": "characters/frolgor-victory.glb",
+        "walk": "characters/frolgor-walk.glb"
+      }
     }
   },
   "terrains": {
