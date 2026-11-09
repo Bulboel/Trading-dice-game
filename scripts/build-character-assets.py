@@ -12,6 +12,9 @@ PORTRAITS = {
  'messire-balai':'Messire Balai miniature.png',
  'bosco':'Bosco miniature.png', 'bulbalina':'Bulbalina miniature.png',
  'pachie':'La fée pachié miniature.png', 'kayla-legendaire':'miniature Kayla.PNG',
+ 'bolduc-legendaire':'Bolduc légendaire miniature.PNG', 'caleizis':'Caleïzis divine miniature.png',
+ 'eberien-legendaire':'Eberien légendaire miniature.png', 'frolgor':'Frolgor peu commun miniature.png',
+ 'gliska':'Gliska légendaire miniature.png', 'hilam':'Hilam miniature.PNG', 'maebril':'Maebril miniature.png',
 }
 CLIPS = {
  'eberien': {'spell':('Eberien Spell cast.glb',None), 'victory':('Eberien Victory.glb',None), 'walk':('Eberien chibi.glb','Walking')},
@@ -27,7 +30,8 @@ for key,prefix,idle in [
  ('gliska','Gliska légendaire',None), ('kayla-legendaire','Kayla légendaire',None),
  ('hilam','Hilam légendaire',None), ('eberien-legendaire','Eberien légendaire',None),
  ('bolduc-legendaire','Bolduc légendaire',None), ('bosco','Bosco légendaire',None),
- ('bulbalina','Bulbalina peu commune',None), ('frolgor','Frolgor peu commun',None)]:
+ ('bulbalina','Bulbalina peu commune',None), ('frolgor','Frolgor peu commun',None),
+ ('maebril','Maebril',None), ('orven','Orven',None)]:
  CLIPS[key]={'spell':(f'{prefix} attaque.glb',None), 'victory':(f'{prefix} victoire.glb',None), 'walk':(f'{prefix} marche.glb',None)}
 def animation_only(source, name, destination):
  data=source.read_bytes(); length=struct.unpack_from('<I',data,12)[0]
