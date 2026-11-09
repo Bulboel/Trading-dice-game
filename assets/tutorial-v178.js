@@ -95,11 +95,11 @@ const steps=[
  text:()=>`<p>Et si les deux attaques sont égales (<b>4 contre 4</b>) ?</p>`,
  success:()=>`<p>= <b>Égalité : rien ne se passe.</b> Les deux créatures restent en place, face à face.</p><p>Au prochain tour, une meilleure dalle ou un bonus peut faire la différence.</p>`},
 {title:'Attaque directe',kind:'action',
- setup(){reset();path(3,[7,6,5],0,[5,5,5],'vent');tile(3,4,1,3,'vent');tile(3,3,1,3,'vent');unit(0,3,7,D.kala);unit(1,3,4,D.grimgors)},
+ setup(){reset();path(3,[7,6,5],0,[2,1,5],'vent');tile(3,4,1,3,'vent');tile(3,3,1,3,'vent');unit(0,3,7,D.kala);unit(1,3,4,D.grimgors)},
  targets:()=>[[3,4]],
  text:()=>`<p>Tu peux aussi attaquer <b>directement la case</b> d’un ennemi.</p>
  <p><b>À toi :</b> touche Kala, puis la <b>case dorée de l’ennemi</b> (elle s’allume en rouge). Ou touche l’ennemi et choisis <b>« Préparer l’attaque »</b>. Puis confirme.</p>
- <p>Tu attaques avec la force de la <b>dalle d’où tu pars</b> (5 ici) contre <b>${atk(3,4)}</b>.</p>`,
+ <p>Ta force est celle de la <b>dernière case de ton trajet, juste à côté de l’ennemi</b>, et non celle de ta case de départ. Ici, Kala est sur un <b>2</b> mais attaque depuis le <b>5</b> : 5 contre <b>${atk(3,4)}</b>.</p>`,
  check:()=>kills[0]>=1&&idle(),
  retry:()=>moved&&idle()&&kills[0]<1,
  success:()=>`<p>✓ <b>Victoire !</b> Ta créature <b>prend la place</b> de l’ennemi vaincu.</p><p>En cas de défaite, c’est elle qui disparaît. En cas d’égalité, personne ne bouge.</p>`},
