@@ -30,3 +30,12 @@
 #hand-hover .hv-lore{margin:8px 16px 14px;font-style:italic;color:#c8d2c4}
 @media(prefers-reduced-motion:reduce){#hand-hover{transition:none}}
 .detail-character .pure-emblem{width:150px;height:150px;max-width:150px;max-height:150px}
+/* v176 — révélation de la bourse : nom du dé au-dessus de la rareté et de l'élément. */
+#portal .pouch-theatre .draw-name{display:block;max-width:100%;font:700 11.5px/1.15 "Cinzel",Georgia,serif!important;color:color-mix(in srgb,var(--label-color,#d9c48b) 55%,#fff6e0);text-align:center;text-wrap:balance;text-shadow:0 1px 3px #000c}
+body.portal-open[data-portal-view="shop"] #portal .pouch-theatre .draw-label{min-width:84px!important;max-width:min(132px,calc(100% - 12px))!important;padding:5px 9px 6px!important;border-radius:14px!important;gap:3px!important}
+@media(max-width:700px){
+ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre .draw-label{min-width:76px!important;max-width:112px!important;padding:4px 7px 5px!important}
+ #portal .pouch-theatre .draw-name{font-size:10.5px!important}
+}
+body.portal-open[data-portal-view="shop"] #portal .pouch-theatre .draw-label strong.draw-name,#portal .pouch-theatre .draw-label strong.draw-name{font:700 11.5px/1.15 "Cinzel",Georgia,serif!important;margin:0!important;min-height:0!important;-webkit-line-clamp:2}
+@media(max-width:700px){body.portal-open[data-portal-view="shop"] #portal .pouch-theatre .draw-label strong.draw-name{font-size:10.5px!important}}
