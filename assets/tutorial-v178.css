@@ -1,0 +1,45 @@
+/* v178 — Tutoriel guidé : panneau de consignes au-dessus du plateau, cases cibles dorées (3D) et zones mises en avant. */
+body.tutorial-mode #identity,body.tutorial-mode #app #top .match-tools,body.tutorial-mode #terrain-tools,body.tutorial-mode #land-caption{display:none!important}
+/* Ordinateur : le panneau flotte sur la gauche du plateau. */
+@media(min-width:900px){body.tutorial-mode #bw>#tuto-coach{position:absolute;top:12px;left:12px;bottom:auto;width:min(390px,32%);max-height:calc(100% - 24px);overflow:auto;margin:0;background:linear-gradient(160deg,#21392df2,#101e18f2);backdrop-filter:blur(4px)}}
+#tuto-coach{position:relative;z-index:70;box-sizing:border-box;width:100%;max-width:980px;margin:6px auto 8px;padding:12px 16px 12px;border:1px solid #e7cd8a99;border-radius:16px;background:linear-gradient(160deg,#21392dfa,#101e18fa);box-shadow:0 10px 34px #0009,0 0 0 1px #0007 inset;color:#efe7cf;font:14px/1.5 system-ui,sans-serif;text-align:left}
+#tuto-coach header{display:flex;align-items:center;justify-content:space-between;gap:10px}
+#tuto-coach .tuto-kicker{font:700 10.5px/1 system-ui,sans-serif;letter-spacing:1.4px;text-transform:uppercase;color:#d9c48b}
+#tuto-coach .tuto-quit{min-height:30px;padding:4px 10px;border-radius:999px;font-size:12px;background:#0f1d18;border:1px solid #baa66e55;color:#d8ceb0}
+#tuto-coach .tuto-bar{height:4px;margin:8px 0 8px;border-radius:4px;background:#ffffff14;overflow:hidden}
+#tuto-coach .tuto-bar i{display:block;height:100%;background:linear-gradient(90deg,#d8b86a,#f3dc96);transition:width .3s}
+#tuto-coach h2{margin:0 0 6px;font:700 19px/1.25 "Cinzel",Georgia,serif;color:#f6e7bd}
+#tuto-coach .tuto-text p{margin:0 0 6px}
+#tuto-coach .tuto-text ul,#tuto-coach .tuto-text ol{margin:2px 0 6px;padding-left:20px}
+#tuto-coach .tuto-text li{margin:2px 0}
+#tuto-coach b{color:#ffe6a6}
+#tuto-coach .tuto-todo{margin:4px 0 0;font-weight:700;color:#ffd45e}
+#tuto-coach .tuto-retry{margin:4px 0 0;font-weight:700;color:#ffb07a}
+#tuto-coach footer{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;margin-top:8px}
+#tuto-coach footer button{min-height:36px;padding:7px 14px;border-radius:10px;border:1px solid #baa66e66;background:#17291f;color:#e9e0c6;font:600 13px/1 system-ui,sans-serif}
+#tuto-coach footer .tuto-main{background:linear-gradient(140deg,#e2c477,#a9853c);color:#1b1407;border-color:#f2dc9e}
+#tuto-coach footer button:disabled{opacity:.4;cursor:not-allowed}
+#tuto-coach button:focus-visible{outline:2px solid #ffe6a6;outline-offset:2px}
+@keyframes tuto-glow{0%,100%{box-shadow:0 0 0 2px #ffd45e88,0 0 14px 2px #ffd45e55}50%{box-shadow:0 0 0 3px #ffd45e,0 0 26px 6px #ffd45e88}}
+body[data-tuto-focus="hand"] #bot{border-radius:14px;animation:tuto-glow 1.8s ease-in-out infinite}
+body[data-tuto-focus="header"] #top .header-actions,body[data-tuto-focus="header"] #hd{border-radius:12px;animation:tuto-glow 1.8s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){body[data-tuto-focus] #bot,body[data-tuto-focus] #top .header-actions,body[data-tuto-focus] #hd{animation:none;box-shadow:0 0 0 2px #ffd45e}}
+@media(max-width:700px){
+ #tuto-coach{margin:4px 0 6px;padding:9px 11px;border-radius:12px;font-size:12.5px;line-height:1.42}
+ #tuto-coach h2{font-size:15.5px;margin-bottom:4px}
+ #tuto-coach .tuto-bar{margin:6px 0}
+ #tuto-coach .tuto-text p{margin-bottom:4px}
+ #tuto-coach footer{margin-top:6px}
+ #tuto-coach footer button{min-height:34px;padding:6px 10px;font-size:12px}
+}
+/* Lien « Suivre le tutoriel » dans la carte Premiers pas. */
+#portal .onb-link{display:inline;min-height:0;padding:0;border:0;background:none;color:#ffd77e;font:inherit;text-decoration:underline;cursor:pointer}
+/* Repères dorés des cases à utiliser : anneau pulsant + flèche, toujours au premier plan. */
+#tuto-marks{position:fixed;inset:0;z-index:65;pointer-events:none}
+#tuto-marks .tuto-mark{position:absolute;left:0;top:0;width:0;height:0}
+#tuto-marks .tuto-mark::before{content:"";position:absolute;left:-17px;top:-11px;width:34px;height:22px;border-radius:50%;border:3px solid #ffbf2e;box-shadow:0 0 10px 2px #ffbf2ecc,inset 0 0 8px #ffbf2e88;animation:tuto-ring 1.4s ease-in-out infinite}
+#tuto-marks .tuto-mark::after{content:"";position:absolute;left:-8px;top:-40px;border:8px solid transparent;border-top:13px solid #ffd45e;filter:drop-shadow(0 2px 3px #000a);animation:tuto-arrow 1.4s ease-in-out infinite}
+@keyframes tuto-ring{0%,100%{transform:scale(.9);opacity:.85}50%{transform:scale(1.12);opacity:1}}
+@keyframes tuto-arrow{0%,100%{transform:translateY(-4px)}50%{transform:translateY(3px)}}
+@media(max-width:700px){#tuto-marks .tuto-mark::before{left:-12px;top:-8px;width:24px;height:16px;border-width:2.5px}#tuto-marks .tuto-mark::after{left:-6px;top:-30px;border-width:6px;border-top-width:10px}}
+@media(prefers-reduced-motion:reduce){#tuto-marks .tuto-mark::before,#tuto-marks .tuto-mark::after{animation:none}}
