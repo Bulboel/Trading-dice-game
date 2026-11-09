@@ -322,6 +322,17 @@ const CRE=[
 [['🐲','Dragon de la Foudre','Il est l’orage lui-même. Un battement d’ailes suffit à illuminer tout le plateau.'],['🐲','Dragon des Vents','Son souffle a creusé les canyons du monde. Il ne marche pas : il traverse.'],['🐲','Dragon des Montagnes','Son dos porte des chaînes de montagnes. Sa patience dure plus que les empires.'],['🐲','Dragon des Glaces','Son souffle fige le temps. Chaque flocon qu’il laisse est un serment.'],['🐲','Dragon des Abysses','Il dort sous l’océan et rêve en marées. Quand il s’éveille, tout déborde.'],['🐲','Dragon du Feu','Première flamme du monde. Il brûle sans jamais se consumer.']]];
 const M=[];LVR.forEach((R,l)=>ELS.forEach((el,e)=>{const t=[0,0,1,1,2,3][l],cr=CRE[t][e];
  M.push({n:NM[e]+' '+RN[l],em:cr[0],cn:cr[1],lo:cr[2],el,lv:l+1,nd:R.nd,need:R.need,t,fk:(t==0?6:0)+e,c:SH[l][e].map(([x,y],k)=>[x,y,R.v[k]])})}));
+[[30,'Caleizis','⚡','Puissance divine des orages : chacun de ses sorts déchire le ciel de Hackénia. Affinité Foudre.','caleizis'],
+ [34,'La fée Pachié','🧚','Fée divine des sources et des marées, elle fait tomber la pluie d’un simple geste. Affinité Eau.','pachie'],
+ [24,'Gliska','🔮','Mage légendaire aux arcanes crépitantes, toujours à un éclair de la victoire. Affinité Foudre.','gliska'],
+ [25,'Kayla légendaire','🌪️','Héroïne légendaire de Hackénia, aussi insaisissable que la brise. Affinité Vent.','kayla-legendaire'],
+ [26,'Hilam','🪨','Force légendaire des terres anciennes, solide comme le roc et prompte à frapper. Affinité Terre.','hilam'],
+ [27,'Eberien légendaire','❄️','Eberien au sommet de son art : le magicien haut-elfe commande désormais à l’hiver entier. Affinité Glace.','eberien-legendaire'],
+ [28,'Bolduc légendaire','🌊','Le fidèle de Shauntéa, devenu légende, a appris à dompter les flots. Affinité Eau.','bolduc-legendaire'],
+ [29,'Bosco','🏹','Arc légendaire du Brasier : ses flèches embrasent le damier. Affinité Feu.','bosco'],
+ [10,'Bulbalina','🫧','Petite âme des bulles et des ruisseaux, toujours de bonne humeur. Affinité Eau.','bulbalina'],
+ [8,'Frolgor','🍂','Montagnard bourru des collines, patient comme la pierre. Après une victoire, il lui arrive de s’assoupir sur place. Affinité Terre.','frolgor']
+].forEach(([i,n,em,lo,modelKey])=>Object.assign(M[i],{n,cn:n,em,lo,modelKey}));
 M.push({n:'Eberien',em:'🧙',cn:'Eberien',lo:'Magicien haut-elfe de Hackénia, affinité Glace.',el:'glace',lv:2,nd:1,need:3,t:0,fk:9,rarity:3,portrait:'eberien',modelKey:'eberien',c:[[1,1,4],[1,0,2],[0,1,3],[2,1,5],[1,2,6]]});
 M.push({n:'Kala',em:'🏹',cn:'Kala',lo:'Elfe des bois, archère et barde de Hackénia, affinité Terre.',el:'terre',lv:2,nd:1,need:3,t:0,fk:8,rarity:3,portrait:'kala',modelKey:'kala',c:[[1,1,4],[1,0,2],[0,1,3],[2,1,5],[1,2,6]]});
 M.push({n:'Grimgors',em:'🪓',cn:'Grimgors',lo:'Guerrier demi-orc de Hackénia, affinité Eau.',el:'eau',lv:2,nd:1,need:3,t:0,fk:10,rarity:3,portrait:'grimgors',modelKey:'grimgors',c:[[1,1,4],[1,0,2],[0,1,3],[2,1,5],[1,2,6]]});
@@ -704,7 +715,7 @@ window.hackeniaGame={
  start:(deck=null,terrain=null,kind='quick')=>{rewardMode=kind;chosenDeck=Array.isArray(deck)&&deck.length===10&&deck.every(i=>Number.isInteger(i)&&i>=0&&i<M.length)?[...deck]:null;gamePaused=false;matchStarted=true;ai=true;TER=typeof terrain==='string'&&TL.includes(terrain)?TL.indexOf(terrain):Math.floor(Math.random()*TL.length);init()},
  pause:()=>{window.HackeniaCombat?.resetClock();gamePaused=true;clearTimeout(aiT);aiT=0;document.getElementById('placement-lens')?.setAttribute('hidden','')},
  resume:()=>{window.HackeniaCombat?.resetClock();gamePaused=false;render()},isPlaying:()=>!gamePaused,hasMatch:()=>matchStarted,
- rarity:rarityOf,portrait:i=>handPortrait(i),modelInfo:async i=>{await manifestReady;const d=M[i];return d&&rarityOf(d)>=3?MAN?.creatures?.[cid(d)]||null:null},loadModelViewer:loadMV,
+ rarity:rarityOf,portrait:i=>handPortrait(i),modelInfo:async i=>{await manifestReady;const d=M[i];return d&&(d.modelKey||rarityOf(d)>=3)?MAN?.creatures?.[cid(d)]||null:null},loadModelViewer:loadMV,
  snapshot:()=>({movePlan,b,cr,cur,mode,pc,hov,die,rot,sel,anim,cubeCls,rzCur,cu,lastJ,over,ai,drag,dg,moved,terrain:TL[TER],blocked:TL[TER]==='feu'?FIRE_VENTS:[],preview:cells(),valid:cells().length?!!ok(cells()):false,reachable:mode==='i'&&sel?bfs(sel):null,...presentationBoard(),combat:window.HackeniaCombat?.current()}),isBlocked:blocked,power:pw,elementColors:EC,monsters:M,board:BQ,tap:(x,y)=>{tap(x,y);render()},refresh:render};
 init();
 </script><script src="assets/action-feedback-v168.js?v=20261105-v168"></script><script src="assets/pouch-opening-v122.js?v=20261105-v168"></script><script src="assets/pvp-config.js?v=20261106-v172"></script>

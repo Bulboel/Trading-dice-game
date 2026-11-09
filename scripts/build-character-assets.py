@@ -19,6 +19,14 @@ CLIPS = {
  'bolduc': {'spell':('Bolduc attaque.glb',None), 'victory':('Bolduc victoire.glb',None), 'walk':('Bolduc marche.glb',None)},
  'gardienne': {'spell':('Gardienne du lac attaque.glb',None), 'victory':('Gardienne du lac victoire.glb',None), 'walk':('gardienne du lac marche.glb',None)},
 }
+# Personnages qui remplacent des dés existants (une animation complète par fichier : idle, attaque, marche, victoire).
+for key,prefix,idle in [
+ ('caleizis','Caleizis divine',None), ('pachie','La fée pachié divine','La fée Pachié divine idle.glb'),
+ ('gliska','Gliska légendaire',None), ('kayla-legendaire','Kayla légendaire',None),
+ ('hilam','Hilam légendaire',None), ('eberien-legendaire','Eberien légendaire',None),
+ ('bolduc-legendaire','Bolduc légendaire',None), ('bosco','Bosco légendaire',None),
+ ('bulbalina','Bulbalina peu commune',None), ('frolgor','Frolgor peu commun',None)]:
+ CLIPS[key]={'spell':(f'{prefix} attaque.glb',None), 'victory':(f'{prefix} victoire.glb',None), 'walk':(f'{prefix} marche.glb',None)}
 def animation_only(source, name, destination):
  data=source.read_bytes(); length=struct.unpack_from('<I',data,12)[0]
  doc=json.loads(data[20:20+length]); binary=data[28+length:]
@@ -48,4 +56,4 @@ for key,filename in PORTRAITS.items():
    image.save(OUTPUT/f'{key}-{size}.webp',quality=88,method=6)
 for key,clips in CLIPS.items():
  for kind,(source,name) in clips.items(): animation_only(SOURCE/source,name,OUTPUT/f'{key}-{kind}.glb')
-print('Built 14 portraits and 18 animation-only clips.')
+print(f'Built {2*len(PORTRAITS)} portraits and {sum(map(len,CLIPS.values()))} animation-only clips.')
