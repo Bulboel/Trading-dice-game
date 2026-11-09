@@ -22,7 +22,7 @@ body[data-portal-view=decks] #portal-content{padding-bottom:150px!important}
 #portal .deck-tray-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 3px 6px;font:11px system-ui;color:#ded3ed}
 #portal .deck-tray-head strong{font-weight:500}#portal .deck-tray-head strong span{color:#a7b4c2;margin-left:6px}
 #portal .deck-tray-head>button{min-height:25px;height:25px;font:10px system-ui;padding:3px 10px;border-radius:6px}
-#portal .deck-tray-slots{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:5px}
+#portal .deck-tray-slots{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:5px}
 #portal .deck-tray-slot{min-width:0;height:60px;position:relative;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--slot-color) 48%,#263747);border-radius:8px;background:radial-gradient(ellipse at top,color-mix(in srgb,var(--slot-color) 14%,transparent),#091a2366)}
 #portal .deck-tray-slot .deck-tray-detail{display:grid;place-items:center;align-content:center;gap:1px;width:100%;height:100%;min-width:0;min-height:0;padding:4px 2px;border:0;box-shadow:none;background:none!important;color:#e5ecea}
 #portal .deck-tray-detail>span{font-size:17px;line-height:1}

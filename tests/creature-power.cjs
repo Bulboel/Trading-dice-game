@@ -8,8 +8,8 @@ assert.equal(game.creatureAttack(k),6,'Terrain and neighboring-element bonuses b
 assert.equal(game.creatureAttack(k,2,4),2,'Enemy tiles use their actual power');
 assert.equal(game.creatureAttack(k,3,4),1,'A starting-zone tile has the normal neutral power');
 const frozen=structuredClone(board);board[4][1].v=1;assert.equal(game.creatureAttack(k,1,4,frozen),6,'Animation snapshots keep their original board');
-let combat=null;const badges=new Map(),g={visible:true,position:{x:-2.5,y:.51,z:-.5},userData:{k}};
-const ctx=vm.createContext({window:{HackeniaCombat:{current:()=>combat,pose:()=>null}},document:{createElement:()=>({style:{},classList:{toggle(){}},setAttribute(){},remove(){this.removed=true}})},boardCaptions:{append(){}},powerCaptions:badges,creatures:new Map([[k.id,g]]),game,state:{b:frozen},Math,Set});
+let combat=null;const badges=new Map(),g={visible:true,position:{x:-2.5,y:.51,z:4-(game.rows-1)/2},userData:{k}};
+const ctx=vm.createContext({window:{HackeniaCombat:{current:()=>combat,pose:()=>null}},document:{createElement:()=>({style:{},classList:{toggle(){}},setAttribute(){},remove(){this.removed=true}})},boardCaptions:{append(){}},powerCaptions:badges,creatures:new Map([[k.id,g]]),game,BH:game.rows,HZ:(game.rows-1)/2,state:{b:frozen},Math,Set});
 const view=fs.readFileSync(path.join(root,'assets/clearing-v105.js'),'utf8');vm.runInContext(view.slice(view.indexOf('function updateCreaturePowers('),view.indexOf('function projectBoardCaptions(')),ctx);
 const place=(badge,x,y,z)=>{badge.hidden=false;badge.anchor={x,y,z}};ctx.updateCreaturePowers(place);assert.equal(badges.get(8).textContent,'PA : 6');
 g.position.x=-1.5;ctx.updateCreaturePowers(place);assert.equal(badges.get(8).textContent,'PA : 2','Badge recalculates on the tile currently crossed');assert.equal(badges.get(8).anchor.x,-1.5,'Badge follows the animated figure');
