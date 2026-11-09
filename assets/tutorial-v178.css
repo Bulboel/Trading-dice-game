@@ -1,7 +1,7 @@
 /* v178 — Tutoriel guidé : panneau de consignes au-dessus du plateau, cases cibles dorées (3D) et zones mises en avant. */
 body.tutorial-mode #identity,body.tutorial-mode #app #top .match-tools,body.tutorial-mode #terrain-tools,body.tutorial-mode #land-caption{display:none!important}
 /* Ordinateur : le panneau flotte sur la gauche du plateau. */
-@media(min-width:900px){body.tutorial-mode #bw>#tuto-coach{position:absolute;top:12px;left:12px;bottom:auto;width:min(390px,32%);max-height:calc(100% - 24px);overflow:auto;margin:0;background:linear-gradient(160deg,#21392df2,#101e18f2);backdrop-filter:blur(4px)}}
+@media(min-width:900px){body.tutorial-mode #bw>#tuto-coach{position:absolute;top:12px;left:12px;bottom:auto;width:min(390px,32%);max-height:calc(100% - 84px);overflow:auto;margin:0;background:linear-gradient(160deg,#21392df2,#101e18f2);backdrop-filter:blur(4px)}}
 #tuto-coach{position:relative;z-index:70;box-sizing:border-box;width:100%;max-width:980px;margin:6px auto 8px;padding:12px 16px 12px;border:1px solid #e7cd8a99;border-radius:16px;background:linear-gradient(160deg,#21392dfa,#101e18fa);box-shadow:0 10px 34px #0009,0 0 0 1px #0007 inset;color:#efe7cf;font:14px/1.5 system-ui,sans-serif;text-align:left}
 #tuto-coach header{display:flex;align-items:center;justify-content:space-between;gap:10px}
 #tuto-coach .tuto-kicker{font:700 10.5px/1 system-ui,sans-serif;letter-spacing:1.4px;text-transform:uppercase;color:#d9c48b}
