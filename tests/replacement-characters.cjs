@@ -6,7 +6,7 @@ vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);
 const game=context.window.hackeniaGame,defs=game.monsters;
 // Dé existant → personnage qui le remplace (les stats, l'élément et la rareté du dé ne changent pas).
 const expected={30:['Caleizis','caleizis','foudre',6],34:['La fée Pachié','pachie','eau',6],24:['Gliska','gliska','foudre',5],25:['Kayla légendaire','kayla-legendaire','vent',5],26:['Hilam','hilam','terre',5],27:['Eberien légendaire','eberien-legendaire','glace',5],28:['Bolduc légendaire','bolduc-legendaire','eau',5],29:['Bosco','bosco','feu',5],10:['Bulbalina','bulbalina','eau',2],8:['Frolgor','frolgor','terre',2]};
-assert.equal(defs.length,43,'No die is added or removed');
+assert.equal(defs.length,55,'Only the 12 elemental dice are appended');
 function glb(file){const b=fs.readFileSync(file);assert.equal(b.readUInt32LE(0),0x46546c67);assert.equal(b.readUInt32LE(8),b.length);return JSON.parse(b.subarray(20,20+b.readUInt32LE(12)));}
 let clips=0;
 for(const [i,[name,key,el,rarity]] of Object.entries(expected)){
