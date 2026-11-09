@@ -48,3 +48,8 @@
 .creature-pa{border-color:color-mix(in srgb,var(--pa,#9569c5) 75%,#fff6)!important;background:linear-gradient(180deg,color-mix(in srgb,var(--pa,#9569c5) 78%,#0b1512),color-mix(in srgb,var(--pa,#9569c5) 42%,#060c0a))!important;color:#fff!important;box-shadow:0 0 10px color-mix(in srgb,var(--pa,#9569c5) 55%,transparent),0 2px 6px #000a!important;text-shadow:0 1px 2px #000c!important}
 .creature-pa::before{content:"";display:inline-block;width:6px;height:6px;margin:0 5px 1px 0;border-radius:50%;background:var(--camp-dot,#fff);box-shadow:0 0 0 1px #0008,0 0 5px var(--camp-dot,#fff);vertical-align:middle}
 .board-objectives .zone-caption{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;border:0!important;overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important}
+/* v191 — Limites de rareté du deck en cours. */
+#portal .deck-limits{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;font:600 10.5px/1 system-ui,sans-serif}
+#portal .deck-limits span{padding:3px 7px;border-radius:999px;background:#0f1d18;border:1px solid #baa66e44;color:#d8ceb0}
+#portal .deck-limits span.full{border-color:#e7cd8a;color:#ffe08a}
+#portal .play-level-note{font-size:12px;margin:0 0 12px}
