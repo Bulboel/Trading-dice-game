@@ -1,0 +1,36 @@
+/* v173 — anneau du menu parfaitement circulaire, titres aux couleurs de leur dé. */
+/* Le conteneur de l'anneau est un carré centré : la rotation décrit donc un vrai cercle. */
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring{
+ inset:50% auto auto 50%!important;
+ width:var(--ring-d)!important;
+ height:var(--ring-d)!important;
+ aspect-ratio:1!important;
+ transform:translate(-50%,-50%) rotate(var(--dice-ring-angle,0deg))!important;
+ --ring-d:min(calc(100% - 150px),calc(100dvh - 330px),620px);
+}
+@media(max-width:900px){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring{--ring-d:min(calc(100vw - 110px),calc(100dvh - 330px),560px)}
+}
+@media(max-width:350px){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring{--ring-d:min(calc(100vw - 96px),calc(100dvh - 300px))}
+}
+/* Positions réparties régulièrement sur le cercle (calculées selon le nombre de dés du menu). */
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view]{
+ left:var(--ring-x)!important;
+ top:var(--ring-y)!important;
+ transform:translate(-50%,-50%) rotate(var(--dice-ring-counter-angle,0deg))!important;
+}
+/* Titres : couleur du dé, police gravée lisible. */
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab strong{
+ color:color-mix(in srgb,var(--accent) 72%,#fff6e0)!important;
+ font-family:"Cinzel","Palatino Linotype","Book Antiqua",Georgia,serif!important;
+ font-weight:700!important;
+ font-size:clamp(11px,1.15vw + 6px,15px)!important;
+ letter-spacing:.03em!important;
+ line-height:1.15!important;
+ max-width:min(118px,26vw)!important;
+ text-shadow:0 1px 2px #000,0 2px 8px #000d,0 0 14px color-mix(in srgb,var(--accent) 45%,transparent)!important;
+}
+@media(max-width:900px){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab strong{font-size:clamp(10.5px,2.9vw,13px)!important;max-width:min(84px,24vw)!important}
+}
