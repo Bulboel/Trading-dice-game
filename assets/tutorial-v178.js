@@ -138,18 +138,19 @@ const steps=[
 
 // ——— Panneau du guide ———
 function coach(){let c=$('tuto-coach');if(!c){c=document.createElement('section');c.id='tuto-coach';c.setAttribute('aria-live','polite');c.setAttribute('aria-label','Tutoriel');place(c);
- c.addEventListener('click',e=>{const a=e.target.closest('[data-tuto]')?.dataset.tuto;if(!a)return;if(a==='next')go(T.i+1);else if(a==='prev')go(T.i-1);else if(a==='retry')go(T.i);else if(a==='quit')stop(true);else if(a==='demo')runDemo();else if(a==='play'){stop(false);window.HackeniaPortal?.afterTutorial?.()}})}return c}
+ c.addEventListener('click',e=>{const a=e.target.closest('[data-tuto]')?.dataset.tuto;if(!a)return;if(a==='min'){T.min=!T.min;draw();return}if(a==='next')go(T.i+1);else if(a==='prev')go(T.i-1);else if(a==='retry')go(T.i);else if(a==='quit')stop(true);else if(a==='demo')runDemo();else if(a==='play'){stop(false);window.HackeniaPortal?.afterTutorial?.()}})}return c}
 // Ordinateur : panneau posé sur le côté gauche du plateau (qui garde toute sa taille). Téléphone : panneau au-dessus du plateau.
 const wide=window.matchMedia?.('(min-width:900px)');
-function place(c=$('tuto-coach')){if(!c)return;const bw=$('bw');if(wide?.matches){if(c.parentElement!==bw)bw.append(c)}else if(c.nextElementSibling!==bw)bw.parentElement.insertBefore(c,bw)}
+// Le panneau se pose toujours par-dessus le plateau : celui-ci garde toute sa taille (PC comme téléphone).
+function place(c=$('tuto-coach')){if(!c)return;const bw=$('bw');if(c.parentElement!==bw)bw.append(c)}
 wide?.addEventListener?.('change',()=>{place();window.dispatchEvent(new Event('resize'))});
 function draw(){const s=steps[T.i],c=coach(),n=steps.length,canNext=s.kind==='info'||T.done,isLast=T.i===n-1;
  const status=s.kind==='action'?(T.done?'':T.retry?'<p class="tuto-retry">Pas tout à fait ! Appuie sur « Recommencer l’étape » pour réessayer.</p>':'<p class="tuto-todo">⟶ À toi de jouer.</p>'):'';
- c.innerHTML=`<header><span class="tuto-kicker">Tutoriel · étape ${T.i+1} sur ${n}</span><button type="button" class="tuto-quit" data-tuto="quit" aria-label="Quitter le tutoriel">Quitter ✕</button></header>
+ c.innerHTML=`<header><span class="tuto-kicker">Tutoriel · étape ${T.i+1} sur ${n}</span><span class="tuto-head-btns"><button type="button" class="tuto-min" data-tuto="min" aria-expanded="${!T.min}">${T.min?'Afficher ▾':'Réduire ▴'}</button><button type="button" class="tuto-quit" data-tuto="quit" aria-label="Quitter le tutoriel">Quitter ✕</button></span></header>
  <div class="tuto-bar" aria-hidden="true"><i style="width:${Math.round((T.i+(canNext?1:0))/n*100)}%"></i></div>
  <h2>${s.title}</h2><div class="tuto-text">${T.done&&s.success?s.success():s.text()}</div>${status}
  <footer>${T.i>0?'<button type="button" data-tuto="prev">← Précédent</button>':''}${s.kind!=='info'&&s.kind!=='final'?'<button type="button" data-tuto="retry">Recommencer l’étape</button>':''}${s.kind==='demo'&&!T.done&&!T.demoRunning?`<button type="button" class="tuto-main" data-tuto="demo">${s.demoLabel} ▶</button>`:''}${isLast?'<button type="button" data-tuto="retry">Revoir</button><button type="button" class="tuto-main" data-tuto="play">Terminer et jouer</button>':`<button type="button" class="tuto-main" data-tuto="next" ${canNext?'':'disabled'}>Suivant →</button>`}</footer>`;
- document.body.dataset.tutoFocus=T.done?'':s.focus||''}
+ c.classList.toggle('min',!!T.min);document.body.dataset.tutoFocus=T.done?'':s.focus||''}
 function go(i){if(i<0||i>=steps.length)return;T.i=i;T.done=false;T.retry=false;T.demoRunning=false;T.rolls=[];closeCard?.();window.hideHandHover?.();steps[i].setup();msg=steps[i].kind==='action'?'Suis les consignes du tutoriel.':'';render();draw();window.dispatchEvent(new Event('resize'))}
 function runDemo(){const s=steps[T.i];if(!s.demo||T.demoRunning)return;T.demoRunning=true;draw();s.demo()}
 function freeze(){cur=0;mode='t';sel=null;movePlan=null;msg=String(msg).split(P[1]+' : glisse')[0].split(P[0]+' : glisse')[0].trim();render()}
@@ -160,7 +161,7 @@ function tick(){if(!T.active)return;if(document.body.classList.contains('portal-
 function cellPoint(x,y){const v=window.HackeniaView;if(v?.active&&v.cellScreen)return v.cellScreen(x,y);const bd=$('bd');if(!bd)return null;const r=bd.getBoundingClientRect();return{x:r.left+(x+.5)*r.width/W,y:r.top+(y+.5)*r.height/H}}
 function drawMarks(){if(!T.active)return;let layer=$('tuto-marks');if(!layer){layer=document.createElement('div');layer.id='tuto-marks';layer.setAttribute('aria-hidden','true');document.body.append(layer)}
  const list=targets()||[],hidden=!$('fiche')?.hidden||document.querySelector('dialog[open]');while(layer.children.length<list.length){const m=document.createElement('i');m.className='tuto-mark';layer.append(m)}while(layer.children.length>list.length)layer.lastChild.remove();
- list.forEach(([x,y],k)=>{const p=cellPoint(x,y),m=layer.children[k];if(!p||hidden){m.style.display='none';return}m.style.display='';m.style.transform=`translate(${p.x}px,${p.y}px)`});T.raf=requestAnimationFrame(drawMarks)}
+ const box=$('tuto-coach')?.getBoundingClientRect();list.forEach(([x,y],k)=>{const p=cellPoint(x,y),m=layer.children[k];if(!p||hidden||(box&&p.x>box.left-4&&p.x<box.right+4&&p.y>box.top-4&&p.y<box.bottom+30)){m.style.display='none';return}m.style.display='';m.style.transform=`translate(${p.x}px,${p.y}px)`});T.raf=requestAnimationFrame(drawMarks)}
 
 // ——— Démarrer / quitter ———
 function start(){ONLINE=null;ai=false;chosenDeck=null;TER=TL.indexOf('terre');gamePaused=false;matchStarted=false;window.HackeniaPortal&&document.body.classList.remove('portal-open');document.body.classList.add('tutorial-mode');location.hash='partie';init();P[0]=window.HackeniaSettings?.get?.().playerName||'Toi';P[1]='Adversaire';T.active=true;clearInterval(T.timer);T.timer=setInterval(tick,250);go(0);cancelAnimationFrame(T.raf);T.raf=requestAnimationFrame(drawMarks);window.dispatchEvent(new Event('resize'))}
