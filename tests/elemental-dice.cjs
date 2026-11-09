@@ -3,8 +3,8 @@ const source=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8').match(
 const timers=[];const els=new Map(),element=()=>({style:{setProperty(){}},classList:{add(){},remove(){},toggle(){}},firstElementChild:{style:{}},setPointerCapture(){},querySelector:()=>null});
 const ctx=vm.createContext({window:{},document:{getElementById(id){if(!els.has(id))els.set(id,element());return els.get(id)}},fetch:()=>Promise.resolve({ok:false}),setTimeout:f=>timers.push(f),clearTimeout(){},setInterval:()=>0,clearInterval(){},Date,Math,console,Event});vm.runInContext(source,ctx);const run=c=>vm.runInContext(c,ctx);
 // Catalogue : 12 dés ajoutés après les personnages, identifiants existants inchangés.
-assert.equal(run('M.length'),55);assert.equal(run('M[42].n'),'Messire Balai');
-const pure=JSON.parse(run('JSON.stringify(M.slice(43))'));
+assert.equal(run('M.length'),58);assert.equal(run('M[42].n'),'Messire Balai');
+const pure=JSON.parse(run('JSON.stringify(M.slice(43,55))'));
 assert.deepEqual(pure.map(d=>d.el),[...'foudre vent terre glace eau feu '.repeat(2).trim().split(' ')]);
 for(const d of pure.slice(0,6)){assert.equal(d.pure,1);assert.deepEqual(d.c.map(a=>a[2]),[2]);assert.equal(run(`rarityOf(M[${pure.indexOf(d)+43}])`),1)}
 for(const d of pure.slice(6)){assert.equal(d.pure,2);assert.deepEqual(d.c.map(a=>a[2]).sort(),[2,3]);assert.equal(d.rarity,2)}
