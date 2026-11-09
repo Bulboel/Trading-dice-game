@@ -1,0 +1,30 @@
+/* v173 — Bourse consultable pendant la partie : dés en main et dés restants (ordre de tirage masqué). */
+#app #top #pouch-count{font-size:9px;color:#a8b5a5}
+#pouch-panel{width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 32px);padding:0;background:#1c3027;color:#ece8d6;border:1px solid #bca87999;border-radius:12px;box-shadow:0 16px 60px #0009;font:13px/1.45 system-ui,sans-serif;text-align:left}
+#pouch-panel::backdrop{background:#071a13b8;backdrop-filter:blur(4px)}
+#pouch-panel[open]{display:flex;flex-direction:column}
+#pouch-panel>header{padding:16px 18px 10px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;border-bottom:1px solid #c7b98533}
+#pouch-panel>header h2{margin:0;font:600 19px/1.2 Georgia,serif;color:#f1e3b8}
+#pouch-panel>header p{margin:4px 0 0;color:#b9c3b2;font-size:12px}
+#pouch-panel>header button{min-height:34px;width:34px;padding:0;font-size:17px}
+#pouch-body{overflow:auto;padding:4px 18px 16px}
+#pouch-body section{margin-top:12px}
+#pouch-body h3{display:flex;align-items:center;gap:8px;margin:0 0 7px;font:700 11px/1 system-ui,sans-serif;letter-spacing:1.4px;text-transform:uppercase;color:#d9c48b}
+#pouch-body h3 span{background:#182c23;color:#e8cd8b;border-radius:4px;padding:2px 6px;letter-spacing:0}
+.pouch-help{margin:0 0 8px;color:#a9b5a6;font-size:11.5px}
+.pouch-dice{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:7px}
+.pouch-die{position:relative;display:flex;align-items:center;gap:10px;min-height:52px;padding:6px 10px 6px 6px;border:1px solid color-mix(in srgb,var(--ec) 55%,#0000);border-left-width:4px;border-radius:9px;background:linear-gradient(120deg,color-mix(in srgb,var(--ec) 16%,#1a2c25),#15251f)}
+.pouch-die-art{flex:0 0 40px;width:40px;height:40px;display:grid;place-items:center;font-size:25px;line-height:1}
+.pouch-die-art img{width:40px;height:40px;object-fit:contain}
+.pouch-die-text{display:flex;flex-direction:column;min-width:0}
+.pouch-die-text b{font-size:13px;color:#f3ead0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pouch-die-text small{font-size:11px;color:#b6c0b0}
+.pouch-die-count{margin-left:auto;font:700 13px/1 system-ui;color:#e8cd8b;background:#0f1d18;border-radius:6px;padding:4px 7px}
+.pouch-empty{color:#a9b5a6;font-style:italic;padding:6px 0}
+.pouch-foe{margin:14px 0 0;padding-top:10px;border-top:1px solid #c7b98526;color:#b9c3b2;font-size:12px}
+@media(max-width:600px){
+ #pouch-panel>header{padding:12px}
+ #pouch-body{padding:2px 12px 12px}
+ .pouch-dice{grid-template-columns:1fr}
+ #app #top #pouch-count{display:none!important}
+}
