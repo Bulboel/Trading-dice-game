@@ -15,6 +15,7 @@ PORTRAITS = {
  'bolduc-legendaire':'Bolduc légendaire miniature.PNG', 'caleizis':'Caleïzis divine miniature.png',
  'eberien-legendaire':'Eberien légendaire miniature.png', 'frolgor':'Frolgor peu commun miniature.png',
  'gliska':'Gliska légendaire miniature.png', 'hilam':'Hilam miniature.PNG', 'maebril':'Maebril miniature.png',
+ 'orven':'Orven Miniature.png',
 }
 CLIPS = {
  'eberien': {'spell':('Eberien Spell cast.glb',None), 'victory':('Eberien Victory.glb',None), 'walk':('Eberien chibi.glb','Walking')},

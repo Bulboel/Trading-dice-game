@@ -398,6 +398,18 @@ let state,active=true,moving=true,light=false,paused=false,lastFrame=0,currentAn
 const tiles=new Map(),creatures=new Map(),modelCache=new Map(),combatClipCache=new Map();
 let modelTools;
 function getModelTools(){return modelTools??=Promise.all([import('https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js'),import('https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/utils/SkeletonUtils.js')]).then(([a,b])=>({loader:new a.GLTFLoader(),clone:b.clone}))}
+// Dé élémentaire posé : son modèle 3D apparaît au-dessus des dalles, lévite en tournant doucement puis s'efface (aucune créature ne reste).
+const pureFx=[];
+window.addEventListener('hackenia:pure-placed',async e=>{const {mi,x,y}=e.detail||{};try{const info=await game.modelInfo(mi);if(!info?.glb)return;const url='assets/'+info.glb;
+ if(!modelCache.has(url))modelCache.set(url,(async()=>{const exists=await fetch(url,{method:'HEAD'});if(!exists.ok)return null;const tools=await getModelTools();const gltf=await tools.loader.loadAsync(url);return{gltf,clone:tools.clone}})().catch(()=>null));
+ const asset=await modelCache.get(url);if(!asset)return;const root=asset.clone(asset.gltf.scene),holder=new THREE.Group(),mats=[];holder.add(root);root.updateMatrixWorld(true);
+ const box=new THREE.Box3().setFromObject(root),size=box.getSize(new THREE.Vector3()),scale=(game.monsters[mi]?.pure===1?1.15:2.4)/Math.max(size.x,size.y,size.z,.01);root.scale.setScalar(scale);root.position.set(-(box.min.x+box.max.x)*scale/2,-(box.min.y+box.max.y)*scale/2,-(box.min.z+box.max.z)*scale/2);
+ root.traverse(o=>{if(!o.isMesh)return;o.material=Array.isArray(o.material)?o.material.map(m=>m.clone()):o.material.clone();(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{m.transparent=true;m.depthWrite=false;mats.push(m)})});
+ holder.position.set(x-3.5,1.15,y-4.5);holder.scale.setScalar(.6);pieces.add(holder);pureFx.push({holder,mats,start:performance.now(),calm:!document.documentElement.classList.contains('no-motion')&&!matchMedia('(prefers-reduced-motion: reduce)').matches})}catch{}});
+function updatePureFx(now){for(let i=pureFx.length-1;i>=0;i--){const f=pureFx[i],t=(now-f.start)/1000,dur=f.calm?3:1.2,k=Math.min(1,t/dur),ease=1-Math.pow(1-k,3);
+ f.holder.position.y=1.15+(f.calm?.7*ease+.06*Math.sin(t*3.2):0);const cam=pieces.worldToLocal(camera.getWorldPosition(new THREE.Vector3())),face=Math.atan2(cam.x-f.holder.position.x,cam.z-f.holder.position.z);f.holder.rotation.y=face+(f.calm?.45*Math.sin(t*1.6):0);f.holder.rotation.z=f.calm?.08*Math.sin(t*1.7):0;f.holder.scale.setScalar(.6+.4*Math.min(1,t/.45));
+ const fade=k<.5?1:1-(k-.5)/.5;for(const m of f.mats)m.opacity=Math.max(0,Math.min(1,t/.35))*fade;
+ if(k>=1){pieces.remove(f.holder);f.mats.forEach(m=>m.dispose());pureFx.splice(i,1)}}}
 async function attachCreatureModel(g,k){
  const mi=k.mi;g.userData.modelId=mi;
  try{const info=await game.modelInfo(mi);if(!info?.glb)return;const url='assets/'+info.glb+(mi===37?'?revision=kala-idle-dc1986a2':mi===36?'?revision=eberien-idle-14d7089a':'');
@@ -571,7 +583,7 @@ function cellScreen(x,y){if(!active)return null;const r=canvas.getBoundingClient
 window.HackeniaView={get active(){return active},cellAt,sync,setActive,updateLens,preview,clearPreview,cellScreen};configure();sync();
 const portalContent=document.getElementById('portal-content');
 if(portalContent){const refreshPreview=()=>{const art=document.getElementById('play-terrain-art');if(art&&document.body.classList.contains('portal-open')){const terrain=document.getElementById('play-terrain')?.value||'terre';preview(terrain,art)}else clearPreview()};new MutationObserver(refreshPreview).observe(portalContent,{childList:true,subtree:true});refreshPreview()}
-function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&!previewMode)||!active||now-lastFrame<(renderer.isSoftware?100:light?32:16))return;const dt=Math.min((now-lastFrame)/1000,.06);lastFrame=now;const t=moving?now/1000:0;
+function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&!previewMode)||!active||now-lastFrame<(renderer.isSoftware?100:light?32:16))return;const dt=Math.min((now-lastFrame)/1000,.06);lastFrame=now;if(pureFx.length)updatePureFx(now);const t=moving?now/1000:0;
  if(iceScene.visible){for(let i=0;i<flakeCount;i++){const f=flakeSeeds[i],drop=moving?(t*(.65+f.size*.25)+f.phase)%7.2:0;flakeDummy.position.set(f.x+Math.sin(t*.45+f.phase)*.11,Math.max(.12,f.y-drop),f.z+Math.cos(t*.37+f.phase)*.1);flakeDummy.scale.setScalar(f.size);flakeDummy.rotation.z=f.spin+t*.22;flakeDummy.updateMatrix();snowfall.setMatrixAt(i,flakeDummy.matrix)}snowfall.instanceMatrix.needsUpdate=true}
  if(forest.visible){wind.value=t;waterNormals.offset.set(-t*.032,t*.013);
  for(let i=0;i<wp.count;i++){const x=waterOrig[i*3],z=waterOrig[i*3+2];wp.setY(i,waterHeight(x,z,t))}wp.needsUpdate=true;if(!renderer.isSoftware)wg.computeVertexNormals();

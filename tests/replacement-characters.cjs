@@ -21,7 +21,7 @@ for(const [i,[name,key,el,rarity]] of Object.entries(expected)){
  }
 }
 assert.equal(clips,36);
-for(const [i,key] of [[29,'bosco'],[10,'bulbalina'],[34,'pachie'],[25,'kayla-legendaire'],[28,'bolduc-legendaire'],[30,'caleizis'],[27,'eberien-legendaire'],[8,'frolgor'],[24,'gliska'],[26,'hilam'],[0,'maebril']]){assert.equal(defs[i].portrait,key);for(const size of [128,512])assert.ok(fs.statSync(path.join(root,`assets/characters/${key}-${size}.webp`)).size<150000,'Portrait fits the mobile budget')}
+for(const [i,key] of [[29,'bosco'],[10,'bulbalina'],[34,'pachie'],[25,'kayla-legendaire'],[28,'bolduc-legendaire'],[30,'caleizis'],[27,'eberien-legendaire'],[8,'frolgor'],[24,'gliska'],[26,'hilam'],[0,'maebril'],[2,'orven']]){assert.equal(defs[i].portrait,key);for(const size of [128,512])assert.ok(fs.statSync(path.join(root,`assets/characters/${key}-${size}.webp`)).size<150000,'Portrait fits the mobile budget')}
 // Les dés voisins qui partageaient l'animal gardent leur créature d'origine.
 assert.equal(defs[4].cn,'Poisson Goutte');assert.equal(defs[1].cn,'Moineau Brise');assert.equal(defs[6].cn,'Abeille Étincelle','Level II bee keeps its animal');assert.equal(defs[18].cn,'Salamandre Voltaïque');assert.equal(defs[31].cn,'Dragon des Vents');
 (async()=>{
