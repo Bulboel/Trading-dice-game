@@ -381,9 +381,19 @@ function label(value,element,bonus=0){const key=value+':'+element+':'+bonus;if(t
 
 // Project DOM captions through the same camera so both renderers keep them legible.
 const boardCaptions=document.createElement('div');boardCaptions.className='board-objectives';boardCaptions.innerHTML='<span class="zone-caption zone-north"></span><span class="zone-caption zone-south"></span><span class="board-destination-arrow" aria-label="Case de destination choisie"><svg viewBox="0 0 128 128" aria-hidden="true"><path d="M45 8h38v59h29l-48 52L16 67h29Z"/></svg></span>';host.append(boardCaptions);
+const powerCaptions=new Map();
 const zoneCaptions=[...boardCaptions.querySelectorAll('.zone-caption')],destinationMarker=boardCaptions.querySelector('.board-destination-arrow');
 function updateZoneLabels(){const seat=game.viewerSeat();zoneCaptions.forEach((caption,i)=>{const own=(i===0?1:0)===seat;caption.textContent=own?'Zone à protéger':'Zone à envahir';caption.classList.toggle('own',own)});boardCaptions.hidden=previewMode}
-function projectBoardCaptions(t=0){if(previewMode||!active){boardCaptions.hidden=true;return}boardCaptions.hidden=false;const r=canvas.getBoundingClientRect(),h=host.getBoundingClientRect();const place=(el,x,y,z)=>{const p=world.localToWorld(new THREE.Vector3(x,y,z)).project(camera);el.style.left=(r.left-h.left+(p.x+1)*r.width/2)+'px';el.style.top=(r.top-h.top+(1-p.y)*r.height/2)+'px';el.hidden=p.z < -1||p.z>1};zoneCaptions.forEach((el,i)=>place(el,0,.48,i===0?-4.5:4.5));destinationMarker.hidden=!state.movePlan;if(state.movePlan){const p=state.movePlan,x=p.previewX??p.x,y=p.previewY??p.y,c=state.b[y]?.[x];place(destinationMarker,x-3.5,1.1+(c&&!c.f?.28:0)+(moving?Math.sin(t*4)*.055:0),y-4.5)}}
+function updateCreaturePowers(place){
+ const combat=window.HackeniaCombat?.current(),live=new Set();
+ for(const [id,g]of creatures){live.add(id);const k=g.userData.k;let badge=powerCaptions.get(id);if(!badge){badge=document.createElement('span');badge.className='creature-pa';boardCaptions.append(badge);powerCaptions.set(id,badge)}
+  const i=combat?.fighters.findIndex(c=>c.id===id)??-1,x=Math.max(0,Math.min(7,Math.round(g.position.x+3.5))),y=Math.max(0,Math.min(9,Math.round(g.position.z+4.5))),power=i>=0?combat.stats[i].attack:game.creatureAttack(k,x,y,state.b),text='PA : '+power;
+  if(badge.textContent!==text)badge.textContent=text;badge.setAttribute('aria-label',(game.monsters[k.mi]?.cn||k.mn||'Créature')+' · '+text);badge.classList.toggle('opponent',k.o!==game.viewerSeat());
+  const height=(g.userData.animationInfo?.boardHeight||1)+.27;place(badge,g.position.x,g.position.y+height,g.position.z);if(!g.visible)badge.hidden=true;const pose=combat?window.HackeniaCombat.pose(combat,k):null;badge.style.opacity=String(pose?1-pose.defeat:1);
+ }
+ for(const [id,badge]of powerCaptions)if(!live.has(id)){badge.remove();powerCaptions.delete(id)}
+}
+function projectBoardCaptions(t=0){if(previewMode||!active){boardCaptions.hidden=true;return}boardCaptions.hidden=false;const r=canvas.getBoundingClientRect(),h=host.getBoundingClientRect();const place=(el,x,y,z)=>{const p=world.localToWorld(new THREE.Vector3(x,y,z)).project(camera);el.style.left=(r.left-h.left+(p.x+1)*r.width/2)+'px';el.style.top=(r.top-h.top+(1-p.y)*r.height/2)+'px';el.hidden=p.z < -1||p.z>1};zoneCaptions.forEach((el,i)=>place(el,0,.48,i===0?-4.5:4.5));updateCreaturePowers(place);destinationMarker.hidden=!state.movePlan;if(state.movePlan){const p=state.movePlan,x=p.previewX??p.x,y=p.previewY??p.y,c=state.b[y]?.[x];place(destinationMarker,x-3.5,1.1+(c&&!c.f?.28:0)+(moving?Math.sin(t*4)*.055:0),y-4.5)}}
 let state,active=true,moving=true,light=false,paused=false,lastFrame=0,currentAngle=0;
 const tiles=new Map(),creatures=new Map(),modelCache=new Map(),combatClipCache=new Map();
 let modelTools;
