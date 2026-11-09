@@ -16,6 +16,10 @@ PORTRAITS = {
  'eberien-legendaire':'Eberien légendaire miniature.png', 'frolgor':'Frolgor peu commun miniature.png',
  'gliska':'Gliska légendaire miniature.png', 'hilam':'Hilam miniature.PNG', 'maebril':'Maebril miniature.png',
  'orven':'Orven Miniature.png',
+ # v197 — portraits détourés (miniatures) ou rendus depuis le modèle 3D (Max, Max & Alastor, Orcus) dans cutouts/.
+ 'max':None, 'max-alastor':None, 'orcus':None,
+ 'pennedra':'Pennedra miniature.png', 'sameron':'Sameron miniature.png', 'soryan':'Soryan miniature.png',
+ 'velmarys':'Velmarys miniature.png', 'ven':'Ven miniature.png', 'zackarie':'Zackarie miniature.png',
 }
 CLIPS = {
  'eberien': {'spell':('Eberien Spell cast.glb',None), 'victory':('Eberien Victory.glb',None), 'walk':('Eberien chibi.glb','Walking')},
@@ -34,6 +38,9 @@ for key,prefix,idle in [
  ('bulbalina','Bulbalina peu commune',None), ('frolgor','Frolgor peu commun',None),
  ('maebril','Maebril',None), ('orven','Orven',None)]:
  CLIPS[key]={'spell':(f'{prefix} attaque.glb',None), 'victory':(f'{prefix} victoire.glb',None), 'walk':(f'{prefix} marche.glb',None)}
+for key,prefix,walk in [('max','Max','marche'),('max-alastor','Max & Alastor','marche'),('orcus','Orcus','marche'),('pennedra','Pennedra','Marche'),
+ ('sameron','Sameron','Marche'),('soryan','Soryan','marche'),('velmarys','Velmarys','marche'),('ven','Ven','marche'),('zackarie','Zackarie','marche')]:
+ CLIPS[key]={'spell':(f'{prefix} attaque.glb',None), 'victory':(f'{prefix} victoire.glb',None), 'walk':(f'{prefix} {walk}.glb',None)}
 def animation_only(source, name, destination):
  data=source.read_bytes(); length=struct.unpack_from('<I',data,12)[0]
  doc=json.loads(data[20:20+length]); binary=data[28+length:]
