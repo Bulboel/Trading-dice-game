@@ -45,3 +45,7 @@ body.portal-open[data-portal-view="home"] #daily-die{position:absolute;right:14p
 .daily-claim{width:100%}
 .daily-wait{margin:0;text-align:center;color:#b9c3b2}
 @media(max-width:420px){.daily-days{grid-template-columns:repeat(4,1fr);gap:6px}.daily-r{font-size:10.5px}}
+/* Noyau intérieur : remplit les coins arrondis où trois faces se rejoignent. */
+#daily-die .daily-cube .dcore{position:absolute;inset:2%;border-radius:8%;background:linear-gradient(135deg,#ffb347,#c79a3c 50%,#8e7dff);transform:none}
+#daily-die .daily-cube .dcore.y{transform:rotateY(90deg)}
+#daily-die .daily-cube .dcore.z{transform:rotateX(90deg)}
