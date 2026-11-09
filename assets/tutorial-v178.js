@@ -56,7 +56,7 @@ const steps=[
  text:()=>`<p>Repose <b>Bosco</b>. Dans la barre de lancer, active <b>« Dé bonus ✦ »</b> : tu lanceras 3 dés au lieu de 2. Puis lance !</p>
  <p>À savoir : si <b>tous tes dés montrent la même face</b>, c’est une <b>paire</b> ou un <b>trio magique</b>. L’invocation réussit toujours, même sous le résultat demandé.</p>`,
  check:()=>mine().length>0&&mode==='i'&&idle(),
- success:()=>`<p>✓ <b>Dés identiques : invocation magique !</b> Bosco apparaît malgré des 2.</p><p>Le dé bonus ne sert qu’une fois. Tu en regagnes un après chaque échec, si tu n’en as pas déjà un.</p>`},
+ success:()=>`<p>✓ <b>Dés identiques : invocation magique !</b> Bosco apparaît malgré des 2.</p><p>Chaque dé bonus ne sert qu’une fois. Tu en gagnes un après chaque échec, et tu peux en garder <b>jusqu’à 2</b> : à ton choix, ajoute-les un par un ou les deux à la fois pour mettre toutes les chances de ton côté.</p>`},
 {title:'Déplacer une créature',kind:'action',
  setup(){reset();path(3,[9,8,7,6,5,4],0,[4,2,3,1,5,2]);unit(0,3,9,D.kala)},
  targets:()=>[[3,5]],

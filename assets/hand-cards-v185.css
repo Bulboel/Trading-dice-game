@@ -53,3 +53,4 @@
 #portal .deck-limits span{padding:3px 7px;border-radius:999px;background:#0f1d18;border:1px solid #baa66e44;color:#d8ceb0}
 #portal .deck-limits span.full{border-color:#e7cd8a;color:#ffe08a}
 #portal .play-level-note{font-size:12px;margin:0 0 12px}
+#app .bonus-mark b{font:700 11px/1 system-ui,sans-serif;margin-left:2px;vertical-align:super;color:#ffe08a}
