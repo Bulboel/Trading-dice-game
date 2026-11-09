@@ -1,0 +1,27 @@
+/* v190 — Ciel animé du menu et lune. */
+#night-sky{display:none}
+body.portal-open #night-sky{display:block;position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+body.portal-open::before,body.portal-open::after{opacity:.35!important}
+#night-sky .sky-layer{position:absolute;inset:-6%;animation:sky-drift 140s linear infinite alternate}
+#night-sky .sky-layer.mid{animation-duration:100s;animation-direction:alternate-reverse}
+#night-sky .sky-layer.near{animation-duration:70s}
+#night-sky .sky-layer i{position:absolute;border-radius:50%;opacity:.9;box-shadow:0 0 4px currentColor;animation:sky-twinkle var(--tw) ease-in-out var(--td) infinite}
+#night-sky .sky-layer.near i{box-shadow:0 0 6px 1px #ffffffaa}
+@keyframes sky-twinkle{0%,100%{opacity:.95;transform:scale(1)}50%{opacity:var(--lo);transform:scale(.6)}}
+@keyframes sky-drift{from{transform:translate(0,0)}to{transform:translate(-2.5%,1.5%)}}
+/* Lune : disque aux cratères doux, halo qui respire. */
+#night-sky .sky-moon{position:absolute;left:7%;top:150px;width:clamp(70px,9vw,120px);aspect-ratio:1;animation:moon-float 18s ease-in-out infinite alternate}
+#night-sky .moon-halo{position:absolute;inset:-90%;border-radius:50%;background:radial-gradient(circle,#fff4d855 0%,#ffe9b833 22%,#c9d8ff14 45%,transparent 68%);animation:moon-glow 6s ease-in-out infinite alternate}
+#night-sky .moon-disc{position:absolute;inset:0;border-radius:50%;
+ background:radial-gradient(circle at 30% 34%,#00000014 0 9%,transparent 10%),radial-gradient(circle at 62% 58%,#00000018 0 13%,transparent 14%),radial-gradient(circle at 46% 78%,#00000012 0 6%,transparent 7%),radial-gradient(circle at 70% 28%,#00000010 0 5%,transparent 6%),
+  radial-gradient(circle at 36% 30%,#fffdf3 0%,#f6ecd2 45%,#d9cfb4 75%,#b6ac94 100%);
+ box-shadow:0 0 30px 6px #fff2d066,0 0 90px 20px #ffe7b322,inset -10px -8px 22px #6d6550aa,inset 6px 5px 14px #ffffffaa}
+@keyframes moon-glow{from{opacity:.75;transform:scale(.96)}to{opacity:1;transform:scale(1.04)}}
+@keyframes moon-float{from{transform:translateY(0)}to{transform:translateY(-10px)}}
+/* Étoiles filantes. */
+#night-sky .shooting-star{position:absolute;width:140px;height:2px;border-radius:2px;opacity:0;background:linear-gradient(90deg,#ffffff00,#ffffffcc 70%,#fff);transform:rotate(var(--ang,160deg));transform-origin:right center;filter:drop-shadow(0 0 4px #cfe0ff)}
+#night-sky .shooting-star.go{animation:shoot 1.1s ease-out forwards}
+@keyframes shoot{0%{opacity:0;translate:0 0}10%{opacity:1}100%{opacity:0;translate:-420px 150px}}
+@media(max-width:700px){#night-sky .sky-moon{left:-20px;top:96px;width:66px}#night-sky .shooting-star{width:90px}}
+@media(prefers-reduced-motion:reduce){#night-sky *{animation:none!important}}
+.no-motion #night-sky *{animation:none!important}
