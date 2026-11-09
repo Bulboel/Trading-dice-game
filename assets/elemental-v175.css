@@ -1,0 +1,32 @@
+/* v175 — dés élémentaires purs et aperçu de la fiche au survol (PC). */
+/* Dés élémentaires : gemme hexagonale, carte aux reflets de l'élément, sans personnage. */
+.pure-emblem{width:100%;height:100%;max-width:58px;max-height:58px;filter:drop-shadow(0 2px 6px #0009) drop-shadow(0 0 10px color-mix(in srgb,var(--dice-element,#9569c5) 55%,transparent))}
+#hand .dc.pure{background:radial-gradient(ellipse at 50% 0%,color-mix(in srgb,var(--dice-element) 34%,transparent),transparent 70%),linear-gradient(160deg,#16261f,#0c1712)!important;border-style:dashed!important;border-color:color-mix(in srgb,var(--dice-element) 75%,#fff3)!important}
+#hand .dc.pure .dice-name{font-style:italic;letter-spacing:.01em}
+#hand .dc.pure .dice-roll{color:#cfe7d6}
+#hand .dc.pure .dice-art{display:grid;place-items:center}
+.collect-art .pure-emblem,.deck-tray-slot .pure-emblem{max-width:72px;max-height:72px}
+#fiche .pure-stage{display:grid;place-items:center;min-height:180px}
+#fiche .pure-big{width:150px;height:150px;--dice-element:var(--ec)}
+#fiche .pure-big .pure-emblem{max-width:none;max-height:none}
+/* Aperçu au survol : grande fiche translucide au-dessus du plateau, non cliquable. */
+#bw{position:relative}
+#hand-hover{position:absolute;inset:0;z-index:60;display:grid;place-items:center;padding:12px;pointer-events:none;opacity:0;transform:translateY(10px) scale(.98);transition:opacity .18s ease,transform .18s ease}
+#hand-hover.show{opacity:1;transform:none}
+#hand-hover .hover-sheet{display:flex;flex-direction:column;width:min(560px,92%);max-height:calc(100% - 8px);overflow:hidden;border-radius:16px;border:1px solid color-mix(in srgb,var(--ec) 70%,#e9d9a6);background:color-mix(in srgb,#10201a 84%,transparent);backdrop-filter:blur(6px);box-shadow:0 20px 70px #000a,0 0 0 1px #0006 inset;color:#f0e8d0;font:13px/1.45 system-ui,sans-serif}
+#hand-hover .hv-head,#hand-hover .hv-stats,#hand-hover .hv-lore{flex:0 0 auto}
+#hand-hover .hv-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;border-bottom:1px solid #ffffff1a}
+#hand-hover .hv-head b{font:700 21px/1.2 "Cinzel",Georgia,serif;color:#f6e7bd;text-shadow:0 0 12px color-mix(in srgb,var(--ec) 50%,transparent)}
+#hand-hover .hv-tag{padding:4px 10px;border-radius:999px;background:var(--ec);color:#fff;font-size:11px;font-weight:600;text-transform:capitalize;white-space:nowrap}
+#hand-hover .hv-stage{position:relative;flex:1 1 250px;min-height:70px;max-height:250px;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 72%,color-mix(in srgb,var(--ec) 34%,transparent),transparent 66%)}
+#hand-hover .hv-emoji{font-size:min(110px,14vh);line-height:1;filter:drop-shadow(0 10px 18px #000a)}
+#hand-hover .hv-portrait{position:absolute;inset:6px 0;margin:auto;width:auto;height:auto;max-height:calc(100% - 12px);max-width:80%;object-fit:contain;filter:drop-shadow(0 10px 20px #000a)}
+#hand-hover .hv-pure{width:min(160px,100%);height:min(160px,100%);aspect-ratio:1;--dice-element:var(--ec)}
+#hand-hover .hv-pure .pure-emblem{max-width:none;max-height:none}
+#hand-hover .hv-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px 14px;padding:10px 16px 0}
+#hand-hover .hv-stats>div{display:flex;flex-direction:column;gap:2px}
+#hand-hover .hv-stats b{font-size:10px;letter-spacing:1.1px;text-transform:uppercase;color:#d9c48b}
+#hand-hover .hv-stats span{font-size:13.5px;color:#f0e8d0}
+#hand-hover .hv-lore{margin:8px 16px 14px;font-style:italic;color:#c8d2c4}
+@media(prefers-reduced-motion:reduce){#hand-hover{transition:none}}
+.detail-character .pure-emblem{width:150px;height:150px;max-width:150px;max-height:150px}
