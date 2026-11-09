@@ -1,0 +1,24 @@
+/* v186 — Dés du menu : noyau plein (plus de trous aux coins) et finition métallique. */
+#portal #portal-nav .menu-cube .md-core{position:absolute;inset:3%;border-radius:calc(var(--menu-size) * .06);background:color-mix(in srgb,var(--accent) 55%,#0d0b16);backface-visibility:visible}
+#portal #portal-nav .menu-cube .md-core-y{transform:rotateY(90deg)}
+#portal #portal-nav .menu-cube .md-core-z{transform:rotateX(90deg)}
+/* Faces : base colorée, brossage horizontal, reflet spéculaire et cadre doré. */
+#portal #portal-nav .md-face{border:1.6px solid transparent!important;
+ background:linear-gradient(118deg,#ffffff00 30%,#ffffff55 44%,#ffffff00 56%) padding-box,
+  repeating-linear-gradient(0deg,#ffffff0d 0 1px,#00000008 1px 2px) padding-box,
+  linear-gradient(150deg,color-mix(in srgb,var(--accent) 70%,#fff) 0%,var(--accent) 38%,color-mix(in srgb,var(--accent) 62%,#120d1e) 100%) padding-box,
+  linear-gradient(140deg,#fff3c4,#c79a3c 35%,#fbe7a8 55%,#8a6420 80%,#e9cf86) border-box!important;
+ box-shadow:inset 0 1px 1px #ffffffb0,inset 0 -3px 5px #0005,inset -2px 0 4px #0003,inset 0 0 10px color-mix(in srgb,var(--accent) 40%,transparent)!important}
+#portal #portal-nav .md-top{background:linear-gradient(118deg,#ffffff00 25%,#ffffff70 45%,#ffffff00 60%) padding-box,repeating-linear-gradient(90deg,#ffffff10 0 1px,#00000006 1px 2px) padding-box,linear-gradient(140deg,color-mix(in srgb,var(--accent) 55%,#fff),color-mix(in srgb,var(--accent) 85%,#fff)) padding-box,linear-gradient(140deg,#fff6d2,#d9b05a 45%,#fff1bf 70%,#a87d2e) border-box!important}
+#portal #portal-nav .md-right{background:linear-gradient(118deg,#ffffff00 35%,#ffffff2e 48%,#ffffff00 60%) padding-box,repeating-linear-gradient(0deg,#ffffff0a 0 1px,#0000000a 1px 2px) padding-box,linear-gradient(135deg,color-mix(in srgb,var(--accent) 85%,#000),color-mix(in srgb,var(--accent) 55%,#0b0818)) padding-box,linear-gradient(140deg,#d8b866,#7a5618 50%,#c9a24e) border-box!important}
+#portal #portal-nav .md-face:before{inset:10%!important;border:1px solid #f6dc9a!important;opacity:.75!important;box-shadow:0 0 0 1px #0004,inset 0 0 0 1px #00000022,0 0 6px #ffd98a33!important}
+#portal #portal-nav .md-face:after{background:radial-gradient(ellipse at 18% 8%,#ffffff66,transparent 45%)!important}
+/* Emblème gravé et pastilles en métal poli. */
+#portal #portal-nav .menu-emblem{color:#fff4cf!important;filter:drop-shadow(0 1px 0 #6d4b12) drop-shadow(0 -1px 0 #fffbe9aa) drop-shadow(0 0 3px #0008)!important}
+#portal #portal-nav .menu-pips .pip{background:radial-gradient(circle at 35% 30%,#fffdf2,#f1d488 45%,#9a7124 100%)!important;box-shadow:inset 0 -1px 1px #0006,0 1px 1px #fff8,0 0 3px #00000055!important}
+#portal #portal-nav .md-stud{background:radial-gradient(circle at 35% 30%,#fffdf2,#e6c26c 55%,#8c661e)!important;opacity:1!important;box-shadow:0 1px 1px #0007!important}
+/* Accueil sur téléphone : la zone du menu garde la taille de l'anneau, même sur un écran peu haut. */
+@media(max-width:900px){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav{--nav-ring:min(calc(100vw - 96px),max(250px,calc(100dvh - 300px)),560px);flex:0 0 auto!important;height:calc(var(--nav-ring) + 96px)!important;min-height:calc(var(--nav-ring) + 96px)!important}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring{--ring-d:var(--nav-ring)!important}
+}
