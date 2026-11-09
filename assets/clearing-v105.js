@@ -1,7 +1,7 @@
 /* Presentation adapter. Game legality, turns, decks and combat stay in index.html. */
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
 import { orientBoardModel } from './model-facing.js?v=20261103-v73';
-import { createCrater } from './crater-v135.js?v=20261104-v140';
+import { createCrater } from './crater-v135.js?v=20261109-v180';
 
 const game=window.hackeniaGame, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -378,6 +378,12 @@ const tileGeo=new THREE.BoxGeometry(.94,1,.94),topGeo=new THREE.PlaneGeometry(.8
 const eyeMaterial=mat(0x172d26);
 const green=mat(0x3c7959,{roughness:.56}),orange=mat(0xb97844,{roughness:.56}); function applyCampMaterials(){const st=getComputedStyle(document.documentElement),a=st.getPropertyValue('--camp0-tile').trim(),b=st.getPropertyValue('--camp1-tile').trim();if(a)green.color.set(a);if(b)orange.color.set(b)} applyCampMaterials();window.addEventListener('hackenia:camps',applyCampMaterials);
 function label(value,element,bonus=0){const key=value+':'+element+':'+bonus;if(textures.has(key))return textures.get(key);const c=document.createElement('canvas');c.width=c.height=128;const ctx=c.getContext('2d');ctx.strokeStyle='#f0dfb280';ctx.lineWidth=2;ctx.strokeRect(5,5,118,118);ctx.font='bold 70px Georgia';ctx.textAlign='center';ctx.fillStyle='#fff4d3';ctx.shadowColor='#10261b';ctx.shadowBlur=3;ctx.fillText(value,64,87);if(element){ctx.beginPath();ctx.arc(108,20,8,0,7);ctx.fillStyle=game.elementColors[element];ctx.fill();ctx.strokeStyle='#fff4cf';ctx.stroke()}if(bonus){ctx.font='bold 24px sans-serif';ctx.fillStyle='#f5db84';ctx.fillText('+'+bonus,103,114)}const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;const material=new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false});textures.set(key,material);return material}
+
+// Project DOM captions through the same camera so both renderers keep them legible.
+const boardCaptions=document.createElement('div');boardCaptions.className='board-objectives';boardCaptions.innerHTML='<span class="zone-caption zone-north"></span><span class="zone-caption zone-south"></span><span class="board-destination-arrow" aria-label="Case de destination choisie"><svg viewBox="0 0 128 128" aria-hidden="true"><path d="M45 8h38v59h29l-48 52L16 67h29Z"/></svg></span>';host.append(boardCaptions);
+const zoneCaptions=[...boardCaptions.querySelectorAll('.zone-caption')],destinationMarker=boardCaptions.querySelector('.board-destination-arrow');
+function updateZoneLabels(){const seat=game.viewerSeat();zoneCaptions.forEach((caption,i)=>{const own=(i===0?1:0)===seat;caption.textContent=own?'Zone à protéger':'Zone à envahir';caption.classList.toggle('own',own)});boardCaptions.hidden=previewMode}
+function projectBoardCaptions(t=0){if(previewMode||!active){boardCaptions.hidden=true;return}boardCaptions.hidden=false;const r=canvas.getBoundingClientRect(),h=host.getBoundingClientRect();const place=(el,x,y,z)=>{const p=world.localToWorld(new THREE.Vector3(x,y,z)).project(camera);el.style.left=(r.left-h.left+(p.x+1)*r.width/2)+'px';el.style.top=(r.top-h.top+(1-p.y)*r.height/2)+'px';el.hidden=p.z < -1||p.z>1};zoneCaptions.forEach((el,i)=>place(el,0,.48,i===0?-4.5:4.5));destinationMarker.hidden=!state.movePlan;if(state.movePlan){const p=state.movePlan,x=p.previewX??p.x,y=p.previewY??p.y,c=state.b[y]?.[x];place(destinationMarker,x-3.5,1.1+(c&&!c.f?.28:0)+(moving?Math.sin(t*4)*.055:0),y-4.5)}}
 let state,active=true,moving=true,light=false,paused=false,lastFrame=0,currentAngle=0;
 const tiles=new Map(),creatures=new Map(),modelCache=new Map(),combatClipCache=new Map();
 let modelTools;
@@ -406,7 +412,7 @@ function updateCombatFX(combat){combatFX.visible=!!combat&&combat.kind!=='passag
  const flight=Math.min(1,Math.max(0,(p-.25)/.20));combatOrb.visible=!combat.reduced&&p>.25&&p<.47;combatOrb.material.color.set(col);combatOrb.position.set(a.x-3.5+(d.x-a.x)*flight,.92+Math.sin(flight*Math.PI)*.2,a.y-4.5+(d.y-a.y)*flight);
  const shock=Math.max(0,(p-.44)/.21);impactRing.visible=p>.44&&p<.65;impactRing.position.set(d.x-3.5,.54,d.y-4.5);impactRing.material.color.set(col);impactRing.scale.setScalar(combat.reduced?1:1+shock*2.5);impactRing.material.opacity=1-Math.min(1,shock);
 }
-function disposeHighlights(){for(const m of [...highlights.children]){highlights.remove(m);m.material.dispose()}}
+function disposeHighlights(){for(const m of [...highlights.children]){highlights.remove(m);if(!m.userData.cachedLabel)m.material.dispose()}}
 function highlight(x,y,color,level=.235,opacity=.36){const m=new THREE.Mesh(highlightGeo,new THREE.MeshBasicMaterial({color,transparent:true,opacity,side:THREE.DoubleSide,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.set(x-3.5,level,y-4.5);highlights.add(m)}
 function creature(k){const g=new THREE.Group(),col=game.elementColors[game.monsters[k.mi]?.el]||'#b5c793';let material=creatureMats.get(col);if(!material){material=mat(col,{roughness:.48});creatureMats.set(col,material)}
 const foot=mesh(new THREE.CylinderGeometry(.29,.33,.1,16),k.o?orange:green,g);foot.position.y=.05;
@@ -424,9 +430,11 @@ function sync(){state=game.snapshot();const type=previewMode?previewTerrain:stat
  for(const[key,g]of creatures)if(!liveCr.has(key)){pieces.remove(g);g.userData.fadeMaterials?.forEach(m=>m.dispose());g.userData.mixer?.stopAllAction();g.traverse(o=>{if(o.isMesh&&!o.userData.imported&&o.geometry!==sphere)o.geometry.dispose()});creatures.delete(key)}
  disposeHighlights();const previewElement=game.monsters[state.die]?.el,previewColor=game.elementColors[previewElement]||0xf2d880;for(const a of state.preview)if(a[0]>=0&&a[0]<8&&a[1]>=0&&a[1]<10&&!game.isBlocked(a[0],a[1])){const c=state.b[a[1]][a[0]];highlight(a[0],a[1],previewColor,.24+(c&&!c.f?.28:0),.88)}
  if(state.reachable)for(const key of Object.keys(state.reachable)){if(state.reachable[key]===null)continue;const[x,y]=key.split(',').map(Number),k=state.cr.find(c=>c.x===x&&c.y===y);if(k&&k.o===state.cur)continue;const c=state.b[y][x];highlight(x,y,k?0xed806d:0xa5e2d2,.25+(c&&!c.f?.28:0))}
- if(state.tutorial)for(const [x,y] of state.tutorial){const c=state.b[y]?.[x];highlight(x,y,0xffa800,.265+(c&&!c.f?.28:0),.9)}  if(state.movePlan){const p=state.movePlan,c=state.b[p.y]?.[p.x];highlight(p.x,p.y,0xffe4a0,.28+(c&&!c.f?.28:0))}
+ if(state.tutorial)for(const [x,y] of state.tutorial){const c=state.b[y]?.[x];highlight(x,y,0xffa800,.265+(c&&!c.f?.28:0),.9)}  if(state.movePlan){const p=state.movePlan,x=p.previewX??p.x,y=p.previewY??p.y,c=state.b[y]?.[x];highlight(x,y,0xff303f,.29+(c&&!c.f?.28:0),.95)}
+ updateZoneLabels();
  if(state.sel)highlight(state.sel.x,state.sel.y,0xffe7a5,.26+(state.b[state.sel.y][state.sel.x]&&!state.b[state.sel.y][state.sel.x].f?.28:0));
  if(state.cu&&Date.now()-state.lastJ<3000){const c=state.b[state.cu.y][state.cu.x];highlight(state.cu.x,state.cu.y,0xe8efb5,.26+(c&&!c.f?.28:0))}
+ for(const [x,y,v] of state.preview){if(x<0||x>=8||y<0||y>=10||game.isBlocked(x,y)||state.cr.some(k=>k.x===x&&k.y===y))continue;const top=new THREE.Mesh(topGeo,label(v,previewElement,game.previewBonus(x,y)));top.rotation.x=-Math.PI/2;const c=state.b[y][x];top.position.set(x-3.5,.275+(c&&!c.f?.28:0),y-4.5);top.userData.cachedLabel=true;highlights.add(top)}
  const show=!previewMode&&(state.mode==='p'||state.mode==='r'||state.mode==='d')&&(state.pc||(state.mode==='d'&&state.hov));dieGroup.visible=!!show;if(show){const D=game.monsters[state.die];dieGroup.userData.target=new THREE.Vector3((state.pc||state.hov).x-3.5,.95,(state.pc||state.hov).y-4.5);dieBody.material=matForElement(D.el);dieLabel.material=label(D.lv,D.el);dieMetal.color.setHex(game.rarity(D)>=6?0xe7d6f5:game.rarity(D)>=3?0xe4b85f:game.rarity(D)===2?0xd4dce1:0xa97e4d)}
  pieces.visible=!previewMode;highlights.visible=!previewMode;
 }
@@ -521,14 +529,14 @@ function setActive(value,terrainOverride=null){
  active=value;const type=terrainOverride||game.snapshot().terrain,fire=type==='feu',ice=type==='glace';
  if(!value)placementLens.hidden=true;host.classList.toggle('view3d',value);document.getElementById('land-caption').hidden=!value;
  forest.visible=value&&!fire&&!ice;boardFrame.visible=value&&!fire;glacierClosures.visible=value&&ice;iceScene.visible=value&&ice;grid.visible=true;grid.material.color.set(ice?0x557e98:0xe5d9a0);grid.material.opacity=ice?.22:.27;
- if(fire&&value&&!crater)crater=createCrater(world,game.snapshot().blocked,!!renderer.isSoftware);if(crater)crater.root.visible=value&&fire;
+ if(fire&&value&&!crater)crater=createCrater(world,game.fireVents,!!renderer.isSoftware);if(crater)crater.root.visible=value&&fire;
  if(sceneryKey!==type){
   sceneryKey=type;
-  const themes={terre:[0x172c25,0x304d3d,0xe9f0d5,0x3c5034,0xffe1a0,3.1,'LE SANCTUAIRE VERDOYANT','La rivière murmure. Le duel commence.'],feu:[0x221b20,0x392328,0xf1c6ab,0x3e2023,0xffb16a,2.5,'LES LÈVRES DU BRASIER','La roche respire. Les évents sont impraticables.'],glace:[0x385365,0x93b2c4,0xe5f2f8,0x496778,0xcbe7f7,2.25,'GLACIER ÉTERNEL','La neige tombe. La glace entraîne les créatures.'],eau:[0x142d3a,0x47798d,0xdaf2f7,0x315765,0x92d9e8,2.8,'LES EAUX AZURÉES','La rivière traverse un sanctuaire baigné de lumière bleue.'],vent:[0x26372c,0x69836f,0xe4edda,0x53654c,0xd5e3ba,2.8,'LES HAUTEURS DU VENT','Les courants font frémir les feuillages.'],foudre:[0x202236,0x5b5c86,0xd6d9f4,0x39374d,0xc1c7ff,2.9,'LA CLAIRIÈRE ORAGEUSE','Le ciel crépite au-dessus du champ de bataille.']};
+  const themes={terre:[0x172c25,0x304d3d,0xe9f0d5,0x3c5034,0xffe1a0,3.1,'LE BOIS TENDRE','La rivière murmure. Le duel commence.'],feu:[0x221b20,0x392328,0xf1c6ab,0x3e2023,0xffb16a,2.5,'LES TERRES EMBRASÉES','La roche respire. Les évents sont impraticables.'],glace:[0x385365,0x93b2c4,0xe5f2f8,0x496778,0xcbe7f7,2.25,'LA ROUTE VERS FORFALLA','La neige tombe. La glace entraîne les créatures.'],eau:[0x142d3a,0x47798d,0xdaf2f7,0x315765,0x92d9e8,2.8,'LES EAUX AZURÉES','La rivière traverse un sanctuaire baigné de lumière bleue.'],vent:[0x26372c,0x69836f,0xe4edda,0x53654c,0xd5e3ba,2.8,'LES HAUTEURS DU VENT','Les courants font frémir les feuillages.'],foudre:[0x202236,0x5b5c86,0xd6d9f4,0x39374d,0xc1c7ff,2.9,'LA CLAIRIÈRE ORAGEUSE','Le ciel crépite au-dessus du champ de bataille.']};
   const t=themes[type]||themes.terre;renderer.setClearColor(t[0],1);scene.fog.color.set(t[1]);sky.color.set(t[2]);sky.groundColor.set(t[3]);sky.intensity=ice?1.9:2.3;sun.color.set(t[4]);sun.intensity=t[5];
   const caption=document.getElementById('land-caption');caption.querySelector('span').textContent=t[6];caption.querySelector('small').textContent=t[7];canvas.setAttribute('aria-label','Plateau 3D '+t[6].toLowerCase()+', huit colonnes et dix lignes')
  }
- document.getElementById('terrain-status').textContent=value?(fire?'Feu +1 · 6 évents fumants impraticables':ice?'Glace +1 · sol glissant · arrêt au contact':'Terre +1 · Clairière'):'Terrain '+type+' · +1 élément';
+ document.getElementById('terrain-status').textContent=({terre:'Terre +1 · Le Bois tendre',feu:'Feu +1 · 6 évents fumants impraticables',glace:'Glace +1 · sol glissant · arrêt au contact',eau:'Eau +1 · Lagon cristallin',vent:'Vent +1 · Plateau des vents',foudre:'Foudre +1 · Plaine foudroyée'})[type];
 }
 function resize(){const r=host.getBoundingClientRect();if(r.width<1||r.height<1)return;const aspect=r.width/r.height;renderer.setSize(r.width,r.height,false);const desktopBoard=matchMedia('(min-width: 900px) and (min-height: 660px)').matches;const span=Math.max(desktopBoard?8.0:8.9,7.1/aspect);viewSpan=span;viewAspect=aspect;camera.left=-span*aspect;camera.right=span*aspect;camera.top=span;camera.bottom=-span;updateCamera()}
 function configure(){light=renderer.isSoftware;moving=window.HackeniaSettings?.get().motion!==false&&!matchMedia('(prefers-reduced-motion:reduce)').matches;renderer.setPixelRatio(Math.min(devicePixelRatio||1,renderer.isSoftware?1.5:2));renderer.shadowMap.enabled=!renderer.isSoftware;grass.count=renderer.isSoftware?Math.min(850,grassCount):grassCount;const flowers=renderer.isSoftware?36:flowerCount;petals.count=flowers*5;stems.count=centres.count=flowers;flowerLeaves.count=flowers*2;motes.visible=!renderer.isSoftware&&moving;windAmount.value=moving?1:0;resize()}
@@ -562,6 +570,7 @@ function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&
  }
  for(const rill of fallingRills){const down=moving?((t*.35+rill.phase)%1)*.83:rill.phase*.83,p=rill.m.geometry.attributes.position;for(let i=0;i<2;i++){const y=-.06-down-i*.17;p.setXYZ(i,rill.side*(7.065+Math.sin(-y*2)*.035),y,river(rill.side*7)+rill.lane)}p.needsUpdate=true}
  motes.rotation.y=moving?Math.sin(t*.08)*.06:0;}else crater?.update(t,light,moving);
+
  const target=-state.rzCur*Math.PI/180;if(!moving)currentAngle=target;currentAngle+=Math.atan2(Math.sin(target-currentAngle),Math.cos(target-currentAngle))*Math.min(1,dt*5);world.rotation.y=currentAngle;world.updateMatrixWorld(true);
 
  for(const tile of tiles.values()){let progress=1;const a=tile.an,A=state.anim;if(a&&A&&moving){progress=Math.max(0,Math.min(1,(Date.now()-A.t0-a.d*220)/450))}tile.pivot.visible=progress>0;const eased=1-Math.pow(1-progress,3);tile.pivot.scale.setScalar(Math.max(.001,eased));tile.pivot.position.y=.22+(1-eased)*.55;tile.pivot.rotation.x=a?.c==='u-d'?(1-eased)*Math.PI/2:a?.c==='u-u'?-(1-eased)*Math.PI/2:0;tile.pivot.rotation.z=a?.c==='u-r'?-(1-eased)*Math.PI/2:a?.c==='u-l'?(1-eased)*Math.PI/2:0}
@@ -577,7 +586,7 @@ function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&
  if(g.userData.mixer&&(moving||(f&&!combat.reduced)))g.userData.mixer.update(dt);if(g.userData.modelRoot&&g.userData.model)orientBoardModel(g.userData.modelRoot,g.userData.model,f,g.userData.idleModelYaw||0,THREE);}
 
  if(dieGroup.visible){dieGroup.position.copy(dieGroup.userData.target);dieGroup.position.y+=moving?Math.sin(t*2)*.08:0;dieGroup.rotation.y=moving&&state.cubeCls!=='land'?t*.7:0;dieGroup.scale.setScalar(state.cubeCls==='poof'?.35:1)}
- highlights.children.forEach(m=>m.material.opacity=moving?.32+Math.sin(t*3)*.09:.4);renderer.render(scene,camera);drawPlacementLens();
+ highlights.children.forEach(m=>{if(!m.userData.cachedLabel)m.material.opacity=moving?.32+Math.sin(t*3)*.09:.4});renderer.render(scene,camera);projectBoardCaptions(t);drawPlacementLens();
 }
 requestAnimationFrame(frame);
 }

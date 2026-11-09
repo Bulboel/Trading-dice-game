@@ -3,7 +3,7 @@
 const skins={ivory:{face:'#e6dfca',light:'#faf5e6',shade:'#b4ac96',edge:'#b89a5d',ink:'#243c35'},obsidian:{face:'#1c3332',light:'#39504c',shade:'#0c1a1d',edge:'#bd9e64',ink:'#f4e5b9'}};
 const pips=[[],[[1,1]],[[0,0],[2,2]],[[0,0],[1,1],[2,2]],[[0,0],[2,0],[0,2],[2,2]],[[0,0],[2,0],[1,1],[0,2],[2,2]],[[0,0],[2,0],[0,1],[2,1],[0,2],[2,2]]];
 const turns={1:[0,0],2:[-90,0],3:[0,-90],4:[0,90],5:[90,0],6:[0,180]};
-let skin=['ivory','obsidian'].includes(window.HackeniaSettings?.get().rollSkin)?window.HackeniaSettings.get().rollSkin:'ivory',host=null,dice=[],spinning=false;
+let skin=['ivory','obsidian','emerald','ruby','sky'].includes(window.HackeniaSettings?.get().rollSkin)?window.HackeniaSettings.get().rollSkin:'ivory',host=null,dice=[],spinning=false;
 const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches||window.HackeniaSettings?.get().motion===false;
 const pose=value=>{const [x,y]=turns[value];return `rotateX(-16deg) rotateY(-20deg) rotateX(${x}deg) rotateY(${y}deg)`};
 // Use the known outcome as the endpoint of ONE decelerating rotation.
@@ -24,7 +24,7 @@ function preview(target,name){const appearance=skins[name];if(!appearance||!targ
 function render(target,values,rolling=false,won=null){
  if(!values.length)return;if(host!==target||dice.length!==values.length||dice.some(d=>d.wrap.parentElement!==target))build(target,values.length);
  paint();target.className='roll-dice-tray roll-volume-tray'+(rolling?' rolling':won===true?' win':won===false?' lose':'');
- if(rolling){if(spinning)return;spinning=true;
+ if(rolling){if(spinning)return;spinning=true;window.HackeniaSettings?.play?.('Roulement');
   dice.forEach((d,i)=>{const value=Number(values[i]);if(!turns[value])return;d.spin?.cancel();d.finished=false;d.ready=false;d.rollValue=value;d.result.textContent='';d.wrap.setAttribute('aria-label','Dé '+(i+1)+' en rotation');d.cube.style.transform=pose(1);
    if(!reduced()&&d.cube.animate){d.spin=d.cube.animate([{transform:pose(1)},{transform:landing(value,i)}],{duration:2520,easing:'cubic-bezier(.16,.65,.28,1)',fill:'forwards'});d.spin.onfinish=()=>{d.finished=true;if(d.ready)reveal(d,d.rollValue,i)}}
   });return;

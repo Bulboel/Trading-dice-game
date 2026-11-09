@@ -1,0 +1,18 @@
+const assert=require('node:assert/strict');
+const C=require('../assets/challenges-v180.js');
+const initial={version:1,gold:50,inventory:{42:1},decks:[]};
+assert.equal(C.unlocked(initial).length,0);
+let p=C.advance(initial,{won:true,terrain:'terre'});
+assert.equal(initial.challengeStats,undefined,'Progress must never mutate the current saved profile');
+assert.deepEqual(C.unlocked(p).map(d=>d.id),['wood']);
+const lost=C.advance(p,{won:false,terrain:'feu'});assert.equal(lost,p);
+assert.equal(C.advance(p,{won:true,terrain:'feu',mode:'tutorial'}),p,'Tutorial cannot unlock rewards');
+p=C.advance(p,{won:true,terrain:'feu',mode:'online'});
+p=C.advance(p,{won:true,terrain:'glace',mode:'play'});
+for(let i=3;i<50;i++)p=C.advance(p,{won:true,terrain:'terre'});
+assert.deepEqual(C.unlocked(p).map(d=>d.id),['wood','fire','ice','five','ten','fifty']);
+for(let i=0;i<5;i++)p=C.advance(p,{balai:true,mode:'play'});
+assert.equal(C.unlocked(p).length,7);assert.equal(p.challengeStats.balai,5);assert.equal(p.gold,50,'Cosmetic progress does not issue currency');
+assert.deepEqual(C.unlocked(JSON.parse(JSON.stringify(p))),C.unlocked(p),'Export/reload preserves unlocks');
+assert.equal(C.progress({...p,challengeStats:{wins:-1,balai:NaN}},C.definitions[3]),0);
+console.log('PASS: terrain victories, 5/10/50 wins, five Balai kills, online progress, tutorial exclusion and save roundtrip.');

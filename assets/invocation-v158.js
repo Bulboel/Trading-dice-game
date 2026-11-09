@@ -4,7 +4,7 @@ import {invocationPalette} from './invocation-colors.js?v=166';
 import {invocationNormalization,invocationFrame} from './invocation-layout.js?v=20261103-v72';
 import {GLTFLoader} from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js';
 import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
-export async function createInvocation(stage,{info,definition,reduced,isCurrent,onComplete,onReady}){
+export async function createInvocation(stage,{info,definition,reduced,isCurrent,onComplete,onReady,onReveal}){
 const theme=invocationPalette(definition?.el);
 const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(38,1,.05,100),renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
 renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;stage.appendChild(renderer.domElement);
@@ -39,14 +39,17 @@ const dust=new THREE.Points(dustGeometry,dustMaterial);cube.add(dust);dust.visib
 const light=new THREE.PointLight(theme.glow,0,5);light.position.set(0,.9,0);scene.add(light);
 const glow=new THREE.Mesh(new THREE.SphereGeometry(.65,24,16),new THREE.MeshBasicMaterial({color:theme.glow,transparent:true,opacity:0,depthWrite:false}));glow.position.set(0,.8,0);scene.add(glow);
 const character=new THREE.Group();scene.add(character);
-let model=null,mixer=null,progress=reduced?1:0,playing=!reduced,dead=false,frame=0,finished=false,prepared=false;
+let revealed=false;let model=null,mixer=null,progress=reduced?1:0,playing=!reduced,dead=false,frame=0,finished=false,prepared=false;
 const fallback=stage.querySelector('.invocation-fallback'),portrait=fallback?.querySelector('.fallback-character');
 function dispose(){if(dead)return;dead=true;cancelAnimationFrame(frame);observer?.disconnect();orbit.dispose();mixer?.stopAllAction();scene.traverse(o=>{o.geometry?.dispose();const materials=Array.isArray(o.material)?o.material:o.material?[o.material]:[];materials.forEach(m=>{Object.values(m).forEach(v=>{if(v?.isTexture)v.dispose()});m.dispose()})});renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove()}
 let observer;
 try{if(info?.glb){try{const data=await new GLTFLoader().loadAsync('assets/'+info.glb);model=data.scene;mixer=new THREE.AnimationMixer(model);const idle=data.animations.find(a=>/idle|stand|breath/i.test(a.name))||data.animations[0];if(idle)mixer.clipAction(idle).play();mixer.update(0);model.updateMatrixWorld(true);const box=new THREE.Box3().setFromObject(model,true),fit=invocationNormalization(box.min,box.max),normalized=new THREE.Group();normalized.scale.setScalar(fit.scale);normalized.position.set(fit.x,fit.y,fit.z);normalized.add(model);character.add(normalized)}catch{model=null;mixer?.stopAllAction();mixer=null;/* Keep the illustration if a model cannot be loaded or framed. */}}
 if(!isCurrent()){dispose();throw Error('closed')}
 if(fallback){if(model)fallback.hidden=true;else fallback.classList.add('fallback-portrait-only')}const accent=stage.parentElement?.style.getPropertyValue('--invocation-accent');if(accent){ring.material.color.set(accent);light.color.set(accent);glow.material.color.set(accent)}
+const sigils=new THREE.Group();scene.add(sigils);for(let i=0;i<3;i++){const sigil=new THREE.Mesh(new THREE.RingGeometry(1.45+i*.35,1.48+i*.35,96),new THREE.MeshBasicMaterial({color:i===1?0xffe9b0:theme.glow,transparent:true,opacity:.6,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));sigil.rotation.x=-Math.PI/2;sigil.position.y=.025+i*.012;sigils.add(sigil)}
+const beam=new THREE.Mesh(new THREE.CylinderGeometry(.35,1.1,4.5,40,1,true),new THREE.MeshBasicMaterial({color:theme.glow,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));beam.position.y=2;scene.add(beam);
 function ease(t){return t*t*(3-2*t)}
+function epicPose(t){sigils.rotation.y=reduced?0:t*2;const charge=Math.sin(Math.PI*Math.max(0,Math.min(1,(t-.25)/.7)));beam.material.opacity=reduced?0:charge*.12;ring.scale.setScalar(1+charge*.3);if(t>=.77&&!revealed){revealed=true;onReveal?.()}}
 function pose(t){const unfold=ease(Math.max(0,Math.min(1,(t-.08)/.62)));for(const p of panels){if(p===magicLid){p.hinge.rotation.x=0;continue;}if(p.axis==='bottom')p.hinge.rotation.x=0;else if(p.axis==='x')p.hinge.rotation.z=-p.side*unfold*Math.PI*.5;else p.hinge.rotation.x=p.side*unfold*Math.PI*.5;}
 const lift=ease(Math.max(0,Math.min(1,(t-.08)/.35)));
 const dissolve=Math.max(0,Math.min(1,(t-.40)/.36));
@@ -59,6 +62,6 @@ dustMaterial.opacity=dissolve<.8?Math.min(1,dissolve*8):Math.max(0,(1-dissolve)/
 if(dust.visible){for(let i=0;i<dustCount;i++){const j=i*3;dustPositions[j]=dustOrigins[j]+dustDrifts[j]*dissolve;dustPositions[j+1]=dustOrigins[j+1]+dustDrifts[j+1]*dissolve;dustPositions[j+2]=dustOrigins[j+2]+dustDrifts[j+2]*dissolve;}dustGeometry.attributes.position.needsUpdate=true;}
 const appear=ease(Math.max(0,Math.min(1,(t-.77)/.20)));character.visible=appear>.005;character.position.y=-1.8+appear*1.8;character.scale.setScalar(.45+.55*appear);cube.visible=true;light.intensity=6*Math.sin(Math.PI*Math.max(0,Math.min(1,(t-.22)/.68)));glow.material.opacity=.26*Math.sin(Math.PI*Math.max(0,Math.min(1,(t-.2)/.7)));glow.scale.setScalar(1+appear*1.5);if(!model&&portrait){portrait.style.opacity=String(appear);portrait.style.transform='translateY('+((1-appear)*35)+'px) scale('+(.45+.55*appear)+')'}}
 function resize(){const w=stage.clientWidth||1,h=stage.clientHeight||1,fit=invocationFrame(w/h);camera.aspect=w/h;camera.updateProjectionMatrix();camera.position.set(fit.x,fit.y,fit.z);orbit.target.set(0,fit.targetY,0);orbit.maxDistance=fit.distance*2;orbit.update();renderer.setSize(w,h,false)}observer=new ResizeObserver(resize);observer.observe(stage);resize();
-const clock=new THREE.Clock();function render(){if(dead)return;frame=requestAnimationFrame(render);if(document.hidden)return;const dt=Math.min(clock.getDelta(),.1);if(playing){progress=Math.min(1,progress+dt/3);if(progress>=1)playing=false}pose(progress);if(!reduced)mixer?.update(dt);orbit.update();renderer.render(scene,camera);if(!prepared){prepared=true;onReady?.()}if(progress>=1&&!finished){finished=true;onComplete?.()}}
+const clock=new THREE.Clock();function render(){if(dead)return;frame=requestAnimationFrame(render);if(document.hidden)return;const dt=Math.min(clock.getDelta(),.1);if(playing){progress=Math.min(1,progress+dt/4.4);if(progress>=1)playing=false}pose(progress);epicPose(progress);if(!reduced)mixer?.update(dt);orbit.update();renderer.render(scene,camera);if(!prepared){prepared=true;onReady?.()}if(progress>=1&&!finished){finished=true;onComplete?.()}}
 render();return{dispose};}catch(error){dispose();throw error}
 }
