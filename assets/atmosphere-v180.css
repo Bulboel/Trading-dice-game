@@ -1,0 +1,42 @@
+/* Midnight sky: stable stars, two independently breathing scintillation layers. */
+body.portal-open,body.portal-open[data-portal-view="home"]{background:#030715 url('night-sky-v180.svg') center top/cover fixed!important;isolation:isolate}
+body.portal-open::before,body.portal-open::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:radial-gradient(circle at 17% 23%,#eef5ff 0 1px,transparent 2px),radial-gradient(circle at 73% 67%,#c9ddff 0 1px,transparent 2.5px),radial-gradient(circle at 42% 89%,#d2e1ff 0 .7px,transparent 2px);background-size:317px 271px,463px 379px,571px 433px;animation:night-scintillate 5.7s ease-in-out infinite alternate;opacity:.7}
+body.portal-open::after{background-position:130px 70px,210px 90px,300px 130px;background-size:547px 383px,613px 499px,827px 593px;animation-duration:8.3s;animation-delay:-4s;opacity:.2}
+@keyframes night-scintillate{0%,20%{opacity:.15}65%{opacity:.85}100%{opacity:.35}}
+body.portal-open #portal{position:relative;z-index:1}
+body.portal-open .portal-section{background:linear-gradient(140deg,#15213cde,#080f22e8);border-color:#8ca9d52e}
+body.portal-open[data-portal-view="home"] #portal-content{background:transparent!important}
+.destination-arrow{position:absolute;left:50%;bottom:100%;transform:translateX(-50%);font-size:36px;color:#ff2439;text-shadow:0 0 8px #ff324b,0 1px 2px #fff;z-index:80;pointer-events:none;animation:destination-float 1s ease-in-out infinite alternate}
+@keyframes destination-float{to{transform:translate(-50%,-7px)}}
+#bd .move-target{outline:3px solid #ff394c;box-shadow:inset 0 0 20px #ff304977,0 0 16px #ff3049}
+#bd .zt{white-space:nowrap;color:#fff3d5;background:#071426d9;padding:5px 9px;border:1px solid #f1d19a88;border-radius:8px;text-shadow:0 0 8px #ffc766;z-index:5;font:700 11px Georgia,serif;pointer-events:none}
+/* The HUD borrows materials from the selected terrain while keeping camp colors. */
+body[data-terrain]{--hud-top:#4e4934;--hud-bottom:#222c23;--hud-rim:#acb17d;--hud-glow:#92c98622;--hud-grain:repeating-linear-gradient(3deg,#d9b9760c 0 1px,transparent 1px 7px)}
+body[data-terrain="terre"]{--hud-top:#654c32;--hud-bottom:#292e20;--hud-rim:#af9c67;--hud-glow:#90bd6e22;--hud-grain:repeating-linear-gradient(3deg,transparent 0 7px,#d7af7130 8px,#1b140f33 10px,transparent 12px 20px)}
+body[data-terrain="feu"]{--hud-top:#4e2d31;--hud-bottom:#1a1a23;--hud-rim:#bc7254;--hud-glow:#f15b382c;--hud-grain:repeating-linear-gradient(135deg,transparent 0 18px,#f4743410 19px,transparent 21px 37px)}
+body[data-terrain="glace"]{--hud-top:#385c79;--hud-bottom:#132638;--hud-rim:#b4e1f7;--hud-glow:#a4dcff22;--hud-grain:linear-gradient(120deg,transparent 20%,#d9f8ff20 21%,transparent 23% 65%,#d9f8ff17 66%,transparent 68%)}
+body[data-terrain="eau"]{--hud-top:#1e5266;--hud-bottom:#142633;--hud-rim:#75c8df;--hud-glow:#5accdf24}
+body[data-terrain="vent"]{--hud-top:#36584f;--hud-bottom:#1a2e2c;--hud-rim:#b4d2b6;--hud-glow:#ceebbc24}
+body[data-terrain="foudre"]{--hud-top:#42365d;--hud-bottom:#1d2039;--hud-rim:#baa3ed;--hud-glow:#b795ff2b}
+body[data-terrain] #hd .camp-score{background:var(--hud-grain),linear-gradient(160deg,var(--hud-top),var(--hud-bottom))!important;border:1px solid var(--hud-rim)!important;border-radius:13px 5px 13px 5px;box-shadow:inset 0 1px #fff2,inset 0 -4px #0002,0 3px 16px var(--hud-glow)!important}
+body[data-terrain] #hd .camp-name{color:#fff4d6}
+body[data-terrain] #hd .turn-state{color:#f5eaca;text-shadow:0 1px 3px #000}
+body[data-terrain] #top{background:linear-gradient(180deg,#080d17ec,#080d17b3)!important;border-bottom:1px solid color-mix(in srgb,var(--hud-rim) 50%,transparent)}
+.challenge-list{display:grid;gap:13px}.challenge-card{border:1px solid #839dc73b;border-radius:12px;background:linear-gradient(120deg,#1c2a41bd,#0a1426e0);overflow:hidden}.challenge-card summary{display:flex;gap:13px;align-items:center;padding:18px;cursor:pointer;list-style:none}.challenge-card summary::-webkit-details-marker{display:none}.challenge-card summary::after{content:'⌄';font-size:20px;color:#cfbd8f;transition:transform .2s}.challenge-card[open] summary::after{transform:rotate(180deg)}.challenge-card summary strong{flex:1;font:600 17px Georgia,serif;color:#f0e4c7}.challenge-seal{color:#a5bbda;font-size:25px}.challenge-count{color:#b9c9e1;font-variant-numeric:tabular-nums;white-space:nowrap}.challenge-body{padding:0 20px 22px 56px}.challenge-body p{margin:8px 0}.challenge-body progress{width:100%;height:7px;accent-color:#d5bb70}.challenge-reward span{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#d3b675;margin-right:8px}.challenge-card.complete{border-color:#cbb37880}.complete .challenge-seal,.challenge-done{color:#f5d991}.challenge-done{font-size:12px}
+.dice-pouch[data-texture="soie"]{filter:drop-shadow(0 3px 9px #ceafff20)}
+/* Rings of light frame the first discovery, then settle around the character. */
+#pouch-discovery-dialog{border-color:#d7bf83;box-shadow:0 0 60px #91a9e927,0 20px 90px #000c;background:linear-gradient(150deg,#18213a,#090d1c)}
+#pouch-discovery-dialog h2{font-family:Cinzel,Georgia,serif;color:#fff0c9;text-shadow:0 0 18px var(--invocation-accent)}
+#pouch-discovery-dialog .invocation-host{isolation:isolate;background:radial-gradient(ellipse at 50% 75%,color-mix(in srgb,var(--invocation-accent) 25%,transparent),transparent 65%),#070c19}
+#pouch-discovery-dialog .invocation-host::before,#pouch-discovery-dialog .invocation-host::after{content:"";position:absolute;left:50%;top:52%;width:65%;aspect-ratio:1;border:1px solid var(--invocation-accent);border-radius:50%;pointer-events:none;opacity:0;transform:translate(-50%,-50%);box-shadow:0 0 25px color-mix(in srgb,var(--invocation-accent) 30%,transparent),inset 0 0 20px color-mix(in srgb,var(--invocation-accent) 20%,transparent);z-index:0}
+#pouch-discovery-dialog .discovery-charging::before{opacity:.4;animation:discovery-orbit 5s linear infinite}
+#pouch-discovery-dialog .discovery-charging::after{opacity:.25;border-style:dashed;width:80%;animation:discovery-orbit 8s linear infinite reverse}
+#pouch-discovery-dialog .discovery-arrival::before{animation:discovery-wave 1.8s ease-out both}
+#pouch-discovery-dialog .discovery-arrival+.discovery-status{color:#fff0bd}
+@keyframes discovery-orbit{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes discovery-wave{0%{opacity:.8;transform:translate(-50%,-50%) scale(.5)}100%{opacity:.12;transform:translate(-50%,-50%) scale(1.6)}}
+@media(max-width:600px){.challenge-card summary{padding:15px;gap:9px}.challenge-card summary strong{font-size:15px}.challenge-body{padding:0 15px 18px}.challenge-count{font-size:12px}}
+@media(prefers-reduced-motion:reduce){body.portal-open::before,body.portal-open::after,.destination-arrow,#pouch-discovery-dialog .discovery-charging::before,#pouch-discovery-dialog .discovery-charging::after,#pouch-discovery-dialog .discovery-arrival::before{animation:none!important}}
+html.no-motion body.portal-open::before,html.no-motion body.portal-open::after,html.no-motion .destination-arrow,html.no-motion #pouch-discovery-dialog .invocation-host::before,html.no-motion #pouch-discovery-dialog .invocation-host::after{animation:none!important}
+
+.board-objectives{position:absolute;inset:0;pointer-events:none;z-index:6;overflow:hidden}.board-objectives[hidden],.board-objectives [hidden]{display:none!important}.zone-caption{position:absolute;transform:translate(-50%,-50%);padding:5px 13px;border:1px solid #efab88;border-radius:8px;background:linear-gradient(#1b1727ed,#0a1020e8);color:#fff1dd;text-shadow:0 0 8px #ffa57077;box-shadow:0 0 15px #f99e5c25,inset 0 1px #fff2;font:600 clamp(10px,1vw,14px) Cinzel,Georgia,serif;white-space:nowrap;letter-spacing:.06em}.zone-caption.own{border-color:#9cd8bd;text-shadow:0 0 8px #9deacb99;box-shadow:0 0 15px #84dfbb25,inset 0 1px #fff2}.board-destination-arrow{position:absolute;width:clamp(26px,3.5vw,47px);height:clamp(32px,4.3vw,57px);transform:translate(-50%,-100%);filter:drop-shadow(0 0 7px #f23755)}.board-destination-arrow svg{width:100%;height:100%;fill:#f02e45;stroke:#fff5df;stroke-width:5;stroke-linejoin:round}@media(max-width:600px){.zone-caption{padding:4px 7px;font-size:9px;letter-spacing:.02em}}
