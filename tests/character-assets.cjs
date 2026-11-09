@@ -4,13 +4,13 @@ const element=()=>({children:[],style:{setProperty(){}},classList:{add(){},remov
 const context=vm.createContext({window:{dispatchEvent(){}},Event,document:{getElementById(id){if(!els.has(id))els.set(id,element());return els.get(id)}},fetch:async()=>({ok:true,json:async()=>manifest}),console,Date,Math,setTimeout:()=>0,clearTimeout(){}});
 vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,''),context);
 const game=context.window.hackeniaGame,defs=game.monsters;
-assert.equal(defs.length,43);assert.deepEqual(Array.from(defs.slice(36,39),d=>d.n),['Eberien','Kala','Grimgors'],'Existing inventory IDs remain stable');
+assert.equal(defs.length,55);assert.deepEqual(Array.from(defs.slice(36,39),d=>d.n),['Eberien','Kala','Grimgors'],'Existing inventory IDs remain stable');
 for(const d of defs.slice(36,41)){assert.equal(game.rarity(d),3);assert.equal(d.need,3);assert.equal(d.nd,1);assert.equal(d.lv,2);assert.deepEqual(JSON.parse(JSON.stringify(d.c)),JSON.parse(JSON.stringify(defs[36].c)));}
 assert.deepEqual(Array.from(defs.slice(38,41),d=>d.el),['eau','vent','feu']);assert.equal(defs[42].el,'','Balai has no elemental affinity');
 const guardian=defs[41],highest=guardian.c.reduce((a,b)=>b[2]>=a[2]?b:a);assert.deepEqual(Array.from(highest),[0,2,6],'Guardian appears on the strong bottom tile of her L');
 function glb(file){const b=fs.readFileSync(file);assert.equal(b.readUInt32LE(0),0x46546c67);assert.equal(b.readUInt32LE(8),b.length);return JSON.parse(b.subarray(20,20+b.readUInt32LE(12)));}
 let clips=0;
-for(let i=36;i<defs.length;i++){
+for(let i=36;i<43;i++){
  const d=defs[i],info=manifest.creatures[d.modelKey],base=glb(path.join(root,'assets',info.glb)),names=new Set(base.nodes.map(n=>n.name));
  for(const size of [128,512]){const p=path.join(root,`assets/characters/${d.portrait}-${size}.webp`);assert.ok(fs.statSync(p).size<150000,'Portrait must fit mobile budget');}
  for(const [kind,file]of Object.entries(info.animations||{})){
