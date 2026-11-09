@@ -41,7 +41,7 @@ function createCore(o){
   const p=await sb.from('game_players').select('*').eq('game_id',S.gameId);S.gameRow=g.data;S.players=p.data||[];
   const me=S.players.find(x=>x.user_id===S.user.id),op=S.players.find(x=>x.user_id!==S.user.id);if(me)S.seat=me.seat;S.opponent=op?op.name||'Adversaire':'';
   if(!S.started&&S.gameRow.status==='playing'&&S.players.length===2)startMatch();
-  if(S.started&&!S.ended&&S.gameRow.status==='finished')finishFromServer();emit()}
+  if(S.started&&!S.ended&&S.gameRow.status==='finished'){await fetchEvents();if(S.applied>=Number(S.gameRow.last_seq||0))finishFromServer()}emit()}
  function startMatch(){try{const by=[0,1].map(s=>S.players.find(p=>p.seat===s)),decks=by.map(p=>sanitizeDeck(p.deck,monsters));
    const run=()=>game.startOnline({seat:S.seat,decks,terrain:S.gameRow.terrain,seed:Number(S.gameRow.seed),send:fn=>send(fn),onError:e=>{S.error=e&&e.message||String(e);emit()}});
    S.started=true;S.status='playing';S.terrain=S.gameRow.terrain;(o.enter||(f=>f()))(run);
