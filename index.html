@@ -340,7 +340,7 @@ const M=[];LVR.forEach((R,l)=>ELS.forEach((el,e)=>{const t=[0,0,1,1,2,3][l],cr=C
  [0,'Maebril','⚒️','Artisan de Hackénia aux mains d’orfèvre : il forge la foudre comme d’autres le fer. Affinité Foudre.','maebril'],
  [2,'Orven','🐺','Combattant à tête de loup des terres arides, rapide et tenace au corps à corps. Affinité Terre.','orven'],
  [8,'Frolgor','🍂','Montagnard bourru des collines, patient comme la pierre. Après une victoire, il lui arrive de s’assoupir sur place. Affinité Terre.','frolgor']
-].forEach(([i,n,em,lo,modelKey])=>Object.assign(M[i],{n,cn:n,em,lo,modelKey},['bosco','bulbalina','pachie','kayla-legendaire','bolduc-legendaire','caleizis','eberien-legendaire','frolgor','gliska','hilam','maebril'].includes(modelKey)?{portrait:modelKey}:{}));
+].forEach(([i,n,em,lo,modelKey])=>Object.assign(M[i],{n,cn:n,em,lo,modelKey},['bosco','bulbalina','pachie','kayla-legendaire','bolduc-legendaire','caleizis','eberien-legendaire','frolgor','gliska','hilam','maebril','orven'].includes(modelKey)?{portrait:modelKey}:{}));
 M.push({n:'Eberien',em:'🧙',cn:'Eberien',lo:'Magicien haut-elfe de Hackénia, affinité Glace.',el:'glace',lv:2,nd:1,need:3,t:0,fk:9,rarity:3,portrait:'eberien',modelKey:'eberien',c:[[1,1,4],[1,0,2],[0,1,3],[2,1,5],[1,2,6]]});
 M.push({n:'Kala',em:'🏹',cn:'Kala',lo:'Elfe des bois, archère et barde de Hackénia, affinité Terre.',el:'terre',lv:2,nd:1,need:3,t:0,fk:8,rarity:3,portrait:'kala',modelKey:'kala',c:[[1,1,4],[1,0,2],[0,1,3],[2,1,5],[1,2,6]]});
 M.push({n:'Grimgors',em:'🪓',cn:'Grimgors',lo:'Guerrier demi-orc de Hackénia, affinité Eau.',el:'eau',lv:2,nd:1,need:3,t:0,fk:10,rarity:3,portrait:'grimgors',modelKey:'grimgors',c:[[1,1,4],[1,0,2],[0,1,3],[2,1,5],[1,2,6]]});
@@ -530,8 +530,10 @@ function lancer(){if(window.HackeniaCombat?.busy||mode!='p')return;if(M[die]?.pu
 function poserPur(){const all=cells(),sp=split(all,M[die].lv),cs=sp.put;if(!ok(all)){msg='Placement impossible : '+why(all,M[die].lv);render();return}
  mode='r';const g=gid,k=cur,m=die,did=++DID,lost=sp.lost.length;for(const[x,y,v]of cs)b[y][x]={o:k,el:M[m].el,v,lv:M[m].lv,id:did,mn:M[m].n};
  recordEvent('Déploiement',M[m].cn+' : dé élémentaire posé sans lancer, '+cs.length+' dalle'+(cs.length>1?'s':'')+' de '+M[m].el+(lost?' ; '+lost+' dalle'+(lost>1?'s':'')+' ne peu'+(lost>1?'vent':'t')+' pas être posée'+(lost>1?'s':''):'')+'.');
+ if(cs.length&&typeof CustomEvent!=='undefined')window.dispatchEvent?.(new CustomEvent('hackenia:pure-placed',{detail:{mi:m,x:cs.reduce((t,c)=>t+c[0],0)/cs.length,y:cs.reduce((t,c)=>t+c[1],0)/cs.length}}));
  const u=unfoldOrder(all);sp.lost.forEach(a=>{delete u.o[[a[0],a[1]]]});anim={o:u.o,t0:Date.now()+150,tot:u.max*220+450};pc=null;msg='Dé élémentaire posé : '+cs.length+' dalle'+(cs.length>1?'s':'')+', aucune créature.';render();
- setTimeout(()=>{if(g!==gid)return;const s=msg;fin();if(!over)msg=s+' '+msg;render()},anim.tot+400)}
+ // Le tour se termine après l'apparition du dé élémentaire (lévitation et fondu, environ 3 s).
+ setTimeout(()=>{if(g!==gid)return;const s=msg;fin();if(!over)msg=s+' '+msg;render()},Math.max(anim.tot+400,window.HackeniaView?.active?3000:0))}
 function fin(keep){movePlan=null;useB=0;rzU=0;const p=pl[cur];if(!keep)p.q.push(p.h.splice(hi,1)[0]);busy=0;hov=null;cubeCls='';
  if(over){mode='x';return}
  cur=1-cur;turnNumber++;recordEvent('Tour','Début du tour de '+P[cur]+'.');moved=0;mode='i';pc=null;sel=null;const n=pl[cur];while(n.h.length<5&&n.q.length)n.h.push(n.q.shift());
@@ -800,4 +802,4 @@ window.hackeniaGame={
 init();
 </script><script src="assets/action-feedback-v168.js?v=20261105-v168"></script><script src="assets/pouch-opening-v122.js?v=20261109-v180"></script><script src="assets/pvp-config.js?v=20261109-v182"></script>
 <script src="assets/pvp-online.js?v=20261109-v182b"></script>
-<script src="assets/challenges-v180.js?v=20261109-v180"></script><script src="assets/portal-v159.js?v=20261109-v184"></script><script src="assets/tutorial-v178.js?v=20261109-v182"></script><script type="module" src="assets/clearing-v105.js?v=20261109-v183" onerror="document.getElementById('terrain-status').textContent='Affichage de secours · module 3D indisponible'"></script></body></html>
+<script src="assets/challenges-v180.js?v=20261109-v180"></script><script src="assets/portal-v159.js?v=20261109-v184"></script><script src="assets/tutorial-v178.js?v=20261109-v182"></script><script type="module" src="assets/clearing-v105.js?v=20261110-v181" onerror="document.getElementById('terrain-status').textContent='Affichage de secours · module 3D indisponible'"></script></body></html>
