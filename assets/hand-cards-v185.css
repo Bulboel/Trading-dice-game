@@ -1,0 +1,50 @@
+/* v185 — Cartes de la main : médaillon, liseré de rareté, teinte de l'élément, nom gravé et pastille de lancer. */
+#app #hand .dc.hc{position:relative;box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:10px;padding:10px 12px 10px 10px!important;text-align:left;overflow:hidden;
+ border:1.5px solid color-mix(in srgb,var(--rim) 70%,transparent)!important;border-bottom-width:1.5px!important;border-radius:14px!important;
+ background:radial-gradient(120% 90% at 18% 50%,color-mix(in srgb,var(--dice-element) 38%,transparent),transparent 62%),linear-gradient(160deg,#1a2a24,#0d1713)!important;
+ box-shadow:0 6px 18px #0008,inset 0 1px 0 #ffffff14,inset 0 0 0 1px #0007!important;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease}
+#app #hand .dc.hc::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 40%,#ffffff12 50%,transparent 60%);opacity:.0;transition:opacity .2s}
+#app #hand .dc.hc:not(.off):hover{transform:translateY(-4px);border-color:var(--rim)!important;box-shadow:0 10px 26px #000a,0 0 18px color-mix(in srgb,var(--dice-element) 45%,transparent),inset 0 1px 0 #ffffff1c!important}
+#app #hand .dc.hc:not(.off):hover::before{opacity:1}
+#app #hand .dc.hc.off{filter:saturate(.55) brightness(.8)}
+#app #hand .dc.hc.pure{border-style:dashed!important}
+/* Médaillon */
+#app #hand .hc-art{position:relative;width:74px;height:74px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--dice-element) 55%,#fff3),#0b1410 72%);box-shadow:0 0 0 2px var(--rim),0 0 0 4px #0009,0 4px 12px #000a}
+#app #hand .hc-art img,#app #hand .hc-art svg{margin:0!important;width:100%!important;height:100%!important;aspect-ratio:1;max-width:none!important;max-height:none!important;object-fit:contain;filter:drop-shadow(0 2px 4px #000a)}
+#app #hand .hc-art .hand-generic{font-size:40px;line-height:1}
+#app #hand .hc-el{position:absolute;right:-4px;bottom:-4px;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;font-size:13px;background:color-mix(in srgb,var(--dice-element) 65%,#0b1410);box-shadow:0 0 0 1.5px var(--rim),0 2px 5px #000a}
+/* Textes */
+#app #hand .hc-info{display:flex;flex-direction:column;gap:3px;min-width:0}
+#app #hand .hc-name{display:block;font:700 14px/1.15 "Cinzel",Georgia,serif;color:#fbf0d2;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 3px #000}
+#app #hand .hc-meta{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font:600 10px/1.2 system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:color-mix(in srgb,var(--rim) 70%,#e9e2cc)}
+#app #hand .hc-foot{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:3px}
+#app #hand .hc-roll{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:999px;background:#0a120ecc;border:1px solid #ffffff22;font:600 12px/1 system-ui,sans-serif;color:#efe6c9;white-space:nowrap}
+#app #hand .hc-roll i{font-style:normal;font-size:11px}
+#app #hand .hc-roll small{font-size:9px;opacity:.7}
+#app #hand .hc-roll b{color:#ffe08a}
+#app #hand .hc-roll.pure{color:#cdeedd;border-color:color-mix(in srgb,var(--dice-element) 60%,transparent)}
+#app #hand .hc-net{display:block;flex:0 0 auto}
+#app #hand .hc-net svg{display:block;height:34px;width:auto;max-width:54px}
+#app #hand .hc-gems{position:absolute;top:6px;right:9px;font-size:8px;letter-spacing:1px;color:var(--rim);text-shadow:0 0 6px var(--rim)}
+/* Téléphone : carte verticale compacte */
+@media(max-width:700px){
+ #app #hand .dc.hc{display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:6px 3px 5px!important;text-align:center;border-radius:11px!important}
+ #app #hand .dc.hc>.hc-art{flex:0 0 42px}
+ #app #hand .hc-art{width:42px;height:42px;box-shadow:0 0 0 1.5px var(--rim),0 0 0 3px #0009,0 2px 6px #000a}
+ #app #hand .hc-art .hand-generic{font-size:24px}
+ #app #hand .hc-el{width:16px;height:16px;font-size:9px;right:-5px;bottom:-3px}
+ #app #hand .hc-info{align-items:center;gap:2px;width:100%}
+ #app #hand .hc-name{font-size:9.5px;max-width:100%;letter-spacing:0}
+ #app #hand .hc-meta{display:none}
+ #app #hand .hc-foot{margin:0;justify-content:center}
+ #app #hand .hc-roll{padding:2px 5px;font-size:9.5px;gap:2px}
+ #app #hand .hc-roll i{display:none}
+ #app #hand .hc-net{position:absolute;top:4px;left:4px}
+ #app #hand .hc-net svg{height:20px;max-width:24px}
+ #app #hand .hc-gems{top:3px;right:4px;font-size:6px;letter-spacing:0}
+}
+@media(prefers-reduced-motion:reduce){#app #hand .dc.hc{transition:none}#app #hand .dc.hc:not(.off):hover{transform:none}}
+/* v185 — Étiquettes PA aux couleurs de l'élément (pastille à la couleur du camp) ; légendes de zone remplacées par le halo 3D. */
+.creature-pa{border-color:color-mix(in srgb,var(--pa,#9569c5) 75%,#fff6)!important;background:linear-gradient(180deg,color-mix(in srgb,var(--pa,#9569c5) 78%,#0b1512),color-mix(in srgb,var(--pa,#9569c5) 42%,#060c0a))!important;color:#fff!important;box-shadow:0 0 10px color-mix(in srgb,var(--pa,#9569c5) 55%,transparent),0 2px 6px #000a!important;text-shadow:0 1px 2px #000c!important}
+.creature-pa::before{content:"";display:inline-block;width:6px;height:6px;margin:0 5px 1px 0;border-radius:50%;background:var(--camp-dot,#fff);box-shadow:0 0 0 1px #0008,0 0 5px var(--camp-dot,#fff);vertical-align:middle}
+.board-objectives .zone-caption{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;border:0!important;overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important}
