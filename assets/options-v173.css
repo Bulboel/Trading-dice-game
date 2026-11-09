@@ -73,3 +73,25 @@ body.portal-open[data-portal-view="options"] #portal-content{padding:14px!import
  #portal .opt-tab{font-size:12px}
  #portal .opt-pane .roll-style-copy small{display:none}
 }
+/* v174 — nom du joueur et couleur de l'adversaire. */
+#portal .opt-name input{box-sizing:border-box;width:min(100%,320px);min-height:40px;padding:8px 12px;border-radius:9px;border:1px solid #baa66e66;background:#0f1d18;color:#f3ead0;font:600 15px/1.2 system-ui,sans-serif}
+#portal .opt-name input:focus{outline:2px solid #e7cd8a;outline-offset:1px}
+#portal .opt-name input::placeholder{color:#7f8c80;font-weight:400}
+#portal .opt-swatch.is-taken{opacity:.32;cursor:not-allowed}
+#portal .opt-swatch.is-taken .opt-swatch-dot{box-shadow:inset 0 0 0 2px #0008}
+#portal .opt-pane[data-pane="player"] fieldset{padding-bottom:8px}
+@media(max-width:760px){
+ #portal .opt-pane[data-pane="player"] .opt-swatch{width:calc((100% - 21px)/4)}
+ #portal .opt-pane[data-pane="player"] .opt-swatch-dot{width:28px;height:28px}
+ #portal .opt-pane[data-pane="player"] .opt-hint{font-size:11px}
+}
+/* Pastilles compactes (onglet Joueur) : une ligne, libellé au survol et pour les lecteurs d'écran. */
+#portal .opt-swatches.opt-compact{flex-wrap:nowrap;gap:4px;justify-content:space-between;max-width:420px}
+#portal .opt-swatches.opt-compact .opt-swatch{width:auto!important;flex:1 1 0;min-width:0}
+#portal .opt-swatches.opt-compact .opt-swatch-dot{width:30px;height:30px}
+#portal .opt-swatches.opt-compact .opt-swatch-label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+#portal .opt-pane[data-pane="player"] .opt-hint{margin-top:4px}
+@media(max-width:760px){
+ #portal .opt-swatches.opt-compact .opt-swatch-dot{width:28px!important;height:28px!important}
+ #portal .opt-tab{padding:7px 4px!important;font-size:11.5px!important;white-space:nowrap}
+}

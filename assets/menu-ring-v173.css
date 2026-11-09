@@ -34,3 +34,10 @@ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .p
 @media(max-width:900px){
  body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab strong{font-size:clamp(10.5px,2.9vw,13px)!important;max-width:min(84px,24vw)!important}
 }
+/* v174 — smartphone : dés plus petits et titres sur une seule ligne pour aérer l'anneau. */
+@media(max-width:900px){
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring{--ring-d:min(calc(100vw - 96px),calc(100dvh - 300px),560px)}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab[data-view]{--menu-size:clamp(32px,10vw,44px)!important;width:auto!important;min-width:44px!important;height:auto!important;min-height:0!important}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab .menu-die-visual{margin:0 auto 9px!important}
+ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab strong{white-space:nowrap!important;max-width:none!important;font-size:clamp(9.5px,2.65vw,11.5px)!important;letter-spacing:.02em!important}
+}
