@@ -424,7 +424,7 @@ function sync(){state=game.snapshot();const type=previewMode?previewTerrain:stat
  for(const[key,g]of creatures)if(!liveCr.has(key)){pieces.remove(g);g.userData.fadeMaterials?.forEach(m=>m.dispose());g.userData.mixer?.stopAllAction();g.traverse(o=>{if(o.isMesh&&!o.userData.imported&&o.geometry!==sphere)o.geometry.dispose()});creatures.delete(key)}
  disposeHighlights();const previewElement=game.monsters[state.die]?.el,previewColor=game.elementColors[previewElement]||0xf2d880;for(const a of state.preview)if(a[0]>=0&&a[0]<8&&a[1]>=0&&a[1]<10&&!game.isBlocked(a[0],a[1])){const c=state.b[a[1]][a[0]];highlight(a[0],a[1],previewColor,.24+(c&&!c.f?.28:0),.88)}
  if(state.reachable)for(const key of Object.keys(state.reachable)){if(state.reachable[key]===null)continue;const[x,y]=key.split(',').map(Number),k=state.cr.find(c=>c.x===x&&c.y===y);if(k&&k.o===state.cur)continue;const c=state.b[y][x];highlight(x,y,k?0xed806d:0xa5e2d2,.25+(c&&!c.f?.28:0))}
- if(state.movePlan){const p=state.movePlan,c=state.b[p.y]?.[p.x];highlight(p.x,p.y,0xffe4a0,.28+(c&&!c.f?.28:0))}
+ if(state.tutorial)for(const [x,y] of state.tutorial){const c=state.b[y]?.[x];highlight(x,y,0xffa800,.265+(c&&!c.f?.28:0),.9)}  if(state.movePlan){const p=state.movePlan,c=state.b[p.y]?.[p.x];highlight(p.x,p.y,0xffe4a0,.28+(c&&!c.f?.28:0))}
  if(state.sel)highlight(state.sel.x,state.sel.y,0xffe7a5,.26+(state.b[state.sel.y][state.sel.x]&&!state.b[state.sel.y][state.sel.x].f?.28:0));
  if(state.cu&&Date.now()-state.lastJ<3000){const c=state.b[state.cu.y][state.cu.x];highlight(state.cu.x,state.cu.y,0xe8efb5,.26+(c&&!c.f?.28:0))}
  const show=!previewMode&&(state.mode==='p'||state.mode==='r'||state.mode==='d')&&(state.pc||(state.mode==='d'&&state.hov));dieGroup.visible=!!show;if(show){const D=game.monsters[state.die];dieGroup.userData.target=new THREE.Vector3((state.pc||state.hov).x-3.5,.95,(state.pc||state.hov).y-4.5);dieBody.material=matForElement(D.el);dieLabel.material=label(D.lv,D.el);dieMetal.color.setHex(game.rarity(D)>=6?0xe7d6f5:game.rarity(D)>=3?0xe4b85f:game.rarity(D)===2?0xd4dce1:0xa97e4d)}
@@ -547,7 +547,9 @@ function clearPreview(){
  if(homeParent)homeParent.insertBefore(host,homeNextSibling&&homeNextSibling.parentNode===homeParent?homeNextSibling:null);
  const type=game.snapshot().terrain;host.className='t-'+type;setActive(['terre','feu','glace','eau','vent','foudre'].includes(type),type);sync();resize();
 }
-window.HackeniaView={get active(){return active},cellAt,sync,setActive,updateLens,preview,clearPreview};configure();sync();
+// Position à l'écran (relative au canevas) du centre d'une case : sert aux repères du tutoriel.
+function cellScreen(x,y){if(!active)return null;const r=canvas.getBoundingClientRect(),c=state?.b?.[y]?.[x],level=.24+(c&&!c.f?.28:0),p=world.localToWorld(new THREE.Vector3(x-3.5,level,y-4.5)).project(camera);return{x:r.left+(p.x+1)*r.width/2,y:r.top+(1-p.y)*r.height/2}}
+window.HackeniaView={get active(){return active},cellAt,sync,setActive,updateLens,preview,clearPreview,cellScreen};configure();sync();
 const portalContent=document.getElementById('portal-content');
 if(portalContent){const refreshPreview=()=>{const art=document.getElementById('play-terrain-art');if(art&&document.body.classList.contains('portal-open')){const terrain=document.getElementById('play-terrain')?.value||'terre';preview(terrain,art)}else clearPreview()};new MutationObserver(refreshPreview).observe(portalContent,{childList:true,subtree:true});refreshPreview()}
 function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&!previewMode)||!active||now-lastFrame<(renderer.isSoftware?100:light?32:16))return;const dt=Math.min((now-lastFrame)/1000,.06);lastFrame=now;const t=moving?now/1000:0;

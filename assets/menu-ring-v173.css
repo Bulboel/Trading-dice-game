@@ -41,3 +41,23 @@ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .p
  body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab .menu-die-visual{margin:0 auto 9px!important}
  body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab strong{white-space:nowrap!important;max-width:none!important;font-size:clamp(9.5px,2.65vw,11.5px)!important;letter-spacing:.02em!important}
 }
+/* v178 — Premiers pas : le dé de l'étape en cours brille, carte de progression sous l'anneau. */
+@keyframes guide-pulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 70%,transparent),0 0 18px 2px color-mix(in srgb,var(--accent) 45%,transparent)}50%{box-shadow:0 0 0 10px transparent,0 0 30px 8px color-mix(in srgb,var(--accent) 65%,transparent)}}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab.guide-next .menu-die-visual{border-radius:14px;animation:guide-pulse 1.8s ease-in-out infinite!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab.guide-next strong::after{content:"";display:block;width:6px;height:6px;margin:4px auto 0;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+@media(prefers-reduced-motion:reduce){body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab.guide-next .menu-die-visual{animation:none!important;box-shadow:0 0 0 3px var(--accent)}}
+#portal .onboarding-guide{max-width:620px;margin:8px auto 20px;padding:16px 18px;border:1px solid #d9c48b55;border-radius:16px;background:linear-gradient(160deg,#1c3128ee,#0f1d18ee);box-shadow:0 12px 40px #0007}
+#portal .onboarding-guide h2{margin:0 0 10px;font:700 18px/1.2 "Cinzel",Georgia,serif;color:#f1e3b8;text-align:center}
+#portal .onboarding-guide ol{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+#portal .onb-step{display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;border:1px solid #ffffff14;background:#0d1914aa}
+#portal .onb-step strong{display:block;font-size:14px;color:#f3ead0}
+#portal .onb-step small{display:block;font-size:12px;color:#aebaa9;margin-top:2px}
+#portal .onb-num{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;font:700 14px/1 system-ui;background:#1f3329;color:#cdbf95;border:1px solid #cdbf9566}
+#portal .onb-step.current{border-color:#e7cd8a;background:#203a2ecc}
+#portal .onb-step.current .onb-num{background:linear-gradient(140deg,#e2c477,#a9853c);color:#1b1407;border-color:#f2dc9e}
+#portal .onb-step.done{opacity:.7}
+#portal .onb-step.done .onb-num{background:#2f9a5f;color:#fff;border-color:#59c48a}
+#portal .onb-step.todo{opacity:.55}
+#portal .onb-step .portal-primary{white-space:nowrap}
+#portal .onb-help{margin:10px 0 0;font-size:11.5px;color:#9fab9b;text-align:center}
+@media(max-width:600px){#portal .onb-step{grid-template-columns:30px minmax(0,1fr)}#portal .onb-step .portal-primary{grid-column:1/-1;width:100%}}

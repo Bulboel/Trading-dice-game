@@ -10,6 +10,8 @@ PORTRAITS = {
  'grimgors':'Grimgors miniature.png', 'jhimm':'Jhimm miniature.png',
  'bolduc':'Bolduc miniature.png', 'gardienne':'gardienne miniature.png',
  'messire-balai':'Messire Balai miniature.png',
+ 'bosco':'Bosco miniature.png', 'bulbalina':'Bulbalina miniature.png',
+ 'pachie':'La fée pachié miniature.png', 'kayla-legendaire':'miniature Kayla.PNG',
 }
 CLIPS = {
  'eberien': {'spell':('Eberien Spell cast.glb',None), 'victory':('Eberien Victory.glb',None), 'walk':('Eberien chibi.glb','Walking')},
