@@ -383,7 +383,7 @@ function label(value,element,bonus=0){const key=value+':'+element+':'+bonus;if(t
 const boardCaptions=document.createElement('div');boardCaptions.className='board-objectives';boardCaptions.innerHTML='<span class="zone-caption zone-north"></span><span class="zone-caption zone-south"></span><span class="board-destination-arrow" aria-label="Case de destination choisie"><svg viewBox="0 0 128 128" aria-hidden="true"><path d="M45 8h38v59h29l-48 52L16 67h29Z"/></svg></span>';host.append(boardCaptions);
 const powerCaptions=new Map();
 const zoneCaptions=[...boardCaptions.querySelectorAll('.zone-caption')],destinationMarker=boardCaptions.querySelector('.board-destination-arrow');
-function updateZoneLabels(){const seat=game.viewerSeat();zoneCaptions.forEach((caption,i)=>{const own=(i===0?1:0)===seat;caption.textContent=own?'Zone à protéger':'Zone à envahir';caption.classList.toggle('own',own)});boardCaptions.hidden=previewMode}
+function updateZoneLabels(){const seat=game.viewerSeat();zoneCaptions.forEach((caption,i)=>{const own=(i===0?1:0)===seat;const text=own?'Zone à protéger':'Zone à envahir';if(caption.textContent!==text)caption.textContent=text;caption.classList.toggle('own',own)});boardCaptions.hidden=previewMode}
 function updateCreaturePowers(place){
  const combat=window.HackeniaCombat?.current(),live=new Set();
  for(const [id,g]of creatures){live.add(id);const k=g.userData.k;let badge=powerCaptions.get(id);if(!badge){badge=document.createElement('span');badge.className='creature-pa';boardCaptions.append(badge);powerCaptions.set(id,badge)}
@@ -554,6 +554,7 @@ matchMedia('(prefers-reduced-motion:reduce)').addEventListener('change',configur
 canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();setActive(false);document.getElementById('terrain-status').textContent='Affichage de secours · recharge la page pour retrouver la 3D'});
 function preview(terrain,container){
  if(!container)return;
+ if(previewMode&&previewTerrain===terrain&&host.parentElement===container)return;
  previewMode=true;previewTerrain=terrain;
  if(host.parentElement!==container)container.appendChild(host);
  host.className='t-'+terrain+' terrain-menu-preview';host.setAttribute('aria-hidden','true');
