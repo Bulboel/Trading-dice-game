@@ -1,0 +1,17 @@
+/* A pure starry sky behind a vivid, ordered rainbow of ten dice. */
+body.portal-open #portal #portal-nav .menu-runic-backdrop,
+body.portal-open #portal #portal-nav .menu-runic-backdrop::before,
+body.portal-open #portal #portal-nav .menu-runic-backdrop::after{display:none!important;background:none!important;animation:none!important}
+#portal #portal-nav .md-face{border-color:color-mix(in srgb,var(--accent) 55%,#fff4d5)!important;box-shadow:inset 0 2px 2px #fff8,inset 2px 0 2px #ffffff45,inset 0 -4px 6px #0004,inset -3px 0 5px #0003!important}
+#portal #portal-nav .md-front,#portal #portal-nav .md-back,#portal #portal-nav .md-left,#portal #portal-nav .md-bottom{background:linear-gradient(140deg,color-mix(in srgb,var(--accent) 76%,white),var(--accent) 40%,color-mix(in srgb,var(--accent) 80%,#171326))!important}
+#portal #portal-nav .md-top{background:linear-gradient(140deg,color-mix(in srgb,var(--accent) 66%,white),color-mix(in srgb,var(--accent) 92%,white))!important}
+#portal #portal-nav .md-right{background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 68%,#100d29))!important}
+#portal #portal-nav .menu-emblem{color:#fff8e6!important;filter:drop-shadow(0 1px 1px #0009) drop-shadow(0 0 2px #0006)}
+#portal #portal-nav .menu-pips .pip{background:#fff8e6!important;box-shadow:inset 0 1px 2px #0008,0 1px 1px #fff9!important}
+#portal .pantheon-hall{max-width:680px;margin:8px auto 28px;text-align:center;padding:clamp(16px,4vw,40px) 12px}
+#portal .pantheon-hall h2{font:700 clamp(30px,5vw,48px)/1.2 Cinzel,Georgia,serif;color:#f7e5ba;margin:14px 0}
+#portal .pantheon-hall>p{max-width:540px;margin:18px auto;color:#c4c8dd;font-size:15px;line-height:1.8}
+.pantheon-crest{width:84px;height:84px;display:grid;place-items:center;margin:0 auto 23px;border:1px solid #cfadf1;border-radius:50%;color:#f6ddb1;background:radial-gradient(circle,#68468a55,#16162a);box-shadow:0 0 35px #aa6fdf22,inset 0 0 16px #d6b77c14}
+.pantheon-crest svg{width:46px;height:46px}
+.pantheon-preparing{padding:23px 18px;margin:26px auto 30px;border:1px solid #bca1d644;border-radius:14px;background:linear-gradient(140deg,#30233a88,#11162c88)}
+.pantheon-preparing>span{display:block;color:#dbbd86;font-size:26px;margin-bottom:10px}.pantheon-preparing>strong{font:600 18px Cinzel,Georgia,serif;color:#e6d8ef}.pantheon-preparing p{font-size:13px;margin:12px 0 0}

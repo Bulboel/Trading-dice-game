@@ -1,0 +1,7 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),path=require('path');const root=path.join(__dirname,'..'),src=fs.readFileSync(path.join(root,'assets/portal-v159.js'),'utf8');
+const c=vm.createContext({});vm.runInContext(src.slice(src.indexOf('const tabs='),src.indexOf('\nconst homeTips='))+'\nglobalThis.tabs=tabs;',c);
+assert.equal(c.tabs.length,10);assert.equal(c.tabs.at(-1)[0],'pantheon');assert.equal(c.tabs[0][2],'#ff343e');
+let previous=-1,turn=0;for(const [,name,color,pips]of c.tabs){const rgb=color.match(/\w\w/g).map(x=>parseInt(x,16)/255),max=Math.max(...rgb),min=Math.min(...rgb),d=max-min;let hue=max===rgb[0]?((rgb[1]-rgb[2])/d+6)%6:max===rgb[1]?(rgb[2]-rgb[0])/d+2:(rgb[0]-rgb[1])/d+4;hue*=60;if(hue+turn<previous)turn+=360;assert(hue+turn>previous,name+' must follow the rainbow order');previous=hue+turn;assert(d/max>.65,name+' remains vivid');assert(pips>=1&&pips<=6)}
+const nav=src.slice(src.indexOf("$('portal-nav').innerHTML="),src.indexOf("$('portal-nav').onclick="));assert(!nav.includes('menu-runic-backdrop'),'No runic background element is created');
+const content={};const p=vm.createContext({$:()=>content});vm.runInContext(src.slice(src.indexOf('function pantheon(){'),src.indexOf('function challenges(){')),p);p.pantheon();assert(content.innerHTML.includes('Le Panthéon'));assert(content.innerHTML.includes('data-action="home"'));assert(content.innerHTML.includes('Les premières épreuves se préparent'));
+console.log('PASS: ten dice in rainbow order, vivid red, no runic layer, and accessible Pantheon entrance.');
