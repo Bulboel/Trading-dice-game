@@ -16,6 +16,7 @@ function server(){const games=[],players=[],events=[],trades=[],inv={};let n=0;c
    g.last_seq++;events.push({game_id:g.id,seq:g.last_seq,seat:p.seat,kind:a.p_kind,payload:a.p_payload||{}});
    if(['place','skip'].includes(a.p_kind))g.turn_seat=1-g.turn_seat;if(['resign','win'].includes(a.p_kind)){g.status='finished';g.winner=a.p_kind==='resign'?1-p.seat:p.seat}return g.last_seq},
   roll_dice(u,a){if(a.p_n<1||a.p_n>4)throw Error('nombre de dés invalide');const v=[...Array(a.p_n)].map(()=>1+Math.floor(Math.random()*6));fn.play_action(u,{p_game:a.p_game,p_kind:'roll',p_payload:{values:v}});return v},
+  finish_draw(u,a){const p=players.find(x=>x.game_id===a.p_game&&x.user_id===u);if(!p)throw Error('non participant');const g=games.find(x=>x.id===a.p_game);if(g.status==='finished')return g.last_seq;g.last_seq++;events.push({game_id:g.id,seq:g.last_seq,seat:p.seat,kind:'hello',payload:{result:'draw',version:'182'}});g.status='finished';g.winner=null;return g.last_seq},
   /* échanges */
   create_trade(u,a){inv[u]=a.p_inventory;const t={id:id(),code:('T'+n+'AAAAA').slice(0,6),status:'open',host_id:u,guest_id:null,host_name:a.p_name,guest_name:null,host_offer:[],guest_offer:[],host_ok:false,guest_ok:false};trades.push(t);return[{trade_id:t.id,trade_code:t.code}]},
   join_trade(u,a){const t=trades.find(x=>x.code===a.p_code.toUpperCase());if(!t)throw Error('code inconnu');inv[u]=a.p_inventory;t.guest_id=u;t.guest_name=a.p_name;return t.id},
@@ -62,6 +63,11 @@ function engine(){const els=new Map(),P=()=>new Proxy(function(){},{get:(t,p)=>p
  }
  console.log('PASS: 10 tours en ligne identiques sur les deux moteurs ('+moves+' déplacements) ; scores',A.run('pl.map(p=>p.s)'),'créatures',A.run('cr.length'));
  assert.ok(!cA.S.error&&!cB.S.error,'aucune erreur : '+cA.S.error+cB.S.error);
+ /* Match nul : deux clients, aucun faux gagnant et un résultat persistant côté serveur. */
+ const drawServer=server(),DA=engine(),DB=engine(),dA=createCore({sb:drawServer.client('da'),game:DA.api,cfg,pollMs:15}),dB=createCore({sb:drawServer.client('db'),game:DB.api,cfg,pollMs:15});
+ const drawRoom=await dA.createGame({name:'DA',deck:deckA,terrain:'terre'});await dB.joinGame({code:drawRoom.game_code,name:'DB',deck:deckB});await until(()=>dA.S.started&&dB.S.started);await until(()=>dA.S.applied>=2&&dB.S.applied>=2);
+ DA.run('kills=[3,3];chkKills()');DB.run('kills=[3,3];chkKills()');await until(()=>drawServer.games[0].status==='finished');await until(()=>dA.S.status==='draw'&&dB.S.status==='draw');assert.equal(drawServer.games[0].winner,null);assert.equal(drawServer.events.filter(e=>e.payload.result==='draw').length,1);assert.equal(drawServer.events.filter(e=>e.kind==='win').length,0);assert.equal(DA.api.onlineState().result.outcome,'draw');assert.equal(DB.api.onlineState().result.outcome,'draw');dA.stop();dB.stop();
+ console.log('PASS: PVP draw persists without selecting a winner or sending win.');
  /* un joueur qui joue hors de son tour est refusé par le serveur */
  B.run("cur=1");const bad=await cB.rpc('play_action',{p_game:cB.S.gameId,p_kind:'move',p_payload:{}}).then(()=>'accepté',e=>e.message);console.log('hors tour →',bad);
  /* abandon */
