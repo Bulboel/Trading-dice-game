@@ -383,12 +383,29 @@ function label(value,element,bonus=0){const key=value+':'+element+':'+bonus;if(t
 const boardCaptions=document.createElement('div');boardCaptions.className='board-objectives';boardCaptions.innerHTML='<span class="zone-caption zone-north"></span><span class="zone-caption zone-south"></span><span class="board-destination-arrow" aria-label="Case de destination choisie"><svg viewBox="0 0 128 128" aria-hidden="true"><path d="M45 8h38v59h29l-48 52L16 67h29Z"/></svg></span>';host.append(boardCaptions);
 const powerCaptions=new Map();
 const zoneCaptions=[...boardCaptions.querySelectorAll('.zone-caption')],destinationMarker=boardCaptions.querySelector('.board-destination-arrow');
+// Halo de la zone à envahir : rideau de lumière et particules montantes, à la couleur du camp adverse.
+function glowTexture(kind){const c=document.createElement('canvas');c.width=kind==='dot'?64:16;c.height=kind==='dot'?64:128;const g=c.getContext('2d');let grad;
+ if(kind==='dot'){grad=g.createRadialGradient(32,32,0,32,32,32);grad.addColorStop(0,'rgba(255,255,255,1)');grad.addColorStop(.35,'rgba(255,255,255,.55)');grad.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=grad;g.fillRect(0,0,64,64)}
+ else if(kind==='floor'){grad=g.createLinearGradient(0,0,0,128);grad.addColorStop(0,'rgba(255,255,255,0)');grad.addColorStop(.5,'rgba(255,255,255,.9)');grad.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=grad;g.fillRect(0,0,16,128)}
+ else{grad=g.createLinearGradient(0,128,0,0);grad.addColorStop(0,'rgba(255,255,255,.95)');grad.addColorStop(.25,'rgba(255,255,255,.45)');grad.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=grad;g.fillRect(0,0,16,128)}
+ const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t}
+const zoneGlow=new THREE.Group(),glowColor=new THREE.Color('#d0453f'),glowMat=o=>new THREE.MeshBasicMaterial({transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,color:glowColor,...o});
+const curtainMat=glowMat({map:glowTexture('curtain'),opacity:.5}),floorMat=glowMat({map:glowTexture('floor'),opacity:.55}),moteMat=new THREE.SpriteMaterial({map:glowTexture('dot'),color:glowColor,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,opacity:.8});
+const curtain=new THREE.Mesh(new THREE.PlaneGeometry(8.3,1.5),curtainMat);curtain.position.y=.26+.75;zoneGlow.add(curtain);
+const curtainBack=new THREE.Mesh(new THREE.PlaneGeometry(8.3,.9),curtainMat);curtainBack.position.y=.26+.45;curtainBack.rotation.y=Math.PI/2;curtainBack.scale.x=.12;zoneGlow.add(curtainBack);curtainBack.visible=false;
+const floorGlow=new THREE.Mesh(new THREE.PlaneGeometry(8.6,1.6),floorMat);floorGlow.rotation.x=-Math.PI/2;floorGlow.position.y=.255;zoneGlow.add(floorGlow);
+const glowMotes=[];for(let i=0;i<22;i++){const m=new THREE.Sprite(moteMat.clone());m.userData={x:-3.9+Math.random()*7.8,z:(Math.random()-.5)*.8,phase:Math.random(),speed:.18+Math.random()*.16,size:.07+Math.random()*.08};zoneGlow.add(m);glowMotes.push(m)}
+pieces.add(zoneGlow);let glowCampKey='',glowCheck=0;
+function updateZoneGlow(now){const seat=game.viewerSeat(),z=seat===0?-4.5:4.5;zoneGlow.position.z=z;zoneGlow.visible=!previewMode&&!state?.over;
+ if(now-glowCheck>800){glowCheck=now;const key='--camp'+(1-seat)+'-ui',col=getComputedStyle(document.documentElement).getPropertyValue(key).trim()||'#d0453f';if(col!==glowCampKey){glowCampKey=col;glowColor.set(col);curtainMat.color.copy(glowColor);floorMat.color.copy(glowColor);glowMotes.forEach(m=>m.material.color.copy(glowColor))}}
+ const t=moving?now/1000:0,pulse=moving?.5+.5*Math.sin(t*1.4):.6;curtainMat.opacity=.32+.16*pulse;floorMat.opacity=.42+.18*pulse;
+ for(const m of glowMotes){const u=m.userData,k=moving?(t*u.speed+u.phase)%1:u.phase;m.position.set(u.x+Math.sin(t*.8+u.phase*6)*.08,.3+k*1.6,u.z);m.scale.setScalar(u.size*(1-k*.4));m.material.opacity=(k<.15?k/.15:1-(k-.15)/.85)*.85}}
 function updateZoneLabels(){const seat=game.viewerSeat();zoneCaptions.forEach((caption,i)=>{const own=(i===0?1:0)===seat;const text=own?'Zone à protéger':'Zone à envahir';if(caption.textContent!==text)caption.textContent=text;caption.classList.toggle('own',own)});boardCaptions.hidden=previewMode}
 function updateCreaturePowers(place){
  const combat=window.HackeniaCombat?.current(),live=new Set();
  for(const [id,g]of creatures){live.add(id);const k=g.userData.k;let badge=powerCaptions.get(id);if(!badge){badge=document.createElement('span');badge.className='creature-pa';boardCaptions.append(badge);powerCaptions.set(id,badge)}
   const i=combat?.fighters.findIndex(c=>c.id===id)??-1,x=Math.max(0,Math.min(7,Math.round(g.position.x+3.5))),y=Math.max(0,Math.min(9,Math.round(g.position.z+4.5))),power=i>=0?combat.stats[i].attack:game.creatureAttack(k,x,y,state.b),text='PA : '+power;
-  if(badge.textContent!==text)badge.textContent=text;badge.setAttribute('aria-label',(game.monsters[k.mi]?.cn||k.mn||'Créature')+' · '+text);badge.classList.toggle('opponent',k.o!==game.viewerSeat());
+  if(badge.textContent!==text)badge.textContent=text;badge.setAttribute('aria-label',(game.monsters[k.mi]?.cn||k.mn||'Créature')+' · '+text);badge.classList.toggle('opponent',k.o!==game.viewerSeat());badge.style.setProperty?.('--pa',game.elementColors?.[game.monsters[k.mi]?.el]||'#9569c5');badge.style.setProperty?.('--camp-dot','var(--camp'+k.o+'-ui)');
   const height=.9*(g.userData.animationInfo?.boardHeight||1)+.27;place(badge,g.position.x,g.position.y+height,g.position.z);if(!g.visible)badge.hidden=true;const pose=combat?window.HackeniaCombat.pose(combat,k):null;badge.style.opacity=String(pose?1-pose.defeat:1);
  }
  for(const [id,badge]of powerCaptions)if(!live.has(id)){badge.remove();powerCaptions.delete(id)}
@@ -583,7 +600,7 @@ function cellScreen(x,y){if(!active)return null;const r=canvas.getBoundingClient
 window.HackeniaView={get active(){return active},cellAt,sync,setActive,updateLens,preview,clearPreview,cellScreen};configure();sync();
 const portalContent=document.getElementById('portal-content');
 if(portalContent){const refreshPreview=()=>{const art=document.getElementById('play-terrain-art');if(art&&document.body.classList.contains('portal-open')){const terrain=document.getElementById('play-terrain')?.value||'terre';preview(terrain,art)}else clearPreview()};new MutationObserver(refreshPreview).observe(portalContent,{childList:true,subtree:true});refreshPreview()}
-function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&!previewMode)||!active||now-lastFrame<(renderer.isSoftware?100:light?32:16))return;const dt=Math.min((now-lastFrame)/1000,.06);lastFrame=now;if(pureFx.length)updatePureFx(now);const t=moving?now/1000:0;
+function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&!previewMode)||!active||now-lastFrame<(renderer.isSoftware?100:light?32:16))return;const dt=Math.min((now-lastFrame)/1000,.06);lastFrame=now;if(pureFx.length)updatePureFx(now);updateZoneGlow(now);const t=moving?now/1000:0;
  if(iceScene.visible){for(let i=0;i<flakeCount;i++){const f=flakeSeeds[i],drop=moving?(t*(.65+f.size*.25)+f.phase)%7.2:0;flakeDummy.position.set(f.x+Math.sin(t*.45+f.phase)*.11,Math.max(.12,f.y-drop),f.z+Math.cos(t*.37+f.phase)*.1);flakeDummy.scale.setScalar(f.size);flakeDummy.rotation.z=f.spin+t*.22;flakeDummy.updateMatrix();snowfall.setMatrixAt(i,flakeDummy.matrix)}snowfall.instanceMatrix.needsUpdate=true}
  if(forest.visible){wind.value=t;waterNormals.offset.set(-t*.032,t*.013);
  for(let i=0;i<wp.count;i++){const x=waterOrig[i*3],z=waterOrig[i*3+2];wp.setY(i,waterHeight(x,z,t))}wp.needsUpdate=true;if(!renderer.isSoftware)wg.computeVertexNormals();
