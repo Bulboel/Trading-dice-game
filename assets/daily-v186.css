@@ -1,0 +1,39 @@
+/* v186 — Dé multicolore des récompenses quotidiennes (sous le compteur de Bubulles, accueil uniquement). */
+#daily-die{display:none}
+body.portal-open[data-portal-view="home"] #portal .portal-head{position:relative;overflow:visible}
+body.portal-open[data-portal-view="home"] #daily-die{position:absolute;right:14px;top:calc(100% + 14px);z-index:40;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:0;padding:6px 6px 4px;border:0;background:none;box-shadow:none;cursor:pointer;color:#fff4d6}
+#daily-die .daily-cube{--s:46px;position:relative;width:var(--s);height:var(--s);transform-style:preserve-3d;animation:daily-spin 9s linear infinite;filter:drop-shadow(0 6px 10px #000a)}
+#daily-die .daily-cube i{position:absolute;inset:0;border-radius:9px;border:1.5px solid #fff3c4;box-shadow:inset 0 1px 2px #fffc,inset 0 -3px 5px #0004;background:conic-gradient(from 210deg,#ff5b6e,#ffb347,#ffe26a,#6be585,#4cc9f0,#8e7dff,#ff5b6e);opacity:.98}
+#daily-die .daily-cube i::after{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(circle at 50% 50%,#fff 0 9%,transparent 10%),radial-gradient(ellipse at 20% 10%,#ffffffaa,transparent 50%)}
+#daily-die .dc-f{transform:translateZ(calc(var(--s)/2))}#daily-die .dc-k{transform:rotateY(180deg) translateZ(calc(var(--s)/2))}
+#daily-die .dc-r{transform:rotateY(90deg) translateZ(calc(var(--s)/2));filter:hue-rotate(60deg) brightness(.85)}#daily-die .dc-l{transform:rotateY(-90deg) translateZ(calc(var(--s)/2));filter:hue-rotate(-60deg) brightness(.85)}
+#daily-die .dc-t{transform:rotateX(90deg) translateZ(calc(var(--s)/2));filter:hue-rotate(120deg) brightness(1.1)}#daily-die .dc-m{transform:rotateX(-90deg) translateZ(calc(var(--s)/2));filter:hue-rotate(180deg) brightness(.7)}
+@keyframes daily-spin{from{transform:rotateX(-22deg) rotateY(0)}to{transform:rotateX(-22deg) rotateY(360deg)}}
+#daily-die .daily-label{font:700 10.5px/1 "Cinzel",Georgia,serif;letter-spacing:.04em;background:linear-gradient(90deg,#ff8a8a,#ffd36b,#8ef0a6,#7ccfff,#c7a6ff);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 1px 1px #000)}
+#daily-die .daily-count{position:absolute;top:0;right:-2px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;display:grid;place-items:center;font:700 10px/1 system-ui;background:#1d2a24;color:#f1e3b8;border:1px solid #e7cd8a88}
+#daily-die.ready .daily-count{background:#e5484d;color:#fff;border-color:#fff;animation:daily-ping 1.6s ease-in-out infinite}
+#daily-die.ready .daily-cube{animation-duration:4s}
+@keyframes daily-ping{0%,100%{box-shadow:0 0 0 0 #e5484daa}50%{box-shadow:0 0 0 7px #e5484d00}}
+#daily-die:focus-visible{outline:2px solid #ffe6a6;outline-offset:4px;border-radius:12px}
+@media(prefers-reduced-motion:reduce){#daily-die .daily-cube,#daily-die.ready .daily-count{animation:none}}
+@media(max-width:700px){body.portal-open[data-portal-view="home"] #daily-die{right:8px;top:calc(100% + 6px)}#daily-die .daily-cube{--s:36px}#daily-die .daily-label{font-size:9px}}
+/* Fenêtre */
+#daily-dialog{width:min(560px,calc(100vw - 24px));padding:0;border:1px solid #e7cd8a88;border-radius:16px;background:linear-gradient(160deg,#20362b,#0f1c17);color:#efe7cf;box-shadow:0 20px 70px #000b;font:14px/1.45 system-ui,sans-serif}
+#daily-dialog::backdrop{background:#071a13c4;backdrop-filter:blur(4px)}
+#daily-dialog header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 6px}
+#daily-dialog h2{margin:0;font:700 19px/1.2 "Cinzel",Georgia,serif;color:#f6e7bd}
+#daily-dialog header button{width:34px;min-height:34px;padding:0;font-size:16px}
+.daily-intro{margin:0 16px 10px;color:#b9c3b2;font-size:12.5px}
+#daily-body{padding:0 14px 16px}
+.daily-days{list-style:none;margin:0 0 12px;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.daily-day{display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 4px;border-radius:12px;border:1px solid #ffffff1a;background:#0e1a15cc;text-align:center}
+.daily-n{font:700 10px/1 system-ui;letter-spacing:.08em;text-transform:uppercase;color:#d9c48b}
+.daily-gift{display:grid;place-items:center;height:30px;font-size:22px}
+.daily-r{font-size:11.5px;color:#e9e0c6;line-height:1.2}
+.daily-day.done{opacity:.55}.daily-day.done .daily-gift{color:#59c48a;font-weight:700}
+.daily-day.today{border-color:#e7cd8a;background:linear-gradient(160deg,#3a5a47,#1b3127);box-shadow:0 0 0 2px #e7cd8a55,0 0 18px #e7cd8a33}
+.daily-day.big{grid-column:span 2;border-color:#c7a6ff88;background:radial-gradient(ellipse at 50% 0%,#8e7dff44,transparent 70%),#0e1a15cc}
+.daily-day.big.today{border-color:#e7cd8a}
+.daily-claim{width:100%}
+.daily-wait{margin:0;text-align:center;color:#b9c3b2}
+@media(max-width:420px){.daily-days{grid-template-columns:repeat(4,1fr);gap:6px}.daily-r{font-size:10.5px}}
