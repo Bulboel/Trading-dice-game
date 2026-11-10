@@ -8,7 +8,7 @@ assert.equal(vm.runInContext(`pl[${owner}].s`,t.c),1,'Spawn in enemy zone must s
 assert.equal(vm.runInContext('b.every(row=>row[3]===null)',t.c),true,'Connected route must disappear');assert.equal(vm.runInContext('cr.length',t.c),0);assert.equal(vm.runInContext('!!b[4][0]&&!!b[4][7]',t.c),true,'Other routes must remain');
 }
 {
-const t=setup();vm.runInContext("cur=1;rot=0;pc={x:3,y:H-3};M[0].c[1][2]=3;M[0].c[2][2]=1;b[H-4][3]={o:1,v:1,id:90,lv:1};",t.c);t.roll();assert.equal(vm.runInContext('pl[1].s',t.c),0,'A face alone in the zone must not score');assert.equal(vm.runInContext('cr[0].y',t.c),vm.runInContext('H-2',t.c));
+const t=setup();vm.runInContext("cur=1;rot=0;pc={x:3,y:H-3};M[0].c[1][2]=3;M[0].c[2][2]=1;M[0].sp=1;b[H-4][3]={o:1,v:1,id:90,lv:1};",t.c);t.roll();assert.equal(vm.runInContext('pl[1].s',t.c),0,'A face alone in the zone must not score');assert.equal(vm.runInContext('cr[0].y',t.c),vm.runInContext('H-2',t.c));
 }
 {
 const t=setup();t.math.random=()=>0;vm.runInContext("cur=1;rot=0;pc={x:3,y:H-3};b[H-4][3]={o:1,v:1,id:90,lv:1};",t.c);t.roll();assert.equal(vm.runInContext('pl[1].s',t.c),0);assert.equal(vm.runInContext('cr.length',t.c),0);assert.equal(vm.runInContext('!!b[H-4][3]',t.c),true);
