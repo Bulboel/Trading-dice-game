@@ -95,7 +95,7 @@ const LIB=['https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supaba
 function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('script inaccessible'));document.head.append(s)})}
 async function ensureCore(){if(core)return core;const c=root.HACKENIA_PVP_CONFIG;if(!c||!c.url||!c.key)throw new Error('Configuration du mode en ligne manquante.');
  if(!root.supabase){let ok=false;for(const u of LIB){try{await loadScript(u);ok=!!root.supabase;if(ok)break}catch(e){}}if(!ok)throw new Error('Connexion au service en ligne impossible : vérifie ta connexion internet.')}
- const sb=root.supabase.createClient(c.url,c.key,{auth:{persistSession:true,autoRefreshToken:true}});
+ const sb=root.__hackeniaSupabase||(root.__hackeniaSupabase=root.supabase.createClient(c.url,c.key,{auth:{persistSession:true,autoRefreshToken:true}}));// v204 : client partagé avec la sauvegarde en ligne
  core=createCore({sb,game:root.hackeniaGame,cfg:c,enter:f=>bridge.enterMatch(f)});core.onChange(updateHud);setInterval(updateHud,1000);core.onTrade(()=>{if(U.view==='trade')draw()});core.onChange(()=>{if(U.view==='wait')draw()});return core}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function myName(){if(!U.name){try{U.name=localStorage.getItem('hackenia-pvp-name')||''}catch(e){}if(!U.name)U.name='Joueur'+String(Math.floor(100+Math.random()*900))}return U.name}
