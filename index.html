@@ -394,6 +394,35 @@ ELS.forEach((el,e)=>{const name='Rayon '+PURE_OF[el];M.push({n:name,cn:name,em:'
  shape(25,[[0,0],[1,0],[0,1],[1,1],[0,2],[0,3]],[3,3,5,5,6,6]);             // Kayla : L épais
  shape(35,[[0,0],[0,1],[1,1],[2,1],[1,2],[1,3]],[4,4,6,6,6,6]);             // Dragon du Feu : croix décalée
  shape(26,[[0,0],[0,1],[1,1],[0,2],[1,2],[0,3]],[4,4,4,4,6,6]);             // Hilam : bloc de roche allongé
+ // v213 — Variantes : les dés génériques (sans vrai personnage) reçoivent un personnage existant transformé (teinte, pierre,
+ // argent pour les rares, or pour les légendaires, aura pour les divins). Forme, valeurs, lancer et identifiants inchangés.
+ // Trois nouveaux dés comblent les trous : commun Vent (64), commun Eau (65), peu commun Feu (66).
+ M.push({el:'vent',lv:1,rarity:1,nd:1,need:2,t:0,fk:7,c:[[0,0,1],[1,0,2],[1,1,3]]});
+ M.push({el:'eau',lv:1,rarity:1,nd:1,need:2,t:0,fk:10,c:[[0,0,1],[0,1,3],[0,2,2]]});
+ M.push({el:'feu',lv:2,rarity:2,nd:1,need:3,t:0,fk:11,c:[[0,0,1],[0,1,2],[1,1,4],[1,2,3]]});
+ const STONE='#cfc6b4',SILVER='#e4ebf2',GOLD='#f4c65a';
+ [[3,'Orven du Givre','🐺','Cousin d’Orven venu des toundras : son pelage a blanchi sous le givre et ses crocs mordent comme le froid. Affinité Glace.','orven','orven-givre',{kind:'tint',color:'#a9dcff'}],
+  [5,'Ven Ardent','🔥','Le frère jumeau de Ven a choisi le brasier plutôt que la glace. Même menton haut, mais un caractère bien plus chaud. Affinité Feu.','ven','ven-ardent',{kind:'tint',color:'#ff9150'}],
+  [64,'Max des Brumes','🌫️','Perdu dans la brume des cimes, Max en est revenu léger comme une rafale… et toujours aussi bagarreur. Affinité Vent.','max','max-brumes',{kind:'tint',color:'#bff0d8'}],
+  [65,'Velmarys des Marées','🌊','Velmarys a monté la garde sur les quais si longtemps que l’écume a teinté son armure. Affinité Eau.','velmarys','velmarys-marees',{kind:'tint',color:'#62b8ff'}],
+  [6,'Bulbalina Orageuse','⚡','Quand l’orage gronde, les bulles de Bulbalina se chargent d’étincelles et éclatent en petits éclairs. Affinité Foudre.','bulbalina','bulbalina-orageuse',{kind:'tint',color:'#ffe070'}],
+  [7,'Statue de Gliska','🗿','Une statue de Gliska, sculptée dans un temple des vents. Les courants d’air qui la traversent l’ont réveillée. Affinité Vent.','gliska','statue-gliska',{kind:'stone',color:STONE}],
+  [9,'Statue givrée de Pennedra','🗿','Prise dans un blizzard, la statue de Pennedra s’est couverte de givre. Elle salue toujours, mais d’un geste glacé. Affinité Glace.','pennedra','statue-pennedra',{kind:'stone',color:'#cfe3f0'}],
+  [66,'Frolgor des Braises','🔥','Frolgor s’est assoupi trop près d’un feu de camp : depuis, ses feuilles rougeoient comme des braises. Affinité Feu.','frolgor','frolgor-braises',{kind:'tint',color:'#ff9a55'}],
+  [12,'Jhimm d’argent','🛡️','Automate d’argent forgé par Maebril à l’image du chevalier Jhimm. Des arcs électriques courent sur son armure. Affinité Foudre.','jhimm','jhimm-argent',{kind:'metal',color:SILVER}],
+  [13,'Kala d’argent','🏹','Automate d’argent à l’image de Kala. Ses flèches de métal sifflent dans le vent. Affinité Vent.','kala','kala-argent',{kind:'metal',color:SILVER}],
+  [14,'Grimgors d’argent','🪓','Automate d’argent à l’image de Grimgors, lourd comme un rocher et tout aussi têtu. Affinité Terre.','grimgors','grimgors-argent',{kind:'metal',color:SILVER}],
+  [15,'Gardienne d’argent','🛡️','Automate d’argent à l’image de la Gardienne du lac, gardienne des sources gelées. Affinité Glace.','gardienne','gardienne-argent',{kind:'metal',color:'#dfeefa'}],
+  [16,'Eberien d’argent','🧙','Automate d’argent à l’image d’Eberien : ses rouages tournent au rythme des marées. Affinité Eau.','eberien','eberien-argent',{kind:'metal',color:SILVER}],
+  [17,'Bolduc d’argent','🔥','Automate d’argent à l’image de Bolduc, chauffé au rouge par sa forge intérieure. Affinité Feu.','bolduc','bolduc-argent',{kind:'metal',color:SILVER}],
+  [20,'Idole d’or d’Orcus','👹','Une idole d’or d’Orcus enfouie sous la montagne. On dit que le démon des rêves murmure encore à travers elle. Affinité Terre.','orcus','orcus-or',{kind:'metal',color:GOLD}],
+  [21,'Maebril d’or','⚒️','Le chef-d’œuvre de Maebril : un automate d’or à sa propre image, refroidi dans la glace éternelle. Affinité Glace.','maebril','maebril-or',{kind:'metal',color:GOLD}],
+  [23,'Sameron d’or','🎭','Le maître du déguisement s’est fait passer pour une statue d’or… et personne n’a rien remarqué. Affinité Feu.','sameron','sameron-or',{kind:'metal',color:GOLD}],
+  [31,'Kayla céleste','🌪️','Kayla élevée au rang divin : un voile de vent pur l’entoure et la porte au-dessus du damier. Affinité Vent.','kayla-legendaire','kayla-celeste',{kind:'metal',color:'#c8f7e6',aura:true}],
+  [32,'Hilam, titan de jade','🪨','Hilam taillé dans le jade des origines. Là où il pose le pied, la terre se souvient. Affinité Terre.','hilam','hilam-jade',{kind:'stone',color:'#86d0a0',aura:true}],
+  [33,'Eberien éternel','❄️','Eberien a franchi le seuil de l’éternité : son corps est devenu cristal de givre. Affinité Glace.','eberien-legendaire','eberien-eternel',{kind:'metal',color:'#bfe6ff',aura:true}],
+  [35,'Soryan, phénix','🔥','Des cendres de Soryan s’est levé un phénix : la flamme divine brûle désormais au cœur de ce mage. Affinité Feu.','soryan','soryan-phenix',{kind:'tint',color:'#ff7a2e',amount:.8,aura:true}]
+ ].forEach(([i,n,em,lo,modelKey,portrait,variant])=>Object.assign(M[i],{n,cn:n,em,lo,modelKey,portrait,variant}));
  // v209 — Case d'apparition : la créature naît sur une case précise du dé (marquée ✦ sur le schéma).
  // Portée maximale (cases d'avance entre la dalle la plus reculée et la créature) : 2 pour tous les dés (v210).
  // Si un dé dépasse, la case d'apparition glisse vers le centre et emporte la plus forte valeur (total inchangé).
@@ -876,4 +905,4 @@ window.hackeniaGame={rows:H,cols:W,
 init();
 </script><script src="assets/action-feedback-v168.js?v=20261105-v168"></script><script src="assets/bonus-fx-v211.js?v=20261112-v211b"></script><script src="assets/pouch-opening-v122.js?v=20261112-v212b"></script><script src="assets/pvp-config.js?v=20261109-v182"></script>
 <script src="assets/pvp-online.js?v=20261112-v204"></script>
-<script src="assets/challenges-v180.js?v=20261111-v198"></script><script src="assets/equipment-v198.js?v=20261112-v207"></script><script src="assets/match-end-v198.js?v=20261111-v198"></script><script src="assets/portal-v159.js?v=20261112-v212b"></script><script src="assets/news-v200.js?v=20261112-v212"></script><script src="assets/cloud-v204.js?v=20261112-v206"></script><script src="assets/story-data-v193.js?v=20261110-v193"></script><script src="assets/story-v193.js?v=20261111-v198"></script><script src="assets/night-sky-v190.js?v=20261110-v190"></script><script src="assets/tutorial-v178.js?v=20261112-v210"></script><script type="module" src="assets/clearing-v105.js?v=20261112-v212b" onerror="document.getElementById('terrain-status').textContent='Affichage de secours · module 3D indisponible'"></script></body></html>
+<script src="assets/challenges-v180.js?v=20261111-v198"></script><script src="assets/equipment-v198.js?v=20261112-v207"></script><script src="assets/match-end-v198.js?v=20261111-v198"></script><script src="assets/portal-v159.js?v=20261113-v213"></script><script src="assets/news-v200.js?v=20261113-v213"></script><script src="assets/cloud-v204.js?v=20261112-v206"></script><script src="assets/story-data-v193.js?v=20261110-v193"></script><script src="assets/story-v193.js?v=20261111-v198"></script><script src="assets/night-sky-v190.js?v=20261110-v190"></script><script src="assets/tutorial-v178.js?v=20261112-v210"></script><script type="module" src="assets/clearing-v105.js?v=20261113-v213" onerror="document.getElementById('terrain-status').textContent='Affichage de secours · module 3D indisponible'"></script></body></html>
