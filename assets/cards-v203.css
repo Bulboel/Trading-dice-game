@@ -108,8 +108,10 @@ dialog.recycle-dialog .qo-actions button[disabled]{opacity:.5}
 #portal .collect-card.cc2.mystery{filter:none!important;opacity:1!important;background:linear-gradient(180deg,#141b26,#0d121a)!important;border-style:dashed!important;border-color:color-mix(in srgb,var(--rim) 45%,transparent)!important}
 #portal .collect-card.cc2.mystery:hover{transform:none}
 #portal .cc2 .mystery-art{position:relative}
-#portal .cc2 .mystery-art img,#portal .cc2 .mystery-art svg,#portal .cc2 .mystery-art .hand-generic{filter:brightness(0) drop-shadow(0 0 1px color-mix(in srgb,var(--rim) 80%,transparent)) drop-shadow(0 0 6px color-mix(in srgb,var(--rim) 40%,transparent))!important;opacity:.9}
-#portal .cc2 .mystery-art b{position:absolute;inset:0;display:grid;place-items:center;font:700 28px/1 Georgia,serif;color:color-mix(in srgb,var(--rim) 85%,#fff);text-shadow:0 0 10px #000}
+/* v224 — Disque mystère identique pour tous les dés : le portrait est masqué, seul un « ? » lumineux de la couleur de la rareté apparaît. */
+#portal .cc2 .mystery-art>*:not(b){visibility:hidden!important}
+#portal .cc2 .collect-art.cc-art.mystery-art{background:radial-gradient(circle at 38% 30%,color-mix(in srgb,var(--rim) 30%,#1d2433),#0b0f17 72%)!important;box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--rim) 70%,transparent),inset 0 0 18px #000c,0 0 14px color-mix(in srgb,var(--rim) 22%,transparent)!important}
+#portal .cc2 .mystery-art b{position:absolute;inset:0;display:grid;place-items:center;font:700 30px/1 Georgia,serif;color:color-mix(in srgb,var(--rim) 80%,#fff);text-shadow:0 0 12px color-mix(in srgb,var(--rim) 70%,transparent),0 2px 4px #000}
 #portal .cc2 .mystery-net{min-height:60px}
 #portal .cc2 .mystery-net span{width:52px;height:52px;border-radius:10px;border:1.5px dashed #ffffff26;display:grid;place-items:center;font:700 20px Georgia,serif;color:#ffffff40}
 #portal .cc2.mystery h3{color:#8d98aa!important;font-style:italic}
