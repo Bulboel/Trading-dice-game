@@ -55,7 +55,7 @@ function createCore(o){
    while(S.queue.length){const ev=S.queue[0];
     if(ev.seq<=S.applied){S.queue.shift();continue}
     if(ev.seq!==S.applied+1){await fetchEvents();if(S.queue[0]&&S.queue[0].seq!==S.applied+1)break;continue}
-    if(ev.kind==='hello'&&ev.payload?.result==='draw'){game.endOnline(null,'Match nul : les deux camps ont vaincu trois créatures.');S.ended=true;S.status='draw'}
+    if(ev.kind==='hello'&&ev.payload?.result==='draw'){game.endOnline(null,'Match nul : les deux camps ont vaincu quatre créatures.');S.ended=true;S.status='draw'}
     if(ev.seat!==S.seat){
      if(ev.kind==='roll')game.pushRoll((ev.payload.values||[]).map(Number));
      else if(ev.kind==='hello'){if(String(ev.payload.version||'')!==String(cfg.version||'')){S.versionOK=false;S.error='Ton adversaire n’a pas la même version du jeu : recharge la page des deux côtés.'}}
@@ -68,7 +68,7 @@ function createCore(o){
  function checkEnd(){const st=game.onlineState();if(!st.over||S.endSent)return;S.endSent=true;S.ended=true;
   if(st.result?.outcome==='draw'||st.kills.every(n=>n>=st.kw)){S.status='draw';if(S.seat===0)send(rpc=>rpc('finish_draw',{})).catch(e=>{S.error='Match nul reconnu. Enregistrement serveur indisponible : '+e.message;emit()});emit();return}
   const w=st.result?.winner??[0,1].find(s=>st.scores[s]>=st.win||st.kills[s]>=st.kw);if(w===S.seat)send(rpc=>rpc('play_action',{p_kind:'win',p_payload:{}})).catch(()=>{});emit()}
- function finishFromServer(){S.ended=true;const w=S.gameRow.winner;if(w===null){S.status='draw';game.endOnline(null,'Match nul : les deux camps ont vaincu trois créatures.')}else if(w===S.seat)game.endOnline(S.seat,'L’adversaire a quitté la partie : victoire !');else if(w!==null&&w!==undefined&&!game.onlineState().over)game.endOnline(w,'Défaite par abandon.');emit()}
+ function finishFromServer(){S.ended=true;const w=S.gameRow.winner;if(w===null){S.status='draw';game.endOnline(null,'Match nul : les deux camps ont vaincu quatre créatures.')}else if(w===S.seat)game.endOnline(S.seat,'L’adversaire a quitté la partie : victoire !');else if(w!==null&&w!==undefined&&!game.onlineState().over)game.endOnline(w,'Défaite par abandon.');emit()}
  async function resign(){if(!S.gameId||S.ended)return;S.ended=true;try{await send(rpc=>rpc('play_action',{p_kind:'resign',p_payload:{}}))}catch(e){}game.endOnline(1-S.seat,'Tu as abandonné la partie.');emit()}
  function leave(){stopWatch();const was=S.started;reset();try{was&&game.leaveOnline()}catch(e){}emit()}
 

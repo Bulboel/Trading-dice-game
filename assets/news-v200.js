@@ -1,0 +1,28 @@
+/* v200 — Dé « Annonces » (noir, lumière dorée) : les dernières mises à jour en grandes lignes. Visible sur l'accueil une fois les premiers pas terminés. */
+(()=>{'use strict';
+const SEEN='hackenia-news-seen-v1';
+// Du plus récent au plus ancien. On reste général : pas de nom de personnage.
+const NEWS=[
+ {id:'v200',tag:'Nouveau',title:'Un menu plus clair',items:['Le dé Annonces vous présente les dernières nouveautés.','Les Bubulles rejoignent le cercle des dés.','Victoire aux combats : il faut maintenant vaincre 4 ennemis.','Récompense quotidienne revalorisée : 30 Bubulles par jour et 100 le 7e jour.','Vos deux dés bonus peuvent être lancés en même temps.']},
+ {id:'v199',title:'Une nouvelle rareté : Énergie',items:['De nouveaux dés élémentaires chargés d’énergie, plus lumineux et plus puissants.','Les chances d’obtention des bourses ont été revues.']},
+ {id:'v198',title:'Fins de partie et objets',items:['Nouvelles animations de victoire et de défaite.','Premier objet à porter, à débloquer en progressant dans l’Histoire.','Un nouveau défi lié à l’Histoire.','Un accueil plus simple pour bien démarrer.']},
+ {id:'v197',title:'De nouveaux personnages',items:['Plusieurs dés deviennent des personnages animés.','De nouveaux dés avec des formes de dalles inédites.']},
+ {id:'v196',title:'Plus lisible',items:['Cartes de dés plus lisibles en partie, sur ordinateur comme sur téléphone.','Menu Histoire et listes de choix redessinés.']},
+ {id:'v195',title:'Un plateau plus grand',items:['Le damier passe à 8 colonnes et 12 lignes.']},
+ {id:'v193',title:'Le mode Histoire',items:['Les premiers chapitres de l’histoire d’Hackénia, avec dialogues, illustrations et duels aux dés.']}
+];
+const latest=NEWS[0].id;
+const read=()=>{try{return localStorage.getItem(SEEN)}catch{return null}};
+const markRead=()=>{try{localStorage.setItem(SEEN,latest)}catch{}update()};
+let die,dlg;
+function update(){if(!die)return;const fresh=read()!==latest;die.classList.toggle('fresh',fresh);die.setAttribute('aria-label',fresh?'Annonces : nouveautés à découvrir':'Annonces');die.querySelector('.news-count').textContent=fresh?'!':'';die.querySelector('.news-count').hidden=!fresh}
+function draw(){const seen=read();dlg.querySelector('#news-body').innerHTML='<ol class="news-list">'+NEWS.map((n,i)=>`<li class="news-item${i===0?' latest':''}"><header><span class="news-ver">${n.id}</span><strong>${n.title}</strong>${i===0&&seen!==latest?'<em>Nouveau</em>':''}</header><ul>${n.items.map(t=>`<li>${t}</li>`).join('')}</ul></li>`).join('')+'</ol>'}
+function setup(){const nav=document.getElementById('portal-nav');if(!nav){requestAnimationFrame(setup);return}
+ die=document.createElement('button');die.id='news-die';die.type='button';
+ die.innerHTML='<span class="news-stage" aria-hidden="true"><span class="news-cube"><u class="ncore"></u><u class="ncore y"></u><u class="ncore z"></u>'+[['f',[4]],['k',[0,2,3,5,6,8]],['r',[0,8]],['l',[0,2,6,8]],['t',[0,4,8]],['m',[0,2,4,6,8]]].map(([f,p])=>'<i class="nc-'+f+'">'+Array.from({length:9},(_,k)=>'<b'+(p.includes(k)?' class="on"':'')+'></b>').join('')+'</i>').join('')+'</span></span><span class="news-label">Annonces</span><span class="news-count" hidden></span>';
+ nav.append(die);
+ dlg=document.createElement('dialog');dlg.id='news-dialog';dlg.setAttribute('aria-labelledby','news-title');
+ dlg.innerHTML='<header><h2 id="news-title">Annonces</h2><button type="button" data-news="close" aria-label="Fermer">✕</button></header><p class="news-intro">Les dernières nouveautés d’Hackénia, en quelques mots.</p><div id="news-body"></div>';document.body.append(dlg);
+ die.onclick=()=>{draw();dlg.showModal();markRead()};dlg.addEventListener('click',e=>{if(e.target.closest('[data-news="close"]')||e.target===dlg)dlg.close()});update()}
+setup();window.HackeniaNews={items:NEWS,latest};
+})();
