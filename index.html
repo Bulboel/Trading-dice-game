@@ -380,6 +380,9 @@ ELS.forEach((el,e)=>{const name='Rayon '+PURE_OF[el];M.push({n:name,cn:name,em:'
  shape(29,[[0,0],[0,1],[0,2],[1,2],[2,2],[3,2]],[3,4,5,5,5,6]);            // Bosco : arc en équerre
  shape(56,[[0,0],[1,0],[0,1],[1,1],[2,1],[1,2]],[4,4,5,5,5,5]);            // Orcus : bloc démoniaque
  shape(57,[[0,0],[1,0],[2,0]],[2,1,3]);                                    // Ven : commun, trois dalles
+ // v208 — Équilibrage : tous les légendaires lancent 2 dés (5+) ; tous les rares lancent 1 dé (3+) avec des dalles de 2 à 6.
+ for(let i=18;i<24;i++){M[i].nd=2;M[i].need=5}
+ for(let i=12;i<18;i++){M[i].need=3;M[i].c=M[i].c.map(([x,y],k)=>[x,y,k+2])}
  M[56].lo='Démon des rêves qui sème le doute dans l’esprit de ses proies. Son bloc compact de six dalles écrase tout sur son passage. Affinité Foudre.';
  M[57].lo='Mage de glace au menton toujours haut. Son givre s’étale sur trois dalles, la plus forte à l’extrémité. Affinité Glace.';}
 const rarityOf=d=>d.rarity??d.lv;
@@ -853,4 +856,4 @@ window.hackeniaGame={rows:H,cols:W,
 init();
 </script><script src="assets/action-feedback-v168.js?v=20261105-v168"></script><script src="assets/pouch-opening-v122.js?v=20261111-v199"></script><script src="assets/pvp-config.js?v=20261109-v182"></script>
 <script src="assets/pvp-online.js?v=20261112-v204"></script>
-<script src="assets/challenges-v180.js?v=20261111-v198"></script><script src="assets/equipment-v198.js?v=20261112-v207"></script><script src="assets/match-end-v198.js?v=20261111-v198"></script><script src="assets/portal-v159.js?v=20261112-v207"></script><script src="assets/news-v200.js?v=20261112-v207"></script><script src="assets/cloud-v204.js?v=20261112-v206"></script><script src="assets/story-data-v193.js?v=20261110-v193"></script><script src="assets/story-v193.js?v=20261111-v198"></script><script src="assets/night-sky-v190.js?v=20261110-v190"></script><script src="assets/tutorial-v178.js?v=20261112-v200"></script><script type="module" src="assets/clearing-v105.js?v=20261112-v207" onerror="document.getElementById('terrain-status').textContent='Affichage de secours · module 3D indisponible'"></script></body></html>
+<script src="assets/challenges-v180.js?v=20261111-v198"></script><script src="assets/equipment-v198.js?v=20261112-v207"></script><script src="assets/match-end-v198.js?v=20261111-v198"></script><script src="assets/portal-v159.js?v=20261112-v208"></script><script src="assets/news-v200.js?v=20261112-v208"></script><script src="assets/cloud-v204.js?v=20261112-v206"></script><script src="assets/story-data-v193.js?v=20261110-v193"></script><script src="assets/story-v193.js?v=20261111-v198"></script><script src="assets/night-sky-v190.js?v=20261110-v190"></script><script src="assets/tutorial-v178.js?v=20261112-v200"></script><script type="module" src="assets/clearing-v105.js?v=20261112-v207" onerror="document.getElementById('terrain-status').textContent='Affichage de secours · module 3D indisponible'"></script></body></html>
