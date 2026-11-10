@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v209',title:'Où apparaît votre créature ?',items:['La case où naît la créature est maintenant marquée d’un liseré doré sur le schéma de chaque dé.','Sur les dés les plus longs, la créature naît plus près du centre.']},
  {id:'v208',title:'Équilibrage des raretés',items:['Tous les dés légendaires lancent maintenant deux dés.','Tous les dés rares s’invoquent plus facilement, avec des dalles plus fortes.']},
  {id:'v207',title:'Des dés mieux équilibrés',items:['Chaque rareté a désormais son nombre de dalles : 3, 4, 5, puis 6 pour les légendaires et les divins.','Plusieurs dés légendaires reçoivent de nouvelles formes à six dalles, et les divins deviennent plus puissants.','Le premier objet à porter s’affiche en 3D, et de petites animations font vivre certains personnages.']},
  {id:'v204',title:'Votre progression à l’abri',items:['Sauvegarde en ligne automatique, sans compte à créer : aucun email, aucun mot de passe.','Un code de récupération permet de retrouver sa progression sur un autre téléphone (Options › Sauvegarde).']},
