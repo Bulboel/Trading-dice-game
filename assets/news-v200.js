@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v203',title:'Des fiches de dés plus utiles',items:['La Collection et Mes decks montrent maintenant la forme des dalles de chaque dé.','Fiches plus compactes et plus lisibles, sur téléphone comme sur ordinateur.']},
  {id:'v201',title:'Un jeu bien plus léger',items:['Les personnages et les dés en 3D sont 8 fois plus légers, sans perte de qualité visible.','Chargement plus rapide et moins de mémoire utilisée, surtout sur téléphone.']},
  {id:'v200',title:'Un menu plus clair',items:['Le dé Annonces vous présente les dernières nouveautés.','Les Bubulles rejoignent le cercle des dés.','Victoire aux combats : il faut maintenant vaincre 4 ennemis.','Récompense quotidienne revalorisée : 30 Bubulles par jour et 100 le 7e jour.','Vos deux dés bonus peuvent être lancés en même temps.']},
  {id:'v199',title:'Une nouvelle rareté : Énergie',items:['De nouveaux dés élémentaires chargés d’énergie, plus lumineux et plus puissants.','Les chances d’obtention des bourses ont été revues.']},
