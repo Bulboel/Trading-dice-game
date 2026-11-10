@@ -80,3 +80,37 @@
  body.portal-open #portal .portal-head .pl-dot{top:-6px;right:-6px;min-width:15px;height:15px;font-size:9px;line-height:15px}
 }
 dialog.recycle-dialog .rc-name,dialog.recycle-dialog .rc-name b,dialog.recycle-dialog .rc-name small{text-align:left}
+
+/* v222 — Finitions de l'en-tête */
+/* Chiffre du niveau : chiffres alignés (Georgia a des chiffres « elzéviriens » qui descendent sous la ligne). */
+#portal .pl-ring b,#portal .pp-badge b{font-family:system-ui,-apple-system,"Segoe UI",sans-serif!important;font-weight:800;font-variant-numeric:lining-nums tabular-nums;line-height:1;display:block;transform:translateY(-.5px)}
+#portal .pl-ring b{font-size:15px}
+#portal .pp-badge b{font-size:30px}
+@media(min-width:701px){
+ /* Accueil : le badge de niveau sort du flux pour que le titre HACKÉNIA reste centré ; le dé Quotidien se place juste dessous, centré. */
+ body.portal-open[data-portal-view="home"] #portal .portal-head .portal-level{position:absolute;right:14px;top:23px;width:120px;justify-content:flex-start}
+ body.portal-open[data-portal-view="home"] #daily-die{right:calc(14px + (120px - var(--daily-w,76px)) / 2)!important;--daily-w:76px}
+ /* Autres pages : retour, niveau et Bubulles sur une seule ligne. */
+ body.portal-open:not([data-portal-view="home"]) #portal .portal-head{grid-template-columns:minmax(0,1fr) auto auto auto!important;grid-template-rows:auto!important;column-gap:12px!important;align-items:center!important}
+ body.portal-open:not([data-portal-view="home"]) #portal .portal-head .portal-brand{grid-column:1!important;grid-row:1!important}
+ body.portal-open:not([data-portal-view="home"]) #portal .portal-head .portal-back{grid-column:2!important;grid-row:1!important}
+ body.portal-open:not([data-portal-view="home"]) #portal .portal-head .portal-level{grid-column:3!important;grid-row:1!important;align-self:center}
+ body.portal-open:not([data-portal-view="home"]) #portal .portal-head .wallet{grid-column:4!important;grid-row:1!important}
+}
+/* Bouton Menu : même famille que le badge de niveau (pilule sombre, liseré doré, icône dans un rond). */
+html body.portal-open #portal .portal-head #portal-back.portal-back:not([hidden]){display:inline-flex!important;align-items:center!important;gap:9px!important;height:46px!important;min-height:46px!important;width:auto!important;padding:0 16px 0 5px!important;border-radius:999px!important;border:1px solid #e3c57355!important;background:linear-gradient(180deg,#1f2b22,#131a14)!important;color:#f1e4bf!important;box-shadow:inset 0 1px 0 #ffffff12,0 4px 14px #0006!important;font:600 12px/1 system-ui,sans-serif!important;letter-spacing:.14em!important;text-transform:uppercase!important;cursor:pointer;transition:border-color .2s,transform .2s,box-shadow .2s}
+html body.portal-open #portal .portal-head #portal-back.portal-back:not([hidden])::before{content:none!important;display:none!important}
+html body.portal-open #portal .portal-head #portal-back.portal-back:not([hidden]):hover{border-color:#ffd76a!important;box-shadow:inset 0 1px 0 #ffffff1a,0 0 14px #ffd76a33!important}
+html body.portal-open #portal .portal-head #portal-back.portal-back:not([hidden]):active{transform:translateY(1px)}
+#portal .portal-back .pb-icon{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 40% 30%,#3b4a2a,#141c10);box-shadow:inset 0 0 0 1px #e3c57355;color:#ffe7a3}
+#portal .portal-back .pb-icon svg{width:18px;height:18px}
+#portal .portal-back .pb-label{color:#cdbf95}
+@media(max-width:700px){
+ html body.portal-open #portal .portal-head #portal-back.portal-back:not([hidden]){width:34px!important;min-width:34px!important;height:34px!important;min-height:34px!important;padding:0!important;justify-content:center!important;gap:0!important;font-size:0!important;align-self:center;justify-self:center}
+ #portal .portal-back .pb-icon{width:30px;height:30px;box-shadow:none;background:none}
+ #portal .portal-back .pb-label{display:none}
+ body.portal-open[data-portal-view="home"] #daily-die{right:calc(8px + (34px - var(--daily-w,67px)) / 2 + 4px)!important}
+}
+/* Bouton Menu en partie : icône maison dorée (le glyphe ↩ du mobile est remplacé par la même icône). */
+#menu-return .menu-home-icon{color:#ffe7a3;flex:none}
+body:not(.portal-open) #identity #menu-return:before{content:none!important;display:none!important}
