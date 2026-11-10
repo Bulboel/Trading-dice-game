@@ -83,3 +83,22 @@ dialog.quick-open::backdrop{background:#07050cbb;backdrop-filter:blur(3px)}
 #portal .collect-card.cc2 .cc-chips+button,#portal .collect-card.cc2 .cc-meta+button{margin-top:auto!important}
 /* Compteur de dés bonus : goutte d'eau quand cet effet est choisi */
 .bonus-counter .bonus-drop-icon{width:9px;height:12px;display:inline-block;vertical-align:-1px;filter:drop-shadow(0 0 3px #5fbfff99)}
+
+/* v220 — Recycler les doublons */
+#portal .recycle-btn{border-color:#7ad39b88;color:#c8f5d8;background:linear-gradient(180deg,#173323,#0f2016)}
+#portal .recycle-btn b{color:#ffe08a}
+#portal .cc2 .cc-chip.spare{color:#b8f0cc;border-color:#7ad39b66;background:#10291acc}
+dialog.recycle-dialog form{display:flex;flex-direction:column;min-height:0;max-height:88vh;margin:0}
+dialog.recycle-dialog .rc-list{list-style:none;margin:0;padding:6px 14px;overflow:auto;display:grid;gap:6px;flex:1}
+dialog.recycle-dialog .rc-list label{display:grid;grid-template-columns:auto 44px 1fr auto;align-items:center;gap:10px;padding:7px 10px;border-radius:12px;border:1px solid color-mix(in srgb,var(--rim) 45%,transparent);background:#0c0a12;cursor:pointer}
+dialog.recycle-dialog .rc-list input{width:18px;height:18px;accent-color:#7ad39b}
+dialog.recycle-dialog .rc-art{width:44px;height:44px;display:grid;place-items:center}
+dialog.recycle-dialog .rc-art img,dialog.recycle-dialog .rc-art svg{width:44px;height:44px;object-fit:contain}
+dialog.recycle-dialog .rc-name{display:grid;min-width:0}
+dialog.recycle-dialog .rc-name b{font:600 13px/1.2 system-ui;color:#f1e7cf;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+dialog.recycle-dialog .rc-name small{font-size:11px;color:var(--rim)}
+dialog.recycle-dialog .rc-gain{display:grid;justify-items:end;font-size:12px;color:#cfd8c9}
+dialog.recycle-dialog .rc-gain b{color:#ffe08a}
+dialog.recycle-dialog .rc-gain small{color:#b8f0cc;font-weight:600}
+dialog.recycle-dialog .qo-actions button[disabled]{opacity:.5}
+@media(max-width:700px){dialog.recycle-dialog .rc-list label{grid-template-columns:auto 36px 1fr auto;gap:7px;padding:6px 8px}dialog.recycle-dialog .rc-art,dialog.recycle-dialog .rc-art img{width:36px;height:36px}}
