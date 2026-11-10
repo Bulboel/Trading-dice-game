@@ -5,8 +5,12 @@
 const STYLES=[
  {id:'star',name:'Étoile dorée',desc:'L’étoile classique qui file vers votre compteur.'},
  {id:'drop',name:'Goutte d’eau',desc:'Une goutte tombe, éclabousse, puis fond sur votre compteur comme une tête chercheuse.'},
- {id:'locked-1',name:'Effet mystère',desc:'À gagner prochainement.',locked:true},
- {id:'locked-2',name:'Effet mystère',desc:'À gagner prochainement.',locked:true}];
+ {id:'spark',name:'Éclair',desc:'Un éclair zèbre le plateau jusqu’à votre compteur.',level:5},
+ {id:'leaf',name:'Feuille d’automne',desc:'Une feuille tourbillonne, puis un coup de vent l’emporte vers votre compteur.',level:10}];
+// v219 — Les effets « Éclair » et « Feuille » se débloquent avec le niveau de joueur.
+const isLocked=s=>!!s.level&&!window.HackeniaProgress?.unlocked?.(window.HackeniaPortal?.profile?.(),s.id);
+for(const st of STYLES)if(st.level)Object.defineProperty(st,'locked',{enumerable:true,get(){return isLocked(st)}});
+for(const st of STYLES)if(st.level)Object.defineProperty(st,'hint',{enumerable:true,get(){return isLocked(st)?'Débloqué au niveau '+st.level:''}});
 const current=()=>{const v=window.HackeniaSettings?.get?.().bonusFx;return STYLES.some(s=>s.id===v&&!s.locked)?v:'star'};
 const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches||window.HackeniaSettings?.get?.().motion===false;
 
@@ -43,9 +47,31 @@ function dropFx(a,b,done){const {c,g}=canvasLayer(),parts=[],trail=[],rings=[];
   if(t<T1+T2+T3+700)requestAnimationFrame(frame);else c.remove()};
  requestAnimationFrame(frame)}
 
+// Éclair : un trait brisé part du dé et zèbre l'écran jusqu'au compteur, avec deux petites branches et un flash.
+function bolt(a,b){const pts=[a],n=9;for(let i=1;i<n;i++){const t=i/n,x=a.x+(b.x-a.x)*t,y=a.y+(b.y-a.y)*t,len=Math.hypot(b.x-a.x,b.y-a.y),nx=-(b.y-a.y)/len,ny=(b.x-a.x)/len,off=(Math.random()-.5)*Math.min(70,len*.18)*(1-Math.abs(.5-t));pts.push({x:x+nx*off,y:y+ny*off})}pts.push(b);return pts}
+function sparkFx(a,b,done){const {c,g}=canvasLayer(),o={x:a.left+a.width/2,y:a.top+a.height/2},t={x:b.left+b.width/2,y:b.top+b.height/2},start=performance.now(),T=1100;let main=bolt(o,t),branches=[],hit=false;
+ const draw=(pts,k,w,alpha)=>{const m=Math.max(2,Math.ceil(pts.length*k));g.beginPath();g.moveTo(pts[0].x,pts[0].y);for(let i=1;i<m;i++)g.lineTo(pts[i].x,pts[i].y);g.lineWidth=w;g.strokeStyle=`rgba(190,170,255,${alpha*.5})`;g.shadowColor='#b79cff';g.shadowBlur=18;g.stroke();g.lineWidth=w*.4;g.strokeStyle=`rgba(255,255,255,${alpha})`;g.shadowBlur=6;g.stroke()};
+ const frame=now=>{const e=now-start;g.clearRect(0,0,c.width,c.height);const grow=Math.min(1,e/260);
+  if(e>90&&Math.random()<.35)main=bolt(o,t);// scintillement
+  if(!branches.length&&e>140)for(let i=0;i<2;i++){const s=main[3+i*2],end={x:s.x+(Math.random()-.5)*120,y:s.y+(Math.random()-.5)*120};branches.push(bolt(s,end).slice(0,6))}
+  const alpha=e<T*.6?1:Math.max(0,1-(e-T*.6)/(T*.4));draw(main,grow,7,alpha);for(const br of branches)draw(br,grow,3,alpha*.7);
+  if(grow>=1&&!hit){hit=true;done()}
+  if(hit){const k=Math.min(1,(e-260)/500),r=8+50*k;g.shadowBlur=0;g.fillStyle=`rgba(235,225,255,${(1-k)*.8})`;g.beginPath();g.arc(t.x,t.y,r,0,Math.PI*2);g.fill()}
+  if(e<T)requestAnimationFrame(frame);else c.remove()};requestAnimationFrame(frame)}
+// Feuille d'automne : elle tombe en se balançant, puis un coup de vent l'emporte en spirale vers le compteur.
+function drawLeaf(g,x,y,r,angle,alpha=1){g.save();g.translate(x,y);g.rotate(angle);g.globalAlpha=alpha;const grad=g.createLinearGradient(-r,0,r,0);grad.addColorStop(0,'#c2410c');grad.addColorStop(.5,'#f59e0b');grad.addColorStop(1,'#facc15');g.fillStyle=grad;g.shadowColor='#f59e0b88';g.shadowBlur=8;
+ g.beginPath();g.moveTo(-r,0);g.quadraticCurveTo(-r*.2,-r*.75,r,0);g.quadraticCurveTo(-r*.2,r*.75,-r,0);g.fill();g.shadowBlur=0;g.strokeStyle='#7c2d12aa';g.lineWidth=1.2;g.beginPath();g.moveTo(-r*1.25,0);g.lineTo(r*.85,0);g.stroke();g.restore()}
+function leafFx(a,b,done){const {c,g}=canvasLayer(),ox=a.left+a.width/2,oy=a.top+a.height/2,tx=b.left+b.width/2,ty=b.top+b.height/2,start=performance.now(),T1=850,T2=1050,trail=[];let arrived=false;
+ const frame=now=>{const e=now-start;g.clearRect(0,0,c.width,c.height);let x,y,ang;
+  if(e<T1){const k=e/T1;x=ox+Math.sin(k*Math.PI*3)*38;y=oy-40+k*80;ang=Math.sin(k*Math.PI*3)*.9}
+  else{const k=Math.min(1,(e-T1)/T2),ease=k*k*(3-2*k),sx=ox+Math.sin(Math.PI*3)*38,sy=oy+40,spin=(1-ease)*Math.PI*2.2,rad=(1-ease)*60;x=sx+(tx-sx)*ease+Math.cos(spin*2)*rad;y=sy+(ty-sy)*ease+Math.sin(spin*2)*rad;ang=e/90;
+   trail.push({x,y,life:1});if(k>=1&&!arrived){arrived=true;done()}}
+  for(const p of trail){p.life-=.05;if(p.life>0){g.fillStyle=`rgba(250,204,21,${p.life*.35})`;g.beginPath();g.arc(p.x,p.y,4*p.life,0,Math.PI*2);g.fill()}}
+  if(!arrived)drawLeaf(g,x,y,18,ang);
+  if(e<T1+T2+500)requestAnimationFrame(frame);else c.remove()};requestAnimationFrame(frame)}
 function pulse(target){target?.animate?.([{boxShadow:'0 0 0 0 #7fd3ff00'},{boxShadow:'0 0 18px 6px #7fd3ffaa'},{boxShadow:'0 0 0 0 #7fd3ff00'}],{duration:900})}
 // Joue un effet entre deux rectangles (partie ou aperçu des Options).
-function play(style,a,b,target){if(reduced()||style==='star'||!a||!b){return false}if(style==='drop'){dropFx(a,b,()=>pulse(target));return true}return false}
+function play(style,a,b,target){if(reduced()||style==='star'||!a||!b){return false}if(style==='drop'){dropFx(a,b,()=>pulse(target));return true}if(style==='spark'){sparkFx(a,b,()=>pulse(target));return true}if(style==='leaf'){leafFx(a,b,()=>pulse(target));return true}return false}
 
 const A=window.HackeniaActions;let original=null;
 if(A?.bonusEarned){original=A.bonusEarned;A.bonusEarned=(camp,origin)=>{const style=current();if(style==='star')return original(camp,origin);const target=document.getElementById('bonus-counter-'+camp),a=origin||A.captureRollOrigin?.(),b=target?.getBoundingClientRect();if(!play(style,a,b&&b.width?b:null,target))return original(camp,origin)}}
