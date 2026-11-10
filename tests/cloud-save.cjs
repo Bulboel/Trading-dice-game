@@ -50,5 +50,8 @@ const base={version:1,gold:120,inventory:{3:2,5:1},decks:[{id:'a',name:'Deck',di
  const srv2=server();srv2.missing=true;const D=device(srv2,base);await D.cloud.start();assert.equal(D.cloud.state.status,'unavailable');D.cloud.changed();assert.equal(D.timers.filter(t=>t.ms===4000).length,0);
  assert.match(D.cloud.state.error,/PGRST205/,'The technical detail is kept for the player');
  srv2.missing=false;await D.cloud.retryNow();assert.equal(D.cloud.state.status,'synced','« Réessayer » works once the SQL has been run, without reloading');
+ // 8. Table créée mais droits manquants (42501) : message dédié, pas de nouvel essai automatique.
+ const srv3=server(),E=device(srv3,base);const sb3=srv3.client();sb3.from=()=>({select:()=>({eq:()=>({maybeSingle:async()=>({error:{code:'42501',message:'permission denied for table player_saves'}})})})});
+ const E2=createCloud({getClient:async()=>sb3,portal:{profile:()=>base,restore:()=>true},store:{getItem:()=>null,setItem(){}},schedule:()=>0,cancel(){},now:()=>1e12});await E2.start();assert.equal(E2.state.status,'denied');assert.match(E2.state.error,/42501/);
  console.log('PASS: silent anonymous cloud save, debounced pushes, offline retry, hashed recovery codes (peek, claim, code follows progress), throttled guessing, conflict asks before replacing, graceful when the server is not configured.');
 })().catch(e=>{console.error(e);process.exit(1)});
