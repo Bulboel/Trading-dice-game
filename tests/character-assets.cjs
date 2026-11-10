@@ -4,7 +4,7 @@ const element=()=>({children:[],style:{setProperty(){}},classList:{add(){},remov
 const context=vm.createContext({window:{dispatchEvent(){}},Event,document:{getElementById(id){if(!els.has(id))els.set(id,element());return els.get(id)}},fetch:async()=>({ok:true,json:async()=>manifest}),console,Date,Math,setTimeout:()=>0,clearTimeout(){}});
 vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,''),context);
 const game=context.window.hackeniaGame,defs=game.monsters;
-assert.equal(defs.length,76);assert.deepEqual(Array.from(defs.slice(36,39),d=>d.n),['Eberien','Kala','Grimgors'],'Existing inventory IDs remain stable');
+assert.equal(defs.length,90);assert.deepEqual(Array.from(defs.slice(36,39),d=>d.n),['Eberien','Kala','Grimgors'],'Existing inventory IDs remain stable');
 for(const d of defs.slice(36,41)){assert.equal(game.rarity(d),3);assert.equal(d.need,3);assert.equal(d.nd,1);assert.equal(d.lv,2);assert.deepEqual(JSON.parse(JSON.stringify(d.c)),JSON.parse(JSON.stringify(defs[36].c)));}
 assert.deepEqual(Array.from(defs.slice(38,41),d=>d.el),['eau','vent','feu']);assert.equal(defs[42].el,'','Balai has no elemental affinity');
 const guardian=defs[41],highest=guardian.c.reduce((a,b)=>b[2]>=a[2]?b:a);assert.deepEqual(Array.from(highest),[0,2,6],'Guardian appears on the strong bottom tile of her L');
