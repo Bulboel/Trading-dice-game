@@ -15,7 +15,7 @@ const updates=[];
 const normalTex=(()=>{const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),img=g.createImageData(128,128);
  for(let y=0;y<128;y++)for(let x=0;x<128;x++){const a=Math.sin((x/128)*Math.PI*6+Math.sin(y/128*Math.PI*4)*1.3),b=Math.cos((y/128)*Math.PI*8+Math.cos(x/128*Math.PI*2)*1.1),i=(y*128+x)*4;img.data[i]=128+a*38;img.data[i+1]=128+b*38;img.data[i+2]=255;img.data[i+3]=255}
  g.putImageData(img,0,0);const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(5,5);return t})();
-const waterGeo=new THREE.PlaneGeometry(15,16,software?40:90,software?42:96);waterGeo.rotateX(-Math.PI/2);
+const waterGeo=new THREE.PlaneGeometry(14.5,rows*1.43,software?40:90,software?42:96);waterGeo.rotateX(-Math.PI/2);
 const wc=[],wp=waterGeo.attributes.position;
 for(let i=0;i<wp.count;i++){const x=wp.getX(i),z=wp.getZ(i),edge=Math.min(1,Math.max(0,(Math.max(Math.abs(x)-BX,Math.abs(z)-BZ))/2.6)),moon=Math.exp(-Math.pow((x*.55+z*.25+1.2),2)*.9)*Math.max(0,1-Math.abs(z+3)/9);
  const ripple=.5+.5*Math.sin(x*2.3+z*1.7)*Math.cos(z*1.1-x*.7),c=new THREE.Color().setRGB(.4,.1,.27).lerp(new THREE.Color(.13,.035,.12),edge*.85).lerp(new THREE.Color(.62,.24,.45),ripple*.2).lerp(new THREE.Color(.95,.62,.8),moon*.5);wc.push(c.r,c.g,c.b)}
@@ -29,11 +29,11 @@ const moonPath=[];for(let i=0;i<5;i++){const m=add(new THREE.PlaneGeometry(.5+rn
 updates.push((t,light,moving)=>{for(const p of moonPath)p.m.material.opacity=.16+(moving?.08*Math.sin(t*1.6+p.phase):0)});
 
 // ---------- 2. La terrasse de pierre (zone de jeu) ----------
-const paving=canvasTex(512,640,(g,w,h)=>{g.fillStyle='#4f4650';g.fillRect(0,0,w,h);const cw=w/8,ch=h/10;
- for(let y=0;y<10;y++)for(let x=0;x<8;x++){const tone=118+Math.floor(rnd()*30),pink=Math.floor(rnd()*12);const gr=g.createLinearGradient(x*cw,y*ch,x*cw+cw,y*ch+ch);gr.addColorStop(0,`rgb(${tone+pink+14},${tone+4},${tone+16})`);gr.addColorStop(1,`rgb(${tone+pink-8},${tone-18},${tone-4})`);g.fillStyle=gr;g.fillRect(x*cw+3,y*ch+3,cw-6,ch-6);
+const paving=canvasTex(512,64*rows,(g,w,h)=>{g.fillStyle='#4f4650';g.fillRect(0,0,w,h);const cw=w/8,ch=h/rows;
+ for(let y=0;y<rows;y++)for(let x=0;x<8;x++){const tone=118+Math.floor(rnd()*30),pink=Math.floor(rnd()*12);const gr=g.createLinearGradient(x*cw,y*ch,x*cw+cw,y*ch+ch);gr.addColorStop(0,`rgb(${tone+pink+14},${tone+4},${tone+16})`);gr.addColorStop(1,`rgb(${tone+pink-8},${tone-18},${tone-4})`);g.fillStyle=gr;g.fillRect(x*cw+3,y*ch+3,cw-6,ch-6);
   for(let k=0;k<60;k++){g.fillStyle=`rgba(${rnd()<.5?'255,255,255':'60,30,40'},${.04+rnd()*.06})`;g.fillRect(x*cw+3+rnd()*(cw-8),y*ch+3+rnd()*(ch-8),2+rnd()*3,2+rnd()*3)}
   if(rnd()<.35){g.strokeStyle='rgba(70,40,50,.35)';g.lineWidth=1.2;g.beginPath();let px=x*cw+8+rnd()*(cw-16),py=y*ch+8;g.moveTo(px,py);for(let s=0;s<4;s++){px+=(rnd()-.5)*14;py+=ch/5;g.lineTo(px,py)}g.stroke()}}
- g.strokeStyle='rgba(44,74,52,.85)';g.lineWidth=6;for(let x=0;x<=8;x++){g.beginPath();g.moveTo(x*cw,0);g.lineTo(x*cw,h);g.stroke()}for(let y=0;y<=10;y++){g.beginPath();g.moveTo(0,y*ch);g.lineTo(w,y*ch);g.stroke()}// mousse dans les joints
+ g.strokeStyle='rgba(44,74,52,.85)';g.lineWidth=6;for(let x=0;x<=8;x++){g.beginPath();g.moveTo(x*cw,0);g.lineTo(x*cw,h);g.stroke()}for(let y=0;y<=rows;y++){g.beginPath();g.moveTo(0,y*ch);g.lineTo(w,y*ch);g.stroke()}// mousse dans les joints
  for(let k=0;k<70;k++){g.fillStyle=`rgba(64,96,62,${.18+rnd()*.25})`;const mx=rnd()*w,my=rnd()*h;g.beginPath();g.ellipse(mx,my,3+rnd()*9,2+rnd()*5,rnd()*3,0,7);g.fill()}// taches de mousse
  g.fillStyle='rgba(255,170,210,.05)';g.fillRect(0,0,w,h)});paving.wrapS=paving.wrapT=THREE.ClampToEdgeWrapping;paving.repeat.set(1,1);
 const terraceShape=new THREE.Shape(),r=.35;terraceShape.moveTo(-BX+r,-BZ);terraceShape.lineTo(BX-r,-BZ);terraceShape.quadraticCurveTo(BX,-BZ,BX,-BZ+r);terraceShape.lineTo(BX,BZ-r);terraceShape.quadraticCurveTo(BX,BZ,BX-r,BZ);terraceShape.lineTo(-BX+r,BZ);terraceShape.quadraticCurveTo(-BX,BZ,-BX,BZ-r);terraceShape.lineTo(-BX,-BZ+r);terraceShape.quadraticCurveTo(-BX,-BZ,-BX+r,-BZ);
