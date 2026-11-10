@@ -94,7 +94,7 @@ async function renderAdmin(host){host=host||document.getElementById('portal-cont
  const {data:isAdmin}=await sb.rpc('is_hackenia_admin');if(!isAdmin){host.innerHTML='<div class="sb-card"><p>Ce compte n’est pas administrateur.</p><button type="button" data-a="logout">Se déconnecter</button></div>';host.querySelector('[data-a="logout"]').onclick=async()=>{await sb.auth.signOut();renderAdmin(host)};return}
  const {data,error}=await sb.from('dice_submissions').select('*').order('created_at',{ascending:false});adminRows=error?[]:data;
  const counts=Object.fromEntries(['pending','accepted','rejected'].map(k=>[k,adminRows.filter(r=>r.status===k).length])),rows=adminRows.filter(r=>r.status===adminFilter);
- host.innerHTML=`<div class="portal-title"><div><h2>Espace de validation</h2><p>${counts.pending} proposition${counts.pending>1?'s':''} en attente.</p></div><button type="button" data-a="logout">Se déconnecter</button></div>
+ host.innerHTML=`<div class="portal-title"><div><h2>Espace de validation</h2><p>${counts.pending} proposition${counts.pending>1?'s':''} en attente.</p></div><div class="sb-actions"><button type="button" data-a="tales">📜 Contes de la Taverne</button><button type="button" data-a="logout">Se déconnecter</button></div></div>
  <div class="sb-tabs">${[['pending','En attente'],['accepted','Acceptées'],['rejected','Refusées']].map(([k,n])=>`<button type="button" data-filter="${k}" aria-pressed="${adminFilter===k}">${n} (${counts[k]})</button>`).join('')}</div>
  <div class="sb-admin-list">${rows.length?rows.map(r=>`<article class="sb-card sb-review" data-id="${r.id}"><div class="sb-review-media"><img alt="Portrait proposé" data-img="${esc(r.image_path)}">${r.model_path?`<div class="sb-model" data-model="${esc(r.model_path)}"></div>`:'<p class="sb-hint">Pas de modèle 3D</p>'}</div>
   <div class="sb-review-body"><h3>${esc(r.name)}</h3><p class="sb-hint">par <b>${esc(r.author)}</b> · ${new Date(r.created_at).toLocaleString('fr-FR')} · ${EL.find(e=>e[0]===r.element)?.[1]||r.element} · ${R().RULES[r.rarity]?.name}</p>${r.description?`<p>${esc(r.description)}</p>`:''}<div class="sb-review-shape">${shapeSvg(r.tiles,r.element)}</div>
@@ -102,7 +102,7 @@ async function renderAdmin(host){host=host||document.getElementById('portal-cont
   <p class="sb-hint">Identifiant : <code>${r.id}</code> · <a href="#" data-dl="${esc(r.image_path)}">Télécharger le portrait</a>${r.model_path?` · <a href="#" data-dl="${esc(r.model_path)}">Télécharger le modèle</a>`:''}</p>
   <label>Message pour le joueur<textarea rows="2" maxlength="400" data-note>${esc(r.review_note)}</textarea></label>
   <div class="sb-actions"><button type="button" class="portal-primary" data-decide="accepted">✔ Accepter</button><button type="button" data-decide="rejected">✖ Refuser</button>${r.status!=='pending'?'<button type="button" data-decide="pending">Remettre en attente</button>':''}</div></div></article>`).join(''):'<p class="sb-hint">Aucune proposition ici.</p>'}</div>`;
- host.querySelector('[data-a="logout"]').onclick=async()=>{await sb.auth.signOut();renderAdmin(host)};
+ host.querySelector('[data-a="logout"]').onclick=async()=>{await sb.auth.signOut();renderAdmin(host)};host.querySelector('[data-a="tales"]').onclick=()=>window.HackeniaTales?.renderAdmin(host);
  host.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{adminFilter=b.dataset.filter;renderAdmin(host)});
  const signed=async p=>(await sb.storage.from(BUCKET).createSignedUrl(p,3600)).data?.signedUrl;
  host.querySelectorAll('img[data-img]').forEach(async im=>{im.src=await signed(im.dataset.img)||''});
@@ -111,7 +111,7 @@ async function renderAdmin(host){host=host||document.getElementById('portal-cont
  host.querySelectorAll('[data-decide]').forEach(b=>b.onclick=async()=>{const card=b.closest('[data-id]'),note=card.querySelector('[data-note]').value.trim(),status=b.dataset.decide;b.disabled=true;
   const {error}=await sb.from('dice_submissions').update({status,review_note:note,reviewed_at:status==='pending'?null:new Date().toISOString()}).eq('id',card.dataset.id);if(error)alert('Erreur : '+error.message);renderAdmin(host)})}
 
-window.HackeniaSubmit={render:host=>{mine=null;render(host)},renderAdmin,shapeSvg,checkRewards,MIN_LEVEL,REWARD_GOLD};
+window.HackeniaSubmit={render:host=>{mine=null;render(host)},renderAdmin,shapeSvg,checkRewards,adminClient,MIN_LEVEL,REWARD_GOLD};
 // Lien direct vers l'espace de validation : …/index.html#admin
 const goAdmin=()=>{if(location.hash==='#admin'){const t=setInterval(()=>{if(P()){clearInterval(t);P().open('admin')}},400)}};addEventListener('hashchange',goAdmin);goAdmin();
 })();
