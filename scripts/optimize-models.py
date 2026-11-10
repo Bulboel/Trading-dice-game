@@ -15,6 +15,8 @@ ASSETS = ROOT / 'assets'
 OUT = ASSETS / 'models-web'
 TOOL = sys.argv[1:] or ['npx', '--yes', '@gltf-transform/cli@4.5.1']
 SIZE, QUALITY = 1024, 88
+# Modèles hors manifeste (objets portés…) : nom du fichier source → nom publié dans assets/models-web/.
+EXTRA = {"La bague de l'apprentie équipement.glb": 'bague-chanceuse.glb'}
 
 def main():
     manifest_path = ASSETS / 'manifest.json'
@@ -45,6 +47,17 @@ def main():
                 print(f'{source.name} : {source.stat().st_size/1e6:.1f} Mo → {target.stat().st_size/1e6:.1f} Mo')
             done[source.name] = True
         info['glb'] = 'models-web/' + source.name
+    for source_name, target_name in EXTRA.items():
+        source = next((p for p in (ASSETS / 'Models/Characters').iterdir() if unicodedata.normalize('NFC', p.name) == unicodedata.normalize('NFC', source_name)), None)
+        if source is None:
+            print('absent :', source_name); continue
+        target = OUT / target_name
+        if not target.exists() or target.stat().st_mtime < source.stat().st_mtime:
+            with tempfile.TemporaryDirectory() as tmp:
+                resized = pathlib.Path(tmp) / 'resized.glb'
+                subprocess.run([*TOOL, 'resize', str(source), str(resized), '--width', str(SIZE), '--height', str(SIZE)], check=True, capture_output=True)
+                subprocess.run([*TOOL, 'webp', str(resized), str(target), '--quality', str(QUALITY)], check=True, capture_output=True)
+            print(f'{source.name} : {source.stat().st_size/1e6:.1f} Mo → {target.stat().st_size/1e6:.1f} Mo')
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     total = sum(p.stat().st_size for p in OUT.glob('*.glb'))
     print(f'{len(done)} modèles · {total/1e6:.0f} Mo au total dans assets/models-web/')

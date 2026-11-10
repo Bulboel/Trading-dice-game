@@ -1,7 +1,7 @@
 /* v198 — Objets portés : un seul objet équipé à la fois, débloqué par un défi, enregistré dans le profil (profile.equipped). */
 (function(root){'use strict';
 const items=[
- {id:'bague-chanceuse',name:'Bague chanceuse',art:'assets/items/bague-chanceuse.svg',effect:'Vous commencez chaque duel contre l’IA avec un dé de jet bonus.',lore:'Inspirée de la bague de l’apprentie : sa gemme aux mille reflets attire la chance au premier lancer.',challenge:'chapter1',startBonus:1}
+ {id:'bague-chanceuse',name:'Bague chanceuse',art:'assets/items/bague-chanceuse.svg',model:'assets/models-web/bague-chanceuse.glb',effect:'Vous commencez chaque duel contre l’IA avec un dé de jet bonus.',lore:'Inspirée de la bague de l’apprentie : sa gemme aux mille reflets attire la chance au premier lancer.',challenge:'chapter1',startBonus:1}
 ];
 function owned(profile){const C=root.HackeniaChallenges;if(!C||!profile)return[];const done=new Set(C.unlocked(profile).map(d=>d.id));return items.filter(i=>done.has(i.challenge))}
 function equipped(profile){const id=profile?.equipped;return id?owned(profile).find(i=>i.id===id)||null:null}
