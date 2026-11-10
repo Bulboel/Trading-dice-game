@@ -16,14 +16,15 @@ body.portal-open[data-portal-view="home"] #portal .portal-brand .hackenia-logo-t
 body.portal-open[data-portal-view="home"] #portal .portal-wordmark{text-align:center!important;align-items:center!important;display:flex!important;flex-direction:column!important}
 body.portal-open[data-portal-view="home"] #portal .portal-wordmark h1{margin:0!important;font-size:clamp(26px,7.6vw,46px)!important;letter-spacing:.14em!important;line-height:1.05!important;text-align:center!important}
 body.portal-open[data-portal-view="home"] #portal .portal-wordmark small{text-align:center!important;letter-spacing:.2em!important}
-/* Bubulles : en bas à gauche de la scène du cercle. */
-body.portal-open[data-portal-view="home"] #portal #portal-nav{position:relative!important}
-body.portal-open[data-portal-view="home"] #portal #portal-nav>.wallet.wallet-home{position:absolute!important;left:6px!important;bottom:4px!important;top:auto!important;right:auto!important;z-index:40!important;display:flex!important;align-items:center!important;gap:7px!important;width:auto!important;max-width:none!important;min-width:0!important;margin:0!important;padding:6px 12px 6px 6px!important;border-radius:999px!important;background:radial-gradient(circle at 20% 50%,#1f3a2ccc,#0b1528cc)!important;border:1px solid #9be7c055!important;box-shadow:0 6px 16px #0008,0 0 14px #6fe3b822!important;grid-column:auto!important}
-body.portal-open[data-portal-view="home"] #portal #portal-nav>.wallet.wallet-home .wallet-copy{max-width:none!important;overflow:visible!important}
-body.portal-open[data-portal-view="home"] #portal #portal-nav>.wallet.wallet-home .wallet-bubble,body.portal-open[data-portal-view="home"] #portal #portal-nav>.wallet.wallet-home .wallet-bubble img{width:34px!important;height:34px!important;flex:0 0 34px!important}
+/* v202 — Bubulles : dans le coin en bas à droite de l'écran d'accueil. */
+body.portal-open[data-portal-view="home"] #portal>.wallet.wallet-home{position:fixed!important;right:max(10px,env(safe-area-inset-right))!important;bottom:max(12px,env(safe-area-inset-bottom))!important;top:auto!important;left:auto!important;z-index:60!important;display:flex!important;align-items:center!important;gap:8px!important;width:auto!important;max-width:none!important;min-width:0!important;margin:0!important;padding:6px 14px 6px 6px!important;border-radius:999px!important;background:radial-gradient(circle at 20% 50%,#1f3a2ce6,#0b1528e6)!important;border:1px solid #9be7c055!important;box-shadow:0 6px 16px #0008,0 0 14px #6fe3b822!important;grid-column:auto!important}
+body.portal-open[data-portal-view="home"] #portal>.wallet.wallet-home .wallet-copy{max-width:none!important;overflow:visible!important}
+body.portal-open[data-portal-view="home"] #portal>.wallet.wallet-home .wallet-bubble,body.portal-open[data-portal-view="home"] #portal>.wallet.wallet-home .wallet-bubble img{width:34px!important;height:34px!important;flex:0 0 34px!important}
+body.portal-open[data-portal-view="home"] #portal>.wallet.wallet-home #portal-gold{font:700 18px/1 system-ui,sans-serif!important;color:#f3fff8!important}
+body.portal-open[data-portal-view="home"] #portal>.wallet.wallet-home .wallet-copy small{font:600 10px/1.2 system-ui,sans-serif!important;color:#9fd8bd!important}
 /* Dé Annonces : noir, points et liserés dorés, halo de lumière dorée. Uniquement sur l'accueil, une fois les premiers pas terminés. */
 #news-die{display:none}
-body.portal-open[data-portal-view="home"].onboarding-done #news-die{position:absolute;right:6px;bottom:2px;z-index:40;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:0;padding:6px 6px 4px;border:0;background:none;box-shadow:none;cursor:pointer;color:#ffe6a6}
+body.portal-open[data-portal-view="home"].onboarding-done #news-die{position:absolute;left:14px;top:calc(100% + 14px);z-index:40;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:0;padding:6px 6px 4px;border:0;background:none;box-shadow:none;cursor:pointer;color:#ffe6a6}
 #news-die::before{content:"";position:absolute;left:50%;top:28px;width:84px;height:84px;margin:-42px 0 0 -42px;border-radius:50%;background:radial-gradient(circle,#ffcf5a55,#ffcf5a18 45%,transparent 70%);pointer-events:none;animation:news-aura 3.2s ease-in-out infinite}
 @keyframes news-aura{0%,100%{opacity:.6;transform:scale(.9)}50%{opacity:1;transform:scale(1.12)}}
 #news-die .news-stage{--s:46px;display:block;width:var(--s);height:var(--s);perspective:260px;filter:drop-shadow(0 6px 10px #000a) drop-shadow(0 0 12px #ffcf5a99)}
@@ -66,9 +67,9 @@ body.portal-open[data-portal-view="home"].onboarding-done #news-die{position:abs
 .news-item em{font:700 10px/1 system-ui;font-style:normal;text-transform:uppercase;letter-spacing:.08em;padding:3px 7px;border-radius:999px;background:#ffcf5a;color:#1a1204}
 .news-item ul{margin:4px 0 0;padding-left:18px;color:#ddd3b6;font-size:13px}
 .news-item li{margin:2px 0}
-/* Téléphone : une bande sous le cercle accueille les Bubulles et le dé Annonces, sans toucher les étiquettes des dés. */
-@media(max-width:700px){body.portal-open[data-portal-view="home"] #portal #portal-nav{padding-bottom:58px!important}body.portal-open[data-portal-view="home"] #portal #portal-nav>.wallet.wallet-home{left:2px!important;bottom:2px!important}body.portal-open[data-portal-view="home"].onboarding-done #news-die{right:2px;bottom:0}}
-body.portal-open[data-portal-view="home"] #portal #portal-nav>.wallet.wallet-home #portal-gold{font:700 18px/1 system-ui,sans-serif!important;color:#f3fff8!important}
-body.portal-open[data-portal-view="home"] #portal #portal-nav>.wallet.wallet-home .wallet-copy small{font:600 10px/1.2 system-ui,sans-serif!important;color:#9fd8bd!important}
 #news-dialog,#news-dialog .news-item,#news-dialog .news-item ul{text-align:left}
 #news-dialog .news-item strong{text-align:left}
+@media(max-width:700px){body.portal-open[data-portal-view="home"].onboarding-done #news-die{left:8px;top:calc(100% + 6px)}}
+
+/* Place pour les Bubulles fixées en bas à droite sous le contenu de l'accueil (premiers pas, reprise). */
+body.portal-open[data-portal-view="home"] #portal>#portal-content:not([hidden]){padding-bottom:58px!important}
