@@ -19,7 +19,7 @@ const CREST={
  draw:`<svg viewBox="0 0 160 120" aria-hidden="true"><g fill="#cdd6e4" stroke="#3a4352" stroke-width="2"><path d="M80 18v80M52 98h56"/><path d="M40 40h80"/><path d="M40 40 26 70h28L40 40Zm80 0-14 30h28l-14-30Z"/></g><circle cx="80" cy="18" r="6" fill="#e9c46a" stroke="#6b4a16" stroke-width="2"/></svg>`};
 
 function ensure(){if(root)return root;root=document.createElement('section');root.id='match-end';root.hidden=true;root.setAttribute('role','dialog');root.setAttribute('aria-modal','false');root.setAttribute('aria-labelledby','me-title');
- root.innerHTML='<div class="me-veil"></div><div class="me-rays"></div><canvas class="me-fx" aria-hidden="true"></canvas><div class="me-card"><div class="me-crest"></div><h2 id="me-title" class="me-title"></h2><p class="me-sub"></p><div class="me-stats"></div><div class="me-reward"></div><div class="me-actions"></div></div>';
+ root.innerHTML='<div class="me-veil"></div><div class="me-rays"></div><canvas class="me-fx" aria-hidden="true"></canvas><div class="me-card"><div class="me-crest"></div><h2 id="me-title" class="me-title"></h2><p class="me-sub"></p><div class="me-stats"></div><div class="me-reward"></div><div class="me-xp"></div><div class="me-actions"></div></div>';
  document.body.append(root);
  root.addEventListener('click',e=>{const a=e.target.closest('[data-me]')?.dataset.me;if(!a)return;if(a==='board')close();else if(a==='menu'){close();portal()?.open('home')}else if(a==='again'){const view=root.dataset.again;close();portal()?.open(view)}});
  document.addEventListener('keydown',e=>{if(!root.hidden&&e.key==='Escape')close()});return root}
@@ -35,6 +35,11 @@ function show(d){if(document.body.classList.contains('tutorial-mode'))return;con
  el.className='me-'+kind+(motion?'':' me-still');el.dataset.again=d.mode==='online'?'pvp':d.mode==='quick'?'quick':d.mode==='story'?'story':'play';
  el.querySelector('.me-crest').innerHTML=CREST[kind];el.querySelector('.me-title').innerHTML=letters(title);el.querySelector('.me-sub').innerHTML=sub;el.querySelector('.me-stats').innerHTML=stats;
  el.querySelector('.me-reward').innerHTML=gold?`<span class="me-bubble" aria-hidden="true"></span><b data-gold="${gold}">+0</b> Bubulles`:'';
+ // v219 — Expérience gagnée et barre de niveau (avec « Niveau supérieur ! »).
+ const G=window.HackeniaProgress?.lastGain,gain=G&&Date.now()-G.at<8000?G:null,xpBox=el.querySelector('.me-xp');xpBox.innerHTML='';xpBox.hidden=!gain;
+ if(gain){const up=gain.levels.length,from=up?0:Math.round(gain.before.into/gain.before.need*100),to=gain.after.max?100:Math.round(gain.after.into/gain.after.need*100);
+  xpBox.innerHTML=`<div class="me-xp-row"><span class="me-xp-level">Niv. <b>${gain.after.level}</b></span><span class="me-xp-bar"><i style="width:${motion?from:to}%"></i></span><b class="me-xp-gain">+${gain.xp} XP</b></div>${up?`<p class="me-levelup">⬆ Niveau supérieur ! <b>+${gain.levels.reduce((a,l)=>a+l.gold,0)} Bubulles</b>${gain.levels.filter(l=>l.unlock).map(l=>' · '+esc(l.unlock.label)+' débloqué').join('')}</p>`:''}${gain.done.length?`<p class="me-quests">✔ ${gain.done.map(q=>esc(q.text)).join(' · ')}</p>`:''}`;
+  if(motion)setTimeout(()=>{const i=xpBox.querySelector('.me-xp-bar i');if(i)i.style.width=to+'%'},1500)}
  el.querySelector('.me-actions').innerHTML=story?'':`<button type="button" data-me="board">Voir le plateau</button><button type="button" data-me="menu">Menu</button><button type="button" class="portal-primary" data-me="again">${kind==='loss'?'Revanche':'Rejouer'}</button>`;
  el.hidden=false;requestAnimationFrame(()=>el.classList.add('me-in'));
  if(gold){const b=el.querySelector('[data-gold]'),t0=performance.now()+(motion?1400:0);const tick=t=>{const p=Math.min(1,Math.max(0,(t-t0)/700));b.textContent='+'+Math.round(gold*p);if(p<1&&!el.hidden)requestAnimationFrame(tick)};requestAnimationFrame(tick)}

@@ -5,7 +5,7 @@
 (function(root){'use strict';
 const META='hackenia-cloud-v1',DEBOUNCE=4000,RETRY=60000;
 
-function summaryOf(p){const inv=p?.inventory||{};return{gold:p?.gold|0,dice:Object.values(inv).reduce((a,n)=>a+(n|0),0),kinds:Object.values(inv).filter(n=>n>0).length,decks:(p?.decks||[]).length,story:Object.keys(p?.story?.done||{}).length}}
+function summaryOf(p){const inv=p?.inventory||{};return{gold:p?.gold|0,dice:Object.values(inv).reduce((a,n)=>a+(n|0),0),kinds:Object.values(inv).filter(n=>n>0).length,decks:(p?.decks||[]).length,story:Object.keys(p?.story?.done||{}).length,...(p?.xp?{level:(typeof window!=='undefined'&&window.HackeniaProgress||globalThis.HackeniaProgress)?.levelOf?.(p.xp)?.level||1}:{})}}
 const missingTable=e=>/PGRST20[25]|42P01|42883|could not find|does not exist/i.test(String(e?.code||'')+' '+String(e?.message||''));
 const denied=e=>/42501|permission denied/i.test(String(e?.code||'')+' '+String(e?.message||''));
 
@@ -55,7 +55,7 @@ root.addEventListener('online',()=>{if(cloud.state.status==='offline')cloud.sync
 const boot=()=>{if(root.HackeniaPortal)cloud.start();else setTimeout(boot,1500)};setTimeout(boot,2500);
 
 const ago=t=>{if(!t)return'';const s=Math.round((Date.now()-t)/1000);return s<60?'à l’instant':s<3600?'il y a '+Math.round(s/60)+' min':'il y a '+Math.round(s/3600)+' h'};
-const line=s=>`${s.gold} Bubulles · ${s.dice} dés (${s.kinds} différents) · ${s.decks} deck${s.decks>1?'s':''}${s.story?' · '+s.story+' parties d’histoire':''}`;
+const line=s=>`${s.level?'Niveau '+s.level+' · ':''}${s.gold} Bubulles · ${s.dice} dés (${s.kinds} différents) · ${s.decks} deck${s.decks>1?'s':''}${s.story?' · '+s.story+' parties d’histoire':''}`;
 function statusText(S){return({off:'Démarrage…',connecting:'Connexion au service en ligne…',synced:'☁️ Progression sauvegardée en ligne '+ago(S.lastSync)+'.',pending:'☁️ Sauvegarde en cours…',offline:'📴 Hors ligne : la progression sera envoyée dès le retour du réseau.',unavailable:'La sauvegarde en ligne n’est pas encore activée sur le serveur.',denied:'Le serveur refuse l’accès à la sauvegarde : il manque les droits d’accès à la table (voir online/sql/02-cloud-save.sql).',conflict:'⚠️ Une autre progression existe en ligne : choisissez laquelle garder.'})[S.status]||''}
 let panel=null,msg='',busy=false,shown=null;
 function render(){if(!panel||!panel.isConnected)return;const S=cloud.state,c=S.conflict;
