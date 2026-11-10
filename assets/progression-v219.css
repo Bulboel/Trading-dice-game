@@ -114,3 +114,10 @@ html body.portal-open #portal .portal-head #portal-back.portal-back:not([hidden]
 /* Bouton Menu en partie : icône maison dorée (le glyphe ↩ du mobile est remplacé par la même icône). */
 #menu-return .menu-home-icon{color:#ffe7a3;flex:none}
 body:not(.portal-open) #identity #menu-return:before{content:none!important;display:none!important}
+/* v225 — Mode hors ligne */
+#offline-badge{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 10px);transform:translateX(-50%);z-index:9998;max-width:min(94vw,560px);padding:7px 14px;border-radius:999px;border:1px solid #e3c57366;background:#1a1610f0;color:#f3e2b4;font:600 12px/1.3 system-ui,sans-serif;box-shadow:0 6px 20px #000a;text-align:center;pointer-events:none}
+#offline-badge[hidden]{display:none}
+#portal .offline-status{margin:6px 0 8px;font-size:13px;color:#d9d0b6}
+#portal .offline-bar{height:8px;border-radius:9px;background:#ffffff14;overflow:hidden;margin:0 0 10px}
+#portal .offline-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#c98a2b,#ffe08a);transition:width .3s}
+body:not(.portal-open) #offline-badge{top:calc(env(safe-area-inset-top) + 6px);bottom:auto;padding:4px 12px;font-size:11px}
