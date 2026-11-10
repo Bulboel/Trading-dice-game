@@ -2,7 +2,7 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
 import { orientBoardModel } from './model-facing.js?v=20261103-v73';
 import { createCrater } from './crater-v135.js?v=20261111-v195';
-import { applyLook } from './variant-look.js?v=20261112-v212';
+import { applyLook } from './variant-look.js?v=20261113-v215';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -490,7 +490,7 @@ const head=mesh(sphere,material,g);head.position.set(0,.62,-.04);head.scale.set(
 for(const x of[-.11,.11]){const ear=mesh(new THREE.ConeGeometry(.08,.26,5),gold,g);ear.position.set(x,.85,-.035);ear.rotation.z=-x*2;const eye=mesh(sphere,eyeMaterial,g);eye.position.set(x,.66,.155);eye.scale.set(.037,.046,.025)}
 const tail=mesh(new THREE.ConeGeometry(.09,.36,7),material,g);tail.position.set(0,.29,-.25);tail.rotation.x=-1;
 g.userData.k=k;pieces.add(g);attachCreatureModel(g,k);return g}
-function fadeObject(object,opacity){const bindings=object.userData.fadeBindings??=new Map(),materials=object.userData.fadeMaterials??=[];object.traverse(node=>{if(!node.material)return;let binding=bindings.get(node);if(!binding){const clone=material=>{const copy=material.clone();copy.transparent=true;copy.depthWrite=false;copy.userData.fadeOpacity=material.opacity;materials.push(copy);return copy};binding=Array.isArray(node.material)?node.material.map(clone):clone(node.material);bindings.set(node,binding)}node.material=binding});for(const material of materials)material.opacity=material.userData.fadeOpacity*opacity}
+function fadeObject(object,opacity){const bindings=object.userData.fadeBindings??=new Map(),materials=object.userData.fadeMaterials??=[];object.traverse(node=>{if(!node.material)return;let binding=bindings.get(node);if(!binding){const clone=material=>{const copy=material.clone();if(material.onBeforeCompile&&material.userData.hkLook){copy.onBeforeCompile=material.onBeforeCompile;copy.customProgramCacheKey=material.customProgramCacheKey;copy.userData.hkLook=true}/* v215 — garde l'effet de variante (statue, métal, teinte) */copy.transparent=true;copy.depthWrite=false;copy.userData.fadeOpacity=material.opacity;materials.push(copy);return copy};binding=Array.isArray(node.material)?node.material.map(clone):clone(node.material);bindings.set(node,binding)}node.material=binding});for(const material of materials)material.opacity=material.userData.fadeOpacity*opacity}
 function sync(){state=game.snapshot();const type=previewMode?previewTerrain:state.terrain;setActive(['terre','feu','glace','eau','vent','foudre'].includes(type),type);if(!active)return;updateFoliage();
  const live=new Set();for(let y=0;y<BH;y++)for(let x=0;x<8;x++){const c=state.b[y][x],key=x+','+y;if(!c)continue;live.add(key);let t=tiles.get(key);if(!t){const pivot=new THREE.Group();pieces.add(pivot);const solid=mesh(tileGeo,c.o?orange:green,pivot),top=new THREE.Mesh(topGeo,label(c.v,c.el));top.rotation.x=-Math.PI/2;pivot.add(top);t={pivot,solid,top};tiles.set(key,t)}
  const h=c.f?.035:.28;t.pivot.position.set(x-3.5,.22,y-HZ);t.pivot.rotation.set(0,0,0);t.solid.scale.y=h;t.solid.position.set(0,h/2,0);t.solid.material=c.o?orange:green;t.top.position.set(0,h+.004,0);t.top.visible=!c.f;t.top.material=label(c.v,c.el,Math.max(0,game.power(x,y)-c.v));t.c=c;t.x=x;t.y=y;t.an=state.anim?.o[key];}

@@ -2,7 +2,7 @@
 // or ardent / arc-en-ciel, finition du dé, cercles au sol, poussière, faisceau et éclat d'apparition.
 import * as THREE from 'three';
 import {invocationPalette} from './invocation-colors.js?v=166';
-import {applyLook} from './variant-look.js?v=20261112-v212';
+import {applyLook} from './variant-look.js?v=20261113-v215';
 import {invocationNormalization,invocationFrame} from './invocation-layout.js?v=20261103-v72';
 import {GLTFLoader} from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js';
 import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
