@@ -28,3 +28,22 @@ img.pure-v3{border-radius:50%;background:radial-gradient(circle,color-mix(in srg
 @media(max-width:700px){#app #hand .dc.hc.rar-6:not(.pure)::after{font-size:8px;right:4px;bottom:2px;letter-spacing:2px}}
 .no-motion #app #hand .dc.hc.rar-5,.no-motion #app #hand .dc.hc.rar-6,.no-motion #app #hand .dc.hc.rar-5 .hc-art::after,.no-motion #app #hand .dc.hc.rar-6 .hc-art::after,.no-motion #app #hand .dc.hc.rar-5 .hc-art::before,.no-motion #app #hand .dc.hc.rar-6 .hc-art::before,.no-motion #app #hand .dc.hc.rar-6::after,.no-motion #app #hand .dc.hc.rar-6::before{animation:none}
 @media(prefers-reduced-motion:reduce){#app #hand .dc.hc.rar-5,#app #hand .dc.hc.rar-6,#app #hand .dc.hc.rar-5 .hc-art::after,#app #hand .dc.hc.rar-6 .hc-art::after,#app #hand .dc.hc.rar-5 .hc-art::before,#app #hand .dc.hc.rar-6 .hc-art::before,#app #hand .dc.hc.rar-6::after,#app #hand .dc.hc.rar-6::before{animation:none}}
+/* v212 — Découverte d'un dé : fond nébuleuse + étoiles (remplace les runes), rayons pour légendaires et divins. */
+#pouch-discovery-dialog .discovery-runescape{display:none!important}
+#pouch-discovery-dialog .invocation-host::before,#pouch-discovery-dialog .invocation-host::after{display:none!important}
+#pouch-discovery-dialog .invocation-host{background:#060a16!important}
+.discovery-backdrop{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;--tier:#b87d4b}
+.discovery-backdrop.tier-peu{--tier:#dfe6ee}.discovery-backdrop.tier-rare{--tier:#e8c26a}.discovery-backdrop.tier-legend{--tier:#ffb347}.discovery-backdrop.tier-divin{--tier:#e9d4ff}.discovery-backdrop.tier-energie{--tier:#7ff0ff}
+.discovery-backdrop i{position:absolute;inset:0;display:block}
+.db-nebula{background:radial-gradient(ellipse 60% 45% at 50% 62%,color-mix(in srgb,var(--invocation-accent) 38%,transparent),transparent 70%),radial-gradient(ellipse 40% 30% at 30% 30%,color-mix(in srgb,var(--tier) 16%,transparent),transparent 70%),radial-gradient(ellipse 45% 35% at 72% 28%,color-mix(in srgb,var(--invocation-accent) 18%,transparent),transparent 70%);filter:blur(6px);animation:db-drift 14s ease-in-out infinite alternate}
+.db-stars{background-image:radial-gradient(1.2px 1.2px at 12% 18%,#fff9,transparent),radial-gradient(1px 1px at 28% 72%,#fff8,transparent),radial-gradient(1.4px 1.4px at 44% 12%,#fffb,transparent),radial-gradient(1px 1px at 63% 84%,#fff7,transparent),radial-gradient(1.3px 1.3px at 78% 22%,#fffa,transparent),radial-gradient(1px 1px at 88% 58%,#fff8,transparent),radial-gradient(1.2px 1.2px at 8% 52%,#fff8,transparent),radial-gradient(1px 1px at 56% 40%,#fff6,transparent),radial-gradient(1.5px 1.5px at 92% 88%,#fffa,transparent),radial-gradient(1px 1px at 35% 45%,#fff6,transparent);animation:db-twinkle 4s ease-in-out infinite alternate}
+.db-rays{display:none!important}
+.tier-legend .db-rays,.tier-divin .db-rays,.tier-energie .db-rays{display:block!important;inset:auto;left:50%;top:60%;width:180%;height:auto;aspect-ratio:1;transform:translate(-50%,-50%);background:repeating-conic-gradient(from 0deg,color-mix(in srgb,var(--tier) 22%,transparent) 0 5deg,transparent 5deg 16deg);-webkit-mask:radial-gradient(circle,#000 0 10%,transparent 48%);mask:radial-gradient(circle,#000 0 10%,transparent 48%);animation:db-spin 30s linear infinite}
+.tier-divin .db-rays{background:repeating-conic-gradient(from 0deg,#ff6b8b33 0 4deg,transparent 4deg 10deg,#ffd36b33 10deg 14deg,transparent 14deg 20deg,#7af0b533 20deg 24deg,transparent 24deg 30deg,#6fc8ff33 30deg 34deg,transparent 34deg 40deg,#c79bff33 40deg 44deg,transparent 44deg 50deg)}
+#pouch-discovery-dialog .invocation-host>canvas{position:relative;z-index:1}
+#pouch-discovery-dialog .invocation-fallback{position:relative;z-index:1}
+@keyframes db-drift{to{transform:translate(2%,-2%) scale(1.06)}}
+@keyframes db-twinkle{to{opacity:.55}}
+@keyframes db-spin{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+.no-motion .discovery-backdrop i{animation:none}
+@media(prefers-reduced-motion:reduce){.discovery-backdrop i{animation:none}}
