@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v204',title:'Votre progression à l’abri',items:['Sauvegarde en ligne automatique, sans compte à créer : aucun email, aucun mot de passe.','Un code de récupération permet de retrouver sa progression sur un autre téléphone (Options › Sauvegarde).']},
  {id:'v203',title:'Des fiches de dés plus utiles',items:['La Collection et Mes decks montrent maintenant la forme des dalles de chaque dé.','Fiches plus compactes et plus lisibles, sur téléphone comme sur ordinateur.']},
  {id:'v201',title:'Un jeu bien plus léger',items:['Les personnages et les dés en 3D sont 8 fois plus légers, sans perte de qualité visible.','Chargement plus rapide et moins de mémoire utilisée, surtout sur téléphone.']},
  {id:'v200',title:'Un menu plus clair',items:['Le dé Annonces vous présente les dernières nouveautés.','Les Bubulles rejoignent le cercle des dés.','Victoire aux combats : il faut maintenant vaincre 4 ennemis.','Récompense quotidienne revalorisée : 30 Bubulles par jour et 100 le 7e jour.','Vos deux dés bonus peuvent être lancés en même temps.']},
