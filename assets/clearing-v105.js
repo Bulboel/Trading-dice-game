@@ -3,9 +3,9 @@ import * as THREE from 'three';
 import { orientBoardModel } from './model-facing.js?v=20261103-v73';
 import { createCrater } from './crater-v135.js?v=20261115-v226';
 import { applyLook } from './variant-look.js?v=20261113-v215';
-import { createLake } from './lake-v230.js?v=20261115-v230c';
-import { createSkyIsland } from './sky-v231.js?v=20261115-v231g';
-import { createWindHighlands } from './wind-v232.js?v=20261115-v232c';
+import { createLake } from './lake-v230.js?v=20261116-v233c';
+import { createSkyIsland } from './sky-v231.js?v=20261116-v233c';
+import { createWindHighlands } from './wind-v232.js?v=20261116-v233c';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -625,7 +625,7 @@ let sceneryKey='';
 function setActive(value,terrainOverride=null){
  active=value;const type=terrainOverride||game.snapshot().terrain,fire=type==='feu',ice=type==='glace',lakeOn=type==='eau',skyOn=type==='foudre',windOn=type==='vent';
  if(!value)placementLens.hidden=true;host.classList.toggle('view3d',value);document.getElementById('land-caption').hidden=!value;
- forest.visible=value&&!fire&&!ice&&!lakeOn&&!skyOn&&!windOn;if(windOn&&value&&!windLand)windLand=createWindHighlands(decor,!!renderer.isSoftware,BH);if(windLand)windLand.root.visible=value&&windOn;if(skyOn&&value&&!skyIsland)skyIsland=createSkyIsland(decor,!!renderer.isSoftware,BH);if(skyIsland)skyIsland.root.visible=value&&skyOn;if(lakeOn&&value&&!lake)lake=createLake(decor,!!renderer.isSoftware,BH);if(lake)lake.root.visible=value&&lakeOn;boardFrame.visible=value&&!fire&&!skyOn&&!windOn;glacierClosures.visible=value&&ice;iceScene.visible=value&&ice;grid.visible=true;grid.material.color.set(ice?0x557e98:lakeOn?0x5f7a5a:skyOn?0x7fd8ff:0xe5d9a0);grid.material.opacity=ice?.22:lakeOn?.18:skyOn?.12:windOn?0:.27;
+ forest.visible=value&&!fire&&!ice&&!lakeOn&&!skyOn&&!windOn;if(windOn&&value&&!windLand){windLand=createWindHighlands(decor,!!renderer.isSoftware,BH);windLand.root.scale.z=1/ZS}if(windLand)windLand.root.visible=value&&windOn;if(skyOn&&value&&!skyIsland){skyIsland=createSkyIsland(decor,!!renderer.isSoftware,BH);skyIsland.root.scale.z=1/ZS}if(skyIsland)skyIsland.root.visible=value&&skyOn;if(lakeOn&&value&&!lake){lake=createLake(decor,!!renderer.isSoftware,BH);lake.root.scale.z=1/ZS}/* v233 : coordonnées réelles des cases, comme les pièces */if(lake)lake.root.visible=value&&lakeOn;boardFrame.visible=value&&!fire&&!skyOn&&!windOn;glacierClosures.visible=value&&ice;iceScene.visible=value&&ice;grid.visible=true;grid.material.color.set(ice?0x557e98:lakeOn?0x5f7a5a:skyOn?0x7fd8ff:0xe5d9a0);grid.material.opacity=ice?.22:lakeOn?.18:skyOn?.12:windOn?0:.27;
  if(fire&&value&&!crater)crater=createCrater(decor,game.fireVents,!!renderer.isSoftware,BH,ZS);if(crater)crater.root.visible=value&&fire;
  if(sceneryKey!==type){
   sceneryKey=type;

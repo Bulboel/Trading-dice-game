@@ -13,14 +13,14 @@ const updates=[],ELEC=new THREE.Color(0x9fe8ff),VIOLET=new THREE.Color(0xb9a6ff)
 
 // ---------- 1. Terrasse d'ardoise aux veines électriques (zone de jeu) ----------
 const cracks=[];// fissures partagées entre la texture et sa lueur
-for(let k=0;k<26;k++){let x=rnd()*512,y=rnd()*640;const pts=[[x,y]];for(let s=0;s<6;s++){x+=(rnd()-.5)*46;y+=(rnd()-.5)*46;pts.push([x,y])}cracks.push(pts)}
-const slate=canvasTex(512,640,(g,w,h)=>{g.fillStyle='#2b3140';g.fillRect(0,0,w,h);const cw=w/8,ch=h/10;
- for(let y=0;y<10;y++)for(let x=0;x<8;x++){const t=70+Math.floor(rnd()*22),gr=g.createLinearGradient(x*cw,y*ch,x*cw+cw,y*ch+ch);gr.addColorStop(0,`rgb(${t+6},${t+12},${t+26})`);gr.addColorStop(1,`rgb(${t-14},${t-10},${t+2})`);g.fillStyle=gr;g.fillRect(x*cw+3,y*ch+3,cw-6,ch-6);
+for(let k=0;k<26;k++){let x=rnd()*512,y=rnd()*64*rows;const pts=[[x,y]];for(let s=0;s<6;s++){x+=(rnd()-.5)*46;y+=(rnd()-.5)*46;pts.push([x,y])}cracks.push(pts)}
+const slate=canvasTex(512,64*rows,(g,w,h)=>{g.fillStyle='#2b3140';g.fillRect(0,0,w,h);const cw=w/8,ch=h/rows;
+ for(let y=0;y<rows;y++)for(let x=0;x<8;x++){const t=70+Math.floor(rnd()*22),gr=g.createLinearGradient(x*cw,y*ch,x*cw+cw,y*ch+ch);gr.addColorStop(0,`rgb(${t+6},${t+12},${t+26})`);gr.addColorStop(1,`rgb(${t-14},${t-10},${t+2})`);g.fillStyle=gr;g.fillRect(x*cw+3,y*ch+3,cw-6,ch-6);
   for(let k=0;k<40;k++){g.fillStyle=`rgba(${rnd()<.5?'210,225,255':'10,12,20'},${.04+rnd()*.05})`;g.fillRect(x*cw+4+rnd()*(cw-10),y*ch+4+rnd()*(ch-10),2+rnd()*4,1+rnd()*2)}}
- g.strokeStyle='#161a24';g.lineWidth=6;for(let x=0;x<=8;x++){g.beginPath();g.moveTo(x*cw,0);g.lineTo(x*cw,h);g.stroke()}for(let y=0;y<=10;y++){g.beginPath();g.moveTo(0,y*ch);g.lineTo(w,y*ch);g.stroke()}
+ g.strokeStyle='#161a24';g.lineWidth=6;for(let x=0;x<=8;x++){g.beginPath();g.moveTo(x*cw,0);g.lineTo(x*cw,h);g.stroke()}for(let y=0;y<=rows;y++){g.beginPath();g.moveTo(0,y*ch);g.lineTo(w,y*ch);g.stroke()}
  g.strokeStyle='rgba(12,16,26,.9)';g.lineWidth=2;for(const p of cracks){g.beginPath();g.moveTo(...p[0]);for(const q of p.slice(1))g.lineTo(...q);g.stroke()}});
-const veins=canvasTex(512,640,(g,w,h)=>{g.fillStyle='#000';g.fillRect(0,0,w,h);g.shadowColor='#7fdcff';g.shadowBlur=8;g.strokeStyle='#bff0ff';g.lineWidth=1.6;for(const p of cracks){g.beginPath();g.moveTo(...p[0]);for(const q of p.slice(1))g.lineTo(...q);g.stroke()}
- g.shadowBlur=0;g.strokeStyle='rgba(120,200,255,.35)';g.lineWidth=1;const cw=w/8,ch=h/10;for(let x=0;x<=8;x++){g.beginPath();g.moveTo(x*cw,0);g.lineTo(x*cw,h);g.stroke()}for(let y=0;y<=10;y++){g.beginPath();g.moveTo(0,y*ch);g.lineTo(w,y*ch);g.stroke()}});
+const veins=canvasTex(512,64*rows,(g,w,h)=>{g.fillStyle='#000';g.fillRect(0,0,w,h);g.shadowColor='#7fdcff';g.shadowBlur=8;g.strokeStyle='#bff0ff';g.lineWidth=1.6;for(const p of cracks){g.beginPath();g.moveTo(...p[0]);for(const q of p.slice(1))g.lineTo(...q);g.stroke()}
+ g.shadowBlur=0;g.strokeStyle='rgba(120,200,255,.35)';g.lineWidth=1;const cw=w/8,ch=h/rows;for(let x=0;x<=8;x++){g.beginPath();g.moveTo(x*cw,0);g.lineTo(x*cw,h);g.stroke()}for(let y=0;y<=rows;y++){g.beginPath();g.moveTo(0,y*ch);g.lineTo(w,y*ch);g.stroke()}});
 const shape=new THREE.Shape(),r=.4;shape.moveTo(-BX+r,-BZ);shape.lineTo(BX-r,-BZ);shape.quadraticCurveTo(BX,-BZ,BX,-BZ+r);shape.lineTo(BX,BZ-r);shape.quadraticCurveTo(BX,BZ,BX-r,BZ);shape.lineTo(-BX+r,BZ);shape.quadraticCurveTo(-BX,BZ,-BX,BZ-r);shape.lineTo(-BX,-BZ+r);shape.quadraticCurveTo(-BX,-BZ,-BX+r,-BZ);
 const terraceGeo=new THREE.ExtrudeGeometry(shape,{depth:.5,bevelEnabled:true,bevelThickness:.07,bevelSize:.1,bevelSegments:3,curveSegments:6});terraceGeo.rotateX(-Math.PI/2);terraceGeo.translate(0,-.37,0);
 {const p=terraceGeo.attributes.position,uv=terraceGeo.attributes.uv;for(let i=0;i<p.count;i++)uv.setXY(i,(p.getX(i)+4)/8,(p.getZ(i)+HZ)/rows)}
