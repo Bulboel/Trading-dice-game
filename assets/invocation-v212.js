@@ -4,8 +4,8 @@ import * as THREE from 'three';
 import {invocationPalette} from './invocation-colors.js?v=166';
 import {applyLook} from './variant-look.js?v=20261113-v215';
 import {invocationNormalization,invocationFrame} from './invocation-layout.js?v=20261103-v72';
-import {GLTFLoader} from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js';
-import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
+import {GLTFLoader} from './vendor/three/examples/jsm/loaders/GLTFLoader.js';
+import {OrbitControls} from './vendor/three/examples/jsm/controls/OrbitControls.js';
 const TIERS={
  commun:{metal:0xb87d4b,rough:.6,metalness:.15,emissive:0,sigils:1,dust:500,beam:0,flash:0},
  peu:{metal:0xdfe6ee,rough:.42,metalness:.3,emissive:0,sigils:2,dust:800,beam:.06,flash:0},

@@ -1,5 +1,5 @@
 /* Procedural basalt, molten channels and vents. Rules remain in the game engine. */
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+import * as THREE from 'three';
 import {createBasaltField} from './basalt-field.js?v=20261103-v73';
 export function createCrater(world,blocked,software=false,rows=10,zs=1){
 const root=new THREE.Group();world.add(root);root.visible=false;let seed=9167;const rnd=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296};
