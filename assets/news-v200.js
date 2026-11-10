@@ -3,7 +3,8 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
- {id:'v200',tag:'Nouveau',title:'Un menu plus clair',items:['Le dé Annonces vous présente les dernières nouveautés.','Les Bubulles rejoignent le cercle des dés.','Victoire aux combats : il faut maintenant vaincre 4 ennemis.','Récompense quotidienne revalorisée : 30 Bubulles par jour et 100 le 7e jour.','Vos deux dés bonus peuvent être lancés en même temps.']},
+ {id:'v201',title:'Un jeu bien plus léger',items:['Les personnages et les dés en 3D sont 8 fois plus légers, sans perte de qualité visible.','Chargement plus rapide et moins de mémoire utilisée, surtout sur téléphone.']},
+ {id:'v200',title:'Un menu plus clair',items:['Le dé Annonces vous présente les dernières nouveautés.','Les Bubulles rejoignent le cercle des dés.','Victoire aux combats : il faut maintenant vaincre 4 ennemis.','Récompense quotidienne revalorisée : 30 Bubulles par jour et 100 le 7e jour.','Vos deux dés bonus peuvent être lancés en même temps.']},
  {id:'v199',title:'Une nouvelle rareté : Énergie',items:['De nouveaux dés élémentaires chargés d’énergie, plus lumineux et plus puissants.','Les chances d’obtention des bourses ont été revues.']},
  {id:'v198',title:'Fins de partie et objets',items:['Nouvelles animations de victoire et de défaite.','Premier objet à porter, à débloquer en progressant dans l’Histoire.','Un nouveau défi lié à l’Histoire.','Un accueil plus simple pour bien démarrer.']},
  {id:'v197',title:'De nouveaux personnages',items:['Plusieurs dés deviennent des personnages animés.','De nouveaux dés avec des formes de dalles inédites.']},

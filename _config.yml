@@ -1,18 +1,10 @@
 # Publication GitHub Pages (Jekyll).
-# Les exports d'animation complets (attaque, marche, victoire…) restent dans le dépôt comme sources,
-# mais ne sont pas publiés : le jeu charge seulement le modèle « idle » de chaque personnage
-# et les clips légers extraits dans assets/characters/ (scripts/build-character-assets.py).
-# Sans cette exclusion, le site dépasse la limite de 1 Go de GitHub Pages et les déploiements expirent.
+# assets/Models/ contient les fichiers sources envoyés (exports 3D complets, miniatures d'origine) : ils restent
+# dans le dépôt mais ne sont pas publiés. Le jeu charge les versions légères de assets/models-web/
+# (scripts/optimize-models.py), les clips de assets/characters/ et les portraits WebP
+# (scripts/build-character-assets.py). Sans cette exclusion, le site dépasse la limite de 1 Go de GitHub Pages.
 exclude:
-  - "assets/Models/Characters/*attaque.glb"
-  - "assets/Models/Characters/*Attaque.glb"
-  - "assets/Models/Characters/*marche.glb"
-  - "assets/Models/Characters/*Marche.glb"
-  - "assets/Models/Characters/*victoire.glb"
-  - "assets/Models/Characters/*Victoire.glb"
-  - "assets/Models/Characters/*Victory.glb"
-  - "assets/Models/Characters/*Spell cast.glb"
-  - "assets/Models/Characters/*chibi.glb"
+  - assets/Models
   - tests
   - scripts
   - node_modules
