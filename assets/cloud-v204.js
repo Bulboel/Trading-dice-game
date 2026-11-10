@@ -18,7 +18,7 @@ function createCloud({getClient,portal,store=root.localStorage,schedule=(f,ms)=>
  async function push(){if(S.conflict)return false;const p=portal.profile();if(!p)return false;const m=readMeta(),rev=(m.uid===S.uid?m.rev|0:0)+1;
   const r=await sb.from('player_saves').upsert({user_id:S.uid,data:p,summary:summaryOf(p),rev,updated_at:new Date(now()).toISOString()}).select('rev').single();if(r.error)throw r.error;
   writeMeta({uid:S.uid,rev:r.data?.rev??rev,at:now()});set({status:'synced',lastSync:now(),dirty:false,error:''});return true}
- function fail(e){if(missingTable(e))set({status:'unavailable',error:''});else set({status:'offline',error:String(e?.message||e)});retry()}
+ function fail(e){const detail=[e?.code,e?.message].filter(Boolean).join(' · ')||String(e);try{console.info('Sauvegarde en ligne :',detail)}catch{}if(missingTable(e))set({status:'unavailable',error:detail});else set({status:'offline',error:detail});retry()}
  function retry(){cancel(timer);timer=schedule(()=>{timer=0;if(S.status!=='unavailable')sync()},RETRY)}
  async function sync(){try{if(!S.uid)await session();if(S.conflict)return;await push()}catch(e){fail(e)}}
  function changed(){if(!started||S.status==='unavailable')return;set({dirty:true,status:S.status==='synced'?'pending':S.status});cancel(timer);timer=schedule(()=>{timer=0;sync()},DEBOUNCE)}
@@ -29,12 +29,13 @@ function createCloud({getClient,portal,store=root.localStorage,schedule=(f,ms)=>
    // Une sauvegarde en ligne existe mais cet appareil ne l'a pas encore vue : on demande avant de remplacer quoi que ce soit.
    const local=summaryOf(portal.profile());if(JSON.stringify(local)===JSON.stringify(remote.summary||summaryOf(remote.data))){writeMeta({uid:S.uid,rev:remote.rev});await push();return}
    set({status:'conflict',conflict:{remote,local}})}catch(e){fail(e)}})();return started}
+ async function retryNow(){started=null;set({status:'off',error:''});return start()}
  async function resolve(keep){const c=S.conflict;if(!c)return;if(keep==='remote'){if(!portal.restore(c.remote.data))throw new Error('Sauvegarde en ligne illisible');writeMeta({uid:S.uid,rev:c.remote.rev});set({conflict:null,status:'synced',lastSync:now()})}else{writeMeta({uid:S.uid,rev:c.remote.rev});set({conflict:null});await sync()}}
  async function createCode(){await session();if(S.conflict)throw new Error('Choisissez d’abord quelle progression garder.');await push();const r=await sb.rpc('create_recovery_code');if(r.error)throw r.error;writeMeta({uid:S.uid,code:r.data});set({code:r.data});return r.data}
  async function peek(code){await session();const r=await sb.rpc('peek_recovery_code',{p_code:code});if(r.error)throw r.error;return r.data}
  async function claim(code){await session();const r=await sb.rpc('claim_recovery_code',{p_code:code});if(r.error)throw r.error;if(!r.data)return false;if(!portal.restore(r.data.data))throw new Error('Sauvegarde illisible');
   const remote=await pull();writeMeta({uid:S.uid,rev:remote?.rev|0,code:code.toUpperCase().trim()});set({conflict:null,status:'synced',lastSync:now(),code:code.toUpperCase().trim()});return true}
- return{state:S,start,sync,changed,resolve,createCode,peek,claim,onChange:f=>{subs.add(f);return()=>subs.delete(f)},summaryOf}
+ return{state:S,start,retryNow,sync,changed,resolve,createCode,peek,claim,onChange:f=>{subs.add(f);return()=>subs.delete(f)},summaryOf}
 }
 
 /* ---------- navigateur ---------- */
@@ -57,7 +58,7 @@ const line=s=>`${s.gold} Bubulles · ${s.dice} dés (${s.kinds} différents) · 
 function statusText(S){return({off:'Démarrage…',connecting:'Connexion au service en ligne…',synced:'☁️ Progression sauvegardée en ligne '+ago(S.lastSync)+'.',pending:'☁️ Sauvegarde en cours…',offline:'📴 Hors ligne : la progression sera envoyée dès le retour du réseau.',unavailable:'La sauvegarde en ligne n’est pas encore activée sur le serveur.',conflict:'⚠️ Une autre progression existe en ligne : choisissez laquelle garder.'})[S.status]||''}
 let panel=null,msg='',busy=false,shown=null;
 function render(){if(!panel||!panel.isConnected)return;const S=cloud.state,c=S.conflict;
- panel.innerHTML=`<fieldset><legend>Sauvegarde en ligne</legend><p class="cloud-status cloud-${S.status}" role="status">${esc(statusText(S))}</p><p class="opt-hint">Automatique et sans compte : aucun email, aucun mot de passe. Nous ne stockons que votre progression de jeu.</p>
+ panel.innerHTML=`<fieldset><legend>Sauvegarde en ligne</legend><p class="cloud-status cloud-${S.status}" role="status">${esc(statusText(S))}</p><p class="opt-hint">Automatique et sans compte : aucun email, aucun mot de passe. Nous ne stockons que votre progression de jeu.</p>${['unavailable','offline'].includes(S.status)?`<div class="deck-actions"><button type="button" data-cloud="retry" ${busy?'disabled':''}>Réessayer</button></div>${S.error?`<p class="opt-hint cloud-detail">Détail : ${esc(S.error)}</p>`:''}`:''}
  ${c?`<div class="cloud-conflict"><div><strong>Sur cet appareil</strong><small>${esc(line(c.local))}</small><button type="button" data-cloud="keep-local">Garder celle-ci</button></div><div><strong>En ligne</strong><small>${esc(line(c.remote.summary||cloud.summaryOf(c.remote.data)))}</small><button type="button" class="portal-primary" data-cloud="keep-remote">Reprendre celle-ci</button></div></div>`:''}</fieldset>
  <fieldset><legend>Code de récupération</legend><p class="opt-hint">Notez ce code ou prenez-le en photo : il permet de retrouver votre progression sur un autre téléphone ou après une réinstallation. Ne le partagez pas.</p>
  ${shown||S.code?`<p class="cloud-code" aria-label="Votre code de récupération">${esc(shown||S.code)}</p><div class="deck-actions"><button type="button" data-cloud="copy">Copier le code</button><button type="button" data-cloud="new-code" ${busy?'disabled':''}>Générer un nouveau code</button></div><p class="opt-hint">Un nouveau code remplace l’ancien, qui ne fonctionnera plus.</p>`:`<button type="button" class="portal-primary" data-cloud="new-code" ${busy||['unavailable','conflict'].includes(S.status)?'disabled':''}>Créer mon code de récupération</button>`}</fieldset>
@@ -70,6 +71,7 @@ function mount(el){panel=el;render();if(cloud.state.status==='off')cloud.start()
   else if(a==='copy'){navigator.clipboard?.writeText(shown||cloud.state.code).then(()=>{msg='Code copié.';render()},()=>{})}
   else if(a==='keep-remote')act(async()=>{await cloud.resolve('remote');msg='Progression en ligne reprise.'});
   else if(a==='restore')el.__restore?.();
+  else if(a==='retry')act(async()=>{await cloud.retryNow();msg=cloud.state.status==='synced'?'Sauvegarde en ligne activée !':''});
   else if(a==='keep-local')act(async()=>{await cloud.resolve('local');msg='Progression de cet appareil gardée et envoyée en ligne.'})};
  const restore=()=>{const code=el.querySelector('#cloud-code-input')?.value.trim();if(!code)return;act(async()=>{const info=await cloud.peek(code);if(!info){msg='Code inconnu. Vérifiez les caractères (sans 0, O, 1 ni I).';return}if(info.same){msg='Ce code correspond déjà à la progression de cet appareil.';return}
   if(!confirm('Remplacer la progression de cet appareil par celle-ci ?\n\n'+line(info.summary)+'\n\nLa progression actuelle de cet appareil sera perdue.'))return;if(await cloud.claim(code)){shown=null;msg='Progression récupérée ! Bon retour à Hackénia.';root.HackeniaPortal?.toast('Progression récupérée !')}else msg='Code inconnu.'})};
