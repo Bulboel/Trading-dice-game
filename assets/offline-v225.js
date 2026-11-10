@@ -1,12 +1,12 @@
 /* v225 — Mode hors ligne : enregistrement du service worker (sw.js), indicateur « Hors ligne »,
    téléchargement complet du contenu et état dans Options › Sauvegarde. */
 (()=>{'use strict';
-const sw=navigator.serviceWorker,ok=!!sw&&(location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1');
+const native=!!window.Capacitor?.isNativePlatform?.(),sw=navigator.serviceWorker,ok=!native&&!!sw&&(location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1');
 const $=id=>document.getElementById(id);
 function setText(t){const el=$('offline-status');if(el)el.textContent=t}
 function bar(done,total){const b=document.querySelector('.offline-bar');if(!b)return;b.hidden=!total;b.querySelector('i').style.width=(total?Math.round(done/total*100):0)+'%'}
 function post(msg){if(!ok)return false;const c=sw.controller;if(c){c.postMessage(msg);return true}sw.ready.then(r=>r.active?.postMessage(msg));return true}
-function status(){if(!ok){setText('Le mode hors ligne n’est pas disponible dans ce navigateur.');return}setText(navigator.onLine?'Vérification…':'Vous êtes hors ligne.');post({type:'offline-status'})}
+function status(){if(native){setText('✔ Application : tout le jeu est déjà sur votre appareil.');const b=document.querySelector('[data-action="offline-download"]');if(b)b.hidden=true;return}if(!ok){setText('Le mode hors ligne n’est pas disponible dans ce navigateur.');return}setText(navigator.onLine?'Vérification…':'Vous êtes hors ligne.');post({type:'offline-status'})}
 function downloadAll(){if(!ok){setText('Le mode hors ligne n’est pas disponible dans ce navigateur.');return}if(!navigator.onLine){setText('Connectez-vous à Internet pour télécharger le contenu.');return}
  const btn=document.querySelector('[data-action="offline-download"]');if(btn)btn.disabled=true;setText('Téléchargement en cours…');post({type:'download-all'})}
 if(ok){sw.addEventListener('message',e=>{const d=e.data||{},btn=document.querySelector('[data-action="offline-download"]');

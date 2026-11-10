@@ -16,6 +16,8 @@ for f in sorted(os.listdir('assets')):
 refs={r for r in refs if os.path.exists(r.split('?')[0]) and not r.startswith('assets/Models/')}
 shell=['./','./index.html','./site.webmanifest','assets/manifest.json']+sorted(refs)
 shell+=sorted('assets/characters/'+f for f in os.listdir('assets/characters') if f.endswith(('-128.webp','-512.webp')))
+for dp,_,fs in os.walk('assets/vendor'):
+    shell+=sorted(os.path.join(dp,f).replace(os.sep,'/') for f in fs if not f.endswith(('.md','.txt','LICENSE')))
 shell=list(dict.fromkeys(shell))
 full=[]
 for d,pat in [('assets/models-web',r'\.glb$'),('assets/characters',r'\.glb$'),('assets/story',r'\.(webp|png|jpg)$'),('assets/models',r'\.glb$')]:

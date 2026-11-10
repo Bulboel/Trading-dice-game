@@ -6,7 +6,7 @@
 const VERSION='__VERSION__';
 const SHELL=__SHELL__;
 const FULL=__FULL__;
-const CDN=['https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js','https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js','https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/utils/SkeletonUtils.js','https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js','https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js'];
+const CDN=[];// v226 : les bibliothèques sont intégrées au site (assets/vendor)
 const APP='hackenia-app-'+VERSION,MEDIA='hackenia-media-v1';
 self.addEventListener('install',e=>{e.waitUntil((async()=>{const c=await caches.open(APP);
  // Chaque fichier séparément : un fichier manquant ne bloque pas l'installation.
