@@ -1,0 +1,74 @@
+/* v200 — Dés bonus : choix explicite Aucun / +1 / +2 quand deux dés bonus sont en réserve. */
+#app #ct.action-dock .bonus-choice.multi{cursor:default;flex-wrap:wrap}
+#app #ct.action-dock .bonus-choice.multi>span:nth-child(2){flex:1 1 120px;min-width:0}
+#ct.action-dock .bonus-seg{display:inline-flex;gap:0;border:1px solid #d7bd7866;border-radius:999px;overflow:hidden;background:#0b1c1c99}
+#ct.action-dock .bonus-seg button{min-height:32px!important;min-width:52px;padding:4px 10px!important;border:0!important;border-radius:0!important;background:transparent!important;color:#d8cfb2!important;font:600 12px/1 system-ui!important;box-shadow:none!important}
+#ct.action-dock .bonus-seg button+button{border-left:1px solid #d7bd7840!important}
+#ct.action-dock .bonus-seg button.sel{background:linear-gradient(140deg,#e2c477,#a9853c)!important;color:#1b1407!important}
+#ct.action-dock .bonus-seg button:focus-visible{outline:2px solid #ffe6a6;outline-offset:-2px}
+/* v200 — Accueil : titre centré entre deux logos, Bubulles en bas à gauche et dé Annonces en bas à droite, intégrés à la scène du cercle. */
+.hackenia-logo-twin{display:none}
+body.portal-open[data-portal-view="home"] #portal .portal-head{display:flex!important;justify-content:center!important;align-items:center!important;background:none!important;border:0!important;box-shadow:none!important;padding:10px 12px 0!important;min-height:0!important}
+body.portal-open[data-portal-view="home"] #portal .portal-head::before,body.portal-open[data-portal-view="home"] #portal .portal-head::after{display:none!important}
+body.portal-open[data-portal-view="home"] #portal .portal-brand{display:flex!important;align-items:center!important;justify-content:center!important;gap:clamp(10px,3vw,22px)!important;margin:0 auto!important;width:auto!important;grid-column:auto!important}
+body.portal-open[data-portal-view="home"] #portal .portal-brand .hackenia-logo{width:clamp(44px,11vw,72px)!important;height:clamp(44px,11vw,72px)!important;flex:0 0 auto!important;margin:0!important}
+body.portal-open[data-portal-view="home"] #portal .portal-brand .hackenia-logo-twin{display:block!important}
+body.portal-open[data-portal-view="home"] #portal .portal-wordmark{text-align:center!important;align-items:center!important;display:flex!important;flex-direction:column!important}
+body.portal-open[data-portal-view="home"] #portal .portal-wordmark h1{margin:0!important;font-size:clamp(26px,7.6vw,46px)!important;letter-spacing:.14em!important;line-height:1.05!important;text-align:center!important}
+body.portal-open[data-portal-view="home"] #portal .portal-wordmark small{text-align:center!important;letter-spacing:.2em!important}
+/* Bubulles : en bas à gauche de la scène du cercle. */
+body.portal-open[data-portal-view="home"] #portal #portal-nav{position:relative!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav>.wallet.wallet-home{position:absolute!important;left:6px!important;bottom:4px!important;top:auto!important;right:auto!important;z-index:40!important;display:flex!important;align-items:center!important;gap:7px!important;width:auto!important;max-width:none!important;min-width:0!important;margin:0!important;padding:6px 12px 6px 6px!important;border-radius:999px!important;background:radial-gradient(circle at 20% 50%,#1f3a2ccc,#0b1528cc)!important;border:1px solid #9be7c055!important;box-shadow:0 6px 16px #0008,0 0 14px #6fe3b822!important;grid-column:auto!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav>.wallet.wallet-home .wallet-copy{max-width:none!important;overflow:visible!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav>.wallet.wallet-home .wallet-bubble,body.portal-open[data-portal-view="home"] #portal #portal-nav>.wallet.wallet-home .wallet-bubble img{width:34px!important;height:34px!important;flex:0 0 34px!important}
+/* Dé Annonces : noir, points et liserés dorés, halo de lumière dorée. Uniquement sur l'accueil, une fois les premiers pas terminés. */
+#news-die{display:none}
+body.portal-open[data-portal-view="home"].onboarding-done #news-die{position:absolute;right:6px;bottom:2px;z-index:40;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:0;padding:6px 6px 4px;border:0;background:none;box-shadow:none;cursor:pointer;color:#ffe6a6}
+#news-die::before{content:"";position:absolute;left:50%;top:28px;width:84px;height:84px;margin:-42px 0 0 -42px;border-radius:50%;background:radial-gradient(circle,#ffcf5a55,#ffcf5a18 45%,transparent 70%);pointer-events:none;animation:news-aura 3.2s ease-in-out infinite}
+@keyframes news-aura{0%,100%{opacity:.6;transform:scale(.9)}50%{opacity:1;transform:scale(1.12)}}
+#news-die .news-stage{--s:46px;display:block;width:var(--s);height:var(--s);perspective:260px;filter:drop-shadow(0 6px 10px #000a) drop-shadow(0 0 12px #ffcf5a99)}
+#news-die .news-cube{position:relative;display:block;width:100%;height:100%;transform-style:preserve-3d;animation:news-spin 9s linear infinite}
+#news-die .news-cube i{position:absolute;inset:0;box-sizing:border-box;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);place-items:center;padding:16%;border-radius:11%;border:2px solid transparent;
+ background:radial-gradient(ellipse at 22% 12%,#ffffff40,transparent 45%) padding-box,linear-gradient(var(--a,135deg),#2a2418,#0b0a08 55%,#1c170e) padding-box,linear-gradient(140deg,#fff6d2,#d9b05a 45%,#fff1bf 70%,#a87d2e) border-box;
+ box-shadow:inset 0 1px 2px #ffe9a066,inset 0 0 10px #ffcf5a33;backface-visibility:hidden}
+#news-die .news-cube b{width:62%;height:62%;border-radius:50%}
+#news-die .news-cube b.on{background:radial-gradient(circle at 35% 30%,#fffbe6,#ffd36b 45%,#b8860b);box-shadow:0 0 4px #ffd36b,0 0 8px #ffb84d99}
+#news-die .nc-f{--a:135deg;transform:translateZ(calc(var(--s)/2))}
+#news-die .nc-k{--a:315deg;transform:rotateY(180deg) translateZ(calc(var(--s)/2))}
+#news-die .nc-r{--a:45deg;transform:rotateY(90deg) translateZ(calc(var(--s)/2))}
+#news-die .nc-l{--a:225deg;transform:rotateY(-90deg) translateZ(calc(var(--s)/2))}
+#news-die .nc-t{--a:90deg;transform:rotateX(90deg) translateZ(calc(var(--s)/2))}
+#news-die .nc-m{--a:270deg;transform:rotateX(-90deg) translateZ(calc(var(--s)/2))}
+@keyframes news-spin{from{transform:rotateX(-24deg) rotateY(0) rotateZ(6deg)}to{transform:rotateX(-24deg) rotateY(360deg) rotateZ(6deg)}}
+#news-die .news-cube i{border-color:transparent}
+#news-die .news-cube i{background-clip:padding-box,padding-box,border-box}
+#news-die .news-label{font:700 10.5px/1 "Cinzel",Georgia,serif;letter-spacing:.04em;background:linear-gradient(90deg,#fff3c0,#ffcf5a,#e6a93a,#fff3c0);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 1px 1px #000) drop-shadow(0 0 6px #ffcf5a88)}
+#news-die .news-count{position:absolute;top:0;right:-2px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;display:grid;place-items:center;font:700 10px/1 system-ui;background:#e0a526;color:#1a1204;border:1px solid #fff3c0;animation:daily-ping 1.6s ease-in-out infinite}
+#news-die .news-count[hidden]{display:none}
+#news-die:focus-visible{outline:2px solid #ffe6a6;outline-offset:4px;border-radius:12px}
+@media(prefers-reduced-motion:reduce){#news-die .news-cube{animation:none;transform:rotateX(-24deg) rotateY(-35deg)}#news-die::before,#news-die .news-count{animation:none}}
+@media(max-width:700px){#news-die .news-stage{--s:38px}#news-die .news-label{font-size:9px}}
+/* Fenêtre des annonces */
+#news-dialog{width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 40px);padding:0;border:1px solid #ffcf5a88;border-radius:16px;background:linear-gradient(160deg,#1a1710,#0b0a08);color:#efe7cf;box-shadow:0 20px 70px #000b,0 0 40px #ffcf5a22;font:14px/1.45 system-ui,sans-serif}
+#news-dialog[open]{display:flex;flex-direction:column}
+#news-dialog::backdrop{background:#05060ac4;backdrop-filter:blur(4px)}
+#news-dialog header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 4px}
+#news-dialog h2{margin:0;font:700 20px/1.2 "Cinzel",Georgia,serif;background:linear-gradient(90deg,#fff3c0,#ffcf5a,#e6a93a);-webkit-background-clip:text;background-clip:text;color:transparent}
+#news-dialog header button{width:34px;min-height:34px;padding:0;font-size:16px}
+.news-intro{margin:0 16px 10px;color:#c9bf9f;font-size:12.5px}
+#news-body{overflow:auto;padding:0 14px 16px}
+.news-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.news-item{padding:10px 12px;border-radius:12px;border:1px solid #ffcf5a2e;background:#15120bcc}
+.news-item.latest{border-color:#ffcf5a99;box-shadow:0 0 18px #ffcf5a22}
+.news-item header{display:flex!important;align-items:center;gap:8px;padding:0!important;margin:0 0 4px}
+.news-ver{font:700 10px/1 system-ui;letter-spacing:.06em;padding:3px 7px;border-radius:999px;background:#2a2312;color:#ffcf5a;border:1px solid #ffcf5a55}
+.news-item strong{font:600 15px/1.25 Georgia,serif;color:#f6e7bd;flex:1}
+.news-item em{font:700 10px/1 system-ui;font-style:normal;text-transform:uppercase;letter-spacing:.08em;padding:3px 7px;border-radius:999px;background:#ffcf5a;color:#1a1204}
+.news-item ul{margin:4px 0 0;padding-left:18px;color:#ddd3b6;font-size:13px}
+.news-item li{margin:2px 0}
+/* Téléphone : une bande sous le cercle accueille les Bubulles et le dé Annonces, sans toucher les étiquettes des dés. */
+@media(max-width:700px){body.portal-open[data-portal-view="home"] #portal #portal-nav{padding-bottom:58px!important}body.portal-open[data-portal-view="home"] #portal #portal-nav>.wallet.wallet-home{left:2px!important;bottom:2px!important}body.portal-open[data-portal-view="home"].onboarding-done #news-die{right:2px;bottom:0}}
+body.portal-open[data-portal-view="home"] #portal #portal-nav>.wallet.wallet-home #portal-gold{font:700 18px/1 system-ui,sans-serif!important;color:#f3fff8!important}
+body.portal-open[data-portal-view="home"] #portal #portal-nav>.wallet.wallet-home .wallet-copy small{font:600 10px/1.2 system-ui,sans-serif!important;color:#9fd8bd!important}
+#news-dialog,#news-dialog .news-item,#news-dialog .news-item ul{text-align:left}
+#news-dialog .news-item strong{text-align:left}
