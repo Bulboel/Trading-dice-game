@@ -116,3 +116,6 @@ end $$;
 revoke all on function public.create_recovery_code(), public.recovery_throttle(), public.peek_recovery_code(text), public.claim_recovery_code(text) from public, anon;
 grant execute on function public.create_recovery_code(), public.peek_recovery_code(text), public.claim_recovery_code(text) to authenticated;
 revoke all on function public.recovery_throttle() from authenticated;
+
+-- Fait connaître immédiatement les nouvelles tables et fonctions à l'API (sinon « Could not find the table … in the schema cache »).
+notify pgrst, 'reload schema';

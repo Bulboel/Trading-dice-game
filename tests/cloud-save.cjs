@@ -48,5 +48,7 @@ const base={version:1,gold:120,inventory:{3:2,5:1},decks:[{id:'a',name:'Deck',di
  await conflictDevice.resolve('remote');assert.equal(conflictDevice._r.gold,999);assert.equal(conflictDevice.state.status,'synced');
  // 7. Serveur pas encore configuré (SQL non exécuté) : le jeu continue normalement, sans erreur ni nouvel essai.
  const srv2=server();srv2.missing=true;const D=device(srv2,base);await D.cloud.start();assert.equal(D.cloud.state.status,'unavailable');D.cloud.changed();assert.equal(D.timers.filter(t=>t.ms===4000).length,0);
+ assert.match(D.cloud.state.error,/PGRST205/,'The technical detail is kept for the player');
+ srv2.missing=false;await D.cloud.retryNow();assert.equal(D.cloud.state.status,'synced','« Réessayer » works once the SQL has been run, without reloading');
  console.log('PASS: silent anonymous cloud save, debounced pushes, offline retry, hashed recovery codes (peek, claim, code follows progress), throttled guessing, conflict asks before replacing, graceful when the server is not configured.');
 })().catch(e=>{console.error(e);process.exit(1)});

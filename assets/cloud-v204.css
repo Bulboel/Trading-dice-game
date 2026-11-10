@@ -11,3 +11,4 @@
 #cloud-panel .cloud-restore{display:flex;gap:8px;flex-wrap:wrap}
 #cloud-panel .cloud-restore input{flex:1 1 200px;min-height:42px;padding:8px 12px;border-radius:10px;border:1px solid #cbb37866;background:#0d182c;color:#f0e4c7;font:600 15px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase}
 #cloud-panel .cloud-msg{margin:8px 0 0;padding:8px 12px;border-radius:10px;background:#1f3a2c99;border:1px solid #9be7c055;color:#d9f5e6}
+#cloud-panel .cloud-detail{font:11px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#8f9bb0;word-break:break-word}
