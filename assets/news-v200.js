@@ -18,7 +18,7 @@ const markRead=()=>{try{localStorage.setItem(SEEN,latest)}catch{}update()};
 let die,dlg;
 function update(){if(!die)return;const fresh=read()!==latest;die.classList.toggle('fresh',fresh);die.setAttribute('aria-label',fresh?'Annonces : nouveautés à découvrir':'Annonces');die.querySelector('.news-count').textContent=fresh?'!':'';die.querySelector('.news-count').hidden=!fresh}
 function draw(){const seen=read();dlg.querySelector('#news-body').innerHTML='<ol class="news-list">'+NEWS.map((n,i)=>`<li class="news-item${i===0?' latest':''}"><header><span class="news-ver">${n.id}</span><strong>${n.title}</strong>${i===0&&seen!==latest?'<em>Nouveau</em>':''}</header><ul>${n.items.map(t=>`<li>${t}</li>`).join('')}</ul></li>`).join('')+'</ol>'}
-function setup(){const nav=document.getElementById('portal-nav');if(!nav){requestAnimationFrame(setup);return}
+function setup(){const nav=document.querySelector('#portal .portal-head');if(!nav){requestAnimationFrame(setup);return}
  die=document.createElement('button');die.id='news-die';die.type='button';
  die.innerHTML='<span class="news-stage" aria-hidden="true"><span class="news-cube"><u class="ncore"></u><u class="ncore y"></u><u class="ncore z"></u>'+[['f',[4]],['k',[0,2,3,5,6,8]],['r',[0,8]],['l',[0,2,6,8]],['t',[0,4,8]],['m',[0,2,4,6,8]]].map(([f,p])=>'<i class="nc-'+f+'">'+Array.from({length:9},(_,k)=>'<b'+(p.includes(k)?' class="on"':'')+'></b>').join('')+'</i>').join('')+'</span></span><span class="news-label">Annonces</span><span class="news-count" hidden></span>';
  nav.append(die);
