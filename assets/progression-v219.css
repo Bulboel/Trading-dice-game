@@ -67,3 +67,16 @@
 .bonus-counter .bonus-fx-glyph{font-size:11px;line-height:1}
 .bonus-counter .bonus-fx-glyph.spark{color:#e9e1ff;text-shadow:0 0 4px #b79cff}
 @media(prefers-reduced-motion:reduce){#match-end .me-levelup{animation:none}#quest-toast{transition:none}}
+/* v220 — Mobile : le badge de niveau prend sa propre petite colonne dans l'en-tête (il ne passe plus sur une ligne entière). */
+@media screen and (max-width:700px){
+ body.portal-open #portal .portal-head{grid-template-columns:minmax(0,1fr) 32px 34px 88px!important}
+ body.portal-open[data-portal-view="home"] #portal .portal-head{grid-template-columns:minmax(0,1fr) 34px 88px!important}
+ body.portal-open[data-portal-view="home"] #portal .portal-head .portal-level{grid-column:2}
+ html body.portal-open #portal .portal-head .wallet{grid-column:4!important}
+ html body.portal-open[data-portal-view="home"] #portal .portal-head .wallet{grid-column:3!important}
+ body.portal-open #portal .portal-head .portal-level{grid-column:3;grid-row:1;width:34px;height:34px;padding:0;justify-content:center;justify-self:center;align-self:center;border-width:1px}
+ body.portal-open #portal .portal-head .portal-level .pl-ring{width:30px;height:30px}
+ body.portal-open #portal .portal-head .portal-level .pl-ring b{font-size:13px}
+ body.portal-open #portal .portal-head .pl-dot{top:-6px;right:-6px;min-width:15px;height:15px;font-size:9px;line-height:15px}
+}
+dialog.recycle-dialog .rc-name,dialog.recycle-dialog .rc-name b,dialog.recycle-dialog .rc-name small{text-align:left}
