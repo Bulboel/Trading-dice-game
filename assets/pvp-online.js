@@ -91,7 +91,7 @@ function createCore(o){
 /* ---------- écrans du menu (navigateur uniquement) ---------- */
 let core=null,U={view:'home',err:'',busy:false,name:'',deck:'',terrain:'terre',code:'',tcode:'',offer:[]},host=null,bridge=null,hud=null;
 const TERRAINS=[['terre','🌲','Clairière des murmures'],['feu','🌋','Les Lèvres du Brasier'],['glace','❄️','Glacier éternel'],['vent','☁️','Plateau des vents'],['eau','🌊','Lagon cristallin'],['foudre','⚡','Plaine foudroyée']];
-const LIB=['https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js'];  // dernière version 2.x (compatible avec les clés « publishable ») ; à figer après le premier essai réussi
+const LIB=['assets/vendor/supabase/supabase.js'];  // dernière version 2.x (compatible avec les clés « publishable ») ; à figer après le premier essai réussi
 function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('script inaccessible'));document.head.append(s)})}
 async function ensureCore(){if(core)return core;const c=root.HACKENIA_PVP_CONFIG;if(!c||!c.url||!c.key)throw new Error('Configuration du mode en ligne manquante.');
  if(!root.supabase){let ok=false;for(const u of LIB){try{await loadScript(u);ok=!!root.supabase;if(ok)break}catch(e){}}if(!ok)throw new Error('Connexion au service en ligne impossible : vérifie ta connexion internet.')}

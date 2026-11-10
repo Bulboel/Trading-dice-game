@@ -1,5 +1,5 @@
 /* Presentation adapter. Game legality, turns, decks and combat stay in index.html. */
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+import * as THREE from 'three';
 import { orientBoardModel } from './model-facing.js?v=20261103-v73';
 import { createCrater } from './crater.js?v=20261103-v74';
 
@@ -236,7 +236,7 @@ function label(value,element,bonus=0){const key=value+':'+element+':'+bonus;if(t
 let state,active=true,quality='auto',moving=true,light=false,paused=false,lastFrame=0,currentAngle=0;
 const tiles=new Map(),creatures=new Map(),modelCache=new Map(),combatClipCache=new Map();
 let modelTools;
-function getModelTools(){return modelTools??=Promise.all([import('https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js'),import('https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/utils/SkeletonUtils.js')]).then(([a,b])=>({loader:new a.GLTFLoader(),clone:b.clone}))}
+function getModelTools(){return modelTools??=Promise.all([import('./vendor/three/examples/jsm/loaders/GLTFLoader.js'),import('./vendor/three/examples/jsm/utils/SkeletonUtils.js')]).then(([a,b])=>({loader:new a.GLTFLoader(),clone:b.clone}))}
 async function attachCreatureModel(g,k){
  const mi=k.mi;g.userData.modelId=mi;
  try{const info=await game.modelInfo(mi);if(!info?.glb)return;const url='assets/'+info.glb+(mi===37?'?revision=kala-idle-dc1986a2':mi===36?'?revision=eberien-idle-14d7089a':'');

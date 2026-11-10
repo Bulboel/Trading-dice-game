@@ -1,7 +1,7 @@
 /* Presentation adapter. Game legality, turns, decks and combat stay in index.html. */
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+import * as THREE from 'three';
 import { orientBoardModel } from './model-facing.js?v=20261103-v73';
-import { createCrater } from './crater-v135.js?v=20261111-v195';
+import { createCrater } from './crater-v135.js?v=20261115-v226';
 import { applyLook } from './variant-look.js?v=20261113-v215';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
@@ -28,8 +28,10 @@ function drawPlacementLens(){
  const focus=project(point.x-3.5,level+.25,point.y-HZ),points=[];
  const preview=state.preview.length?state.preview:[[point.x,point.y]];
  for(const [x,y]of preview){if(x<0||x>=8||y<0||y>=10)continue;for(const dx of[-.5,.5])for(const dz of[-.5,.5])points.push(project(x-3.5+dx,level,y-HZ+dz))}
+ // v227 — Le dé flottant fait partie du cadrage : la loupe centre ensemble le dé et ses dalles.
+ if(state.mode==='p'&&dieGroup.visible)for(const dx of[-.35,.35])for(const dz of[-.35,.35])for(const dy of[.6,1.3])points.push(project(point.x-3.5+dx,dy,point.y-HZ+dz));
  const size=points.length?Math.max(...points.map(p=>p.x))-Math.min(...points.map(p=>p.x)):50,sy=points.length?Math.max(...points.map(p=>p.y))-Math.min(...points.map(p=>p.y)):50;
- const crop=Math.max(58,Math.min(140,Math.max(size,sy)*1.22)),centerX=Math.max(size,sy)>115?focus.x:points.length?(Math.max(...points.map(p=>p.x))+Math.min(...points.map(p=>p.x)))/2:focus.x,centerY=Math.max(size,sy)>115?focus.y:points.length?(Math.max(...points.map(p=>p.y))+Math.min(...points.map(p=>p.y)))/2-10:focus.y;
+ const crop=Math.max(70,Math.min(170,Math.max(size,sy)*1.3)),centerX=points.length?(Math.max(...points.map(p=>p.x))+Math.min(...points.map(p=>p.x)))/2:focus.x,centerY=points.length?(Math.max(...points.map(p=>p.y))+Math.min(...points.map(p=>p.y)))/2:focus.y;
  const left=Math.max(0,Math.min(r.width-crop,centerX-crop/2)),top=Math.max(0,Math.min(r.height-crop,centerY-crop/2)),scale=canvas.width/r.width;
  lensContext.fillStyle='#20392c';lensContext.fillRect(0,0,320,320);lensContext.drawImage(canvas,left*scale,top*scale,crop*scale,crop*scale,0,0,320,320);
  const fx=(focus.x-left)/crop*320,fy=(focus.y-top)/crop*320;lensContext.strokeStyle='#fff0ba';lensContext.lineWidth=2;lensContext.setLineDash([5,4]);lensContext.strokeRect(fx-17,fy-17,34,34);lensContext.setLineDash([]);
@@ -442,7 +444,7 @@ function projectBoardCaptions(t=0){if(previewMode||!active){boardCaptions.hidden
 let state,active=true,moving=true,light=false,paused=false,lastFrame=0,currentAngle=0;
 const tiles=new Map(),creatures=new Map(),modelCache=new Map(),combatClipCache=new Map();
 let modelTools;
-function getModelTools(){return modelTools??=Promise.all([import('https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js'),import('https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/utils/SkeletonUtils.js')]).then(([a,b])=>({loader:new a.GLTFLoader(),clone:b.clone}))}
+function getModelTools(){return modelTools??=Promise.all([import('./vendor/three/examples/jsm/loaders/GLTFLoader.js'),import('./vendor/three/examples/jsm/utils/SkeletonUtils.js')]).then(([a,b])=>({loader:new a.GLTFLoader(),clone:b.clone}))}
 // Dé élémentaire posé : son modèle 3D apparaît au-dessus des dalles, lévite en tournant doucement puis s'efface (aucune créature ne reste).
 const pureFx=[];
 window.addEventListener('hackenia:pure-placed',async e=>{const {mi,x,y}=e.detail||{};try{const info=await game.modelInfo(mi);if(!info?.glb)return;const url='assets/'+info.glb;

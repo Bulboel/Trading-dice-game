@@ -1,0 +1,77 @@
+# Construction de l'application Android (Capacitor) — gratuite, sur les serveurs de GitHub.
+# Résultats à télécharger dans l'onglet Actions › « Application Android » › Artifacts :
+#  - hackenia-apk-test : APK à installer directement sur un téléphone pour tester ;
+#  - hackenia-play-store : AAB signé à envoyer sur Google Play (seulement si la clé de signature est configurée).
+# Secrets à ajouter une fois (Settings › Secrets and variables › Actions) pour la version Play Store :
+#  HACKENIA_KEYSTORE_BASE64, HACKENIA_KEYSTORE_PASSWORD, HACKENIA_KEY_ALIAS, HACKENIA_KEY_PASSWORD
+name: Application Android
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: android
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      HAS_KEY: ${{ secrets.HACKENIA_KEYSTORE_BASE64 != '' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/assets/Models/
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      - name: Dépendances
+        run: npm ci
+      - name: Fichiers du jeu (www) et synchronisation Android
+        run: npm run android:sync
+      - name: Numéro de version
+        id: v
+        run: |
+          NAME=$(grep -o 'portal-build">v[0-9]*' assets/portal-v159.js | grep -o '[0-9]*$')
+          echo "code=$((1000 + GITHUB_RUN_NUMBER))" >> "$GITHUB_OUTPUT"
+          echo "name=1.0.$NAME" >> "$GITHUB_OUTPUT"
+      - name: APK de test
+        working-directory: android
+        run: ./gradlew --no-daemon assembleDebug -PversionCode=${{ steps.v.outputs.code }} -PversionName=${{ steps.v.outputs.name }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hackenia-apk-test-${{ steps.v.outputs.name }}
+          path: android/app/build/outputs/apk/debug/*.apk
+          retention-days: 30
+      - name: Clé de signature
+        if: env.HAS_KEY == 'true'
+        run: echo "${{ secrets.HACKENIA_KEYSTORE_BASE64 }}" | base64 -d > "$RUNNER_TEMP/hackenia.jks"
+      - name: AAB signé pour Google Play
+        if: env.HAS_KEY == 'true'
+        working-directory: android
+        env:
+          HACKENIA_KEYSTORE: ${{ runner.temp }}/hackenia.jks
+          HACKENIA_KEYSTORE_PASSWORD: ${{ secrets.HACKENIA_KEYSTORE_PASSWORD }}
+          HACKENIA_KEY_ALIAS: ${{ secrets.HACKENIA_KEY_ALIAS }}
+          HACKENIA_KEY_PASSWORD: ${{ secrets.HACKENIA_KEY_PASSWORD }}
+        run: ./gradlew --no-daemon bundleRelease -PversionCode=${{ steps.v.outputs.code }} -PversionName=${{ steps.v.outputs.name }}
+      - uses: actions/upload-artifact@v4
+        if: env.HAS_KEY == 'true'
+        with:
+          name: hackenia-play-store-${{ steps.v.outputs.name }}
+          path: android/app/build/outputs/bundle/release/*.aab
+          retention-days: 90
