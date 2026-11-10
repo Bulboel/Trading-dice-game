@@ -55,3 +55,26 @@
 #portal .ds2 .ds-copy small{font:500 10.5px/1.2 system-ui,sans-serif;color:#b9c3d2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #portal .ds2 button{display:grid;place-items:center;width:28px!important;min-width:28px;height:28px;min-height:28px!important;padding:0!important;border-radius:50%!important;font-size:15px!important;line-height:1}
 @media(max-width:650px){#portal .deck-slots:has(.ds2){grid-template-columns:repeat(2,minmax(0,1fr))!important}#portal .deck-slot.ds2{grid-template-columns:30px minmax(0,1fr) auto;gap:6px;padding:5px!important}#portal .ds2 .ds-art{width:30px;height:30px}#portal .ds2 .ds-copy b{font-size:12px}#portal .ds2 .ds-copy small{font-size:9.5px}}
+
+/* v217 — Ouverture rapide des bourses : bouton et récapitulatif */
+#portal .quick-open-btn{border-color:#ffd76a99;color:#ffe7a3;background:linear-gradient(180deg,#3a2c12,#241a0b);font-weight:600}
+dialog.quick-open{width:min(720px,94vw);max-height:88vh;padding:0;border:1px solid #d5b86d88;border-radius:16px;background:linear-gradient(180deg,#1d1828,#141019);color:#f2ead8;box-shadow:0 20px 60px #000a;overflow:hidden;display:flex;flex-direction:column}
+dialog.quick-open:not([open]){display:none}
+dialog.quick-open::backdrop{background:#07050cbb;backdrop-filter:blur(3px)}
+.quick-open .qo-head{padding:16px 18px 8px;text-align:center}
+.quick-open .qo-head h3{margin:0 0 4px;font:600 20px/1.2 Georgia,serif;color:#ffe7a3}
+.quick-open .qo-head p{margin:0 0 10px;font-size:13px;opacity:.85}
+.quick-open .qo-tally{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.quick-open .qo-tally span{border:1px solid var(--rim);color:var(--rim);border-radius:999px;padding:2px 9px;font-size:12px}
+.quick-open .qo-grid{list-style:none;margin:0;padding:8px 14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;overflow:auto;flex:1}
+.quick-open .qo-die{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px 6px;border:1px solid color-mix(in srgb,var(--rim) 55%,transparent);border-radius:12px;background:radial-gradient(circle at 50% 30%,color-mix(in srgb,var(--rim) 22%,transparent),transparent 70%);animation:qo-in .35s ease-out both;animation-delay:calc(var(--i) * 25ms)}
+.quick-open .qo-art{width:56px;height:56px;display:grid;place-items:center}
+.quick-open .qo-art img,.quick-open .qo-art svg{width:56px;height:56px;object-fit:contain}
+.quick-open .qo-art .hand-generic{font-size:34px}
+.quick-open .qo-name{font-size:11px;line-height:1.15;text-align:center;color:#efe4cc}
+.quick-open .qo-r5,.quick-open .qo-r6{box-shadow:0 0 14px color-mix(in srgb,var(--rim) 55%,transparent)}
+.quick-open .qo-r6{border-color:#e5c8f4;background:radial-gradient(circle at 50% 30%,#e5c8f455,transparent 70%),linear-gradient(135deg,#ff8f8f22,#ffd76a22,#7ad39b22,#7eaeed22,#e48cff22)}
+.quick-open .qo-badge{position:absolute;top:-6px;right:-4px;background:#ffd76a;color:#2a1d06;font:700 9px/1 system-ui;padding:3px 6px;border-radius:999px;text-transform:uppercase;letter-spacing:.04em}
+.quick-open .qo-actions{display:flex;justify-content:center;gap:10px;padding:10px 14px 14px;border-top:1px solid #ffffff14}
+@keyframes qo-in{from{opacity:0;transform:translateY(8px) scale(.92)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.quick-open .qo-die{animation:none}}
