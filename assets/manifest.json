@@ -452,6 +452,39 @@
         "victory": "characters/zackarie-victory.glb",
         "walk": "characters/zackarie-walk.glb"
       }
+    },
+    "hydrelithe": {
+      "glb": "models-web/Hydrelithe idle.glb",
+      "nom": "Hydrelithe",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/hydrelithe-spell.glb",
+        "victory": "characters/hydrelithe-victory.glb",
+        "walk": "characters/hydrelithe-walk.glb"
+      }
+    },
+    "myconide": {
+      "glb": "models-web/Myconide idle.glb",
+      "nom": "Myconide",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/myconide-spell.glb",
+        "victory": "characters/myconide-victory.glb",
+        "walk": "characters/myconide-walk.glb"
+      }
+    },
+    "yoris": {
+      "glb": "models-web/Yoris idle.glb",
+      "nom": "Yoris",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/yoris-spell.glb",
+        "victory": "characters/yoris-victory.glb",
+        "walk": "characters/yoris-walk.glb"
+      }
     }
   },
   "terrains": {
