@@ -1,0 +1,59 @@
+/* v198 — Cinématique de fin de partie. */
+#match-end{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:16px;pointer-events:none;font:14px/1.4 system-ui,sans-serif;color:#f0e4c7}
+#match-end[hidden]{display:none}
+#match-end .me-veil{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;pointer-events:auto}
+#match-end.me-win .me-veil{background:radial-gradient(circle at 50% 42%,#3a2c0a66,#0a1220d9 70%)}
+#match-end.me-loss .me-veil{background:radial-gradient(circle at 50% 42%,#1a2230aa,#05080ce8 72%);backdrop-filter:grayscale(.75) brightness(.8);-webkit-backdrop-filter:grayscale(.75) brightness(.8)}
+#match-end.me-draw .me-veil{background:radial-gradient(circle at 50% 42%,#1c2a41aa,#0a1426e0 70%)}
+#match-end .me-rays{position:absolute;left:50%;top:42%;width:180vmax;height:180vmax;margin:-90vmax 0 0 -90vmax;opacity:0;pointer-events:none;background:repeating-conic-gradient(from 0deg,#ffd76a33 0 6deg,transparent 6deg 18deg);-webkit-mask:radial-gradient(circle,#000 0,#000 8%,transparent 46%);mask:radial-gradient(circle,#000 0,#000 8%,transparent 46%);transition:opacity 1s ease .3s}
+#match-end:not(.me-win) .me-rays{display:none}
+#match-end .me-fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#match-end .me-card{position:relative;display:grid;justify-items:center;gap:8px;width:min(440px,100%);padding:22px 20px 18px;border-radius:20px;text-align:center;pointer-events:auto;opacity:0;transform:translateY(24px) scale(.94);transition:opacity .5s ease .25s,transform .7s cubic-bezier(.2,1.3,.4,1) .25s}
+#match-end.me-win .me-card{background:linear-gradient(160deg,#2a2210f2,#11192bf5);border:1px solid #f5d99199;box-shadow:0 0 0 1px #0008,0 24px 70px #000c,0 0 60px #ffd76a44}
+#match-end.me-loss .me-card{background:linear-gradient(160deg,#1b2330f2,#0b0f16f7);border:1px solid #8a94a388;box-shadow:0 0 0 1px #0008,0 24px 70px #000d}
+#match-end.me-draw .me-card{background:linear-gradient(160deg,#1c2a41f2,#0b1528f7);border:1px solid #839dc799;box-shadow:0 24px 70px #000c}
+#match-end .me-crest{width:150px;height:112px;margin-top:-62px;filter:drop-shadow(0 8px 16px #000c)}
+#match-end .me-crest svg{width:100%;height:100%;overflow:visible}
+#match-end .me-title{margin:0;font:700 clamp(38px,11vw,62px)/1 "Cinzel",Georgia,serif;letter-spacing:.06em;white-space:nowrap}
+#match-end .me-title span{display:inline-block;opacity:0;transform:translateY(-38px) scale(1.5);transition:opacity .35s ease calc(.45s + var(--i)*.06s),transform .55s cubic-bezier(.2,1.6,.4,1) calc(.45s + var(--i)*.06s)}
+#match-end.me-win .me-title{background:linear-gradient(100deg,#c98f2c 0%,#fff3c0 30%,#e6b552 45%,#fff8dc 50%,#d39a36 60%,#ffe28a 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 0 #5a3b12) drop-shadow(0 0 18px #ffd76a66)}
+#match-end.me-win .me-title span{color:transparent}
+#match-end.me-loss .me-title{color:#c4ccd8;text-shadow:0 3px 0 #1a1f28,0 0 22px #7a90b055}
+#match-end.me-draw .me-title{color:#dfe6f0;text-shadow:0 3px 0 #1a2230}
+#match-end .me-sub{margin:2px 0 4px;font:500 15px/1.4 Georgia,serif;color:#e6dcc0;opacity:0;transition:opacity .5s ease 1s}
+#match-end.me-loss .me-sub{color:#b9c3d2}
+#match-end .me-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;opacity:0;transition:opacity .5s ease 1.15s}
+#match-end .me-stats span{padding:4px 10px;border-radius:999px;background:#0a142699;border:1px solid #ffffff1c;font-size:12px;color:#c9d2e0}
+#match-end .me-stats b{color:#f5d991}
+#match-end.me-loss .me-stats b{color:#dfe6f0}
+#match-end .me-reward:empty{display:none}
+#match-end .me-reward{display:inline-flex;align-items:center;gap:8px;margin-top:4px;padding:7px 16px;border-radius:999px;background:linear-gradient(140deg,#1f3a2c,#10221a);border:1px solid #9be7c066;font:600 15px/1 system-ui,sans-serif;color:#d9f5e6;opacity:0;transform:scale(.8);transition:opacity .4s ease 1.3s,transform .5s cubic-bezier(.2,1.6,.4,1) 1.3s}
+#match-end .me-reward b{font-size:19px;color:#fff;font-variant-numeric:tabular-nums}
+#match-end .me-bubble{width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 12%,#9bf0d0 30%,#3fb58a 62%,#1d6b52);box-shadow:0 0 10px #6fe3b8aa}
+#match-end .me-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:10px;opacity:0;transition:opacity .5s ease 1.6s}
+#match-end .me-actions:empty{display:none}
+#match-end .me-actions button{min-height:40px;padding:8px 14px;border-radius:10px}
+#match-end.me-in .me-veil,#match-end.me-in .me-card,#match-end.me-in .me-sub,#match-end.me-in .me-stats,#match-end.me-in .me-actions{opacity:1}
+#match-end.me-in .me-rays{opacity:1;animation:me-spin 28s linear infinite}
+#match-end.me-in .me-card{transform:none}
+#match-end.me-in .me-title span{opacity:1;transform:none}
+#match-end.me-in .me-reward{opacity:1;transform:none}
+#match-end.me-win.me-in .me-title{animation:me-shine 2.6s ease-in-out 1.2s infinite}
+#match-end.me-win.me-in .me-crest{animation:me-float 3.2s ease-in-out .9s infinite}
+/* Défaite : le titre tremble, l'écu se fend en deux. */
+#match-end.me-loss.me-in .me-title{animation:me-shake .5s ease 1.05s 1}
+#match-end .me-shard{transition:transform .9s cubic-bezier(.3,1.4,.5,1) 1.15s}
+#match-end .me-crack{stroke-dasharray:140;stroke-dashoffset:140;transition:stroke-dashoffset .45s ease .8s}
+#match-end.me-loss.me-in .me-crack{stroke-dashoffset:0}
+#match-end.me-loss.me-in .me-shard-l{transform:translate(-6px,4px) rotate(-6deg)}
+#match-end.me-loss.me-in .me-shard-r{transform:translate(6px,6px) rotate(7deg)}
+#match-end.me-out .me-card{opacity:0;transform:translateY(12px) scale(.97);transition:opacity .3s,transform .3s}
+#match-end.me-out .me-veil,#match-end.me-out .me-rays{opacity:0;transition:opacity .3s}
+@keyframes me-spin{to{transform:rotate(360deg)}}
+@keyframes me-shine{0%,100%{background-position:100% 0}50%{background-position:0 0}}
+@keyframes me-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes me-shake{0%,100%{transform:none}20%{transform:translateX(-7px) rotate(-1deg)}40%{transform:translateX(6px) rotate(1deg)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+/* Animations coupées : tout apparaît d'un coup. */
+#match-end.me-still *,#match-end.me-still{transition:none!important;animation:none!important}
+@media(prefers-reduced-motion:reduce){#match-end *,#match-end{transition-duration:.01s!important;animation:none!important}}
+@media(max-width:600px){#match-end .me-card{padding:18px 14px 14px}#match-end .me-crest{width:120px;height:90px;margin-top:-50px}#match-end .me-sub{font-size:14px}#match-end .me-actions button{flex:1 1 auto}}
