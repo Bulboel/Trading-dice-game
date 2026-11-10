@@ -93,7 +93,7 @@ const steps=[
  demo(){cur=0;mv(mine()[0],3,7);render()},
  check:()=>moved&&idle(),
  text:()=>`<p>Et si les deux attaques sont égales (<b>4 contre 4</b>) ?</p>`,
- success:()=>`<p>= <b>Les deux créatures disparaissent.</b> Chaque camp ajoute une créature battue à son compteur.</p><p>Si les deux camps atteignent trois créatures battues sur ce combat, la partie se termine par un <b>match nul</b>.</p>`},
+ success:()=>`<p>= <b>Les deux créatures disparaissent.</b> Chaque camp ajoute une créature battue à son compteur.</p><p>Si les deux camps atteignent quatre créatures battues sur ce combat, la partie se termine par un <b>match nul</b>.</p>`},
 {title:'Attaque directe',kind:'action',
  setup(){reset();path(3,[9,8,7],0,[2,1,5],'vent');tile(3,6,1,3,'vent');tile(3,5,1,3,'vent');unit(0,3,9,D.kala);unit(1,3,6,D.grimgors)},
  targets:()=>[[3,6]],
