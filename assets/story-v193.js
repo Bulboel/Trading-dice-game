@@ -12,7 +12,8 @@ function mainline(){return PARTS.filter(p=>!p.optional)}
 function unlocked(id){const part=PARTS.find(p=>p.id===id),d=prog().done;if(!part)return false;if(part.optional){const i=PARTS.indexOf(part);return !!d[PARTS[i-1]?.id]}const line=mainline(),i=line.indexOf(part);return line.slice(0,i).every(p=>d[p.id])}
 function complete(id){const portal=P();if(!portal)return;const pr=portal.profile(),first=!pr.story?.rewarded?.[id];let next=structuredClone(pr);next.story={done:{...(pr.story?.done||{}),[id]:true},rewarded:{...(pr.story?.rewarded||{}),[id]:true}};
  let gift='';if(first){const withPouch=portal.planPouch({...next,gold:next.gold+10});if(withPouch){next=withPouch;gift=' et une bourse offerte'}else next.gold+=10;next.gold+=REWARD}
- if(portal.commit(next))portal.toast(first?`Partie terminée ! +${REWARD} Bubulles${gift||' (+10)'} · ouvrez votre bourse dans la Boutique.`:'Partie terminée.')}
+ const C=window.HackeniaChallenges,before=C?C.unlocked(pr).map(d=>d.id):[];
+ if(portal.commit(next)){const fresh=C?C.unlocked(next).filter(d=>!before.includes(d.id)):[];portal.toast((first?`Partie terminée ! +${REWARD} Bubulles${gift||' (+10)'} · ouvrez votre bourse dans la Boutique.`:'Partie terminée.')+fresh.map(d=>` ✦ Défi « ${d.title} » accompli : ${d.reward} ! Équipez-la dans Options › Objet porté.`).join(''))}}
 
 // ——— Scène de dialogue ———
 let scene,seq=[],step=0,onDone=null;
