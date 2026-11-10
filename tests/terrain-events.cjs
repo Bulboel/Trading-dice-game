@@ -15,7 +15,10 @@ setup('vent');seq([.9]);assert.equal(run('terrainEvent()'),'','Most rounds have 
 setup('vent');seq([.1]);note=run('terrainEvent()');assert.match(note,/rafale/);assert.equal(run('cr.find(c=>c.id===1).x'),3,'Pushed 3 cells left');assert.equal(run('cr.find(c=>c.id===2).x'),0,'Stopped by the board edge');
 setup('vent');run('b[6][4]=null');seq([.1]);run('terrainEvent()');assert.equal(run('cr.find(c=>c.id===1).x'),5,'Stopped before a cell without a tile');
 setup('vent');run('cr.find(c=>c.id===2).x=5;b[6][4]=null');seq([.1]);run('terrainEvent()');assert.equal(run('cr.find(c=>c.id===2).x'),5);assert.equal(run('cr.find(c=>c.id===1).x'),6,'Blocked by a creature');
+// Lac rose : un nénuphar sacré sur une dalle, +1 à la créature de sa case jusqu'au tour suivant.
+setup('eau');const base=run('pwc(cr[0])');seq([0]);run('b[6].forEach((t,x)=>{if(x!==6)b[6][x]=null})');note=run('terrainEvent()');assert.match(note,/nénuphar sacré s’ouvre en G7 : Maebril gagne \+1/);assert.equal(run('pwc(cr[0])'),base+1,'+1 on the lotus');
+assert.equal(run('pwc(cr[1])'),run('pwc(cr[1],cr[1].x,cr[1].y)'));setup('terre');run("TER=TL.indexOf('feu')");run('terrainEvent()');assert.equal(run('lotus'),null,'Lotus fades at the next round');
 // Pas d'événement dans le tutoriel ni sur les autres terrains ; uniquement quand le premier joueur reprend la main.
 setup('foudre');run("rewardMode='tutorial'");assert.equal(run('terrainEvent()'),'');setup('terre');assert.equal(run('terrainEvent()'),'');
 assert.ok(html.includes("const terrainNote=cur===0?terrainEvent():''"),'Triggered once per full round');
-console.log('PASS: lightning strikes 2 distinct cells and destroys tile + creature without a kill; a gust (1 in 3 rounds) pushes creatures up to 3 cells left, stopped by edge, missing tile or creature; none in tutorial or other terrains.');
+console.log('PASS: lightning strikes 2 distinct cells and destroys tile + creature without a kill; a gust (1 in 3 rounds) pushes creatures up to 3 cells left, stopped by edge, missing tile or creature; sacred lotus gives +1 for one round on the pink lake; none in tutorial or other terrains.');
