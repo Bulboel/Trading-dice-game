@@ -44,3 +44,30 @@
 #portal .sb-review-shape{margin:8px 0}
 #portal .sb-login{max-width:380px}
 @media(max-width:700px){#portal .sb-review{grid-template-columns:1fr}#portal .sb-grid{grid-template-columns:repeat(5,44px);grid-template-rows:repeat(5,44px)}#portal .sb-cell{width:44px;height:44px}#portal .sb-row{grid-template-columns:1fr}#portal .sb-card{padding:12px}}
+/* v229 — Contes de la Taverne et communauté */
+#portal .community-links{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+#portal .tales-btn{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 16px;border-color:#e3b36a88;color:#ffe7b8;background:linear-gradient(160deg,#3a2614,#1e140b);text-align:left}
+#portal .tales-btn small{font:500 11px system-ui;color:#d8c09a;opacity:.85}
+#portal .discord-btn,#portal .tl-discord{display:inline-flex;align-items:center;gap:6px;padding:10px 16px;border-radius:12px;border:1px solid #8b94ff88;background:linear-gradient(180deg,#2c3170,#1c1f4a);color:#e6e8ff;font:600 13px system-ui;text-decoration:none}
+#portal .tl-discord{margin:0 0 12px}
+#portal .creator-badge.scenarist{border-color:#e3b36a99;background:#3a2614;color:#ffe7b8}
+#portal .tl-contest{border-color:#e3b36a77;background:linear-gradient(160deg,#2b1d10,#15100a)}
+#portal .tl-tag{display:inline-block;margin:0 0 6px;padding:2px 10px;border-radius:999px;background:#e3b36a;color:#2a1a08;font:700 11px/1.6 system-ui;letter-spacing:.05em;text-transform:uppercase}
+#portal .tl-entry{margin:10px 0;padding:12px 14px;border-radius:12px;background:#0d121b;border:1px solid #ffffff14}
+#portal .tl-entry h4{margin:0;font:600 16px Georgia,serif;color:#f1e3bd}
+#portal .tl-entry header small{color:#a9b3c4}
+#portal .tl-entry p{margin:8px 0;font-size:13.5px;line-height:1.5;color:#e2dac4}
+#portal .tl-choices{margin:6px 0 8px;padding-left:20px;font-size:13.5px;color:#e2dac4}
+#portal .tl-choices li{margin:3px 0}
+#portal .tl-entry.selected{border-color:#ffd76a66}#portal .tl-entry.winner{border-color:#ffd76a;box-shadow:0 0 14px #ffd76a33}
+#portal .tl-status{font:700 13px system-ui;color:#d8cfb6}#portal .tl-status.selected,#portal .tl-status.winner{color:#ffe08a}#portal .tl-status.rejected{color:#ffb4a8}
+#portal .tl-choice-set{border:1px solid #ffffff1a;border-radius:12px;padding:10px 12px;margin:0 0 10px}
+#portal .tl-choice-set legend{font:600 12.5px system-ui;color:#d8cfb6;padding:0 6px}
+#portal .tl-choice{display:grid;grid-template-columns:1fr 1.4fr auto;gap:6px;margin:0 0 6px}
+#portal .tl-choice button{min-height:0!important;padding:4px 10px!important}
+#portal .tl-count{font-size:11px;color:#9fb0c4;font-weight:500}
+#portal .tl-hall ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+#portal .tl-hall li{padding:10px 12px;border-radius:12px;background:#0d121b;border:1px solid #ffd76a44;display:grid;gap:4px}
+#portal .tl-hall li small{color:#a9b3c4}#portal .tl-hall li a{color:#ffe08a;font-weight:700}
+#portal .tl-hall summary{cursor:pointer;color:#d8cfb6;font-size:12.5px}
+@media(max-width:700px){#portal .tl-choice{grid-template-columns:1fr}#portal .tales-btn,#portal .discord-btn{width:100%;box-sizing:border-box}}

@@ -18,5 +18,5 @@ const sql=read('online/sql/03-dice-submissions.sql');
 for(const k of['enable row level security','is_hackenia_admin','Une seule proposition par jour','rights_ok   boolean not null check (rights_ok)',"bucket_id = 'dice-submissions' and (storage.foldername(name))[1] = (select auth.uid())::text",'public, file_size_limit','status = \'pending\''])assert.ok(sql.includes(k),'SQL: '+k);
 assert.ok(!/service_role/.test(read('assets/submit-v228.js')),'No secret key in the client');
 const sub=read('assets/submit-v228.js');assert.ok(sub.includes('MIN_LEVEL=5')&&sub.includes('REWARD_GOLD=200')&&sub.includes("storageKey:'hackenia-admin'"),'Level 5, reward, separate admin session');
-const portal=read('assets/portal-v159.js');assert.ok(portal.includes("['propose','admin'].includes(h)")&&portal.includes('data-action="propose"')&&portal.includes('creator-badge'));
+const portal=read('assets/portal-v159.js');assert.ok(portal.includes("['propose','admin'")&&portal.includes('data-action="propose"')&&portal.includes('creator-badge'));
 console.log('PASS: editor rules match every game die and refuse unbalanced ones; RLS, daily limit, rights, private storage; level 5, creator reward, separate admin session.');
