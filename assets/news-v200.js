@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v223',title:'La collection complète',items:['Tous les dés apparaissent désormais dans la Collection : ceux qui vous manquent restent mystérieux, en silhouette.','Chaque dé a son numéro officiel, de Bolduc (N° 001) jusqu’aux dés élémentaires.']},
  {id:'v222',title:'Finitions du menu',items:['Le titre HACKÉNIA est de nouveau bien centré, et le dé Quotidien se place juste sous votre niveau.','Nouveau bouton Menu, plus élégant, partout dans le jeu.']},
  {id:'v221',title:'Nouvelles dalles',items:['Les dalles du plateau sont redessinées : bords arrondis, cadre lumineux de l’élément, symbole d’élément, chiffre dans un médaillon et bonus doré bien visible.','Les personnages en argent, en or ou en pierre gardent leur apparence dans la vue 3D de leur fiche.']},
  {id:'v220',title:'Recyclez vos doublons',items:['Collection : transformez les exemplaires en trop en Bubulles. Vous gardez toujours de quoi faire un deck complet et tous vos decks enregistrés.','Le badge de niveau s’affiche mieux sur téléphone.']},

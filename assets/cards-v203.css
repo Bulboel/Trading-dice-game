@@ -102,3 +102,16 @@ dialog.recycle-dialog .rc-gain b{color:#ffe08a}
 dialog.recycle-dialog .rc-gain small{color:#b8f0cc;font-weight:600}
 dialog.recycle-dialog .qo-actions button[disabled]{opacity:.5}
 @media(max-width:700px){dialog.recycle-dialog .rc-list label{grid-template-columns:auto 36px 1fr auto;gap:7px;padding:6px 8px}dialog.recycle-dialog .rc-art,dialog.recycle-dialog .rc-art img{width:36px;height:36px}}
+
+/* v223 — Numéro de collection et dés pas encore découverts */
+#portal .cc2 .cc-no{font-variant-numeric:tabular-nums;color:#9fb0c4;font-weight:700;letter-spacing:.03em}
+#portal .collect-card.cc2.mystery{filter:none!important;opacity:1!important;background:linear-gradient(180deg,#141b26,#0d121a)!important;border-style:dashed!important;border-color:color-mix(in srgb,var(--rim) 45%,transparent)!important}
+#portal .collect-card.cc2.mystery:hover{transform:none}
+#portal .cc2 .mystery-art{position:relative}
+#portal .cc2 .mystery-art img,#portal .cc2 .mystery-art svg,#portal .cc2 .mystery-art .hand-generic{filter:brightness(0) drop-shadow(0 0 1px color-mix(in srgb,var(--rim) 80%,transparent)) drop-shadow(0 0 6px color-mix(in srgb,var(--rim) 40%,transparent))!important;opacity:.9}
+#portal .cc2 .mystery-art b{position:absolute;inset:0;display:grid;place-items:center;font:700 28px/1 Georgia,serif;color:color-mix(in srgb,var(--rim) 85%,#fff);text-shadow:0 0 10px #000}
+#portal .cc2 .mystery-net{min-height:60px}
+#portal .cc2 .mystery-net span{width:52px;height:52px;border-radius:10px;border:1.5px dashed #ffffff26;display:grid;place-items:center;font:700 20px Georgia,serif;color:#ffffff40}
+#portal .cc2.mystery h3{color:#8d98aa!important;font-style:italic}
+#portal .cc2.mystery .cc-own{color:#8d98aa}
+#portal .cc2.mystery button[disabled]{opacity:.55}
