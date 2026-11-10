@@ -43,7 +43,7 @@ function createCloud({getClient,portal,store=root.localStorage,schedule=(f,ms)=>
 if(typeof module!=='undefined')module.exports={createCloud,summaryOf};
 if(!root.document)return;
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const LIB='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js';
+const LIB='assets/vendor/supabase/supabase.js';
 async function getClient(){if(root.__hackeniaSupabase)return root.__hackeniaSupabase;const c=root.HACKENIA_PVP_CONFIG;if(!c?.url||!c?.key)throw new Error('Configuration en ligne absente');
  if(!root.supabase)await new Promise((res,rej)=>{const s=document.createElement('script');s.src=LIB;s.onload=res;s.onerror=()=>rej(new Error('Service en ligne inaccessible'));document.head.append(s)});
  return root.__hackeniaSupabase=root.supabase.createClient(c.url,c.key,{auth:{persistSession:true,autoRefreshToken:true}})}

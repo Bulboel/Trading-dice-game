@@ -95,3 +95,31 @@ body.portal-open[data-portal-view="options"] #portal-content{padding:14px!import
  #portal .opt-swatches.opt-compact .opt-swatch-dot{width:28px!important;height:28px!important}
  #portal .opt-tab{padding:7px 4px!important;font-size:11.5px!important;white-space:nowrap}
 }
+
+/* v227 — Options plus simples à utiliser */
+#portal .opt-main fieldset{min-width:0!important;max-width:100%}
+#portal .opt-tab{display:inline-flex;align-items:center;gap:7px}
+#portal .opt-tab svg{width:17px;height:17px;flex:none;opacity:.9}
+/* Pastilles de couleur : elles passent à la ligne au lieu de déborder de l'écran. */
+#portal .opt-swatches.opt-compact{flex-wrap:wrap!important;justify-content:flex-start!important;max-width:none!important;gap:8px!important}
+#portal .opt-swatches.opt-compact .opt-swatch{flex:0 0 auto!important}
+@media(max-width:700px){
+ /* Onglets : grille de 3 × 2, icône au-dessus du libellé, tous de la même taille. */
+ #portal .opt-tabs{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px!important}
+ #portal .opt-tabs .opt-saved{display:none}
+ #portal .opt-tab{flex-direction:column;justify-content:center;gap:4px;min-height:56px!important;width:100%!important;padding:6px 4px!important;border-radius:12px!important;font-size:12px!important;line-height:1.1;white-space:nowrap}
+ #portal .opt-tab svg{width:20px;height:20px}
+ /* L'aperçu en direct n'apparaît que là où il sert (Joueur, Dés & bourse) et en plus compact. */
+ #portal .opt-layout:not([data-tab="player"]):not([data-tab="bag"]) .opt-preview{display:none!important}
+ #portal .opt-preview{padding:8px 10px!important;gap:4px 10px!important}
+ #portal .opt-preview .opt-preview-stage{transform:scale(.8);transform-origin:center}
+ #portal .opt-main fieldset{padding:10px 12px!important;margin:0 0 10px!important}
+ #portal .opt-swatches.opt-compact .opt-swatch-dot{width:32px!important;height:32px!important}
+ /* Effets de dé bonus : deux colonnes compactes. */
+ #portal .bonusfx-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+ #portal .bonusfx-option{flex-direction:column!important;align-items:center!important;text-align:center!important;gap:6px!important;padding:10px 8px!important;min-height:0!important}
+ #portal .bonusfx-option small{font-size:10.5px!important;line-height:1.3}
+ /* Bourse : styles en grille régulière */
+ #portal .opt-swatches:not(.opt-compact){display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px!important}
+}
+@media(max-width:700px){#portal .opt-swatches:not(.opt-compact) .opt-swatch{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;text-align:center!important;width:auto!important;min-width:0!important;margin:0!important}#portal .opt-swatches:not(.opt-compact) .opt-swatch-label{text-align:center!important;font-size:11px!important;line-height:1.2}}

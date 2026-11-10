@@ -1,0 +1,22 @@
+{
+  "appId": "com.hackenia.dicegame",
+  "appName": "Hackénia",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#10211d",
+    "allowMixedContent": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1200,
+      "launchAutoHide": true,
+      "backgroundColor": "#10211d",
+      "showSpinner": false
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#10211d",
+      "overlaysWebView": false
+    }
+  }
+}

@@ -2,8 +2,8 @@
 import * as THREE from 'three';
 import {invocationPalette} from './invocation-colors.js?v=166';
 import {invocationNormalization,invocationFrame} from './invocation-layout.js?v=20261103-v72';
-import {GLTFLoader} from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js';
-import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
+import {GLTFLoader} from './vendor/three/examples/jsm/loaders/GLTFLoader.js';
+import {OrbitControls} from './vendor/three/examples/jsm/controls/OrbitControls.js';
 export async function createInvocation(stage,{info,definition,reduced,isCurrent,onComplete,onReady,onReveal}){
 const theme=invocationPalette(definition?.el);
 const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(38,1,.05,100),renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
