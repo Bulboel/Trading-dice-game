@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v212',title:'Des découvertes plus spectaculaires',items:['L’ouverture d’un nouveau dé est plus rapide et change selon sa rareté : bronze, argent, or, or ardent ou arc-en-ciel.','Nouveau décor étoilé pour les découvertes.']},
  {id:'v211',title:'Effets et éclat',items:['Personnalisez l’effet du dé bonus dans Options › Dés & bourse : un nouvel effet est disponible, d’autres seront à gagner.','Les dés légendaires brillent dans votre main, et les divins encore plus.']},
  {id:'v210',title:'Des formes de dés plus équilibrées',items:['Les formes trop longues créaient des raccourcis vers le camp adverse : plusieurs dés ont un nouveau schéma, plus compact.','Les astuces du menu ont été mises à jour avec les dernières nouveautés.']},
  {id:'v209',title:'Où apparaît votre créature ?',items:['La case où naît la créature est maintenant marquée d’un liseré doré sur le schéma de chaque dé.','Sur les dés les plus longs, la créature naît plus près du centre.']},
