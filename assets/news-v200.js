@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v219',title:'Niveau de joueur et quêtes',items:['Gagnez de l’expérience à chaque partie et montez de niveau : chaque niveau rapporte des Bubulles, avec un palier tous les 5 niveaux.','Trois quêtes du jour et une quête de la semaine, à retrouver en touchant votre niveau en haut à droite.','Deux nouveaux effets de dé bonus à débloquer : « Éclair » au niveau 5 et « Feuille d’automne » au niveau 10.']},
  {id:'v218',title:'Petites finitions',items:['Le compteur de dés bonus affiche une goutte quand l’effet goutte d’eau est choisi.','Les fiches de dés sont mieux alignées et le symbole d’élément reste visible sur les cartes lumineuses.']},
  {id:'v217',title:'Ouverture rapide',items:['Boutique : achetez 10 bourses et ouvrez-les toutes d’un coup, sans animation, avec un récapitulatif des dés obtenus.','Un bouton permet aussi d’ouvrir d’un coup les bourses restantes d’un lot.']},
  {id:'v216',title:'Quatorze nouveaux dés',items:['Deux familles se déclinent dans de nouveaux éléments : cinq communs et cinq peu communs.','Quatre personnages reçoivent une version dans une rareté inédite pour eux, avec des schémas de dés jamais vus.']},
