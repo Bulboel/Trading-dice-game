@@ -1,0 +1,53 @@
+/* v198 — Accueil : « Premiers pas » compact (barre d'étapes + étape en cours) et cercle des dés centré verticalement. */
+#portal .onboarding-guide{box-sizing:border-box;width:min(100%,520px);margin:6px auto 14px;padding:12px 14px 10px;border:1px solid #cbb37866;border-radius:14px;background:linear-gradient(150deg,#1c2a41e6,#0b1528f0);box-shadow:0 10px 30px #0008,inset 0 1px 0 #ffffff10}
+#portal .onboarding-guide .onb-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0 0 8px}
+#portal .onboarding-guide h2{margin:0;font:700 14px/1.2 "Cinzel",Georgia,serif;letter-spacing:.06em;color:#f1e3b8;text-align:left}
+#portal .onb-count{font:600 11px/1 system-ui,sans-serif;color:#b9c6da;letter-spacing:.04em}
+#portal .onb-track{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);margin:0 0 10px;padding:0;position:relative}
+#portal .onb-track::before{content:"";position:absolute;left:16.6%;right:16.6%;top:15px;height:2px;background:#ffffff1f}
+#portal .onb-dot{position:relative;display:grid;justify-items:center;gap:4px}
+#portal .onb-dot+.onb-dot::before{content:"";position:absolute;right:50%;width:100%;top:15px;height:2px;background:transparent}
+#portal .onb-dot.done+.onb-dot::before,#portal .onb-dot.done+.onb-dot.current::before{background:linear-gradient(90deg,#d5bb70,#d5bb70)}
+#portal .onb-ico{position:relative;z-index:1;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#0d1830;border:1.5px solid #5b6a85;color:#8f9bb0}
+#portal .onb-ico svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#portal .onb-dot small{font:600 10.5px/1 system-ui,sans-serif;color:#8f9bb0;letter-spacing:.03em}
+#portal .onb-dot.done .onb-ico{background:linear-gradient(135deg,#d5bb70,#8d6a2c);border-color:#f5d991;color:#1a1307}
+#portal .onb-dot.done small{color:#d3b675}
+#portal .onb-dot.current .onb-ico{border-color:#f5d991;color:#f5d991;box-shadow:0 0 0 4px #f5d99122,0 0 14px #f5d99155}
+#portal .onb-dot.current small{color:#f5d991}
+#portal .onb-now{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:11px;background:#0a142699;border:1px solid #839dc733}
+#portal .onb-now>div{flex:1;min-width:0}
+#portal .onb-now strong{display:block;font:600 15px/1.25 Georgia,serif;color:#f0e4c7}
+#portal .onb-now p{margin:3px 0 0;font-size:12.5px;line-height:1.4;color:#c4cede}
+#portal .onb-now b{color:#f5d991}
+#portal .onb-now .portal-primary{flex:0 0 auto;min-height:40px;padding:8px 14px;white-space:nowrap}
+#portal .onb-help{margin:8px 0 0;font-size:11.5px;color:#9aa6ba;text-align:center}
+@media(max-width:600px){
+ #portal .onboarding-guide{padding:10px 11px 8px;margin:4px auto 10px}
+ #portal .onb-now{flex-wrap:wrap;gap:8px;padding:9px 10px}
+ #portal .onb-now .portal-primary{width:100%}
+ #portal .onb-now strong{font-size:14px}
+ #portal .onb-now p{font-size:12px}
+}
+/* Cercle centré : l'espace libre se répartit au-dessus du cercle et sous le contenu de l'accueil. */
+body.portal-open[data-portal-view="home"] #portal>#portal-nav{margin-top:auto!important}
+body.portal-open[data-portal-view="home"] #portal>#portal-content:not([hidden]){margin-bottom:auto!important}
+body.portal-open[data-portal-view="home"] #portal:has(>#portal-content[hidden])>#portal-nav{margin-bottom:auto!important}
+body.portal-open[data-portal-view="home"] #portal>#portal-content.home-resume>.portal-primary[data-action="resume"]{display:block;margin:10px auto 6px}
+/* v198 — Options › Objet porté : cartes d'objets (porté, possédé, verrouillé). */
+#portal .gear-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-top:8px}
+#portal .gear-card{display:grid;grid-template-columns:72px minmax(0,1fr);align-items:center;gap:12px;width:100%;min-height:96px;padding:10px 12px;text-align:left;border-radius:12px;border:1px solid #839dc744;background:linear-gradient(140deg,#1c2a41d9,#0b1528ee);color:#e8e2cf;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .15s}
+#portal .gear-card:hover{border-color:#cbb378aa;transform:translateY(-1px)}
+#portal .gear-art{display:grid;place-items:center;width:72px;height:72px;border-radius:50%;background:radial-gradient(circle at 50% 45%,#2a3a5c,#0a1426 70%);box-shadow:inset 0 0 0 1px #839dc744}
+#portal .gear-art img{width:84px;height:84px;object-fit:contain;filter:drop-shadow(0 3px 6px #000a)}
+#portal .gear-none{font:400 30px/1 system-ui;color:#6f7b91}
+#portal .gear-copy{display:grid;gap:3px;min-width:0}
+#portal .gear-copy strong{font:600 15px/1.2 Georgia,serif;color:#f0e4c7}
+#portal .gear-copy small{font-size:12px;line-height:1.35;color:#c4cede}
+#portal .gear-copy em{font:600 11.5px/1.3 system-ui,sans-serif;font-style:normal;color:#d3b675}
+#portal .gear-card.equipped{border-color:#f5d991;box-shadow:0 0 0 1px #f5d99155,0 0 18px #f5d99133}
+#portal .gear-card.equipped .gear-copy em{color:#9fe0b4}
+#portal .gear-card.locked{cursor:not-allowed;border-style:dashed}
+#portal .gear-card.locked .gear-art img{filter:grayscale(1) brightness(.5)}
+#portal .gear-card.locked .gear-copy strong{color:#9aa6ba}
+#portal .gear-card.locked .gear-copy em{color:#8f9bb0;font-weight:500}
