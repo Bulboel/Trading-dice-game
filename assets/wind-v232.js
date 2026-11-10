@@ -15,15 +15,15 @@ const updates=[],dmy=new THREE.Object3D();
 const gust=t=>.55+.45*Math.sin(t*.7)*Math.sin(t*.23+1.3);
 
 // ---------- 1. Le plateau de jeu : prairie fauchée en damier ----------
-const meadow=canvasTex(512,640,(g,w,h)=>{const cw=w/8,ch=h/10;
- for(let y=0;y<10;y++)for(let x=0;x<8;x++){const light=(x+y)%2===0,base=light?[96,150,82]:[78,131,70],gr=g.createLinearGradient(x*cw,y*ch,x*cw+cw,y*ch);
+const meadow=canvasTex(512,64*rows,(g,w,h)=>{const cw=w/8,ch=h/rows;
+ for(let y=0;y<rows;y++)for(let x=0;x<8;x++){const light=(x+y)%2===0,base=light?[96,150,82]:[78,131,70],gr=g.createLinearGradient(x*cw,y*ch,x*cw+cw,y*ch);
   gr.addColorStop(0,`rgb(${base[0]+8},${base[1]+10},${base[2]+4})`);gr.addColorStop(1,`rgb(${base[0]-6},${base[1]-6},${base[2]-4})`);g.fillStyle=gr;g.fillRect(x*cw,y*ch,cw,ch);
   // stries de fauche dans le sens du vent
   g.strokeStyle=light?'rgba(190,230,150,.18)':'rgba(30,70,40,.2)';g.lineWidth=2;for(let k=0;k<7;k++){const yy=y*ch+6+k*(ch-12)/6+Math.sin(k)*2;g.beginPath();g.moveTo(x*cw+4,yy);g.bezierCurveTo(x*cw+cw*.35,yy-4,x*cw+cw*.65,yy+4,x*cw+cw-4,yy);g.stroke()}
   for(let k=0;k<26;k++){g.fillStyle=`rgba(${rnd()<.5?'210,240,170':'30,60,30'},${.08+rnd()*.1})`;g.fillRect(x*cw+rnd()*cw,y*ch+rnd()*ch,2,4)}
   if(rnd()<.12){g.fillStyle='rgba(255,255,240,.7)';for(let f=0;f<5;f++){g.beginPath();g.arc(x*cw+10+rnd()*(cw-20),y*ch+10+rnd()*(ch-20),2,0,7);g.fill()}}}
  // fines bordures de pierre entre les cases
- g.strokeStyle='rgba(215,222,190,.55)';g.lineWidth=3;for(let x=0;x<=8;x++){g.beginPath();g.moveTo(x*cw,0);g.lineTo(x*cw,h);g.stroke()}for(let y=0;y<=10;y++){g.beginPath();g.moveTo(0,y*ch);g.lineTo(w,y*ch);g.stroke()}});
+ g.strokeStyle='rgba(215,222,190,.55)';g.lineWidth=3;for(let x=0;x<=8;x++){g.beginPath();g.moveTo(x*cw,0);g.lineTo(x*cw,h);g.stroke()}for(let y=0;y<=rows;y++){g.beginPath();g.moveTo(0,y*ch);g.lineTo(w,y*ch);g.stroke()}});
 const shape=new THREE.Shape(),r=.55;shape.moveTo(-BX+r,-BZ);shape.lineTo(BX-r,-BZ);shape.quadraticCurveTo(BX,-BZ,BX,-BZ+r);shape.lineTo(BX,BZ-r);shape.quadraticCurveTo(BX,BZ,BX-r,BZ);shape.lineTo(-BX+r,BZ);shape.quadraticCurveTo(-BX,BZ,-BX,BZ-r);shape.lineTo(-BX,-BZ+r);shape.quadraticCurveTo(-BX,-BZ,-BX+r,-BZ);
 const plateauGeo=new THREE.ExtrudeGeometry(shape,{depth:1.6,bevelEnabled:true,bevelThickness:.06,bevelSize:.12,bevelSegments:3,curveSegments:8});plateauGeo.rotateX(-Math.PI/2);plateauGeo.translate(0,-1.47,0);
 {const p=plateauGeo.attributes.position,uv=plateauGeo.attributes.uv;for(let i=0;i<p.count;i++)uv.setXY(i,(p.getX(i)+4)/8,(p.getZ(i)+HZ)/rows)}
