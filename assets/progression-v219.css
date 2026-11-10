@@ -1,0 +1,69 @@
+/* v219 — Niveau de joueur, quêtes, effets de dé bonus débloqués par niveau. */
+/* Badge de niveau dans l'en-tête */
+#portal .portal-level{display:inline-flex;align-items:center;gap:7px;padding:4px 10px 4px 4px;border-radius:999px;border:1px solid #e3c57366;background:linear-gradient(180deg,#22301f,#152014);color:#f3e6bf;cursor:pointer;position:relative;min-height:0;font:inherit}
+#portal .portal-level:hover{border-color:#ffd76a}
+#portal .pl-ring{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#ffd76a calc(var(--pct)*1%),#ffffff1c 0);position:relative}
+#portal .portal-level{--pct:0}
+#portal .portal-level .pl-ring{background:conic-gradient(#ffd76a calc(var(--pct)*1%),#ffffff1c 0)}
+#portal .pl-ring::before{content:"";position:absolute;inset:3px;border-radius:50%;background:radial-gradient(circle at 40% 30%,#3b4a2a,#141c10)}
+#portal .pl-ring b{position:relative;font:700 15px/1 Georgia,serif;color:#ffe7a3}
+#portal .pl-copy{display:flex;flex-direction:column;gap:3px;align-items:flex-start}
+#portal .pl-copy small{font:600 9px/1 system-ui;letter-spacing:.12em;text-transform:uppercase;color:#cdbf95}
+#portal .pl-bar{width:58px;height:5px;border-radius:9px;background:#ffffff1a;overflow:hidden}
+#portal .pl-bar i{display:block;height:100%;background:linear-gradient(90deg,#d9a440,#ffe08a);border-radius:inherit;transition:width .6s ease}
+#portal .pl-dot{position:absolute;top:-4px;right:-4px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:#e8573b;color:#fff;font:700 10px/17px system-ui;text-align:center;box-shadow:0 0 0 2px #10180f}
+@media(max-width:700px){#portal .portal-level{padding:3px;gap:0}#portal .pl-copy{display:none}#portal .pl-ring{width:32px;height:32px}}
+/* Panneau Niveau + quêtes (écran Défis) */
+#portal .progress-panel{display:grid;gap:14px;margin:0 0 22px;padding:16px;border:1px solid #e3c57355;border-radius:16px;background:linear-gradient(160deg,#1d2a1b,#121a12 60%,#17140d)}
+#portal .pp-level{display:flex;gap:16px;align-items:center}
+#portal .pp-badge{--pct:0;flex:none;width:86px;height:86px;border-radius:50%;display:grid;place-content:center;text-align:center;position:relative;background:conic-gradient(#ffd76a calc(var(--pct)*1%),#ffffff1a 0);box-shadow:0 0 22px #ffd76a33}
+#portal .pp-badge::before{content:"";position:absolute;inset:6px;border-radius:50%;background:radial-gradient(circle at 40% 30%,#3b4a2a,#101710)}
+#portal .pp-badge b,#portal .pp-badge small{position:relative}
+#portal .pp-badge b{font:700 32px/1 Georgia,serif;color:#ffe7a3}
+#portal .pp-badge small{font:600 9px/1.4 system-ui;letter-spacing:.14em;text-transform:uppercase;color:#cdbf95}
+#portal .pp-copy{min-width:0;flex:1}
+#portal .pp-copy h2{margin:0 0 6px;font:600 22px/1.1 Georgia,serif;color:#f6e8c2}
+#portal .pp-bar{height:10px;border-radius:9px;background:#ffffff16;overflow:hidden}
+#portal .pp-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#c98a2b,#ffe08a);box-shadow:0 0 10px #ffd76a77}
+#portal .pp-copy p{margin:6px 0 0;font-size:13px;color:#ddd3b8}
+#portal .pp-copy .pp-help{font-size:11.5px;opacity:.7}
+#portal .pp-unlock{color:#c9b3ff}
+#portal .pp-quests h3{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:4px 0 8px;font:600 15px/1.2 Georgia,serif;color:#f1e3bd}
+#portal .pp-quests h3 small{font:500 11px system-ui;color:#a9b3a0}
+#portal .pp-quests ul{list-style:none;margin:0 0 6px;padding:0;display:grid;gap:7px}
+#portal .quest{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;background:#0d140ccc;border:1px solid #ffffff14}
+#portal .quest.weekly{border-color:#c9b3ff55;background:linear-gradient(90deg,#1a1530,#0d140c)}
+#portal .quest.done{border-color:#7ad39b77;background:#11221599}
+#portal .quest-check{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:13px;color:#ffd76a;background:#ffffff0d}
+#portal .quest.done .quest-check{color:#0f2414;background:#7ad39b}
+#portal .quest-copy{min-width:0;display:grid;gap:5px}
+#portal .quest-copy strong{font:600 13px/1.25 system-ui;color:#efe6cf}
+#portal .quest.done .quest-copy strong{text-decoration:line-through;text-decoration-color:#7ad39b99;opacity:.8}
+#portal .quest-bar{height:5px;border-radius:9px;background:#ffffff14;overflow:hidden}
+#portal .quest-bar i{display:block;height:100%;background:linear-gradient(90deg,#d9a440,#ffe08a)}
+#portal .quest.done .quest-bar i{background:#7ad39b}
+#portal .quest-side{display:grid;justify-items:end;gap:2px;text-align:right}
+#portal .quest-side b{font:700 13px system-ui;color:#ffe7a3}
+#portal .quest-side small{font-size:10.5px;color:#b7c0ad;white-space:nowrap}
+@media(max-width:700px){#portal .pp-level{gap:12px}#portal .pp-badge{width:70px;height:70px}#portal .pp-badge b{font-size:26px}#portal .quest{grid-template-columns:auto 1fr;padding:8px 10px}#portal .quest-side{grid-column:2;justify-items:start;text-align:left;display:flex;gap:8px;align-items:baseline}}
+/* Notification de quête / niveau (visible aussi en partie) */
+#quest-toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 12px);z-index:10000;max-width:min(92vw,520px);padding:10px 16px;border-radius:12px;border:1px solid #ffd76a88;background:linear-gradient(180deg,#2a2210f2,#17120af2);color:#ffeec0;font:600 13px/1.35 system-ui;box-shadow:0 10px 30px #000a;transform:translate(-50%,-140%);opacity:0;transition:transform .35s ease,opacity .35s ease;pointer-events:none;text-align:center}
+#quest-toast.show{transform:translate(-50%,0);opacity:1}
+/* Fin de partie : expérience */
+#match-end .me-xp{margin:8px auto 0;max-width:320px}
+#match-end .me-xp-row{display:flex;align-items:center;gap:10px}
+#match-end .me-xp-level{font:600 12px system-ui;color:#e8dcb8;white-space:nowrap}
+#match-end .me-xp-level b{font:700 16px Georgia,serif;color:#ffe7a3}
+#match-end .me-xp-bar{display:block!important;flex:1 1 auto;min-width:120px;height:8px;position:relative;border-radius:9px;background:#ffffff1c;overflow:hidden}
+#match-end .me-xp-bar i{position:absolute;left:0;top:0;bottom:0;display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#c98a2b,#ffe08a);transition:width 1s cubic-bezier(.2,.8,.2,1)}
+#match-end .me-xp-gain{font:700 13px system-ui;color:#ffe08a;white-space:nowrap}
+#match-end .me-levelup{margin:8px 0 0;font:700 14px/1.3 Georgia,serif;color:#ffe7a3;text-shadow:0 0 10px #ffd76a88;animation:me-level-pop .6s .9s both}
+#match-end .me-quests{margin:6px 0 0;font:500 12px/1.3 system-ui;color:#a7e6bd}
+@keyframes me-level-pop{from{transform:scale(.6);opacity:0}60%{transform:scale(1.08);opacity:1}to{transform:none}}
+/* Effets de dé bonus : icônes des options et compteur */
+#portal .bonusfx-spark::before{content:"ϟ";font:700 26px/1 Georgia,serif;color:#e9e1ff;text-shadow:0 0 6px #b79cff,0 0 14px #8f6bff}
+#portal .bonusfx-leaf::before{content:"🍂";font-size:22px}
+#portal .bonusfx-is-locked{filter:grayscale(1) brightness(.6)}
+.bonus-counter .bonus-fx-glyph{font-size:11px;line-height:1}
+.bonus-counter .bonus-fx-glyph.spark{color:#e9e1ff;text-shadow:0 0 4px #b79cff}
+@media(prefers-reduced-motion:reduce){#match-end .me-levelup{animation:none}#quest-toast{transition:none}}
