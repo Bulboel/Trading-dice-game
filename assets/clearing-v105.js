@@ -439,6 +439,18 @@ function updatePureFx(now){for(let i=pureFx.length-1;i>=0;i--){const f=pureFx[i]
  const fade=k<.5?1:1-(k-.5)/.5;for(const m of f.mats)m.opacity=Math.max(0,Math.min(1,t/.35))*fade;
  if(f.energy){const glow=Math.max(0,Math.min(1,t/.35))*fade;f.energy.halo.material.opacity=glow*(.75+.25*Math.sin(t*6));f.energy.halo.scale.setScalar(3.6+.5*Math.sin(t*3));f.energy.light.intensity=glow*6;for(const s of f.energy.sparks){const a=s.a+t*s.v;s.sp.position.set(Math.cos(a)*s.r,s.y+.15*Math.sin(t*2+s.a),Math.sin(a)*s.r);s.sp.material.opacity=glow*(.55+.45*Math.sin(t*7+s.a*3))}}
  if(k>=1){pieces.remove(f.holder);f.mats.forEach(m=>m.dispose());pureFx.splice(i,1)}}}
+// v213 — Aura des divins : un halo doux au sol et quelques lueurs qui montent autour du personnage.
+// Couleur de l'élément, transparence élevée, rien au-dessus de la tête : la lecture du plateau reste nette.
+const auras=new Set();let auraRingTex=null;
+function auraRingTexture(){if(auraRingTex)return auraRingTex;const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),r=g.createRadialGradient(64,64,10,64,64,64);r.addColorStop(0,'rgba(255,255,255,0)');r.addColorStop(.55,'rgba(255,255,255,.45)');r.addColorStop(.72,'rgba(255,255,255,.9)');r.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=r;g.fillRect(0,0,128,128);auraRingTex=new THREE.CanvasTexture(c);return auraRingTex}
+function addDivineAura(g,d){if(g.userData.aura)return;const col=new THREE.Color(game.elementColors?.[d?.el]||'#ffe7a3'),group=new THREE.Group();group.userData.imported=true;
+ const ringMat=new THREE.MeshBasicMaterial({map:auraRingTexture(),color:col,transparent:true,opacity:.42,depthWrite:false,blending:THREE.AdditiveBlending}),ring=new THREE.Mesh(new THREE.PlaneGeometry(1.5,1.5),ringMat);ring.rotation.x=-Math.PI/2;ring.position.y=.13;ring.renderOrder=2;group.add(ring);
+ const motes=[];for(let i=0;i<7;i++){const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:energyGlowTexture(),color:i%3?col:new THREE.Color('#ffffff'),transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending}));sp.scale.setScalar(.09+(i%3)*.03);group.add(sp);motes.push({sp,a:i/7*Math.PI*2,r:.36+(i%3)*.07,v:.35+(i%4)*.08,o:i/7})}
+ g.add(group);g.userData.aura={group,ring,motes};auras.add(g)}
+function updateAuras(now){const t=now/1000,still=document.documentElement.classList.contains('no-motion')||matchMedia('(prefers-reduced-motion: reduce)').matches;
+ for(const g of auras){const a=g.userData.aura;if(!g.parent||!a){auras.delete(g);continue}
+  a.ring.material.opacity=.38+(still?0:.12*Math.sin(t*2.1));a.ring.scale.setScalar(1+(still?0:.06*Math.sin(t*1.4)));
+  for(const m of a.motes){const k=still?.5:(t*m.v+m.o)%1,ang=m.a+(still?0:t*.6);m.sp.position.set(Math.cos(ang)*m.r,.08+k*.95,Math.sin(ang)*m.r);m.sp.material.opacity=.7*Math.sin(Math.PI*k)}}}
 async function attachCreatureModel(g,k){
  const mi=k.mi;g.userData.modelId=mi;
  try{const info=await game.modelInfo(mi);if(!info?.glb)return;const url='assets/'+info.glb+(mi===37?'?revision=kala-idle-dc1986a2':mi===36?'?revision=eberien-idle-14d7089a':'');
@@ -450,6 +462,7 @@ async function attachCreatureModel(g,k){
  g.userData.animationInfo=info;g.userData.modelRoot=root;
  // v207 — Personnage sans clips d'animation (ex. Messire Balai) : petits bonds sur place de temps en temps.
  if(!info.animations)g.userData.hop={base:holder.position.y,phase:Math.random()*3.2};
+ if(game.rarity?.(game.monsters[mi]||{})===6)addDivineAura(g,game.monsters[mi]);
  if(asset.gltf.animations.length){const mixer=new THREE.AnimationMixer(root),idle=asset.gltf.animations.find(a=>/idle|stand|breath/i.test(a.name))||asset.gltf.animations[0];g.userData.idleAction=mixer.clipAction(idle);g.userData.idleAction.play();g.userData.activeAction=g.userData.idleAction;g.userData.mixer=mixer;for(const kind of ['spell','victory','walk'])if(info.animations?.[kind])getCombatClip(info.animations[kind]).catch(()=>null)}
  }catch(error){console.info('Figurine provisoire conservée pour ce modèle.',mi)}
 }
@@ -617,7 +630,7 @@ function cellScreen(x,y){if(!active)return null;const r=canvas.getBoundingClient
 window.HackeniaView={get active(){return active},cellAt,sync,setActive,updateLens,preview,clearPreview,cellScreen};configure();sync();
 const portalContent=document.getElementById('portal-content');
 if(portalContent){const refreshPreview=()=>{const art=document.getElementById('play-terrain-art');if(art&&document.body.classList.contains('portal-open')){const terrain=document.getElementById('play-terrain')?.value||'terre';preview(terrain,art)}else clearPreview()};new MutationObserver(refreshPreview).observe(portalContent,{childList:true,subtree:true});refreshPreview()}
-function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&!previewMode)||!active||now-lastFrame<(renderer.isSoftware?100:light?32:16))return;const dt=Math.min((now-lastFrame)/1000,.06);lastFrame=now;if(pureFx.length)updatePureFx(now);if(moving)for(const g of creatures.values()){const h=g.userData.hop,m=g.userData.model;if(!h||!m)continue;const u=((now/1000+h.phase)%3.2)/.55;if(u<1){const lift=Math.sin(Math.PI*u);m.position.y=h.base+.24*lift;m.scale.set(1-.05*lift,1+.08*lift,1-.05*lift)}else if(u<1.25){const s=Math.sin(Math.PI*(u-1)/.25);m.position.y=h.base;m.scale.set(1+.07*s,1-.1*s,1+.07*s)}else{m.position.y=h.base;m.scale.set(1,1,1)}}updateZoneGlow(now);const t=moving?now/1000:0;
+function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&!previewMode)||!active||now-lastFrame<(renderer.isSoftware?100:light?32:16))return;const dt=Math.min((now-lastFrame)/1000,.06);lastFrame=now;if(pureFx.length)updatePureFx(now);if(auras.size)updateAuras(now);if(moving)for(const g of creatures.values()){const h=g.userData.hop,m=g.userData.model;if(!h||!m)continue;const u=((now/1000+h.phase)%3.2)/.55;if(u<1){const lift=Math.sin(Math.PI*u);m.position.y=h.base+.24*lift;m.scale.set(1-.05*lift,1+.08*lift,1-.05*lift)}else if(u<1.25){const s=Math.sin(Math.PI*(u-1)/.25);m.position.y=h.base;m.scale.set(1+.07*s,1-.1*s,1+.07*s)}else{m.position.y=h.base;m.scale.set(1,1,1)}}updateZoneGlow(now);const t=moving?now/1000:0;
  if(iceScene.visible){for(let i=0;i<flakeCount;i++){const f=flakeSeeds[i],drop=moving?(t*(.65+f.size*.25)+f.phase)%7.2:0;flakeDummy.position.set(f.x+Math.sin(t*.45+f.phase)*.11,Math.max(.12,f.y-drop),f.z+Math.cos(t*.37+f.phase)*.1);flakeDummy.scale.setScalar(f.size);flakeDummy.rotation.z=f.spin+t*.22;flakeDummy.updateMatrix();snowfall.setMatrixAt(i,flakeDummy.matrix)}snowfall.instanceMatrix.needsUpdate=true}
  if(forest.visible){wind.value=t;waterNormals.offset.set(-t*.032,t*.013);
  for(let i=0;i<wp.count;i++){const x=waterOrig[i*3],z=waterOrig[i*3+2];wp.setY(i,waterHeight(x,z,t))}wp.needsUpdate=true;if(!renderer.isSoftware)wg.computeVertexNormals();
