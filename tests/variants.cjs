@@ -5,7 +5,7 @@ const el=()=>({style:{setProperty(){}},classList:{add(){},remove(){},toggle(){}}
 const c=vm.createContext({window:{dispatchEvent(){}},Event,document:{getElementById(i){if(!els.has(i))els.set(i,el());return els.get(i)}},fetch:()=>Promise.resolve({ok:false}),setTimeout:()=>0,clearTimeout(){},setInterval:()=>0,clearInterval(){},Date,Math,console});
 vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,''),c);
 const g=c.window.hackeniaGame,defs=g.monsters,variants=defs.map((d,i)=>[i,d]).filter(([,d])=>d.variant);
-assert.equal(variants.length,27,'18 generic dice replaced + 3 new dice + 6 elemental Hydrelithes');
+assert.equal(variants.length,41,'18 generic dice replaced + 3 new dice + 6 Hydrelithes + 10 Bosco/Myconide + 4 alternative rarities');
 const names=new Set();
 for(const [i,d] of variants){const r=g.rarity(d),v=d.variant;
  assert.ok(manifest.creatures[d.modelKey]?.glb,d.cn+' reuses an existing 3D model');assert.ok(!names.has(d.cn),d.cn+' has a unique name');names.add(d.cn);
@@ -14,8 +14,13 @@ for(const [i,d] of variants){const r=g.rarity(d),v=d.variant;
  if(r===3)assert.ok(v.kind==='metal'&&v.color.toLowerCase()>'#d0','Rares are silver automatons ('+d.cn+')');
  if(r===5)assert.equal(v.color,'#f4c65a','Legendaries are gold ('+d.cn+')');
  if(r===6)assert.equal(v.aura,true,'Divines carry an aura ('+d.cn+')');
- assert.ok(d.lo.includes('Affinité'),d.cn+' states its element')}
+ assert.ok(/Affinité|Sans élément/.test(d.lo),d.cn+' states its element')}
 assert.deepEqual([64,65,66].map(i=>[defs[i].el,g.rarity(defs[i])]),[['vent',1],['eau',1],['feu',2]]);
 const hy=defs.slice(70,76);assert.deepEqual(hy.map(d=>d.el),'foudre vent terre glace eau feu'.split(' '),'One Hydrelithe per element');for(const d of hy){assert.equal(d.modelKey,'hydrelithe');assert.equal(g.rarity(d),1);assert.ok(!d.multi,'Elemental Hydrelithes follow the normal bonus rules');assert.deepEqual(d.c.map(t=>t[2]).sort(),[1,2,3])}
+const bosco=defs.slice(76,81),myco=defs.slice(81,86);assert.ok(bosco.every(d=>d.modelKey==='bosco'&&g.rarity(d)===1)&&myco.every(d=>d.modelKey==='myconide'&&g.rarity(d)===2));
+assert.deepEqual(bosco.map(d=>d.el),['foudre','vent','terre','glace','eau'],'Bosco is fire: the five other elements');assert.deepEqual(myco.map(d=>d.el),['foudre','vent','glace','eau','feu'],'Myconide is earth: the five other elements');
+// Versions alternatives : une rareté (légendaire ou divine) que le personnage n'avait pas encore.
+for(const i of[86,87,88,89]){const d=defs[i],others=defs.filter((x,j)=>j!==i&&x.modelKey===d.modelKey);assert.ok(!others.some(x=>g.rarity(x)===g.rarity(d)),d.cn+' : nouvelle rareté pour ce personnage')}
+assert.deepEqual([86,87,88,89].map(i=>g.rarity(defs[i])),[6,5,5,5]);
 const js=fs.readFileSync(path.join(root,'assets/clearing-v105.js'),'utf8');assert.ok(/game\.rarity\?\.\([^)]*\)\)?===6\)addDivineAura/.test(js),'Divine creatures get the board aura');assert.ok(/opacity:\.42/.test(js),'Aura stays translucent');
 console.log(`PASS: ${variants.length} variant dice reuse existing models with unique names, portraits, silver rares, gold legendaries, aura on divines; new commons Vent/Eau and uncommon Feu, six elemental Hydrelithes.`);

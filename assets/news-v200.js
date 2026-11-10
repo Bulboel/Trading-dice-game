@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v216',title:'Quatorze nouveaux dés',items:['Deux familles se déclinent dans de nouveaux éléments : cinq communs et cinq peu communs.','Quatre personnages reçoivent une version dans une rareté inédite pour eux, avec des schémas de dés jamais vus.']},
  {id:'v215',title:'Des variantes plus éclatantes',items:['Les statues, automates et personnages teintés gardent désormais leur apparence sur le plateau, avec des couleurs plus vives.','Six nouveaux dés communs : une créature de cristal déclinée dans chaque élément.']},
  {id:'v214',title:'Trois nouveaux personnages',items:['Nouveaux personnages animés en 3D : un commun et deux peu communs.','Nouveauté : les dés multi-élément reçoivent toujours le bonus de terrain, quel que soit le terrain, mais jamais le bonus de voisin.']},
  {id:'v213',title:'Des personnages pour tous les dés',items:['Les derniers dés sans personnage en reçoivent un : statues de pierre, automates d’argent pour les rares, idoles d’or pour les légendaires.','Les divins sont entourés d’une aura lumineuse sur le plateau.','Trois nouveaux dés rejoignent les bourses : deux communs et un peu commun.']},
