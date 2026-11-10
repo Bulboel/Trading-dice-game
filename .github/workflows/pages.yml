@@ -1,6 +1,6 @@
 # Déploiement du site sur GitHub Pages.
 # Remplace le déploiement automatique de GitHub, dont le délai fixe de 10 minutes était dépassé
-# pendant l'envoi des fichiers (« syncing_files »). Ici : délai de 30 minutes, et les sources 3D lourdes
+# pendant l'envoi des fichiers (« syncing_files »). Ici : jusqu'à trois essais, et les sources 3D lourdes
 # (assets/Models, ~1,9 Go, non publiées) ne sont pas téléchargées, ce qui accélère la préparation.
 # À activer une fois : Settings › Pages › Build and deployment › Source : « GitHub Actions ».
 name: Déploiement du site
@@ -37,9 +37,23 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url || steps.retry1.outputs.page_url || steps.retry2.outputs.page_url }}
     steps:
+      # GitHub plafonne l'attente d'un déploiement à 10 minutes. Quand ses serveurs sont lents (« syncing_files »),
+      # on retente automatiquement deux fois avant d'échouer.
       - id: deployment
+        continue-on-error: true
         uses: actions/deploy-pages@v4
         with:
-          timeout: 1800000
+          timeout: 600000
+      - id: retry1
+        if: steps.deployment.outcome == 'failure'
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+        with:
+          timeout: 600000
+      - id: retry2
+        if: steps.deployment.outcome == 'failure' && steps.retry1.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+        with:
+          timeout: 600000

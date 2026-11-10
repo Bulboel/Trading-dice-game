@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v218',title:'Petites finitions',items:['Le compteur de dés bonus affiche une goutte quand l’effet goutte d’eau est choisi.','Les fiches de dés sont mieux alignées et le symbole d’élément reste visible sur les cartes lumineuses.']},
  {id:'v217',title:'Ouverture rapide',items:['Boutique : achetez 10 bourses et ouvrez-les toutes d’un coup, sans animation, avec un récapitulatif des dés obtenus.','Un bouton permet aussi d’ouvrir d’un coup les bourses restantes d’un lot.']},
  {id:'v216',title:'Quatorze nouveaux dés',items:['Deux familles se déclinent dans de nouveaux éléments : cinq communs et cinq peu communs.','Quatre personnages reçoivent une version dans une rareté inédite pour eux, avec des schémas de dés jamais vus.']},
  {id:'v215',title:'Des variantes plus éclatantes',items:['Les statues, automates et personnages teintés gardent désormais leur apparence sur le plateau, avec des couleurs plus vives.','Six nouveaux dés communs : une créature de cristal déclinée dans chaque élément.']},
