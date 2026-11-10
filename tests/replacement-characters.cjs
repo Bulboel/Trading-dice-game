@@ -30,8 +30,8 @@ for(const [i,key] of [[1,'max'],[22,'sameron'],[18,'zackarie'],[19,'soryan'],[4,
 assert.equal(defs[7].cn,'Moineau Brise');assert.equal(defs[5].cn,'Poussin Braise');assert.equal(defs[16].cn,'Poulpe des Marées');assert.equal(defs[13].cn,'Canard des Cimes');assert.equal(defs[12].cn,'Salamandre Voltaïque');assert.equal(defs[6].cn,'Abeille Étincelle','Level II bee keeps its animal');assert.equal(defs[31].cn,'Dragon des Vents');
 // Les nouveaux dés ont des formes qu'aucun autre dé n'utilise, et des valeurs cohérentes avec leur rareté.
 const shape=d=>{const xs=d.c.map(a=>a[0]),ys=d.c.map(a=>a[1]),x0=Math.min(...xs),y0=Math.min(...ys);return d.c.map(([x,y])=>(x-x0)+','+(y-y0)).sort().join(' ')};
-for(const i of [55,56,57])for(let j=0;j<defs.length;j++)if(j!==i)assert.notEqual(shape(defs[i]),shape(defs[j]),defs[i].n+' has a unique shape');
-assert.equal(defs[57].c.reduce((a,c)=>a+c[2],0),6,'Ven spreads the common power budget over four tiles');
+for(const i of [55,56])for(let j=0;j<defs.length;j++)if(j!==i)assert.notEqual(shape(defs[i]),shape(defs[j]),defs[i].n+' has a unique shape');
+assert.equal(defs[57].c.length,3,'Ven follows the common rule: three tiles');assert.equal(defs[57].c.reduce((a,c)=>a+c[2],0),6);
 assert.deepEqual([defs[56].nd,defs[56].need],[2,5]);assert.deepEqual([defs[55].nd,defs[55].need],[1,3]);
 (async()=>{
  for(const i of Object.keys(expected))assert.equal((await game.modelInfo(+i)).nom,defs[i].cn,'Model is requested even for peu commun dice');

@@ -51,3 +51,6 @@ body.portal-open[data-portal-view="home"] #portal>#portal-content.home-resume>.p
 #portal .gear-card.locked .gear-art img{filter:grayscale(1) brightness(.5)}
 #portal .gear-card.locked .gear-copy strong{color:#9aa6ba}
 #portal .gear-card.locked .gear-copy em{color:#8f9bb0;font-weight:500}
+/* v207 — Bague en 3D qui tourne lentement dans sa carte. */
+#portal .gear-art .gear-model{width:84px;height:84px;--poster-color:transparent;background:transparent}
+#portal .gear-card.locked .gear-model{filter:grayscale(1) brightness(.5)}

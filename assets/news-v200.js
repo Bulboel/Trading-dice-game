@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v207',title:'Des dés mieux équilibrés',items:['Chaque rareté a désormais son nombre de dalles : 3, 4, 5, puis 6 pour les légendaires et les divins.','Plusieurs dés légendaires reçoivent de nouvelles formes à six dalles, et les divins deviennent plus puissants.','Le premier objet à porter s’affiche en 3D, et de petites animations font vivre certains personnages.']},
  {id:'v204',title:'Votre progression à l’abri',items:['Sauvegarde en ligne automatique, sans compte à créer : aucun email, aucun mot de passe.','Un code de récupération permet de retrouver sa progression sur un autre téléphone (Options › Sauvegarde).']},
  {id:'v203',title:'Des fiches de dés plus utiles',items:['La Collection et Mes decks montrent maintenant la forme des dalles de chaque dé.','Fiches plus compactes et plus lisibles, sur téléphone comme sur ordinateur.']},
  {id:'v201',title:'Un jeu bien plus léger',items:['Les personnages et les dés en 3D sont 8 fois plus légers, sans perte de qualité visible.','Chargement plus rapide et moins de mémoire utilisée, surtout sur téléphone.']},
