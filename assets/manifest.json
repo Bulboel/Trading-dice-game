@@ -103,7 +103,7 @@
       "nom": "Dragon de Fusion"
     },
     "kala": {
-      "glb": "Models/Characters/kala idle.glb",
+      "glb": "models-web/kala idle.glb",
       "nom": "Kala",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -114,7 +114,7 @@
       }
     },
     "eberien": {
-      "glb": "Models/Characters/Eberien Idle.glb",
+      "glb": "models-web/Eberien Idle.glb",
       "nom": "Eberien",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -125,7 +125,7 @@
       }
     },
     "grimgors": {
-      "glb": "Models/Characters/Grimgors idle.glb",
+      "glb": "models-web/Grimgors idle.glb",
       "nom": "Grimgors",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -136,7 +136,7 @@
       }
     },
     "jhimm": {
-      "glb": "Models/Characters/Jhimm idle.glb",
+      "glb": "models-web/Jhimm idle.glb",
       "nom": "Jhimm",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -147,7 +147,7 @@
       }
     },
     "bolduc": {
-      "glb": "Models/Characters/Bolduc idle.glb",
+      "glb": "models-web/Bolduc idle.glb",
       "nom": "Bolduc",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -158,7 +158,7 @@
       }
     },
     "gardienne": {
-      "glb": "Models/Characters/Gardienne du lac idle.glb",
+      "glb": "models-web/Gardienne du lac idle.glb",
       "nom": "Gardienne du lac",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -169,13 +169,13 @@
       }
     },
     "messire-balai": {
-      "glb": "Models/Characters/Messire balai idle.glb",
+      "glb": "models-web/Messire balai idle.glb",
       "nom": "Messire Balai",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05
     },
     "caleizis": {
-      "glb": "Models/Characters/Caleizis divine idle.glb",
+      "glb": "models-web/Caleizis divine idle.glb",
       "nom": "Caleizis",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -186,7 +186,7 @@
       }
     },
     "pachie": {
-      "glb": "Models/Characters/La fée Pachié divine idle.glb",
+      "glb": "models-web/La fée Pachié divine idle.glb",
       "nom": "La fée Pachié",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -197,7 +197,7 @@
       }
     },
     "gliska": {
-      "glb": "Models/Characters/Gliska légendaire idle.glb",
+      "glb": "models-web/Gliska légendaire idle.glb",
       "nom": "Gliska",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -208,7 +208,7 @@
       }
     },
     "kayla-legendaire": {
-      "glb": "Models/Characters/Kayla légendaire idle.glb",
+      "glb": "models-web/Kayla légendaire idle.glb",
       "nom": "Kayla légendaire",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -219,7 +219,7 @@
       }
     },
     "hilam": {
-      "glb": "Models/Characters/Hilam légendaire idle.glb",
+      "glb": "models-web/Hilam légendaire idle.glb",
       "nom": "Hilam",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -230,7 +230,7 @@
       }
     },
     "eberien-legendaire": {
-      "glb": "Models/Characters/Eberien légendaire idle.glb",
+      "glb": "models-web/Eberien légendaire idle.glb",
       "nom": "Eberien légendaire",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -241,7 +241,7 @@
       }
     },
     "bolduc-legendaire": {
-      "glb": "Models/Characters/Bolduc légendaire idle.glb",
+      "glb": "models-web/Bolduc légendaire idle.glb",
       "nom": "Bolduc légendaire",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -252,7 +252,7 @@
       }
     },
     "bosco": {
-      "glb": "Models/Characters/Bosco légendaire idle.glb",
+      "glb": "models-web/Bosco légendaire idle.glb",
       "nom": "Bosco",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -263,7 +263,7 @@
       }
     },
     "bulbalina": {
-      "glb": "Models/Characters/Bulbalina peu commune idle.glb",
+      "glb": "models-web/Bulbalina peu commune idle.glb",
       "nom": "Bulbalina",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -274,7 +274,7 @@
       }
     },
     "frolgor": {
-      "glb": "Models/Characters/Frolgor peu commun idle.glb",
+      "glb": "models-web/Frolgor peu commun idle.glb",
       "nom": "Frolgor",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -285,7 +285,7 @@
       }
     },
     "maebril": {
-      "glb": "Models/Characters/Maebril idle.glb",
+      "glb": "models-web/Maebril idle.glb",
       "nom": "Maebril",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -296,7 +296,7 @@
       }
     },
     "orven": {
-      "glb": "Models/Characters/Orven idle.glb",
+      "glb": "models-web/Orven idle.glb",
       "nom": "Orven",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -307,55 +307,55 @@
       }
     },
     "pur-foudre-1": {
-      "glb": "Models/Characters/Dé foudre v.1.glb",
+      "glb": "models-web/Dé foudre v.1.glb",
       "nom": "Éclat de foudre"
     },
     "pur-foudre-2": {
-      "glb": "Models/Characters/Dé foudre v.2.glb",
+      "glb": "models-web/Dé foudre v.2.glb",
       "nom": "Sentier de foudre"
     },
     "pur-vent-1": {
-      "glb": "Models/Characters/Dé vent v.1.glb",
+      "glb": "models-web/Dé vent v.1.glb",
       "nom": "Éclat de vent"
     },
     "pur-vent-2": {
-      "glb": "Models/Characters/Dé vent v.2.glb",
+      "glb": "models-web/Dé vent v.2.glb",
       "nom": "Sentier de vent"
     },
     "pur-terre-1": {
-      "glb": "Models/Characters/Dé terre v.1.glb",
+      "glb": "models-web/Dé terre v.1.glb",
       "nom": "Éclat de terre"
     },
     "pur-terre-2": {
-      "glb": "Models/Characters/Dé terre v.2.glb",
+      "glb": "models-web/Dé terre v.2.glb",
       "nom": "Sentier de terre"
     },
     "pur-glace-1": {
-      "glb": "Models/Characters/Dé glace v.1.glb",
+      "glb": "models-web/Dé glace v.1.glb",
       "nom": "Éclat de glace"
     },
     "pur-glace-2": {
-      "glb": "Models/Characters/Dé glace V.2.glb",
+      "glb": "models-web/Dé glace V.2.glb",
       "nom": "Sentier de glace"
     },
     "pur-eau-1": {
-      "glb": "Models/Characters/Dé eau v.1.glb",
+      "glb": "models-web/Dé eau v.1.glb",
       "nom": "Éclat d’eau"
     },
     "pur-eau-2": {
-      "glb": "Models/Characters/Dé eau v.2.glb",
+      "glb": "models-web/Dé eau v.2.glb",
       "nom": "Sentier d’eau"
     },
     "pur-feu-1": {
-      "glb": "Models/Characters/Dé Feu v.1.glb",
+      "glb": "models-web/Dé Feu v.1.glb",
       "nom": "Éclat de feu"
     },
     "pur-feu-2": {
-      "glb": "Models/Characters/Dé Feu v.2.glb",
+      "glb": "models-web/Dé Feu v.2.glb",
       "nom": "Sentier de feu"
     },
     "max": {
-      "glb": "Models/Characters/Max idle.glb",
+      "glb": "models-web/Max idle.glb",
       "nom": "Max",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -366,7 +366,7 @@
       }
     },
     "max-alastor": {
-      "glb": "Models/Characters/Max & Alastor idle.glb",
+      "glb": "models-web/Max & Alastor idle.glb",
       "nom": "Max & Alastor",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -377,7 +377,7 @@
       }
     },
     "orcus": {
-      "glb": "Models/Characters/Orcus idle.glb",
+      "glb": "models-web/Orcus idle.glb",
       "nom": "Orcus",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -388,7 +388,7 @@
       }
     },
     "pennedra": {
-      "glb": "Models/Characters/Pennedra idle.glb",
+      "glb": "models-web/Pennedra idle.glb",
       "nom": "Pennedra",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -399,7 +399,7 @@
       }
     },
     "sameron": {
-      "glb": "Models/Characters/Sameron idle.glb",
+      "glb": "models-web/Sameron idle.glb",
       "nom": "Sameron",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -410,7 +410,7 @@
       }
     },
     "soryan": {
-      "glb": "Models/Characters/Soryan idle.glb",
+      "glb": "models-web/Soryan idle.glb",
       "nom": "Soryan",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -421,7 +421,7 @@
       }
     },
     "velmarys": {
-      "glb": "Models/Characters/Velmarys idle.glb",
+      "glb": "models-web/Velmarys idle.glb",
       "nom": "Velmarys",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -432,7 +432,7 @@
       }
     },
     "ven": {
-      "glb": "Models/Characters/Ven idle.glb",
+      "glb": "models-web/Ven idle.glb",
       "nom": "Ven",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
@@ -443,7 +443,7 @@
       }
     },
     "zackarie": {
-      "glb": "Models/Characters/Zackarie idle.glb",
+      "glb": "models-web/Zackarie idle.glb",
       "nom": "Zackarie",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
