@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v221',title:'Nouvelles dalles',items:['Les dalles du plateau sont redessinées : bords arrondis, cadre lumineux de l’élément, symbole d’élément, chiffre dans un médaillon et bonus doré bien visible.','Les personnages en argent, en or ou en pierre gardent leur apparence dans la vue 3D de leur fiche.']},
  {id:'v220',title:'Recyclez vos doublons',items:['Collection : transformez les exemplaires en trop en Bubulles. Vous gardez toujours de quoi faire un deck complet et tous vos decks enregistrés.','Le badge de niveau s’affiche mieux sur téléphone.']},
  {id:'v219',title:'Niveau de joueur et quêtes',items:['Gagnez de l’expérience à chaque partie et montez de niveau : chaque niveau rapporte des Bubulles, avec un palier tous les 5 niveaux.','Trois quêtes du jour et une quête de la semaine, à retrouver en touchant votre niveau en haut à droite.','Deux nouveaux effets de dé bonus à débloquer : « Éclair » au niveau 5 et « Feuille d’automne » au niveau 10.']},
  {id:'v218',title:'Petites finitions',items:['Le compteur de dés bonus affiche une goutte quand l’effet goutte d’eau est choisi.','Les fiches de dés sont mieux alignées et le symbole d’élément reste visible sur les cartes lumineuses.']},
