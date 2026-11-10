@@ -5,6 +5,7 @@ import { createCrater } from './crater-v135.js?v=20261115-v226';
 import { applyLook } from './variant-look.js?v=20261113-v215';
 import { createLake } from './lake-v230.js?v=20261115-v230c';
 import { createSkyIsland } from './sky-v231.js?v=20261115-v231g';
+import { createWindHighlands } from './wind-v232.js?v=20261115-v232c';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -260,7 +261,7 @@ for(const object of[petals,stems,centres,flowerLeaves]){object.receiveShadow=tru
 const moteGeo=new THREE.BufferGeometry(),motePos=[];for(let i=0;i<22;i++)motePos.push(rand()*12-6,.5+rand()*2.3,rand()*12-6);moteGeo.setAttribute('position',new THREE.Float32BufferAttribute(motePos,3));const motes=new THREE.Points(moteGeo,new THREE.PointsMaterial({color:0xffe3a1,size:.045,transparent:true,opacity:.6,depthWrite:false}));world.add(motes);
 // Retain the same grid and score zones while switching scenery.
 const forest=new THREE.Group(),shared=new Set([grid,iceScene,boardFrame,...world.children.filter(o=>o.geometry?.type==='PlaneGeometry'&&o.geometry.parameters.width===8&&o.geometry.parameters.height===1)]);for(const o of [...world.children])if(!shared.has(o))forest.add(o);world.add(forest);
-let crater=null,lake=null,skyIsland=null;
+let crater=null,lake=null,skyIsland=null,windLand=null;
 const snowCanvas=document.createElement('canvas');snowCanvas.width=snowCanvas.height=512;const snowCtx=snowCanvas.getContext('2d');
 const snowWash=snowCtx.createLinearGradient(0,0,512,512);snowWash.addColorStop(0,'#d5e5ed');snowWash.addColorStop(.46,'#b5cedb');snowWash.addColorStop(1,'#e5eef2');snowCtx.fillStyle=snowWash;snowCtx.fillRect(0,0,512,512);
 // Broad, soft wind-carved blue shadows with restrained surface grain.
@@ -622,17 +623,17 @@ canvas.onpointerup=e=>{
 canvas.onpointercancel=e=>{mouseGesture=null;if(e.pointerType==='touch'){touchPointers.delete(e.pointerId);pinchDistance=0;touchGesture=null}panDrag=null;game.board.onpointercancel(e)};
 let sceneryKey='';
 function setActive(value,terrainOverride=null){
- active=value;const type=terrainOverride||game.snapshot().terrain,fire=type==='feu',ice=type==='glace',lakeOn=type==='eau',skyOn=type==='foudre';
+ active=value;const type=terrainOverride||game.snapshot().terrain,fire=type==='feu',ice=type==='glace',lakeOn=type==='eau',skyOn=type==='foudre',windOn=type==='vent';
  if(!value)placementLens.hidden=true;host.classList.toggle('view3d',value);document.getElementById('land-caption').hidden=!value;
- forest.visible=value&&!fire&&!ice&&!lakeOn&&!skyOn;if(skyOn&&value&&!skyIsland)skyIsland=createSkyIsland(decor,!!renderer.isSoftware,BH);if(skyIsland)skyIsland.root.visible=value&&skyOn;if(lakeOn&&value&&!lake)lake=createLake(decor,!!renderer.isSoftware,BH);if(lake)lake.root.visible=value&&lakeOn;boardFrame.visible=value&&!fire&&!skyOn;glacierClosures.visible=value&&ice;iceScene.visible=value&&ice;grid.visible=true;grid.material.color.set(ice?0x557e98:lakeOn?0x5f7a5a:skyOn?0x7fd8ff:0xe5d9a0);grid.material.opacity=ice?.22:lakeOn?.18:skyOn?.12:.27;
+ forest.visible=value&&!fire&&!ice&&!lakeOn&&!skyOn&&!windOn;if(windOn&&value&&!windLand)windLand=createWindHighlands(decor,!!renderer.isSoftware,BH);if(windLand)windLand.root.visible=value&&windOn;if(skyOn&&value&&!skyIsland)skyIsland=createSkyIsland(decor,!!renderer.isSoftware,BH);if(skyIsland)skyIsland.root.visible=value&&skyOn;if(lakeOn&&value&&!lake)lake=createLake(decor,!!renderer.isSoftware,BH);if(lake)lake.root.visible=value&&lakeOn;boardFrame.visible=value&&!fire&&!skyOn&&!windOn;glacierClosures.visible=value&&ice;iceScene.visible=value&&ice;grid.visible=true;grid.material.color.set(ice?0x557e98:lakeOn?0x5f7a5a:skyOn?0x7fd8ff:0xe5d9a0);grid.material.opacity=ice?.22:lakeOn?.18:skyOn?.12:windOn?0:.27;
  if(fire&&value&&!crater)crater=createCrater(decor,game.fireVents,!!renderer.isSoftware,BH,ZS);if(crater)crater.root.visible=value&&fire;
  if(sceneryKey!==type){
   sceneryKey=type;
-  const themes={terre:[0x172c25,0x304d3d,0xe9f0d5,0x3c5034,0xffe1a0,3.1,'LE BOIS TENDRE','La rivière murmure. Le duel commence.'],feu:[0x221b20,0x392328,0xf1c6ab,0x3e2023,0xffb16a,2.5,'LES TERRES EMBRASÉES','La roche respire. Les évents sont impraticables.'],glace:[0x385365,0x93b2c4,0xe5f2f8,0x496778,0xcbe7f7,2.25,'LA ROUTE VERS FORFALLA','La neige tombe. La glace entraîne les créatures.'],eau:[0x1c1230,0x4a2c55,0xffd8ec,0x2e1d3c,0xffc9e2,2.1,'LE LAC ROSE','Sous la lune, le vieux sanctuaire dort sur les eaux roses.'],vent:[0x26372c,0x69836f,0xe4edda,0x53654c,0xd5e3ba,2.8,'LES HAUTEURS DU VENT','Les courants font frémir les feuillages.'],foudre:[0x2b3242,0x2b3242,0xcad6ff,0x1b1f2c,0xdbe6ff,2.2,'L’ÎLE CÉLESTE','Au-dessus des nuages, l’orage gronde sous le sanctuaire.']};
-  const t=themes[type]||themes.terre;renderer.setClearColor(t[0],1);scene.fog.color.set(t[1]);sky.color.set(t[2]);sky.groundColor.set(t[3]);sky.intensity=ice?1.9:type==='eau'?1.25:type==='foudre'?1.45:2.3;sun.color.set(t[4]);sun.intensity=t[5];
+  const themes={terre:[0x172c25,0x304d3d,0xe9f0d5,0x3c5034,0xffe1a0,3.1,'LE BOIS TENDRE','La rivière murmure. Le duel commence.'],feu:[0x221b20,0x392328,0xf1c6ab,0x3e2023,0xffb16a,2.5,'LES TERRES EMBRASÉES','La roche respire. Les évents sont impraticables.'],glace:[0x385365,0x93b2c4,0xe5f2f8,0x496778,0xcbe7f7,2.25,'LA ROUTE VERS FORFALLA','La neige tombe. La glace entraîne les créatures.'],eau:[0x1c1230,0x4a2c55,0xffd8ec,0x2e1d3c,0xffc9e2,2.1,'LE LAC ROSE','Sous la lune, le vieux sanctuaire dort sur les eaux roses.'],vent:[0x2f5a4c,0x4d7f69,0xeaf8e6,0x35503a,0xfff0cc,2.9,'LES VENTS DE HACKO','Sur le haut plateau, le vent chante entre les pierres levées.'],foudre:[0x2b3242,0x2b3242,0xcad6ff,0x1b1f2c,0xdbe6ff,2.2,'L’ÎLE CÉLESTE','Au-dessus des nuages, l’orage gronde sous le sanctuaire.']};
+  const t=themes[type]||themes.terre;renderer.setClearColor(t[0],1);scene.fog.color.set(t[1]);sky.color.set(t[2]);sky.groundColor.set(t[3]);sky.intensity=ice?1.9:type==='eau'?1.25:type==='foudre'?1.45:type==='vent'?2.1:2.3;sun.color.set(t[4]);sun.intensity=t[5];
   const caption=document.getElementById('land-caption');caption.querySelector('span').textContent=t[6];caption.querySelector('small').textContent=t[7];canvas.setAttribute('aria-label','Plateau 3D '+t[6].toLowerCase()+', huit colonnes et '+BH+' lignes')
  }
- document.getElementById('terrain-status').textContent=({terre:'Terre +1 · Le Bois tendre',feu:'Feu +1 · 6 évents fumants impraticables',glace:'Glace +1 · sol glissant · arrêt au contact',eau:'Eau +1 · Le lac rose',vent:'Vent +1 · Plateau des vents',foudre:'Foudre +1 · Île céleste'})[type];
+ document.getElementById('terrain-status').textContent=({terre:'Terre +1 · Le Bois tendre',feu:'Feu +1 · 6 évents fumants impraticables',glace:'Glace +1 · sol glissant · arrêt au contact',eau:'Eau +1 · Le lac rose',vent:'Vent +1 · Les vents de Hacko',foudre:'Foudre +1 · Île céleste'})[type];
 }
 function resize(){const r=host.getBoundingClientRect();if(r.width<1||r.height<1)return;const aspect=r.width/r.height;renderer.setSize(r.width,r.height,false);const desktopBoard=matchMedia('(min-width: 900px) and (min-height: 660px)').matches;const fit=Math.pow(ZS,.85),span=Math.max((desktopBoard?8.0:8.9)*fit,7.1*ZS/aspect);viewSpan=span;viewAspect=aspect;camera.left=-span*aspect;camera.right=span*aspect;camera.top=span;camera.bottom=-span;updateCamera()}
 function configure(){light=renderer.isSoftware;moving=window.HackeniaSettings?.get().motion!==false&&!matchMedia('(prefers-reduced-motion:reduce)').matches;renderer.setPixelRatio(Math.min(devicePixelRatio||1,renderer.isSoftware?1.5:2));renderer.shadowMap.enabled=!renderer.isSoftware;grass.count=renderer.isSoftware?Math.min(850,grassCount):grassCount;const flowers=renderer.isSoftware?36:flowerCount;petals.count=flowers*5;stems.count=centres.count=flowers;flowerLeaves.count=flowers*2;motes.visible=!renderer.isSoftware&&moving;windAmount.value=moving?1:0;resize()}
@@ -666,7 +667,7 @@ function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&
   for(let i=0;i<p.count;i++){const u=Math.floor(i/2)/6+(i%2)/6,x=Math.max(-7,Math.min(7,center+(u-.5)*g.length)),z=river(x)+g.lane+Math.sin(u*3.14+g.phase)*.014;p.setXYZ(i,x,waterHeight(x,z,t)+.013,z)}p.needsUpdate=true;
  }
  for(const rill of fallingRills){const down=moving?((t*.35+rill.phase)%1)*.83:rill.phase*.83,p=rill.m.geometry.attributes.position;for(let i=0;i<2;i++){const y=-.06-down-i*.17;p.setXYZ(i,rill.side*(7.065+Math.sin(-y*2)*.035),y,river(rill.side*7)+rill.lane)}p.needsUpdate=true}
- motes.rotation.y=moving?Math.sin(t*.08)*.06:0;}else crater?.update(t,light,moving);if(lake?.root.visible)lake.update(t,light,moving);if(skyIsland?.root.visible)skyIsland.update(t,light,moving);
+ motes.rotation.y=moving?Math.sin(t*.08)*.06:0;}else crater?.update(t,light,moving);if(lake?.root.visible)lake.update(t,light,moving);if(skyIsland?.root.visible)skyIsland.update(t,light,moving);if(windLand?.root.visible)windLand.update(t,light,moving);
 
  const target=-state.rzCur*Math.PI/180;if(!moving)currentAngle=target;currentAngle+=Math.atan2(Math.sin(target-currentAngle),Math.cos(target-currentAngle))*Math.min(1,dt*5);world.rotation.y=currentAngle;world.updateMatrixWorld(true);
 
