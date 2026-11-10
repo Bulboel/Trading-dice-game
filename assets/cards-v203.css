@@ -78,3 +78,8 @@ dialog.quick-open::backdrop{background:#07050cbb;backdrop-filter:blur(3px)}
 .quick-open .qo-actions{display:flex;justify-content:center;gap:10px;padding:10px 14px 14px;border-top:1px solid #ffffff14}
 @keyframes qo-in{from{opacity:0;transform:translateY(8px) scale(.92)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.quick-open .qo-die{animation:none}}
+/* v218 — Boutons alignés en bas de toutes les fiches, quelle que soit la hauteur du contenu. */
+#portal .collect-card.cc2>button{margin-top:auto!important}
+#portal .collect-card.cc2 .cc-chips+button,#portal .collect-card.cc2 .cc-meta+button{margin-top:auto!important}
+/* Compteur de dés bonus : goutte d'eau quand cet effet est choisi */
+.bonus-counter .bonus-drop-icon{width:9px;height:12px;display:inline-block;vertical-align:-1px;filter:drop-shadow(0 0 3px #5fbfff99)}

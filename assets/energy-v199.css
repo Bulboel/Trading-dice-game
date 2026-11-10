@@ -47,3 +47,5 @@ img.pure-v3{border-radius:50%;background:radial-gradient(circle,color-mix(in srg
 @keyframes db-spin{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
 .no-motion .discovery-backdrop i{animation:none}
 @media(prefers-reduced-motion:reduce){.discovery-backdrop i{animation:none}}
+/* v218 — Le symbole d'élément reste au-dessus des effets lumineux (Énergie, légendaires, divins). */
+#app #hand .dc.hc .hc-art .hc-el{z-index:4}
