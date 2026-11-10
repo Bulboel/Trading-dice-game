@@ -43,7 +43,7 @@ const steps=[
  text:()=>`<p><b>À toi :</b> fais glisser le dé <b>Kala</b> sur une case dorée, puis appuie sur <b>« Lancer les dés »</b>.</p>
  <p>Un dé doit toucher <b>tes deux premières lignes</b> ou <b>une de tes dalles</b>. Kala demande <b>3 ou plus</b> avec 1 dé.</p>`,
  check:()=>mine().length>0&&mode==='i'&&idle(),
- success:()=>{const k=mine()[0];return `<p>✓ Réussi ! Le dé se déplie en dalles et <b>Kala apparaît sur la face la plus forte</b>.</p><p>Son attaque vaut <b>${k?atk(k.x,k.y):'?'}</b> : la valeur de sa dalle, <b>+1</b> parce que Kala est de terre sur un terrain de terre.</p><p>Poser un dé <b>termine ton tour</b>.</p>`}},
+ success:()=>{const k=mine()[0];return `<p>✓ Réussi ! Le dé se déplie en dalles et <b>Kala apparaît sur sa case d’apparition</b> (la dalle marquée d’un liseré doré sur le schéma du dé).</p><p>Son attaque vaut <b>${k?atk(k.x,k.y):'?'}</b> : la valeur de sa dalle, <b>+1</b> parce que Kala est de terre sur un terrain de terre.</p><p>Poser un dé <b>termine ton tour</b>.</p>`}},
 {title:'Un lancer raté',kind:'action',focus:'hand',
  setup(){reset();pl[0].h=[D.bosco];T.rolls=[[1,3]]},
  targets:()=>anchors(D.bosco),
