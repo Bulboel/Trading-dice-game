@@ -3,6 +3,12 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v234',title:'Les terrains s’animent',items:['Île céleste : à la fin de chaque tour, la foudre frappe deux cases au hasard et détruit tout ce qui s’y trouve.','Les vents de Hacko : de temps en temps, une rafale se lève et pousse les créatures de trois cases vers la gauche.']},
+ {id:'v232',title:'Six terrains, six décors',items:['Trois nouveaux terrains : Le lac rose (eau), l’Île céleste (foudre) et Les vents de Hacko (vent), chacun avec son propre décor en 3D.']},
+ {id:'v229',title:'Les Contes de la Taverne',items:['Avant chaque partie de jeu de rôle du créateur, un concours est ouvert : imaginez une scène depuis Défis. La gagnante est jouée autour de la table et racontée dans le podcast, avec le nom de son auteur !','Récompenses : 300 Bubulles et le badge 🎭 Scénariste pour le gagnant, 25 Bubulles pour chaque scène sélectionnée.']},
+ {id:'v228',title:'Créez votre propre dé !',items:['Dès le niveau 5 : Collection › Proposer un dé. S’il est validé, il rejoint la collection de tous les joueurs avec votre nom, et vous recevez le badge Créateur et 200 Bubulles.']},
+ {id:'v226',title:'Bientôt sur Android',items:['Le jeu se prépare à devenir une application Android, et une nouvelle option permet de régler les vibrations dans Son.']},
+ {id:'v225',title:'Jouez hors ligne',items:['Une fois ouvert, le jeu se lance même sans connexion. Options › Sauvegarde : « Télécharger tout le jeu » garde aussi tous les modèles 3D sur votre appareil.']},
  {id:'v223',title:'La collection complète',items:['Tous les dés apparaissent désormais dans la Collection : ceux qui vous manquent restent mystérieux, en silhouette.','Chaque dé a son numéro officiel, de Bolduc (N° 001) jusqu’aux dés élémentaires.']},
  {id:'v222',title:'Finitions du menu',items:['Le titre HACKÉNIA est de nouveau bien centré, et le dé Quotidien se place juste sous votre niveau.','Nouveau bouton Menu, plus élégant, partout dans le jeu.']},
  {id:'v221',title:'Nouvelles dalles',items:['Les dalles du plateau sont redessinées : bords arrondis, cadre lumineux de l’élément, symbole d’élément, chiffre dans un médaillon et bonus doré bien visible.','Les personnages en argent, en or ou en pierre gardent leur apparence dans la vue 3D de leur fiche.']},
