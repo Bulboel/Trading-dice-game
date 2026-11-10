@@ -1,0 +1,45 @@
+# Déploiement du site sur GitHub Pages.
+# Remplace le déploiement automatique de GitHub, dont le délai fixe de 10 minutes était dépassé
+# pendant l'envoi des fichiers (« syncing_files »). Ici : délai de 30 minutes, et les sources 3D lourdes
+# (assets/Models, ~1,9 Go, non publiées) ne sont pas téléchargées, ce qui accélère la préparation.
+# À activer une fois : Settings › Pages › Build and deployment › Source : « GitHub Actions ».
+name: Déploiement du site
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/assets/Models/
+      - uses: actions/configure-pages@v5
+      - uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+      - uses: actions/upload-pages-artifact@v3
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          timeout: 1800000
