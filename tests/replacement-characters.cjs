@@ -10,7 +10,7 @@ const expected={30:['Caleizis','caleizis','foudre',6],34:['La fée Pachié','pac
  1:['Max','max','',1],22:['Sameron','sameron','vent',5],18:['Zackarie','zackarie','eau',5],19:['Soryan','soryan','feu',5],4:['Velmarys','velmarys','terre',1],11:['Pennedra','pennedra','vent',2],
  // v197 : nouveaux dés ajoutés après les dés élémentaires.
  55:['Max & Alastor','max-alastor','foudre',3],56:['Orcus','orcus','foudre',5],57:['Ven','ven','glace',1]};
-assert.equal(defs.length,67,'12 elemental dice, 3 character dice, 6 Énergie dice, then 3 variant dice are appended');
+assert.equal(defs.length,70,'12 elemental dice, 3 character dice, 6 Énergie dice, 3 variant dice, then 3 new characters are appended');
 function glb(file){const b=fs.readFileSync(file);assert.equal(b.readUInt32LE(0),0x46546c67);assert.equal(b.readUInt32LE(8),b.length);return JSON.parse(b.subarray(20,20+b.readUInt32LE(12)));}
 let clips=0;
 for(const [i,[name,key,el,rarity]] of Object.entries(expected)){
