@@ -10,7 +10,7 @@ const expected={30:['Caleizis','caleizis','foudre',6],34:['La fée Pachié','pac
  1:['Max','max','',1],22:['Sameron','sameron','vent',5],18:['Zackarie','zackarie','eau',5],19:['Soryan','soryan','feu',5],4:['Velmarys','velmarys','terre',1],11:['Pennedra','pennedra','vent',2],
  // v197 : nouveaux dés ajoutés après les dés élémentaires.
  55:['Max & Alastor','max-alastor','foudre',3],56:['Orcus','orcus','foudre',5],57:['Ven','ven','glace',1]};
-assert.equal(defs.length,64,'12 elemental dice, 3 character dice, then 6 Énergie dice are appended');
+assert.equal(defs.length,67,'12 elemental dice, 3 character dice, 6 Énergie dice, then 3 variant dice are appended');
 function glb(file){const b=fs.readFileSync(file);assert.equal(b.readUInt32LE(0),0x46546c67);assert.equal(b.readUInt32LE(8),b.length);return JSON.parse(b.subarray(20,20+b.readUInt32LE(12)));}
 let clips=0;
 for(const [i,[name,key,el,rarity]] of Object.entries(expected)){
@@ -27,7 +27,7 @@ for(const [i,[name,key,el,rarity]] of Object.entries(expected)){
 assert.equal(clips,Object.keys(expected).length*3);
 for(const [i,key] of [[1,'max'],[22,'sameron'],[18,'zackarie'],[19,'soryan'],[4,'velmarys'],[11,'pennedra'],[55,'max-alastor'],[56,'orcus'],[57,'ven'],[29,'bosco'],[10,'bulbalina'],[34,'pachie'],[25,'kayla-legendaire'],[28,'bolduc-legendaire'],[30,'caleizis'],[27,'eberien-legendaire'],[8,'frolgor'],[24,'gliska'],[26,'hilam'],[0,'maebril'],[2,'orven']]){assert.equal(defs[i].portrait,key);for(const size of [128,512])assert.ok(fs.statSync(path.join(root,`assets/characters/${key}-${size}.webp`)).size<150000,'Portrait fits the mobile budget')}
 // Les dés voisins qui partageaient l'animal gardent leur créature d'origine.
-assert.equal(defs[7].cn,'Moineau Brise');assert.equal(defs[5].cn,'Poussin Braise');assert.equal(defs[16].cn,'Poulpe des Marées');assert.equal(defs[13].cn,'Canard des Cimes');assert.equal(defs[12].cn,'Salamandre Voltaïque');assert.equal(defs[6].cn,'Abeille Étincelle','Level II bee keeps its animal');assert.equal(defs[31].cn,'Dragon des Vents');
+assert.equal(defs[7].cn,'Statue de Gliska');assert.equal(defs[5].cn,'Ven Ardent');assert.equal(defs[16].cn,'Eberien d’argent');assert.equal(defs[31].cn,'Kayla céleste','v213: generic dice now carry variant characters');
 // Les nouveaux dés ont des formes qu'aucun autre dé n'utilise, et des valeurs cohérentes avec leur rareté.
 const shape=d=>{const xs=d.c.map(a=>a[0]),ys=d.c.map(a=>a[1]),x0=Math.min(...xs),y0=Math.min(...ys);return d.c.map(([x,y])=>(x-x0)+','+(y-y0)).sort().join(' ')};
 for(const i of [55,56])for(let j=0;j<defs.length;j++)if(j!==i)assert.notEqual(shape(defs[i]),shape(defs[j]),defs[i].n+' has a unique shape');
@@ -35,6 +35,6 @@ assert.equal(defs[57].c.length,3,'Ven follows the common rule: three tiles');ass
 assert.deepEqual([defs[56].nd,defs[56].need],[2,5]);assert.deepEqual([defs[55].nd,defs[55].need],[1,3]);
 (async()=>{
  for(const i of Object.keys(expected))assert.equal((await game.modelInfo(+i)).nom,defs[i].cn,'Model is requested even for peu commun dice');
- assert.equal(await game.modelInfo(3),null,'Other common dice still do not request animated models');
+ assert.equal((await game.modelInfo(3))?.nom,'Orven','v213: former generic commons reuse a character model (Orven du Givre)');
  console.log('PASS: 18 existing dice become characters (stats/rarity kept), 3 new character dice, lightweight clips bound to each idle skeleton, neighbours untouched.');
 })().catch(e=>{console.error(e);process.exit(1)});
