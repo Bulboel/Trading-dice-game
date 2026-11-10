@@ -47,6 +47,7 @@ const LIB='assets/vendor/supabase/supabase.js';
 async function getClient(){if(root.__hackeniaSupabase)return root.__hackeniaSupabase;const c=root.HACKENIA_PVP_CONFIG;if(!c?.url||!c?.key)throw new Error('Configuration en ligne absente');
  if(!root.supabase)await new Promise((res,rej)=>{const s=document.createElement('script');s.src=LIB;s.onload=res;s.onerror=()=>rej(new Error('Service en ligne inaccessible'));document.head.append(s)});
  return root.__hackeniaSupabase=root.supabase.createClient(c.url,c.key,{auth:{persistSession:true,autoRefreshToken:true}})}
+root.HackeniaOnline={getClient,async session(){const sb=await getClient();let {data}=await sb.auth.getSession();if(!data?.session){const r=await sb.auth.signInAnonymously();if(r.error)throw r.error;data={session:r.data.session}}return{sb,uid:data.session.user.id}},config:()=>root.HACKENIA_PVP_CONFIG};// v228 — partagé avec « Proposer un dé »
 const cloud=createCloud({getClient,portal:{profile:()=>root.HackeniaPortal?.profile(),restore:p=>root.HackeniaPortal?.restore(p)}});
 root.HackeniaCloud=cloud;
 root.addEventListener('hackenia-profile-saved',()=>cloud.changed());

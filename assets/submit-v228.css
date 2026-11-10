@@ -1,0 +1,46 @@
+/* v228 — Proposer un dé (joueurs) et espace de validation (administrateur) */
+#portal .propose-btn{border-color:#c9b3ff88;color:#e9dcff;background:linear-gradient(180deg,#2a2140,#181326)}
+#portal .creator-badge{display:inline-block;margin-left:8px;padding:2px 9px;border-radius:999px;border:1px solid #c9b3ff99;background:#2a2140;color:#e9dcff;font:700 11px/1.6 system-ui;letter-spacing:.06em;vertical-align:middle}
+#portal .sb-form{display:grid;gap:14px}
+#portal .sb-card{padding:14px 16px;border:1px solid #e3c57340;border-radius:14px;background:linear-gradient(160deg,#1a2230,#11161f)}
+#portal .sb-card h3{margin:0 0 10px;font:600 17px/1.2 Georgia,serif;color:#f1e3bd}
+#portal .sb-card label{display:grid;gap:5px;margin:0 0 10px;font:600 12.5px system-ui;color:#d8cfb6}
+#portal .sb-card input:not([type=checkbox]):not([type=file]),#portal .sb-card select,#portal .sb-card textarea{width:100%;box-sizing:border-box;padding:9px 11px;border-radius:10px;border:1px solid #ffffff22;background:#0b1018;color:#f3ead2;font:500 14px system-ui}
+#portal .sb-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#portal .sb-hint{margin:4px 0 8px;font-size:12.5px;color:#a9b3c4}
+#portal .sb-hint b{color:#ffe08a}
+#portal .sb-editor{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+#portal .sb-grid{display:grid;grid-template-columns:repeat(5,48px);grid-template-rows:repeat(5,48px);gap:5px;padding:8px;border-radius:12px;background:#0b1018;border:1px solid #ffffff14}
+#portal .sb-cell{min-height:0!important;width:48px;height:48px;padding:0!important;border-radius:9px!important;border:1px dashed #ffffff26!important;background:#121926!important;color:#fff4d3;font:800 20px/1 system-ui!important}
+#portal .sb-cell.on{border:2px solid var(--ec)!important;background:radial-gradient(circle at 40% 30%,#2a3346,#151b27)!important;box-shadow:0 0 10px color-mix(in srgb,var(--ec) 35%,transparent)}
+#portal .sb-cell.spawn{border-color:#ffd76a!important;box-shadow:0 0 12px #ffd76a66}
+#portal .sb-cell{position:relative}#portal .sb-cell.spawn::after{content:"✦";position:absolute;top:2px;right:4px;font-size:11px;line-height:1;color:#ffd76a}
+#portal .sb-cell.sel{outline:3px solid #fff2c6;outline-offset:1px}
+#portal .sb-tools{display:grid;gap:8px;min-width:150px}
+#portal .sb-tools p{margin:0;font-size:12.5px;color:#d8cfb6}
+#portal .sb-stepper{display:flex;align-items:center;gap:10px}
+#portal .sb-stepper button{width:42px;height:42px;min-height:0!important;padding:0!important;border-radius:50%!important;font:700 22px/1 system-ui!important}
+#portal .sb-stepper b{min-width:28px;text-align:center;font:800 24px system-ui;color:#ffe7a3}
+#portal .sb-checks{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:4px;font-size:12.5px}
+#portal .sb-checks .ok{color:#9fe0b4}#portal .sb-checks .ko{color:#ffb4a8}
+#portal .sb-file input{color:#d8cfb6;font-size:12.5px}
+#portal .sb-preview{width:120px;height:120px;object-fit:cover;border-radius:50%;border:2px solid #e3c57388;margin:0 0 10px}
+#portal .sb-rights{display:flex!important;align-items:flex-start;gap:8px;font-weight:500!important}
+#portal .sb-msg{margin:0;font:600 13px system-ui;color:#ffe08a;min-height:1em}
+#portal .sb-actions{display:flex;gap:10px;flex-wrap:wrap}
+#portal .sb-locked{padding:18px;border:1px dashed #c9b3ff66;border-radius:14px;background:#181326;text-align:center}
+#portal .sb-locked b{font:600 18px Georgia,serif;color:#e9dcff}
+#portal .sb-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+#portal .sb-item{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:9px 12px;border-radius:12px;background:#0d121b;border:1px solid #ffffff14}
+#portal .sb-item b{color:#f1e7cf}#portal .sb-item small{display:block;color:#9fb0c4;font-size:11px}#portal .sb-item p{margin:4px 0 0;font-size:12px;font-style:italic;color:#d8cfb6}
+#portal .sb-item.accepted{border-color:#7ad39b77}#portal .sb-item.rejected{border-color:#e0807066}
+#portal .sb-status{font:700 12px system-ui;white-space:nowrap;color:#d8cfb6}
+#portal .sb-item.accepted .sb-status{color:#9fe0b4}#portal .sb-item.rejected .sb-status{color:#ffb4a8}
+#portal .sb-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+#portal .sb-tabs [aria-pressed=true]{border-color:#ffd76a;color:#ffe7a3}
+#portal .sb-admin-list{display:grid;gap:14px}
+#portal .sb-review{display:grid;grid-template-columns:240px 1fr;gap:16px}
+#portal .sb-review-media img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;background:#0b0f17;margin-bottom:8px}
+#portal .sb-review-shape{margin:8px 0}
+#portal .sb-login{max-width:380px}
+@media(max-width:700px){#portal .sb-review{grid-template-columns:1fr}#portal .sb-grid{grid-template-columns:repeat(5,44px);grid-template-rows:repeat(5,44px)}#portal .sb-cell{width:44px;height:44px}#portal .sb-row{grid-template-columns:1fr}#portal .sb-card{padding:12px}}
