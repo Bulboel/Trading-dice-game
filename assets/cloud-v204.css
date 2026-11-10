@@ -1,7 +1,7 @@
 /* v204 — Options › Sauvegarde : état de la synchronisation, code de récupération, choix en cas de conflit. */
 #cloud-panel .cloud-status{margin:0 0 6px;padding:8px 12px;border-radius:10px;background:#0a1426b3;border:1px solid #839dc744;font-weight:600;color:#dfe8f5}
 #cloud-panel .cloud-synced{border-color:#6fe3b866;color:#bff3da}
-#cloud-panel .cloud-offline,#cloud-panel .cloud-unavailable{border-color:#e7cd8a66;color:#f3e2b0}
+#cloud-panel .cloud-offline,#cloud-panel .cloud-unavailable,#cloud-panel .cloud-denied{border-color:#e7cd8a66;color:#f3e2b0}
 #cloud-panel .cloud-conflict{border-color:#ff9b6b88;color:#ffd6c2}
 #cloud-panel .cloud-code{margin:6px 0 10px;padding:12px 14px;border-radius:12px;border:1px dashed #f5d99199;background:#14100acc;font:700 clamp(18px,5.4vw,24px)/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.12em;color:#ffe6a6;text-align:center;user-select:all;word-break:break-all}
 #cloud-panel div.cloud-conflict{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin-top:8px}

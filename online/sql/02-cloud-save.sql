@@ -117,5 +117,10 @@ revoke all on function public.create_recovery_code(), public.recovery_throttle()
 grant execute on function public.create_recovery_code(), public.peek_recovery_code(text), public.claim_recovery_code(text) to authenticated;
 revoke all on function public.recovery_throttle() from authenticated;
 
+-- Droits d'accès à la table (les projets Supabase récents ne les donnent plus automatiquement aux nouvelles tables).
+-- Les règles RLS ci-dessus limitent toujours chaque joueur à sa propre sauvegarde.
+grant usage on schema public to authenticated;
+grant select, insert, update on public.player_saves to authenticated;
+
 -- Fait connaître immédiatement les nouvelles tables et fonctions à l'API (sinon « Could not find the table … in the schema cache »).
 notify pgrst, 'reload schema';
