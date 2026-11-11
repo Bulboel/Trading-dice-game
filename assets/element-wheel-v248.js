@@ -12,10 +12,9 @@ const elements=[
 const host=document.createElement('section');
 host.id='element-wheel-host';host.hidden=true;host.setAttribute('aria-label','Roue des éléments');
 host.innerHTML='<div class="element-wheel" role="button" tabindex="0" aria-label="Roue des éléments. Touchez pour arrêter."><div class="element-wheel-disc"></div><span class="element-wheel-pointer" aria-hidden="true"></span><div class="element-wheel-hub" aria-hidden="true">TOUCHEZ<br>POUR ARRÊTER</div></div><p class="element-wheel-status" role="status" aria-live="polite">La roue tourne</p>';
-const mr=document.getElementById('mr');
-if(!mr)return;
-const pedestal=mr.querySelector('.roll-pedestal');
-if(pedestal)pedestal.after(host);else mr.prepend(host);
+const stage=document.getElementById('bw');
+if(!stage)return;
+stage.append(host);
 const disc=host.querySelector('.element-wheel-disc'),wheel=host.querySelector('.element-wheel'),hub=host.querySelector('.element-wheel-hub'),status=host.querySelector('.element-wheel-status');
 let modelsReady=false,angle=0,frame=0,lastTime=0,state='hidden',stopPlan=null,lastResult=-1;
 const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches||settings?.get?.().motion===false;

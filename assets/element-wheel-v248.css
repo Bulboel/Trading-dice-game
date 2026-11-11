@@ -1,5 +1,5 @@
 /* v248 — Roue élémentaire affichée dans l’interface du duel uniquement. */
-#element-wheel-host{flex:0 0 124px;width:124px;display:flex;flex-direction:column;align-items:center;gap:1px;color:#f6e7bd;user-select:none;-webkit-user-select:none}
+#element-wheel-host{position:absolute;z-index:8;top:50%;right:2px;transform:translateY(-50%);width:124px;display:flex;flex-direction:column;align-items:center;gap:1px;color:#f6e7bd;user-select:none;-webkit-user-select:none}
 #element-wheel-host[hidden]{display:none!important}
 .element-wheel{position:relative;width:116px;height:116px;flex:0 0 116px;touch-action:manipulation;cursor:pointer;outline:none}
 .element-wheel:focus-visible{filter:drop-shadow(0 0 8px #ffe5a8)}
@@ -11,5 +11,8 @@
 .element-wheel-hub{position:absolute;z-index:3;inset:37px;border-radius:50%;display:grid;place-items:center;text-align:center;padding:3px;background:radial-gradient(circle at 35% 25%,#4b6048,#192620 65%,#0e1716);border:1px solid #ecd498a8;box-shadow:0 2px 8px #0009,inset 0 0 7px #ffffff22;font:600 7px/1.15 system-ui,sans-serif;letter-spacing:.045em;color:#fff0c8;pointer-events:none}
 .element-wheel-status{width:100%;min-height:16px;margin:0;text-align:center;font:600 9px/1.15 system-ui,sans-serif;color:#dfd1aa;text-wrap:balance}
 .element-wheel-status[data-result="true"]{color:#ffe7a0}
-@media(max-width:420px){#element-wheel-host{flex-basis:106px;width:106px}.element-wheel{width:100px;height:100px;flex-basis:100px}.element-wheel-model{width:32px;height:32px}.element-wheel-hub{inset:31px;font-size:6.5px}.element-wheel-status{font-size:8px}}
+/* Garde un rail dédié à droite : la caméra du terrain et le damier s’arrêtent avant la roue. */
+#bw:has(#element-wheel-host:not([hidden])) #cam{right:126px}
+#bw:has(#element-wheel-host:not([hidden])) #bq,#bw:has(#element-wheel-host:not([hidden])) #sc{width:min(calc(84cqw - 126px),66cqh)}
+@media(max-width:420px){#element-wheel-host{width:106px}.element-wheel{width:100px;height:100px;flex-basis:100px}.element-wheel-model{width:32px;height:32px}.element-wheel-hub{inset:31px;font-size:6.5px}.element-wheel-status{font-size:8px}#bw:has(#element-wheel-host:not([hidden])) #cam{right:108px}#bw:has(#element-wheel-host:not([hidden])) #bq,#bw:has(#element-wheel-host:not([hidden])) #sc{width:min(calc(84cqw - 108px),66cqh)}}
 @media(prefers-reduced-motion:reduce){.element-wheel-disc{will-change:auto}}
