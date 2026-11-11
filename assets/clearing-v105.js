@@ -4,7 +4,7 @@ import { orientBoardModel } from './model-facing.js?v=20261103-v73';
 import { createEmberlands } from './ember-v239.js?v=20261120-v239';
 import { applyLook } from './variant-look.js?v=20261113-v215';
 import { createLake } from './lake-v241.js?v=20261122-v241';
-import { createSkyIsland } from './sky-v231.js?v=20261116-v233c';
+import { createSkyIsland } from './sky-v231.js?v=20261124-v243';
 import { createWindHighlands } from './wind-v232.js?v=20261123-v242';
 import { createWoodland } from './woodland-v238.js?v=20261119-v238';
 import { createFrostRoad } from './frost-v240.js?v=20261121-v240';
@@ -17,7 +17,7 @@ try { initClearing(); } catch(error) {
   document.getElementById('terrain-status').textContent='Affichage de secours · terre +1';
 }
 function initClearing(){
-const canvas=document.createElement('canvas');canvas.id='landscape';canvas.setAttribute('aria-label','Plateau 3D de la Clairière des murmures, huit colonnes et douze lignes');
+const canvas=document.createElement('canvas');canvas.id='landscape';canvas.setAttribute('aria-label','Plateau 3D du Bois tendre, huit colonnes et douze lignes');
 let renderer;
 try{renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});}catch{renderer=new LandscapeCanvasRenderer(canvas);}
 renderer.setClearColor(0x172c25,1);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;

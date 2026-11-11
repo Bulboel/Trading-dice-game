@@ -1,5 +1,5 @@
 /* Tutoriel guidé d'Hackénia (v178).
-   Il tourne sur le vrai moteur de jeu, sur la Clairière des murmures (terrain terre).
+   Il tourne sur le vrai moteur de jeu, sur Le Bois tendre (terrain terre).
    Chaque étape prépare un plateau précis, explique la règle, surligne en doré les cases utiles
    et attend l'action du joueur (ou joue une courte démonstration). Les lancers de dés sont fixés
    à l'avance pour montrer à coup sûr une réussite, un échec ou une paire magique.
@@ -30,8 +30,8 @@ const steps=[
  setup(){reset()},
  targets:()=>[...rowCells(H-1),...rowCells(0)],
  text:()=>`<p>Le plateau compte <b>8 colonnes et 12 lignes</b>. Ton camp est la <b>ligne du bas</b>, celui de l’adversaire la <b>ligne du haut</b> (surlignées en doré).</p>
- <p><b>Deux façons de gagner :</b></p><ul><li>faire entrer <b>2 créatures</b> dans le camp adverse ;</li><li>ou remporter <b>3 duels</b>.</li></ul>
- <p>Tu joues ici sur la <b>Clairière des murmures</b> : les dés de <b>terre</b> y gagnent <b>+1</b> en attaque.</p>`},
+ <p><b>Deux façons de gagner :</b></p><ul><li>faire entrer <b>2 créatures</b> dans le camp adverse ;</li><li>ou remporter <b>4 duels</b>.</li></ul>
+ <p>Tu joues ici sur <b>Le Bois tendre</b> : les dés de <b>terre</b> y gagnent <b>+1</b> en attaque.</p>`},
 {title:'Ta main de dés',kind:'info',focus:'hand',
  setup(){reset();pl[0].h=[D.fourmi,D.kala,D.tortue,D.bosco,D.sentierTerre]},
  text:()=>`<p>En bas, ta <b>main</b> : jusqu’à 5 dés tirés de ta bourse. Chaque carte montre :</p>
@@ -79,7 +79,7 @@ const steps=[
  <p><b>À toi :</b> avance Kala sur la <b>case dorée</b>, juste à côté de lui. <b>Arriver à côté d’un ennemi déclenche un combat</b> : la plus forte attaque gagne.</p>`,
  check:()=>kills[0]>=1&&idle(),
  retry:()=>moved&&idle()&&kills[0]<1,
- success:()=>`<p>✓ <b>Duel gagné !</b> La créature adverse disparaît. Plus que <b>2 duels</b> pour gagner la partie.</p><p>Une créature s’arrête toujours au contact d’un ennemi : impossible de passer à côté sans combattre.</p>`},
+ success:()=>`<p>✓ <b>Duel gagné !</b> La créature adverse disparaît. Plus que <b>3 duels</b> pour gagner la partie.</p><p>Une créature s’arrête toujours au contact d’un ennemi : impossible de passer à côté sans combattre.</p>`},
 {title:'Combat perdu',kind:'demo',demoLabel:'Voir le combat',
  setup(){reset();path(3,[10,9,8,7],0,[2,2,2,2],'vent');unit(0,3,10,D.kala);tile(4,7,1,6,'vent');tile(4,6,1,6,'vent');unit(1,4,7,D.grimgors)},
  targets:()=>[[3,7],[4,7]],
@@ -128,10 +128,11 @@ const steps=[
 {title:'Le déroulement d’un tour',kind:'info',focus:'header',
  setup(){reset();path(3,[11,10,9],0,[3,2,3]);unit(0,3,10,D.kala);path(4,[0,1,2],1,[3,3,3]);unit(1,4,1,D.grimgors);pl[0].h=[D.fourmi,D.tortue,D.bosco,D.lapin,D.sentierTerre]},
  text:()=>`<p><b>À chaque tour :</b></p><ol><li><b>Si tu veux</b>, déplace <b>une</b> de tes créatures.</li><li><b>Puis pose un dé</b> : cela termine ton tour.</li></ol>
+ <p>Astuce : un dé de <b>niveau supérieur</b> posé sur une créature adverse l’<b>écrase</b> (sa dalle prend ta couleur). À niveau égal ou inférieur, elle garde sa case.</p>
  <p>En haut de l’écran : les <b>scores</b> (passages ⚑, duels ⚔), ta <b>Bourse</b> (les dés qu’il te reste à piocher) et l’<b>Historique</b> de la partie.</p>`},
 {title:'Tu es prêt !',kind:'final',
  setup(){reset()},
- text:()=>`<p><b>Pour gagner :</b> 2 créatures dans le camp adverse, <b>ou</b> 3 duels remportés.</p>
+ text:()=>`<p><b>Pour gagner :</b> 2 créatures dans le camp adverse, <b>ou</b> 4 duels remportés.</p>
  <ul><li>Pose tes dés près de ton camp ou de tes dalles, et trace ton chemin.</li><li>Choisis bien la dalle d’arrivée : elle donne la force.</li><li>Compare les attaques avant chaque combat.</li><li>Utilise les bonus de terrain et d’élément.</li></ul>
  <p>Bonne aventure dans Hackénia !</p>`}
 ];
