@@ -2,12 +2,12 @@
 (()=>{'use strict';
 const game=window.hackeniaGame,settings=window.HackeniaSettings;
 const elements=[
- {name:'Feu',file:'Dé Feu v.2.glb',color:'#ee8754'},
- {name:'Eau',file:'Dé eau v.2.glb',color:'#76b9f1'},
- {name:'Glace',file:'Dé glace V.2.glb',color:'#a6e3f4'},
- {name:'Terre',file:'Dé terre v.2.glb',color:'#b9a27c'},
- {name:'Vent',file:'Dé vent v.2.glb',color:'#a8d589'},
- {name:'Foudre',file:'Dé foudre v.2.glb',color:'#c1a2fa'}
+ {name:'Feu',file:'Dé Feu v.2.glb',color:'#ee8754',symbol:'🔥',short:'FEU'},
+ {name:'Eau',file:'Dé eau v.2.glb',color:'#76b9f1',symbol:'💧',short:'EAU'},
+ {name:'Glace',file:'Dé glace V.2.glb',color:'#a6e3f4',symbol:'❄️',short:'GLACE'},
+ {name:'Terre',file:'Dé terre v.2.glb',color:'#b9a27c',symbol:'⛰️',short:'TERRE'},
+ {name:'Vent',file:'Dé vent v.2.glb',color:'#a8d589',symbol:'🍃',short:'VENT'},
+ {name:'Foudre',file:'Dé foudre v.2.glb',color:'#c1a2fa',symbol:'⚡',short:'FOUDRE'}
 ];
 const host=document.createElement('section');
 host.id='element-wheel-host';host.hidden=true;host.setAttribute('aria-label','Roue des éléments');
@@ -23,14 +23,18 @@ function buildModels(){
  window.hackeniaGame?.loadModelViewer?.();
  const base='assets/models-web/';
  elements.forEach((element,i)=>{
+  const token=document.createElement('span');token.className='element-wheel-token';token.setAttribute('aria-hidden','true');token.style.setProperty('--token-color',element.color);
+  token.innerHTML='<span class="element-wheel-token-face"><b>'+element.symbol+'</b><small>'+element.short+'</small></span>';
   const model=document.createElement('model-viewer');
   model.className='element-wheel-model';model.setAttribute('src',base+element.file);model.setAttribute('alt','Dé élémentaire '+element.name);
   model.setAttribute('camera-controls','');model.setAttribute('disable-zoom','');model.setAttribute('disable-pan','');model.setAttribute('disable-tap','');
   model.setAttribute('interaction-prompt','none');model.setAttribute('shadow-intensity','0.45');model.setAttribute('exposure','1.08');
   model.setAttribute('camera-orbit','0deg 68deg auto');model.setAttribute('field-of-view','34deg');model.setAttribute('loading','eager');model.style.setProperty('--dice-element',element.color);
+  model.addEventListener('load',()=>token.classList.add('is-model-ready'),{once:true});
+  token.append(model);
   const a=(i*60-90)*Math.PI/180,radius=37;
-  model.style.left='calc(50% + '+(Math.cos(a)*radius).toFixed(2)+'px)';model.style.top='calc(50% + '+(Math.sin(a)*radius).toFixed(2)+'px)';
-  disc.append(model);
+  token.style.left='calc(50% + '+(Math.cos(a)*radius).toFixed(2)+'px)';token.style.top='calc(50% + '+(Math.sin(a)*radius).toFixed(2)+'px)';
+  disc.append(token);
  });
 }
 function setAngle(v){angle=((v%360)+360)%360;disc.style.transform='rotate('+angle+'deg)'}
