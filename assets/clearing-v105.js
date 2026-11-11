@@ -364,8 +364,8 @@ function updateElementWheelAnchor(){
  camera.updateMatrixWorld(true);const rect=host.getBoundingClientRect();if(rect.width<1||rect.height<1)return;
  const halfH=viewSpan/Math.max(.01,camera.zoom),halfW=halfH*viewAspect,forward=camera.getWorldDirection(new THREE.Vector3()),right=new THREE.Vector3(Math.cos(orbitYaw),0,-Math.sin(orbitYaw)).normalize(),up=new THREE.Vector3().crossVectors(forward,right).normalize();
  elementWheelRoot.position.copy(camera.position).addScaledVector(forward,7).addScaledVector(right,halfW*.71).addScaledVector(up,-halfH*.055);elementWheelRoot.quaternion.copy(camera.quaternion);
- const unitScale=halfH*.16/1.72;elementWheelRoot.scale.setScalar(unitScale);
- const p=elementWheelRoot.position.clone().project(camera),diameter=unitScale*3.72*rect.height/(2*halfH);
+ const unitScale=halfH*.28/1.72;elementWheelRoot.scale.setScalar(unitScale);
+ const p=elementWheelRoot.position.clone().project(camera),edge=elementWheelRoot.localToWorld(new THREE.Vector3(1.86,0,0)).project(camera),diameter=Math.abs(edge.x-p.x)*rect.width;
  elementWheelControl.style.left=((p.x+1)*rect.width/2)+'px';elementWheelControl.style.top=((1-p.y)*rect.height/2)+'px';elementWheelControl.style.width=diameter+'px';elementWheelControl.style.height=diameter+'px';
 }
 function startElementWheel(){elementWheelState='spinning';elementWheelStop=null;elementWheelTime=performance.now();setElementWheelLabel('TOUCHEZ');elementWheelControl.setAttribute('aria-label','Roue des éléments. Touchez pour arrêter.')}
@@ -377,7 +377,7 @@ async function loadElementWheelModels(){
   const url='assets/models-web/'+element.file;
   if(!modelCache.has(url))modelCache.set(url,(async()=>{const response=await fetch(url,{method:'HEAD'});if(!response.ok)return null;const gltf=await tools.loader.loadAsync(url);return{gltf,clone:tools.clone}})().catch(()=>null));
   const asset=await modelCache.get(url);if(!asset)return;
-  const model=asset.clone(asset.gltf.scene);model.updateMatrixWorld(true);const box=new THREE.Box3().setFromObject(model),size=box.getSize(new THREE.Vector3()),max=Math.max(size.x,size.y,size.z,.01),scale=.72/max;
+  const model=asset.clone(asset.gltf.scene);model.updateMatrixWorld(true);const box=new THREE.Box3().setFromObject(model),size=box.getSize(new THREE.Vector3()),max=Math.max(size.x,size.y,size.z,.01),scale=.90/max;
   model.scale.setScalar(scale);model.position.set(-(box.min.x+box.max.x)*scale/2,-(box.min.y+box.max.y)*scale/2,-(box.min.z+box.max.z)*scale/2);
   model.traverse(o=>{if(o.isMesh){o.castShadow=false;o.receiveShadow=false}});
   const angle=Math.PI/2-i*wheelStep;model.position.x+=Math.cos(angle)*1.04;model.position.y+=Math.sin(angle)*1.04;model.position.z+=.21;elementWheelRotor.add(model);
