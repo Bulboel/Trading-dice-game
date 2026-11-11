@@ -142,3 +142,29 @@ body:not(.portal-open) #offline-badge{top:calc(env(safe-area-inset-top) + 6px);b
 /* v244 — PA : juste le texte, à la couleur de l'élément (éclaircie pour rester lisible), sans cadre ni fond */
 .creature-pa{background:none!important;border:0!important;box-shadow:none!important;padding:0 2px!important;color:color-mix(in srgb,var(--pa,#9569c5) 62%,#fff)!important;font-weight:800!important;letter-spacing:.03em;text-shadow:0 0 2px #000,0 0 3px #000,0 1px 4px #000c,0 0 8px #0008!important}
 .creature-pa::before{width:6px!important;height:6px!important;margin-right:4px!important}
+/* v245 — Bandeau d'objectif (balle de match) */
+#objective-banner{position:absolute;left:50%;top:14%;z-index:40;display:flex;flex-direction:column;gap:6px;align-items:center;pointer-events:none;transform:translate(-50%,-8px) scale(.92);opacity:0;transition:opacity .35s,transform .45s cubic-bezier(.3,1.5,.5,1)}
+#objective-banner.show{opacity:1;transform:translate(-50%,0) scale(1)}
+#objective-banner span{padding:8px 16px;border-radius:999px;font:800 clamp(13px,1.6vw,17px)/1.2 system-ui,sans-serif;letter-spacing:.02em;white-space:nowrap;box-shadow:0 6px 20px #0009}
+#objective-banner .ob-mine{background:linear-gradient(180deg,#ffe9a6,#e7b24b);color:#3a2507;border:1px solid #fff4c9;animation:ob-pulse 1.1s ease-in-out 2}
+#objective-banner .ob-foe{background:linear-gradient(180deg,#5b1d22,#2d0c10);color:#ffd5d0;border:1px solid #e4787a}
+@keyframes ob-pulse{50%{transform:scale(1.07)}}
+@media(max-width:700px){#objective-banner span{white-space:normal;text-align:center;max-width:86vw}}
+/* v245 — Bouton « Tours rapides » */
+#fast{font-size:15px;line-height:1}
+#fast[aria-pressed="true"]{background:linear-gradient(180deg,#f3d27a,#c99a3c)!important;color:#2b1d06!important;border-color:#fff1c2!important;box-shadow:0 0 12px #f3d27a88!important}
+#app #top #fast{padding:5px!important;width:34px!important;min-width:34px}
+@media(max-width:700px){body:not(.portal-open) #top #fast{width:auto!important;min-width:0;padding:0 9px!important}}
+/* v245 — Logo du porte-monnaie : un petit tas de Bubulles, comme dans les récompenses */
+.wallet-bubble-bounce{position:relative}
+.wallet-bubble .wallet-bubble-bounce img.wb-main{position:relative;z-index:2}
+.wallet-bubble .wallet-bubble-bounce img.wb-back,body.portal-open #portal .wallet-bubble img.wb-back,#portal .wallet-bubble img.wb-back{position:absolute!important;z-index:1;width:62%!important;height:62%!important;top:34%;animation:none!important;filter:drop-shadow(0 0 3px #0008) brightness(.92)}
+.wallet-bubble img.wb-l{left:-30%}
+.wallet-bubble img.wb-r{right:-26%;top:42%!important;width:54%!important;height:54%!important}
+.wallet{padding-left:6px}
+#app #top #fast[aria-pressed="true"],body #top #fast[aria-pressed="true"]{background:linear-gradient(180deg,#f3d27a,#c99a3c)!important;color:#2b1d06!important;border-color:#fff1c2!important;box-shadow:0 0 12px #f3d27a88!important}
+#app #top #fast svg{display:block;margin:auto}
+/* v245 — Bouton « Finir le tour » (règle expérimentale du déplacement libre) */
+#end-turn{position:absolute;right:14px;bottom:86px;z-index:35;padding:9px 16px;border-radius:12px;border:1px solid #fff1c2;background:linear-gradient(180deg,#f3d27a,#c99a3c);color:#2b1d06;font:800 14px/1 system-ui,sans-serif;box-shadow:0 6px 18px #0009;cursor:pointer;animation:ob-pulse 1.4s ease-in-out infinite}
+#end-turn[hidden]{display:none}
+@media(max-width:700px){.wallet-bubble img.wb-l{left:-46%!important;top:40%!important}.wallet-bubble img.wb-r{right:-40%!important;top:48%!important}.wallet{padding-left:12px}}
