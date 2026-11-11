@@ -74,8 +74,8 @@ for(const [x,z,s,ry] of[[-7.2,-5.4,1.15,.6],[7.4,5.2,1,-2.4],[8.6,-6.6,.75,-.8]]
  const door=add(new THREE.BoxGeometry(.3,.5,.05),wood,g);door.position.set(0,.25,.6);
  const hub=new THREE.Group();hub.position.set(0,2.1,.62);g.add(hub);add(new THREE.CylinderGeometry(.08,.08,.25,8),wood,hub).rotation.x=Math.PI/2;
  for(let k=0;k<4;k++){const arm=new THREE.Group();arm.rotation.z=k*Math.PI/2;hub.add(arm);const spar=add(new THREE.BoxGeometry(.06,1.5,.05),wood,arm);spar.position.y=.75;const sail=add(new THREE.PlaneGeometry(.38,1.1),cloth,arm);sail.position.set(.22,.85,.02)}
- mills.push({hub,speed:.6+rnd()*.3})}
-updates.push((t,light,moving)=>{if(!moving)return;for(const m of mills)m.hub.rotation.z=-t*m.speed*(.6+gust(t)*.8)});
+ mills.push({hub,speed:.16+rnd()*.06})}
+updates.push((t,light,moving)=>{if(!moving)return;for(const m of mills)m.hub.rotation.z=-t*m.speed*(.8+gust(t)*.3)});
 
 // ---------- 6. Guirlandes de fanions qui claquent au vent ----------
 const flagColors=[0x3fae6b,0xe9e3c8,0x2f7d5a,0xb7d97a,0x5fc4a4],flagGeo=new THREE.PlaneGeometry(.22,.26,3,1);flagGeo.translate(.11,-.13,0);
