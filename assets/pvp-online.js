@@ -17,7 +17,7 @@ function applyTrade(profile,give,get){const next=JSON.parse(JSON.stringify(profi
 /* ---------- cœur (aucun accès au DOM) ---------- */
 function createCore(o){
  const sb=o.sb,game=o.game,cfg=o.cfg||{},pollMs=o.pollMs||cfg.pollMs||2500,monsters=o.maxDice||(game&&game.monsters?game.monsters.length:43);
- const S={user:null,gameId:null,code:'',seat:null,players:[],gameRow:null,applied:0,queue:[],started:false,ended:false,endSent:false,opponent:'',error:'',status:'idle',terrain:'',versionOK:true};
+ const S={user:null,gameId:null,code:'',open:false,beat:0,seat:null,players:[],gameRow:null,applied:0,queue:[],started:false,ended:false,endSent:false,opponent:'',error:'',status:'idle',terrain:'',versionOK:true};
  const T={id:null,code:'',role:null,row:null,done:false};
  const subs=new Set(),tsubs=new Set();
  const emit=()=>subs.forEach(f=>{try{f(S)}catch(e){}}),emitT=()=>tsubs.forEach(f=>{try{f(T)}catch(e){}});
@@ -29,14 +29,16 @@ function createCore(o){
  const first=x=>Array.isArray(x)?x[0]:x;
 
  /* parties */
- async function createGame(p){await ensureAuth();reset();const r=first(await rpc('create_game',{p_name:p.name,p_deck:p.deck,p_terrain:p.terrain}));S.gameId=r.game_id;S.code=r.game_code;S.seat=0;S.status='waiting';S.terrain=p.terrain;watch();emit();return r}
+ async function createGame(p){await ensureAuth();reset();const r=first(await rpc('create_game',{p_name:p.name,p_deck:p.deck,p_terrain:p.terrain}));S.gameId=r.game_id;S.code=r.game_code;S.seat=0;S.status='waiting';S.terrain=p.terrain;if(p.open){await rpc('set_table_public',{p_game:S.gameId,p_public:true});S.open=true;S.beat=Date.now()}watch();emit();return r}
+ /* v247 — tables ouvertes : visibles de tous, sans code. La table se signale toutes les 45 s tant qu'elle attend. */
+ async function listTables(){await ensureAuth();return (await rpc('open_tables',{}))||[]}
  async function joinGame(p){await ensureAuth();reset();S.gameId=await rpc('join_game',{p_code:p.code,p_name:p.name,p_deck:p.deck});S.status='joining';watch();await refreshGame();emit();return S.gameId}
  function reset(){stopWatch();Object.assign(S,{gameId:null,code:'',seat:null,players:[],gameRow:null,applied:0,queue:[],started:false,ended:false,endSent:false,opponent:'',error:'',status:'idle',versionOK:true})}
  function watch(){stopWatch();const id=S.gameId;
   try{chan=sb.channel('hk-game-'+id).on('postgres_changes',{event:'INSERT',schema:'public',table:'game_events',filter:'game_id=eq.'+id},p=>ingest([p.new])).on('postgres_changes',{event:'*',schema:'public',table:'game_players',filter:'game_id=eq.'+id},()=>refreshGame().catch(()=>{})).on('postgres_changes',{event:'UPDATE',schema:'public',table:'games',filter:'id=eq.'+id},()=>refreshGame().catch(()=>{})).subscribe()}catch(e){chan=null}
   timer=setInterval(tick,pollMs)}
  function stopWatch(){if(timer)clearInterval(timer);timer=null;try{chan&&chan.unsubscribe&&chan.unsubscribe()}catch(e){}chan=null}
- async function tick(){try{if(!S.started)await refreshGame();else{await fetchEvents();await refreshGame();checkEnd()}}catch(e){S.error=e.message;emit()}}
+ async function tick(){try{if(!S.started){await refreshGame();if(S.open&&!S.started&&Date.now()-S.beat>45000){S.beat=Date.now();rpc('set_table_public',{p_game:S.gameId,p_public:true}).catch(()=>{})}}else{await fetchEvents();await refreshGame();checkEnd()}}catch(e){S.error=e.message;emit()}}
  async function refreshGame(){const g=await sb.from('games').select('*').eq('id',S.gameId).single();if(g.error)throw new Error(g.error.message);
   const p=await sb.from('game_players').select('*').eq('game_id',S.gameId);S.gameRow=g.data;S.players=p.data||[];
   const me=S.players.find(x=>x.user_id===S.user.id),op=S.players.find(x=>x.user_id!==S.user.id);if(me)S.seat=me.seat;S.opponent=op?op.name||'Adversaire':'';
@@ -70,7 +72,7 @@ function createCore(o){
   const w=st.result?.winner??[0,1].find(s=>st.scores[s]>=st.win||st.kills[s]>=st.kw);if(w===S.seat)send(rpc=>rpc('play_action',{p_kind:'win',p_payload:{}})).catch(()=>{});emit()}
  function finishFromServer(){S.ended=true;const w=S.gameRow.winner;if(w===null){S.status='draw';game.endOnline(null,'Match nul : les deux camps ont vaincu quatre créatures.')}else if(w===S.seat)game.endOnline(S.seat,'L’adversaire a quitté la partie : victoire !');else if(w!==null&&w!==undefined&&!game.onlineState().over)game.endOnline(w,'Défaite par abandon.');emit()}
  async function resign(){if(!S.gameId||S.ended)return;S.ended=true;try{await send(rpc=>rpc('play_action',{p_kind:'resign',p_payload:{}}))}catch(e){}game.endOnline(1-S.seat,'Tu as abandonné la partie.');emit()}
- function leave(){stopWatch();const was=S.started;reset();try{was&&game.leaveOnline()}catch(e){}emit()}
+ function leave(){stopWatch();const was=S.started;if(S.open&&!was&&S.gameId)rpc('set_table_public',{p_game:S.gameId,p_public:false}).catch(()=>{});reset();try{was&&game.leaveOnline()}catch(e){}emit()}
 
  /* échanges */
  async function tradeCreate(p){await ensureAuth();tradeReset();const r=first(await rpc('create_trade',{p_name:p.name,p_inventory:p.inventory}));T.id=r.trade_id;T.code=r.trade_code;T.role='host';await tradeRefresh();tradeWatch();return r}
@@ -84,7 +86,7 @@ function createCore(o){
  async function tradeCancel(){await rpc('cancel_trade',{p_trade:T.id});await tradeRefresh()}
  const mySide=()=>T.role==='host'?'host':'guest',otherSide=()=>T.role==='host'?'guest':'host';
 
- return{S,T,rpc,ensureAuth,createGame,joinGame,resign,leave,stop:stopWatch,onChange:f=>{subs.add(f);return()=>subs.delete(f)},onTrade:f=>{tsubs.add(f);return()=>tsubs.delete(f)},
+ return{S,T,rpc,ensureAuth,createGame,joinGame,listTables,resign,leave,stop:stopWatch,onChange:f=>{subs.add(f);return()=>subs.delete(f)},onTrade:f=>{tsubs.add(f);return()=>tsubs.delete(f)},
   tradeCreate,tradeJoin,setOffer,confirm,tradeCancel,tradeStop:tradeReset,mySide,otherSide,_pump:pump,_tick:tick}
 }
 
@@ -108,9 +110,14 @@ function homeView(){const decks=legalDecks();if(!U.deck||!decks.some(d=>d.id===U
  '<p class="portal-muted">Aucune récompense en Bubulles pour l’instant. Les dés sont lancés par le serveur : personne ne peut les truquer.</p>'+
  (U.err?'<p class="pvp-error" role="alert">'+esc(U.err)+'</p>':'')+
  '<section class="pvp-card"><label for="pvp-name">Ton pseudo</label><input id="pvp-name" maxlength="24" value="'+esc(myName())+'"></section>'+
- '<section class="pvp-card"><h3>⚔️ Duel</h3>'+(decks.length?'<label for="pvp-deck">Ton deck</label><select id="pvp-deck">'+dOpts+'</select><label for="pvp-terrain">Terrain (choisi par celui qui crée la partie)</label><select id="pvp-terrain">'+tOpts+'</select><div class="deck-actions"><button class="portal-primary" data-pvp="create"'+(U.busy?' disabled':'')+'>Créer une partie</button></div><label for="pvp-code">Rejoindre avec un code</label><div class="pvp-row"><input id="pvp-code" maxlength="6" autocapitalize="characters" placeholder="ABC123" value="'+esc(U.code)+'"><button data-pvp="join"'+(U.busy?' disabled':'')+'>Rejoindre</button></div>':'<p class="pvp-error">Tu n’as aucun deck complet de 10 dés. Crée-en un dans « Mes decks ».</p>')+'</section>'+
+ '<section class="pvp-card"><h3>⚔️ Duel</h3>'+(decks.length?'<label for="pvp-deck">Ton deck</label><select id="pvp-deck">'+dOpts+'</select><label for="pvp-terrain">Terrain (choisi par celui qui crée la partie)</label><select id="pvp-terrain">'+tOpts+'</select><div class="deck-actions"><button class="portal-primary" data-pvp="create-open"'+(U.busy?' disabled':'')+'>Ouvrir une table</button><button data-pvp="create"'+(U.busy?' disabled':'')+'>Partie privée (avec code)</button></div><p class="portal-muted">Table ouverte : n’importe quel joueur en ligne peut te rejoindre, sans code.</p><h4 class="pvp-tables-title">Tables ouvertes <button class="pvp-refresh" data-pvp="tables" aria-label="Actualiser les tables ouvertes">↻</button></h4><div id="pvp-tables" aria-live="polite">'+tablesHtml()+'</div><label for="pvp-code">Rejoindre avec un code</label><div class="pvp-row"><input id="pvp-code" maxlength="6" autocapitalize="characters" placeholder="ABC123" value="'+esc(U.code)+'"><button data-pvp="join"'+(U.busy?' disabled':'')+'>Rejoindre</button></div>':'<p class="pvp-error">Tu n’as aucun deck complet de 10 dés. Crée-en un dans « Mes decks ».</p>')+'</section>'+
  '<section class="pvp-card"><h3>🔁 Échanges de dés</h3><p class="portal-muted">Échange uniquement (pas de don), contre des dés de même rareté. Les deux joueurs doivent confirmer.</p><div class="deck-actions"><button data-pvp="trade-create"'+(U.busy?' disabled':'')+'>Créer une salle d’échange</button></div><label for="pvp-tcode">Rejoindre avec un code</label><div class="pvp-row"><input id="pvp-tcode" maxlength="6" autocapitalize="characters" placeholder="XYZ789" value="'+esc(U.tcode)+'"><button data-pvp="trade-join"'+(U.busy?' disabled':'')+'>Rejoindre</button></div></section>'}
-function waitView(){const S=core.S;return '<div class="portal-title"><div><h2>En attente d’un adversaire</h2></div></div><section class="pvp-card pvp-wait"><p>Donne ce code à ton adversaire :</p><div class="pvp-code" aria-live="polite">'+esc(S.code)+'</div><div class="deck-actions"><button data-pvp="copy">Copier le code</button><button data-pvp="cancel-wait">Annuler</button></div>'+(S.error?'<p class="pvp-error">'+esc(S.error)+'</p>':'')+'<p class="portal-muted">La partie démarre automatiquement quand il te rejoint. Garde cette page ouverte.</p></section>'}
+// v247 — liste des tables ouvertes (mise à jour sans redessiner le formulaire, pour ne pas perdre la saisie en cours)
+function tablesHtml(){if(U.tablesErr)return '<p class="portal-muted">Les tables ouvertes ne sont pas encore disponibles sur le serveur.</p>';const L=U.tables;if(!L)return '<p class="portal-muted">Recherche des tables…</p>';if(!L.length)return '<p class="portal-muted">Aucune table ouverte pour l’instant. Ouvre la tienne !</p>';
+ return '<ul class="pvp-tables">'+L.map(t=>{const T=TERRAINS.find(x=>x[0]===t.terrain);return '<li><span class="pvp-table-host">'+esc(t.host_name||'Joueur')+'</span><span class="pvp-table-terrain">'+(T?T[1]+' '+esc(T[2]):'')+'</span><button data-pvp="join-table" data-code="'+esc(t.game_code)+'"'+(U.busy?' disabled':'')+'>Rejoindre</button></li>'}).join('')+'</ul>'}
+async function refreshTables(){try{const c=await ensureCore();U.tables=await c.listTables();U.tablesErr=false}catch(e){U.tablesErr=/open_tables|function|schema/i.test(e.message||'');if(!U.tablesErr)U.tables=U.tables||[]}const box=host&&host.querySelector('#pvp-tables');if(box&&U.view==='home')box.innerHTML=tablesHtml()}
+let tablesTimer=0;function watchTables(){clearInterval(tablesTimer);tablesTimer=setInterval(()=>{if(!host||!host.isConnected||U.view!=='home'){if(!host||!host.isConnected){clearInterval(tablesTimer);tablesTimer=0}return}refreshTables()},8000);refreshTables()}
+function waitView(){const S=core.S;return '<div class="portal-title"><div><h2>En attente d’un adversaire</h2></div></div><section class="pvp-card pvp-wait">'+(S.open?'<p><b>Ta table est ouverte.</b> Le premier joueur qui la rejoint lance la partie.</p><p class="portal-muted">Tu peux aussi donner ce code à un ami :</p>':'<p>Donne ce code à ton adversaire :</p>')+'<div class="pvp-code" aria-live="polite">'+esc(S.code)+'</div><div class="deck-actions"><button data-pvp="copy">Copier le code</button><button data-pvp="cancel-wait">Annuler</button></div>'+(S.error?'<p class="pvp-error">'+esc(S.error)+'</p>':'')+'<p class="portal-muted">La partie démarre automatiquement quand il te rejoint. Garde cette page ouverte.</p></section>'}
 function tradeView(){const T=core.T,row=T.row,p=bridge.getProfile(),rar=i=>bridge.rarity(bridge.defs[i]);
  if(!row)return '<p>Connexion à l’échange…</p>';
  const me=core.mySide(),ot=core.otherSide(),mine=row[me+'_offer']||[],theirs=row[ot+'_offer']||[],okMe=row[me+'_ok'],okOt=row[ot+'_ok'],opp=row[ot+'_name']||'En attente…',match=raritiesMatch(mine,theirs,rar),done=row.status==='done',cancelled=row.status==='cancelled';
@@ -126,9 +133,11 @@ async function maybeApplyTrade(){const T=core.T,row=T.row;if(!row||row.status!==
  try{const me=core.mySide(),ot=core.otherSide(),next=applyTrade(bridge.getProfile(),row[me+'_offer'],row[ot+'_offer']);if(bridge.commit(next))bridge.toast('Échange réussi ✅')}catch(e){U.err='Échange réalisé sur le serveur, mais ta collection locale n’a pas pu être mise à jour : '+e.message}}
 async function act(a,el){U.err='';
  try{
-  if(a==='create'||a==='join'){const deck=bridge.getProfile().decks.find(d=>d.id===U.deck);if(!deck||!bridge.legal(deck.dice))throw new Error('Choisis un deck complet.');
+  if(a==='tables'){await refreshTables();return}
+  if(a==='create'||a==='join'||a==='create-open'||a==='join-table'){const deck=bridge.getProfile().decks.find(d=>d.id===U.deck);if(!deck||!bridge.legal(deck.dice))throw new Error('Choisis un deck complet.');
    U.busy=true;draw();const c=await ensureCore();
-   if(a==='create'){await c.createGame({name:myName(),deck:deck.dice,terrain:U.terrain});U.view='wait'}
+   if(a==='create'||a==='create-open'){await c.createGame({name:myName(),deck:deck.dice,terrain:U.terrain,open:a==='create-open'});U.view='wait'}
+   else if(a==='join-table'){await c.joinGame({code:String(el.dataset.code||''),name:myName(),deck:deck.dice});U.view='wait'}
    else{const code=U.code.trim().toUpperCase();if(code.length!==6)throw new Error('Le code contient 6 caractères.');await c.joinGame({code,name:myName(),deck:deck.dice});U.view='wait'}}
   else if(a==='cancel-wait'){core&&core.leave();U.view='home'}
   else if(a==='copy'){try{await navigator.clipboard.writeText(core.S.code);bridge.toast('Code copié')}catch(e){bridge.toast('Code : '+core.S.code)}}
@@ -146,7 +155,7 @@ function mount(container,b){bridge=b;host=container;U.view=core&&core.T.id&&core
   container.addEventListener('click',e=>{const el=e.target.closest('[data-pvp]');if(el)act(el.dataset.pvp,el)});
   container.addEventListener('input',e=>{if(e.target.id==='pvp-code'){U.code=e.target.value.toUpperCase()}else if(e.target.id==='pvp-tcode'){U.tcode=e.target.value.toUpperCase()}else if(e.target.id==='pvp-name'){saveName(e.target.value)}});
   container.addEventListener('change',e=>{if(e.target.id==='pvp-deck')U.deck=e.target.value;if(e.target.id==='pvp-terrain')U.terrain=e.target.value})}
- draw();ensureCore().then(()=>{if(core.T.row)maybeApplyTrade()}).catch(()=>{})}
+ draw();ensureCore().then(()=>{if(core.T.row)maybeApplyTrade()}).catch(()=>{});watchTables()}
 /* barre d'état pendant un duel en ligne */
 function updateHud(){if(typeof document==='undefined')return;if(!hud){hud=document.createElement('div');hud.id='pvp-hud';hud.hidden=true;document.body.append(hud);
   hud.addEventListener('click',e=>{const a=e.target.closest('[data-hud]');if(!a)return;if(a.dataset.hud==='resign'){if(confirm('Abandonner la partie ? Ton adversaire sera déclaré vainqueur.'))core.resign()}else if(a.dataset.hud==='quit'){core.leave();hud.hidden=true;bridge.toMenu()}})}

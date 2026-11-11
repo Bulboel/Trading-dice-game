@@ -177,3 +177,17 @@ body:not(.portal-open) #offline-badge{top:calc(env(safe-area-inset-top) + 6px);b
 @keyframes sd-shake{25%{transform:translateX(-6px) rotate(-2deg)}75%{transform:translateX(6px) rotate(2deg)}}
 /* v246 — PA plus vifs */
 .creature-pa{color:var(--pa,#e3a8ff)!important;filter:saturate(1.25) brightness(1.08);text-shadow:0 0 2px #000,0 0 3px #000,0 1px 4px #000,0 0 10px color-mix(in srgb,var(--pa,#e3a8ff) 45%,transparent)!important}
+/* v247 — Porte-monnaie : plus de bandeau de fond, trois Bubulles de tailles différentes qui lévitent (sans rebond) */
+html body #portal .wallet,html body.portal-open #portal .portal-head .wallet{background:none!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important}
+html body #portal .wallet-bubble-bounce{animation:none!important;transform:none!important}
+html body #portal .wallet-bubble img.wb-main{animation:wb-float 3.6s ease-in-out infinite!important}
+html body #portal .wallet-bubble img.wb-l{width:56%!important;height:56%!important;left:-34%!important;top:40%!important;animation:wb-float 4.4s ease-in-out -1.3s infinite!important}
+html body #portal .wallet-bubble img.wb-r{width:36%!important;height:36%!important;right:-22%!important;top:2%!important;animation:wb-float 3s ease-in-out -2.1s infinite!important}
+@keyframes wb-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@media(prefers-reduced-motion:reduce){html body #portal .wallet-bubble img{animation:none!important}}
+.no-motion #portal .wallet-bubble img{animation:none!important}
+/* v247 — Menu du haut sur ordinateur : plus de dé coupé quand la fenêtre est étroite, la barre défile (molette, glisser) */
+@media(min-width:701px){body.portal-open:not([data-portal-view="home"]) #portal #portal-nav{justify-content:flex-start!important;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:thin;cursor:grab}
+ body.portal-open:not([data-portal-view="home"]) #portal #portal-nav .portal-tab:first-child{margin-left:auto!important}
+ body.portal-open:not([data-portal-view="home"]) #portal #portal-nav .portal-tab:last-child{margin-right:auto!important}
+ body.portal-open:not([data-portal-view="home"]) #portal #portal-nav.dragging{cursor:grabbing}}
