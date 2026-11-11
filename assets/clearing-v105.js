@@ -312,6 +312,88 @@ let state,active=true,moving=true,light=false,paused=false,lastFrame=0,currentAn
 const tiles=new Map(),creatures=new Map(),modelCache=new Map(),combatClipCache=new Map();
 let modelTools;
 function getModelTools(){return modelTools??=Promise.all([import('./vendor/three/examples/jsm/loaders/GLTFLoader.js'),import('./vendor/three/examples/jsm/utils/SkeletonUtils.js')]).then(([a,b])=>({loader:new a.GLTFLoader(),clone:b.clone}))}
+
+// v249 — Roue élémentaire réellement rendue dans la scène Three.js du terrain.
+const WHEEL_ELEMENTS=[
+ {name:'Feu',file:'Dé Feu v.2.glb',color:0xe98450},
+ {name:'Eau',file:'Dé eau v.2.glb',color:0x6eb3ed},
+ {name:'Glace',file:'Dé glace V.2.glb',color:0x9ddbed},
+ {name:'Terre',file:'Dé terre v.2.glb',color:0xb29a73},
+ {name:'Vent',file:'Dé vent v.2.glb',color:0x9dcc80},
+ {name:'Foudre',file:'Dé foudre v.2.glb',color:0xb69be9}
+];
+let elementWheelVisible=false,elementWheelState='hidden',elementWheelAngle=0,elementWheelStop=null,elementWheelTime=0;
+const elementWheelRoot=new THREE.Group();elementWheelRoot.name='Roue élémentaire 3D';elementWheelRoot.visible=false;scene.add(elementWheelRoot);
+const elementWheelRotor=new THREE.Group();elementWheelRoot.add(elementWheelRotor);
+const wheelMetal=new THREE.MeshStandardMaterial({color:0xc2a269,metalness:.82,roughness:.27});
+const wheelDarkMetal=new THREE.MeshStandardMaterial({color:0x27352d,metalness:.64,roughness:.42});
+const wheelInset=new THREE.MeshStandardMaterial({color:0x182520,metalness:.28,roughness:.62});
+const wheelBase=new THREE.Mesh(new THREE.CylinderGeometry(1.72,1.72,.16,64),wheelDarkMetal);wheelBase.rotation.x=Math.PI/2;elementWheelRoot.add(wheelBase);
+const wheelRearRim=new THREE.Mesh(new THREE.TorusGeometry(1.68,.095,12,72),wheelMetal);wheelRearRim.position.z=-.08;elementWheelRoot.add(wheelRearRim);
+const wheelFace=new THREE.Mesh(new THREE.CircleGeometry(1.59,72),wheelInset);wheelFace.position.z=.09;elementWheelRoot.add(wheelFace);
+const wheelTrack=new THREE.Mesh(new THREE.RingGeometry(1.36,1.44,72),wheelMetal);wheelTrack.position.z=.13;elementWheelRoot.add(wheelTrack);
+const wheelRotorFace=new THREE.Mesh(new THREE.CircleGeometry(1.34,72),new THREE.MeshStandardMaterial({color:0x24312a,metalness:.38,roughness:.54}));wheelRotorFace.position.z=.145;elementWheelRotor.add(wheelRotorFace);
+const wheelSectorMat=WHEEL_ELEMENTS.map(e=>new THREE.MeshStandardMaterial({color:e.color,metalness:.18,roughness:.5,transparent:true,opacity:.2,side:THREE.DoubleSide,depthWrite:false}));
+const wheelStep=Math.PI*2/WHEEL_ELEMENTS.length;
+WHEEL_ELEMENTS.forEach((element,i)=>{
+ const start=Math.PI/2-(i+1)*wheelStep;
+ const sector=new THREE.Mesh(new THREE.RingGeometry(.48,1.28,20,1,start,wheelStep),wheelSectorMat[i]);sector.position.z=.16;elementWheelRotor.add(sector);
+ const angle=Math.PI/2-i*wheelStep;
+ const divider=new THREE.Mesh(new THREE.BoxGeometry(.026,.82,.035),wheelMetal);
+ divider.position.set(Math.cos(angle)*.88,Math.sin(angle)*.88,.175);divider.rotation.z=angle-Math.PI/2;elementWheelRotor.add(divider);
+});
+const wheelFrontRim=new THREE.Mesh(new THREE.TorusGeometry(1.34,.045,10,72),wheelMetal);wheelFrontRim.position.z=.18;elementWheelRotor.add(wheelFrontRim);
+const wheelHub=new THREE.Mesh(new THREE.CylinderGeometry(.49,.55,.19,48),wheelMetal);wheelHub.rotation.x=Math.PI/2;wheelHub.position.z=.19;elementWheelRoot.add(wheelHub);
+const wheelHubFace=new THREE.Mesh(new THREE.CircleGeometry(.45,48),wheelDarkMetal);wheelHubFace.position.z=.30;elementWheelRoot.add(wheelHubFace);
+const wheelPointerShape=new THREE.Shape();wheelPointerShape.moveTo(-.17,1.91);wheelPointerShape.lineTo(.17,1.91);wheelPointerShape.lineTo(0,1.55);wheelPointerShape.closePath();
+const wheelPointer=new THREE.Mesh(new THREE.ShapeGeometry(wheelPointerShape),new THREE.MeshStandardMaterial({color:0xffdf91,metalness:.58,roughness:.26,side:THREE.DoubleSide}));wheelPointer.position.z=.20;elementWheelRoot.add(wheelPointer);
+const wheelAxle=new THREE.Mesh(new THREE.SphereGeometry(.115,16,12),new THREE.MeshStandardMaterial({color:0xffe9b4,metalness:.68,roughness:.2}));wheelAxle.position.set(0,1.84,.22);elementWheelRoot.add(wheelAxle);
+const wheelStuds=new THREE.Group();elementWheelRoot.add(wheelStuds);
+for(let i=0;i<12;i++){const a=i/12*Math.PI*2,stud=new THREE.Mesh(new THREE.SphereGeometry(.035,8,6),wheelMetal);stud.position.set(Math.cos(a)*1.54,Math.sin(a)*1.54,.17);wheelStuds.add(stud)}
+const elementWheelHit=new THREE.Mesh(new THREE.CircleGeometry(1.86,48),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false,side:THREE.DoubleSide}));elementWheelHit.position.z=.38;elementWheelHit.userData.wheelHit=true;elementWheelRoot.add(elementWheelHit);
+const wheelLabelCanvas=document.createElement('canvas');wheelLabelCanvas.width=256;wheelLabelCanvas.height=96;
+const wheelLabelContext=wheelLabelCanvas.getContext('2d');const wheelLabelTexture=new THREE.CanvasTexture(wheelLabelCanvas);wheelLabelTexture.colorSpace=THREE.SRGBColorSpace;
+const wheelLabel=new THREE.Sprite(new THREE.SpriteMaterial({map:wheelLabelTexture,transparent:true,depthTest:false,depthWrite:false}));wheelLabel.position.set(0,0,.34);wheelLabel.scale.set(1.12,.42,1);elementWheelRoot.add(wheelLabel);
+function setElementWheelLabel(text){wheelLabelContext.clearRect(0,0,256,96);wheelLabelContext.fillStyle='#f5e5b9';wheelLabelContext.textAlign='center';wheelLabelContext.textBaseline='middle';wheelLabelContext.font='700 24px system-ui,sans-serif';wheelLabelContext.shadowColor='#080f0c';wheelLabelContext.shadowBlur=8;wheelLabelContext.fillText(text,128,48,240);wheelLabelTexture.needsUpdate=true}
+const elementWheelControl=document.createElement('button');elementWheelControl.type='button';elementWheelControl.id='element-wheel-3d-control';elementWheelControl.setAttribute('aria-label','Roue des éléments. Touchez pour arrêter.');elementWheelControl.hidden=true;
+Object.assign(elementWheelControl.style,{position:'absolute',zIndex:'12',display:'block',padding:'0',margin:'0',border:'0',borderRadius:'50%',background:'transparent',color:'transparent',opacity:'0',touchAction:'manipulation',cursor:'pointer',transform:'translate(-50%,-50%)',pointerEvents:'auto'});
+elementWheelControl.addEventListener('click',()=>{if(elementWheelState==='spinning')stopElementWheel();else if(elementWheelState==='stopped')startElementWheel()});
+host.append(elementWheelControl);
+function elementWheelEnabled(){return !!game?.hasMatch?.()&&!game?.snapshot?.()?.result&&window.HackeniaSettings?.get?.().elementWheel!==false&&!document.body.classList.contains('portal-open')&&!document.body.classList.contains('start-menu-open')&&active}
+function updateElementWheelAnchor(){
+ camera.updateMatrixWorld(true);const rect=host.getBoundingClientRect();if(rect.width<1||rect.height<1)return;
+ const halfH=viewSpan/Math.max(.01,camera.zoom),halfW=halfH*viewAspect,forward=camera.getWorldDirection(new THREE.Vector3()),right=new THREE.Vector3(Math.cos(orbitYaw),0,-Math.sin(orbitYaw)).normalize(),up=new THREE.Vector3().crossVectors(forward,right).normalize();
+ elementWheelRoot.position.copy(camera.position).addScaledVector(forward,7).addScaledVector(right,halfW*.71).addScaledVector(up,-halfH*.055);elementWheelRoot.quaternion.copy(camera.quaternion);
+ const unitScale=halfH*.16/1.72;elementWheelRoot.scale.setScalar(unitScale);
+ const p=elementWheelRoot.position.clone().project(camera),diameter=unitScale*3.72*rect.height/(2*halfH);
+ elementWheelControl.style.left=((p.x+1)*rect.width/2)+'px';elementWheelControl.style.top=((1-p.y)*rect.height/2)+'px';elementWheelControl.style.width=diameter+'px';elementWheelControl.style.height=diameter+'px';
+}
+function startElementWheel(){elementWheelState='spinning';elementWheelStop=null;elementWheelTime=performance.now();setElementWheelLabel('TOUCHEZ');elementWheelControl.setAttribute('aria-label','Roue des éléments. Touchez pour arrêter.')}
+function stopElementWheel(){if(elementWheelState!=='spinning')return;elementWheelState='slowing';elementWheelStop={from:elementWheelAngle,to:elementWheelAngle+58*Math.PI/180,start:performance.now(),duration:2200};setElementWheelLabel('RALENTIT');elementWheelControl.setAttribute('aria-label','La roue des éléments ralentit.')}
+function finishElementWheel(){elementWheelState='stopped';elementWheelStop=null;const ix=((Math.round((((elementWheelAngle%(Math.PI*2))+Math.PI*2)%(Math.PI*2))/wheelStep))%WHEEL_ELEMENTS.length);setElementWheelLabel(WHEEL_ELEMENTS[ix].name.toUpperCase());elementWheelControl.setAttribute('aria-label','Résultat : '+WHEEL_ELEMENTS[ix].name+'. Touchez pour relancer la roue.')}
+async function loadElementWheelModels(){
+ const tools=await getModelTools();
+ await Promise.all(WHEEL_ELEMENTS.map(async(element,i)=>{
+  const url='assets/models-web/'+element.file;
+  if(!modelCache.has(url))modelCache.set(url,(async()=>{const response=await fetch(url,{method:'HEAD'});if(!response.ok)return null;const gltf=await tools.loader.loadAsync(url);return{gltf,clone:tools.clone}})().catch(()=>null));
+  const asset=await modelCache.get(url);if(!asset)return;
+  const model=asset.clone(asset.gltf.scene);model.updateMatrixWorld(true);const box=new THREE.Box3().setFromObject(model),size=box.getSize(new THREE.Vector3()),max=Math.max(size.x,size.y,size.z,.01),scale=.72/max;
+  model.scale.setScalar(scale);model.position.set(-(box.min.x+box.max.x)*scale/2,-(box.min.y+box.max.y)*scale/2,-(box.min.z+box.max.z)*scale/2);
+  model.traverse(o=>{if(o.isMesh){o.castShadow=false;o.receiveShadow=false}});
+  const angle=Math.PI/2-i*wheelStep;model.position.x+=Math.cos(angle)*1.04;model.position.y+=Math.sin(angle)*1.04;model.position.z+=.21;elementWheelRotor.add(model);
+ }));
+}
+let elementWheelModelsStarted=false;
+function updateElementWheel(now){
+ const enabled=elementWheelEnabled();
+ if(enabled!==elementWheelVisible){elementWheelVisible=enabled;elementWheelRoot.visible=enabled;elementWheelControl.hidden=!enabled;if(enabled){startElementWheel();if(!elementWheelModelsStarted){elementWheelModelsStarted=true;loadElementWheelModels()}}else{elementWheelState='hidden';elementWheelStop=null;elementWheelAngle=0;elementWheelRotor.rotation.z=0;elementWheelControl.setAttribute('aria-label','Roue des éléments. Touchez pour arrêter.')}updateCamera()}
+ if(!enabled)return;
+ updateElementWheelAnchor();
+ const dt=Math.min((now-elementWheelTime)/1000,.06);elementWheelTime=now;
+ if(elementWheelState==='spinning')elementWheelAngle+=18*Math.PI/180*dt;
+ else if(elementWheelState==='slowing'&&elementWheelStop){const t=Math.min(1,(now-elementWheelStop.start)/elementWheelStop.duration),ease=1-Math.pow(1-t,3);elementWheelAngle=elementWheelStop.from+(elementWheelStop.to-elementWheelStop.from)*ease;if(t>=1)finishElementWheel()}
+ elementWheelRotor.rotation.z=elementWheelAngle;
+}
 // Dé élémentaire posé : son modèle 3D apparaît au-dessus des dalles, lévite en tournant doucement puis s'efface (aucune créature ne reste).
 const pureFx=[];
 window.addEventListener('hackenia:pure-placed',async e=>{const {mi,x,y}=e.detail||{};try{const info=await game.modelInfo(mi);if(!info?.glb)return;const url='assets/'+info.glb;
@@ -496,9 +578,12 @@ function updateCamera(){
  const direction=new THREE.Vector3(Math.sin(orbitYaw)*cp,Math.sin(orbitPitch),Math.cos(orbitYaw)*cp);
  const right=new THREE.Vector3(Math.cos(orbitYaw),0,-Math.sin(orbitYaw));
  const up=new THREE.Vector3().crossVectors(direction,right).normalize();
- const offset=right.multiplyScalar(panX).add(up.multiplyScalar(panY));
- offset.lerp(combatCenter,combatFocus);camera.position.copy(direction.multiplyScalar(distance).add(offset));camera.up.set(0,1,0);camera.lookAt(offset);
- camera.zoom=zoom+(Math.max(zoom,3.2)-zoom)*combatFocus;camera.updateProjectionMatrix();camera.updateMatrixWorld(true);
+ const offset=right.clone().multiplyScalar(panX).add(up.clone().multiplyScalar(panY));
+ offset.lerp(combatCenter,combatFocus);
+ const targetZoom=zoom+(Math.max(zoom,3.2)-zoom)*combatFocus;
+ if(elementWheelVisible)offset.addScaledVector(right,viewSpan*viewAspect*.22/Math.max(.01,targetZoom));
+ camera.position.copy(direction.multiplyScalar(distance).add(offset));camera.up.set(0,1,0);camera.lookAt(offset);
+ camera.zoom=targetZoom;camera.updateProjectionMatrix();camera.updateMatrixWorld(true);
 }
 function changeZoom(value,anchor){
  const next=Math.round(Math.max(1,Math.min(8,value))*100)/100;
@@ -624,7 +709,7 @@ function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&
  if(g.userData.mixer&&(moving||(f&&!combat.reduced)))g.userData.mixer.update(dt);if(g.userData.modelRoot&&g.userData.model)orientBoardModel(g.userData.modelRoot,g.userData.model,f,g.userData.idleModelYaw||0,THREE);}
 
  if(dieGroup.visible){dieGroup.position.copy(dieGroup.userData.target);dieGroup.position.y+=moving?Math.sin(t*2)*.08:0;dieGroup.rotation.y=moving&&state.cubeCls!=='land'?t*.7:0;dieGroup.scale.setScalar(state.cubeCls==='poof'?.35:1)}
- highlights.children.forEach(m=>{if(!m.userData.cachedLabel)m.material.opacity=moving?.32+Math.sin(t*3)*.09:.4});renderer.render(scene,camera);projectBoardCaptions(t);drawPlacementLens();
+ highlights.children.forEach(m=>{if(!m.userData.cachedLabel)m.material.opacity=moving?.32+Math.sin(t*3)*.09:.4});updateElementWheel(now);renderer.render(scene,camera);projectBoardCaptions(t);drawPlacementLens();
 }
 requestAnimationFrame(frame);
 }
