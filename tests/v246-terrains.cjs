@@ -15,7 +15,7 @@ for(const k of run('Object.keys(LAYOUTS)')){const cells=run(`JSON.stringify(LAYO
  run(`LAYOUT='${k}';TER=TL.indexOf('terre')`);for(const [x,y] of L)assert.ok(run(`blocked(${x},${y})`),k+' blocks its cells')}
 run("rewardMode='quick';LAYOUT='classique'");assert.ok(html.includes("LAYOUT=LAYOUTS[layout]&&kind==='play'?layout:'classique'"),'Shapes only in the Jouer mode');
 // Mort subite : au moins trois 6 sur 3 dés ou plus.
-run("rewardMode='play'");assert.equal(run('invocationRoll([6,6,6],5).sudden'),true);assert.equal(run('invocationRoll([6,6,6,2],5).sudden'),true);assert.equal(run('invocationRoll([6,6],5).sudden'),false,'A pair of 6 is not sudden death');assert.equal(run('invocationRoll([6,6,5],5).sudden'),false);
+run("rewardMode='play'");assert.equal(run('invocationRoll([6,6,6],5).sudden'),true);assert.equal(run('invocationRoll([6,6,6,2],5).sudden'),false,'v247: three 6s among four dice is not sudden death');assert.equal(run('invocationRoll([6,6,6,6],5).superSudden'),true,'Four 6s with four dice: super sudden death');assert.equal(run('invocationRoll([6,6,6],5).superSudden'),false);assert.equal(run('invocationRoll([6,6],5).sudden'),false,'A pair of 6 is not sudden death');assert.equal(run('invocationRoll([6,6,5],5).sudden'),false);
 run("rewardMode='tutorial'");assert.equal(run('invocationRoll([6,6,6],5).sudden'),false,'Never in the tutorial');
 assert.ok(html.includes("recordEvent('Victoire',P[k]+' gagne par mort subite")&&html.includes('function suddenDeathBanner'),'Immediate win with a banner');
 // Créature qui vient d'apparaître : immobile jusqu'au tour suivant.

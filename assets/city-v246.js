@@ -4,7 +4,7 @@
    bannières bleu et or de Dassom, et au fond les remparts et le donjon. Aucun élément n'est favorisé (règles : moteur du jeu).
    Coordonnées réelles des cases (root.scale.z = 1/ZS appliqué par clearing-v105.js). */
 import * as THREE from 'three';
-export function createCity(world,software=false,rows=10){
+export function createCity(world,software=false,rows=10,helpers={}){
 const root=new THREE.Group();world.add(root);root.visible=false;
 let seed=1789;const rnd=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296};
 const HZ=rows/2,BX=4.3,BZ=HZ+.3,TOP=.2,FX=7.2,FZ=HZ+2.45;
@@ -63,10 +63,10 @@ function stall(x,z,ry,c1,c2){const g=new THREE.Group();g.position.set(x,0,z);g.r
 stall(-5.6,1.1,Math.PI/2,'#c0392b','#f4e9d8');stall(-5.6,-1.3,Math.PI/2,'#2d6a9f','#f4e9d8');stall(5.7,3.2,-Math.PI/2,'#3e8d4f','#f4e9d8');
 function barrel(x,z){const b=add(new THREE.CylinderGeometry(.17,.17,.42,12),barrelMat);b.position.set(x,.21,z);for(const y of[.08,.34]){const h=add(new THREE.TorusGeometry(.172,.012,4,16),hoop,root,false);h.rotation.x=Math.PI/2;h.position.set(x,y,z)}}
 function crate(x,z,s=.32){const c=add(new THREE.BoxGeometry(s,s,s),wood);c.position.set(x,s/2,z);c.rotation.y=rnd()}
-for(const [x,z] of[[-5.2,2.3],[-5.0,-2.6],[5.3,4.4],[5.05,-4.6],[-4.9,-4.8],[4.95,1.6]]){barrel(x,z);crate(x+.32,z+.12)}
+for(const [x,z] of[[-5.55,2.3],[-5.55,-2.6],[5.5,4.4],[5.5,-4.6],[-5.5,-4.8],[5.5,1.9]]){barrel(x,z);crate(x,z+.38)}/* v247 : rangés contre les maisons, la rue reste libre pour les passants */
 
 // ---------- 5. Fontaine, lanternes, bannières, arbres en bacs ----------
-{const fx=5.55,fz=-.6,g=new THREE.Group();g.position.set(fx,0,fz);root.add(g);const basin=add(new THREE.CylinderGeometry(.62,.68,.32,20),mat(0x9a9286),g);basin.position.y=.16;const water=new THREE.Mesh(new THREE.CircleGeometry(.54,20),new THREE.MeshPhysicalMaterial({color:0x5fa9c9,roughness:.05,clearcoat:1,transparent:true,opacity:.85}));water.rotation.x=-Math.PI/2;water.position.y=.3;g.add(water);
+{const fx=6.0,fz=-.6,g=new THREE.Group();g.position.set(fx,0,fz);root.add(g);const basin=add(new THREE.CylinderGeometry(.62,.68,.32,20),mat(0x9a9286),g);basin.position.y=.16;const water=new THREE.Mesh(new THREE.CircleGeometry(.54,20),new THREE.MeshPhysicalMaterial({color:0x5fa9c9,roughness:.05,clearcoat:1,transparent:true,opacity:.85}));water.rotation.x=-Math.PI/2;water.position.y=.3;g.add(water);
  const col=add(new THREE.CylinderGeometry(.08,.12,.7,10),mat(0x9a9286),g);col.position.y=.6;const bowl=add(new THREE.CylinderGeometry(.28,.12,.14,16),mat(0x9a9286),g);bowl.position.y=.98;
  const jets=[];for(let i=0;i<(software?4:10);i++){const d=new THREE.Mesh(new THREE.SphereGeometry(.025,6,4),new THREE.MeshBasicMaterial({color:0xcfefff,transparent:true,opacity:.8}));g.add(d);jets.push({d,a:i/10*Math.PI*2,p:i/10})}
  updates.push((t,l,moving)=>{for(const j of jets){const k=moving?(t*.9+j.p)%1:j.p;j.d.position.set(Math.cos(j.a)*(.08+k*.38),1.05+Math.sin(k*Math.PI)*.22-k*.7,Math.sin(j.a)*(.08+k*.38));j.d.visible=k<.98}})}
@@ -91,5 +91,13 @@ const fw=add(new THREE.BoxGeometry(FX*2+.6,.45,.4),wallStone);fw.position.set(0,
 const birds=[];for(let i=0;i<(software?2:6);i++){const g=new THREE.Group();const body=add(new THREE.SphereGeometry(.06,8,6),mat(0x8d8f99),g,false);body.scale.set(1.3,.9,.9);const wings=[];for(const s of[-1,1]){const w=add(new THREE.PlaneGeometry(.14,.06),new THREE.MeshStandardMaterial({color:0x7c7f8a,side:THREE.DoubleSide}),g,false);w.position.set(0,.02,s*.07);w.rotation.x=Math.PI/2;wings.push({w,s})}root.add(g);birds.push({g,wings,p:rnd()*6,cx:(rnd()-.5)*10,cz:-FZ+1.8+rnd()*1.2})}
 updates.push((t,l,moving)=>{const T=moving?t:0;for(const b of birds){const a=T*.4+b.p;b.g.position.set(b.cx+Math.cos(a)*1.4,2.4+Math.sin(T*1.3+b.p)*.2,b.cz+Math.sin(a)*.5);b.g.rotation.y=-a;for(const W of b.wings)W.w.rotation.y=W.s*(moving?Math.sin(t*14+b.p)*.7:.3)}});
 
+// ---------- 8. v247 — Passants : des personnages du jeu se promènent dans les rues, autour de la place ----------
+// Circuit rectangulaire dans la rue (entre la bordure de la place et les maisons) ; certains tournent dans un sens, d'autres dans l'autre.
+const LX=4.98,LZ0=-(BZ+.2),LZ1=BZ+.45,loop=[[-LX,LZ0],[LX,LZ0],[LX,LZ1],[-LX,LZ1]],segLen=loop.map((p,i)=>{const q=loop[(i+1)%4];return Math.hypot(q[0]-p[0],q[1]-p[1])}),total=segLen.reduce((a,b)=>a+b,0);
+function onLoop(d,lane=0){d=((d%total)+total)%total;let i=0;while(d>segLen[i]){d-=segLen[i];i++}const p=loop[i],q=loop[(i+1)%4],k=d/segLen[i],dx=(q[0]-p[0])/segLen[i],dz=(q[1]-p[1])/segLen[i];return{x:p[0]+(q[0]-p[0])*k+dz*lane,z:p[1]+(q[1]-p[1])*k-dx*lane,yaw:Math.atan2(dx,dz)}}
+const walkers=[];let lastT=0;
+if(!software&&helpers.spawnWalker){const cast=[['pennedra',1,.34,0],['maebril',-1,.3,.25],['sameron',1,.26,.55],['frolgor',-1,.28,.7],['max',1,.42,.85]];
+ cast.forEach(([key,dir,speed,start],n)=>setTimeout(()=>helpers.spawnWalker(key,.95).then(w=>{if(!w)return;root.add(w.group);walkers.push({w,dir,speed,d:start*total,lane:dir>0?.1:-.14,yaw:0})}),600+n*900))}
+updates.push((t,l,moving)=>{const dt=Math.min(.1,Math.max(0,t-lastT));lastT=t;for(const W of walkers){if(moving)W.d+=W.dir*W.speed*dt;const p=onLoop(W.d,W.lane),yaw=p.yaw+(W.dir<0?Math.PI:0);let dy=yaw-W.yaw;dy=Math.atan2(Math.sin(dy),Math.cos(dy));W.yaw+=dy*Math.min(1,dt*6+(moving?0:1));W.w.group.position.set(p.x,.03,p.z);W.w.group.rotation.y=W.yaw;if(moving)W.w.update(dt)}});
 return{root,update(t,light,moving){for(const u of updates)u(t,light,moving)}};
 }
