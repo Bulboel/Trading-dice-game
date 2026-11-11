@@ -29,7 +29,7 @@ function buildModels(){
   model.setAttribute('interaction-prompt','none');model.setAttribute('shadow-intensity','0.45');model.setAttribute('exposure','1.08');
   model.setAttribute('camera-orbit','0deg 68deg auto');model.setAttribute('field-of-view','34deg');model.setAttribute('loading','eager');model.style.setProperty('--dice-element',element.color);
   const a=(i*60-90)*Math.PI/180,radius=37;
-  model.style.left='calc(50% + '+(Math.cos(a)*radius).toFixed(2)+'px)';model.style.top='calc(50% + '+(Math.sin(a)*radius).toFixed(2)+'px');
+  model.style.left='calc(50% + '+(Math.cos(a)*radius).toFixed(2)+'px)';model.style.top='calc(50% + '+(Math.sin(a)*radius).toFixed(2)+'px)';
   disc.append(model);
  });
 }
