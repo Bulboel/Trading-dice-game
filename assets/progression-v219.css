@@ -139,3 +139,6 @@ body:not(.portal-open) #offline-badge{top:calc(env(safe-area-inset-top) + 6px);b
 #app #hand .dc.hc.rar-6:not(.pure) .hc-art{box-shadow:0 0 0 2px var(--rim),0 0 9px color-mix(in srgb,#e9d4ff 60%,transparent)!important}
 #app #hand .dc.hc.rar-5:not(.pure) .hc-art img,#app #hand .dc.hc.rar-6:not(.pure) .hc-art img{filter:drop-shadow(0 0 3px color-mix(in srgb,var(--rim) 60%,transparent))!important}
 #app #hand .dc.hc{overflow:hidden}
+/* v244 — PA : juste le texte, à la couleur de l'élément (éclaircie pour rester lisible), sans cadre ni fond */
+.creature-pa{background:none!important;border:0!important;box-shadow:none!important;padding:0 2px!important;color:color-mix(in srgb,var(--pa,#9569c5) 62%,#fff)!important;font-weight:800!important;letter-spacing:.03em;text-shadow:0 0 2px #000,0 0 3px #000,0 1px 4px #000c,0 0 8px #0008!important}
+.creature-pa::before{width:6px!important;height:6px!important;margin-right:4px!important}
