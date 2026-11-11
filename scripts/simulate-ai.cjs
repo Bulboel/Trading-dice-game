@@ -1,5 +1,5 @@
 // v243 — Simulation IA contre IA sur le vrai moteur (index.html), pour auditer les règles.
-// Usage : node scripts/simulate-ai.cjs [parties par terrain=60] [terre|feu|glace|vent|eau|foudre|all] [on|off : règle d'écrasement]
+// Usage : [FREE=1] node scripts/simulate-ai.cjs [parties par terrain=60] [terre|feu|glace|vent|eau|foudre|all] [on|off : règle d'écrasement]
 // Affiche par terrain : gagnant (J1 = premier joueur), type de victoire, durée en tours, écrasements par partie, tours sans pose possible.
 const fs=require('fs'),vm=require('vm'),path=require('path');
 const src=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8').match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,'');
@@ -10,7 +10,7 @@ function game(seedN,terr){let s=seedN*2654435761>>>0;const math=Object.create(Ma
  vm.runInContext(src,ctx);const run=c=>vm.runInContext(c,ctx);
  run(`render=()=>{};landCube=()=>{};showRollDice=()=>{};drawHistory=()=>{};ai=true;aiLevel='difficile';rewardMode='quick';`);
  run(`TER=TL.indexOf('${terr}');init();render=()=>{};`);timers.length=0;intervals.length=0;
- if(CRUSH==='off')run(`crushes=()=>false`);
+ if(CRUSH==='off')run(`crushes=()=>false`);if(process.env.FREE)run('freeMove=true');/* v245 : FREE=1 teste le déplacement après la pose */
  let turns=0,stalled=0;
  while(turns<160){if(run('over'))break;const o=run('cur');
   run(`(()=>{const m=aiChooseMove(cur);if(m)mv(m[0],m[1],m[2])})()`);if(run('over'))break;
