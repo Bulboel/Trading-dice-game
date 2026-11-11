@@ -1,7 +1,7 @@
 /* Presentation adapter. Game legality, turns, decks and combat stay in index.html. */
 import * as THREE from 'three';
 import { orientBoardModel } from './model-facing.js?v=20261103-v73';
-import { createCrater } from './crater-v135.js?v=20261115-v226';
+import { createEmberlands } from './ember-v239.js?v=20261120-v239';
 import { applyLook } from './variant-look.js?v=20261113-v215';
 import { createLake } from './lake-v230.js?v=20261116-v233c';
 import { createSkyIsland } from './sky-v231.js?v=20261116-v233c';
@@ -664,8 +664,8 @@ let sceneryKey='';
 function setActive(value,terrainOverride=null){
  active=value;const type=terrainOverride||game.snapshot().terrain,fire=type==='feu',ice=type==='glace',lakeOn=type==='eau',skyOn=type==='foudre',windOn=type==='vent';
  if(!value)placementLens.hidden=true;host.classList.toggle('view3d',value);document.getElementById('land-caption').hidden=!value;
- forest.visible=value&&!fire&&!ice&&!lakeOn&&!skyOn&&!windOn;if(windOn&&value&&!windLand){windLand=createWindHighlands(decor,!!renderer.isSoftware,BH);windLand.root.scale.z=1/ZS}if(windLand)windLand.root.visible=value&&windOn;if(skyOn&&value&&!skyIsland){skyIsland=createSkyIsland(decor,!!renderer.isSoftware,BH);skyIsland.root.scale.z=1/ZS}if(skyIsland)skyIsland.root.visible=value&&skyOn;if(lakeOn&&value&&!lake){lake=createLake(decor,!!renderer.isSoftware,BH);lake.root.scale.z=1/ZS}/* v233 : coordonnées réelles des cases, comme les pièces */if(lake)lake.root.visible=value&&lakeOn;boardFrame.visible=value&&!fire&&!skyOn&&!windOn;glacierClosures.visible=value&&ice;iceScene.visible=value&&ice;grid.visible=true;grid.material.color.set(ice?0x557e98:lakeOn?0x5f7a5a:skyOn?0x7fd8ff:0xe5d9a0);grid.material.opacity=ice?.22:lakeOn?.18:skyOn?.12:windOn?0:.27;
- if(fire&&value&&!crater)crater=createCrater(decor,game.fireVents,!!renderer.isSoftware,BH,ZS);if(crater)crater.root.visible=value&&fire;
+ forest.visible=value&&!fire&&!ice&&!lakeOn&&!skyOn&&!windOn;if(windOn&&value&&!windLand){windLand=createWindHighlands(decor,!!renderer.isSoftware,BH);windLand.root.scale.z=1/ZS}if(windLand)windLand.root.visible=value&&windOn;if(skyOn&&value&&!skyIsland){skyIsland=createSkyIsland(decor,!!renderer.isSoftware,BH);skyIsland.root.scale.z=1/ZS}if(skyIsland)skyIsland.root.visible=value&&skyOn;if(lakeOn&&value&&!lake){lake=createLake(decor,!!renderer.isSoftware,BH);lake.root.scale.z=1/ZS}/* v233 : coordonnées réelles des cases, comme les pièces */if(lake)lake.root.visible=value&&lakeOn;boardFrame.visible=value&&!fire&&!skyOn&&!windOn;glacierClosures.visible=value&&ice;iceScene.visible=value&&ice;grid.visible=true;grid.material.color.set(ice?0x557e98:lakeOn?0x5f7a5a:skyOn?0x7fd8ff:fire?0xffc27a:0xe5d9a0);grid.material.opacity=ice?.22:lakeOn?.18:skyOn?.12:windOn?0:fire?.1:.27;
+ if(fire&&value&&!crater){crater=createEmberlands(decor,game.fireVents,!!renderer.isSoftware,BH);crater.root.scale.z=1/ZS}/* v239 — Terres embrasées repensées */if(crater)crater.root.visible=value&&fire;
  if(sceneryKey!==type){
   sceneryKey=type;
   const themes={terre:[0x172c25,0x304d3d,0xe9f0d5,0x3c5034,0xffe1a0,3.1,'LE BOIS TENDRE','La rivière murmure. Le duel commence.'],feu:[0x221b20,0x392328,0xf1c6ab,0x3e2023,0xffb16a,2.5,'LES TERRES EMBRASÉES','La roche respire. Les évents sont impraticables.'],glace:[0x385365,0x93b2c4,0xe5f2f8,0x496778,0xcbe7f7,2.25,'LA ROUTE VERS FORFALLA','La neige tombe. La glace entraîne les créatures.'],eau:[0x1c1230,0x4a2c55,0xffd8ec,0x2e1d3c,0xffc9e2,2.1,'LE LAC ROSE','Sous la lune, le vieux sanctuaire dort sur les eaux roses.'],vent:[0x2f5a4c,0x4d7f69,0xeaf8e6,0x35503a,0xfff0cc,2.9,'LES VENTS DE HACKO','Sur le haut plateau, le vent chante entre les pierres levées.'],foudre:[0x2b3242,0x2b3242,0xcad6ff,0x1b1f2c,0xdbe6ff,2.2,'L’ÎLE CÉLESTE','Au-dessus des nuages, l’orage gronde sous le sanctuaire.']};
