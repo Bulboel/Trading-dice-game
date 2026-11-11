@@ -1,0 +1,15 @@
+// v247 — Décors vivants (passants, mineurs, araignées, cristaux), tables ouvertes en PVP, obstacles au style du terrain, aperçu des formes.
+const fs=require('fs'),path=require('path'),assert=require('assert');const root=path.join(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const cl=read('assets/clearing-v105.js'),city=read('assets/city-v246.js'),cave=read('assets/cave-v246.js'),pvp=read('assets/pvp-online.js'),sql=read('online/sql/05-open-tables.sql'),css=read('assets/progression-v219.css'),portal=read('assets/portal-v159.js'),sky=read('assets/sky-v231.js');
+assert.ok(cl.includes('async function spawnWalker(key')&&cl.includes('createCity(decor,!!renderer.isSoftware,BH,{spawnWalker})')&&city.includes("['pennedra',1")&&city.includes('helpers.spawnWalker(key'),'Game characters walk the streets of Dassom with their walk animation');
+const man=JSON.parse(read('assets/manifest.json'));for(const k of['pennedra','maebril','sameron','frolgor','max'])assert.ok(man.creatures[k]?.animations?.walk&&fs.existsSync(path.join(root,'assets',man.creatures[k].animations.walk)),k+' has a walk clip');
+assert.ok(cave.includes("g.name='miner'")&&cave.includes("g.name='cave-spider'")&&cave.includes('const diggers=')&&cave.includes('const runners=')&&cave.includes('prismGeo'),'Cave: digging miners, miners chased by spiders, reworked crystals');
+assert.ok(cave.includes('const RX=BX+.42,RZ=BZ+.42'),'The chase runs around the board, never on it');
+assert.ok(pvp.includes("rpc('set_table_public'")&&pvp.includes("rpc('open_tables'")&&pvp.includes('data-pvp="create-open"')&&pvp.includes('data-pvp="join-table"')&&pvp.includes('data-pvp="create"'),'Open tables next to private games');
+assert.ok(sql.includes('CREATE OR REPLACE FUNCTION public.open_tables()')&&sql.includes('set_table_public')&&sql.includes("interval '2 minutes'")&&sql.includes('p.user_id <> auth.uid()')&&sql.includes('GRANT EXECUTE ON FUNCTION public.open_tables() TO authenticated'),'SQL migration: host-only toggle, fresh waiting tables only');
+for(const t of['feu','glace','vent','eau','foudre','ville','grotte'])assert.ok(cl.includes("type==='"+t+"'"),'Obstacle style for '+t);
+assert.ok(cl.includes("function preview(terrain,container,layout='classique')")&&portal.includes("$('play-layout')?.addEventListener('change',updateTerrainPreview)"),'Board shape shown in the preview');
+assert.ok(css.includes('.wallet-bubble-bounce{animation:none!important')&&css.includes('background:none!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important'),'Wallet: no band, floating bubbles');
+assert.ok(css.includes('overflow-x:auto!important')&&portal.includes("nav.addEventListener('wheel'"),'Desktop menu scrolls instead of clipping a die');
+assert.ok(!sky.includes('0x8fe3ff')&&sky.includes('0xb98cff'),'Île céleste is violet rather than blue');
+console.log('PASS: Dassom walkers, cave miners/spiders/crystals, PVP open tables (+SQL), terrain-styled obstacles and shape preview, wallet and menu fixes, violet sky island.');

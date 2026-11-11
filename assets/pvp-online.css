@@ -25,3 +25,10 @@ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .p
 .pvp-die small{display:block;opacity:.75}.pvp-die:disabled{opacity:.4;cursor:default}
 #pvp-hud{position:fixed;top:calc(env(safe-area-inset-top,0px) + 4px);left:50%;transform:translateX(-50%);z-index:60;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;max-width:94vw;padding:5px 10px;border-radius:99px;background:rgba(8,18,16,.82);border:1px solid rgba(220,190,120,.4);font-size:.72rem;color:#f3e6c2}
 #pvp-hud button{padding:3px 10px;border-radius:99px;border:1px solid rgba(220,190,120,.5);background:transparent;color:inherit;font:inherit;cursor:pointer}.pvp-hud-err{color:#ff9a8a}
+/* v247 — Tables ouvertes */
+.pvp-tables-title{display:flex;align-items:center;gap:8px;margin:14px 0 6px;font:700 14px/1.2 system-ui,sans-serif;color:#e9dcb4}
+.pvp-refresh{padding:2px 9px!important;min-height:0!important;font-size:15px!important;border-radius:8px!important}
+.pvp-tables{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-direction:column;gap:6px}
+.pvp-tables li{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid #9cbdb93b;border-radius:10px;background:#16282599}
+.pvp-table-host{font-weight:700;color:#f3ead0;flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pvp-table-terrain{color:#a9c4b6;font-size:13px;white-space:nowrap}
