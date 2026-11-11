@@ -123,3 +123,9 @@ body.portal-open[data-portal-view="options"] #portal-content{padding:14px!import
  #portal .opt-swatches:not(.opt-compact){display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px!important}
 }
 @media(max-width:700px){#portal .opt-swatches:not(.opt-compact) .opt-swatch{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;text-align:center!important;width:auto!important;min-width:0!important;margin:0!important}#portal .opt-swatches:not(.opt-compact) .opt-swatch-label{text-align:center!important;font-size:11px!important;line-height:1.2}}
+/* v237 — Bourse de dés : un aperçu de la bourse directement dans son cadre, juste à côté des réglages. */
+#portal .opt-bag-inline{float:right;width:120px;height:120px;margin:-6px 0 6px 12px;display:grid;place-items:center;border-radius:14px;background:radial-gradient(ellipse at 50% 35%,#2c4a3c,#13241d 75%);border:1px solid #c7b98533}
+#portal .opt-bag-inline .dice-pouch{transform:scale(.62);transform-origin:center}
+@media(max-width:700px){#portal .opt-bag-inline{float:none!important;display:grid!important;width:100%!important;max-width:none!important;height:150px!important;margin:0 0 10px!important}#portal .opt-bag-inline .dice-pouch{transform:scale(.85)!important;width:120px!important;height:120px!important}}
+@media(max-width:700px){html body.portal-open[data-portal-view="options"] #portal .opt-bag-inline.settings-bag-preview{flex:none!important;width:100%!important;height:160px!important;max-height:none!important;overflow:visible!important;margin:0 0 10px!important}
+ html body.portal-open[data-portal-view="options"] #portal .opt-bag-inline .dice-pouch{width:130px!important;max-width:130px!important;height:150px!important;max-height:150px!important;transform:none!important}}
