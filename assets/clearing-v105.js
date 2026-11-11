@@ -6,6 +6,7 @@ import { applyLook } from './variant-look.js?v=20261113-v215';
 import { createLake } from './lake-v230.js?v=20261116-v233c';
 import { createSkyIsland } from './sky-v231.js?v=20261116-v233c';
 import { createWindHighlands } from './wind-v232.js?v=20261118-v237';
+import { createWoodland } from './woodland-v238.js?v=20261119-v238';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -261,6 +262,7 @@ for(const object of[petals,stems,centres,flowerLeaves]){object.receiveShadow=tru
 const moteGeo=new THREE.BufferGeometry(),motePos=[];for(let i=0;i<22;i++)motePos.push(rand()*12-6,.5+rand()*2.3,rand()*12-6);moteGeo.setAttribute('position',new THREE.Float32BufferAttribute(motePos,3));const motes=new THREE.Points(moteGeo,new THREE.PointsMaterial({color:0xffe3a1,size:.045,transparent:true,opacity:.6,depthWrite:false}));world.add(motes);
 // Retain the same grid and score zones while switching scenery.
 const forest=new THREE.Group(),shared=new Set([grid,iceScene,boardFrame,...world.children.filter(o=>o.geometry?.type==='PlaneGeometry'&&o.geometry.parameters.width===8&&o.geometry.parameters.height===1)]);for(const o of [...world.children])if(!shared.has(o))forest.add(o);world.add(forest);
+/* v238 — sous-bois, rivière vivante et petite faune du Bois tendre */const woodland=createWoodland({forest,river,height,waterHeight,rand,software:!!renderer.isSoftware,crownShapes,leafMats});
 let crater=null,lake=null,skyIsland=null,windLand=null;
 const snowCanvas=document.createElement('canvas');snowCanvas.width=snowCanvas.height=512;const snowCtx=snowCanvas.getContext('2d');
 const snowWash=snowCtx.createLinearGradient(0,0,512,512);snowWash.addColorStop(0,'#d5e5ed');snowWash.addColorStop(.46,'#b5cedb');snowWash.addColorStop(1,'#e5eef2');snowCtx.fillStyle=snowWash;snowCtx.fillRect(0,0,512,512);
@@ -704,7 +706,7 @@ function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&
   for(let i=0;i<p.count;i++){const u=Math.floor(i/2)/6+(i%2)/6,x=Math.max(-7,Math.min(7,center+(u-.5)*g.length)),z=river(x)+g.lane+Math.sin(u*3.14+g.phase)*.014;p.setXYZ(i,x,waterHeight(x,z,t)+.013,z)}p.needsUpdate=true;
  }
  for(const rill of fallingRills){const down=moving?((t*.35+rill.phase)%1)*.83:rill.phase*.83,p=rill.m.geometry.attributes.position;for(let i=0;i<2;i++){const y=-.06-down-i*.17;p.setXYZ(i,rill.side*(7.065+Math.sin(-y*2)*.035),y,river(rill.side*7)+rill.lane)}p.needsUpdate=true}
- motes.rotation.y=moving?Math.sin(t*.08)*.06:0;}else crater?.update(t,light,moving);if(lake?.root.visible)lake.update(t,light,moving);if(skyIsland?.root.visible)skyIsland.update(t,light,moving);if(windLand?.root.visible)windLand.update(t,light,moving);
+ motes.rotation.y=moving?Math.sin(t*.08)*.06:0;woodland.update(t,moving);}else crater?.update(t,light,moving);if(lake?.root.visible)lake.update(t,light,moving);if(skyIsland?.root.visible)skyIsland.update(t,light,moving);if(windLand?.root.visible)windLand.update(t,light,moving);
 
  const target=-state.rzCur*Math.PI/180;if(!moving)currentAngle=target;currentAngle+=Math.atan2(Math.sin(target-currentAngle),Math.cos(target-currentAngle))*Math.min(1,dt*5);world.rotation.y=currentAngle;world.updateMatrixWorld(true);
 

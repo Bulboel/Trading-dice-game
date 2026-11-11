@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v238',title:'Le Bois tendre prend vie',items:['Le Bois tendre s’enrichit : fougères, champignons, buissons à baies et roseaux bordent le plateau.','La rivière est plus vivante : rochers mouillés entourés d’écume, reflets de soleil et feuilles qui dérivent au fil de l’eau.','Des papillons et des libellules volent autour du duel. Les cases du damier restent parfaitement lisibles.']},
  {id:'v237',title:'Synergies et terrains plus vivants',items:['Nouveau : les synergies ! Certains personnages liés (Maebril et Bosco, Kayla et Hilam, Kala et Velmarys…) gagnent chacun +1 d’attaque quand ils sont ensemble sur le plateau. Voir la fiche de chaque créature.','Lac rose : un nénuphar sacré s’ouvre à chaque tour et reste deux tours. Vents de Hacko : une rafale souffle un tour sur deux, et les moulins tournent plus calmement.','Options : l’aperçu de la bourse reste visible pendant que vous la personnalisez.']},
  {id:'v236',title:'Loupe de placement corrigée',items:['En posant un dé au bord ou dans votre zone, l’aperçu des dalles et la loupe s’affichent maintenant correctement.']},
  {id:'v235',title:'Le nénuphar sacré',items:['Le lac rose : à la fin de chaque tour, un nénuphar sacré s’ouvre sur une dalle. La créature qui s’y trouve gagne +1 de force jusqu’au tour suivant.']},
