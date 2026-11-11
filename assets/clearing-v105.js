@@ -7,6 +7,7 @@ import { createLake } from './lake-v230.js?v=20261116-v233c';
 import { createSkyIsland } from './sky-v231.js?v=20261116-v233c';
 import { createWindHighlands } from './wind-v232.js?v=20261118-v237';
 import { createWoodland } from './woodland-v238.js?v=20261119-v238';
+import { createFrostRoad } from './frost-v240.js?v=20261121-v240';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -152,18 +153,6 @@ for(const z of[-7.786,7.786])engraveVine((x,y)=>new THREE.Vector3(x,y,z));
 for(const x of[-7.296,7.296])for(const center of[-4.6,4.6])engraveVine((z,y)=>new THREE.Vector3(x,y,center+z));
 world.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(engravingPoints),new THREE.LineBasicMaterial({color:0xb19c67,transparent:true,opacity:.7})));
 const boardFrame=new THREE.Group();for(const part of world.children.slice(frameStart)){world.remove(part);boardFrame.add(part)}world.add(boardFrame);
-const glacierClosures=new THREE.Group();glacierClosures.visible=false;boardFrame.add(glacierClosures);
-function closeGlacierGap(x,center){
- const pieces=[frameBeam(x,-.36,center,.42,1.55,1.7,frameWood),frameBeam(x,.45,center,.53,.12,1.7,frameDark),frameBeam(x,.54,center,.47,.1,1.7,frameWood),frameBeam(x,.598,center,.035,.025,1.7,frameBronze)];
- for(const edge of[-.16,.16])pieces.push(frameBeam(x+edge,.598,center,.014,.014,1.7,frameBronze));
- for(const piece of pieces){world.remove(piece);glacierClosures.add(piece)}
-}
-for(const x of[-7.08,7.08])closeGlacierGap(x,river(x<0?-7:7));
-/* Continuous recessed backing closes the ice sidewalls at the river outlets. */
-for(const x of[-7.04,7.04]){
- const backing=frameBeam(x,-.36,0,.42,1.55,15.16,frameWood);
- world.remove(backing);glacierClosures.add(backing)
-}
 // Narrow ribbons follow the banks exactly, avoiding triangular colour bands.
 for(const side of[-1,1]){
  const bankGeo=new THREE.PlaneGeometry(14,.52,100,4);bankGeo.rotateX(-Math.PI/2);const p=bankGeo.attributes.position,c=[];
@@ -199,18 +188,6 @@ for(let i=0;i<42;i++){const x=rand()*13-6.5,side=rand()>.5?1:-1,z=river(x)+side*
 // Board lines float just above the landscape, without adding movement restrictions.
 const gridPoints=[];for(let x=0;x<=8;x++)gridPoints.push(new THREE.Vector3(x-4,.205,-BH/2),new THREE.Vector3(x-4,.205,BH/2));for(let y=0;y<=BH;y++)gridPoints.push(new THREE.Vector3(-4,.205,y-BH/2),new THREE.Vector3(4,.205,y-BH/2));
 const grid=new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(gridPoints),new THREE.LineBasicMaterial({color:0xe5d9a0,transparent:true,opacity:.27}));world.add(grid);
-const iceScene=new THREE.Group();iceScene.visible=false;world.add(iceScene);
-// Cool, quiet cell tints and raised blue seams keep the icy board readable while playing.
-const iceCellGeo=new THREE.PlaneGeometry(.96,.96);iceCellGeo.rotateX(-Math.PI/2);
-const iceCells=new THREE.InstancedMesh(iceCellGeo,new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.24,depthWrite:false,side:THREE.DoubleSide}),8*BH),iceCellDummy=new THREE.Object3D();
-for(let y=0,i=0;y<BH;y++)for(let x=0;x<8;x++,i++){const wx=x-3.5,wz=y-HZ;iceCellDummy.position.set(wx,height(wx,wz/ZS)+.018,wz);iceCellDummy.updateMatrix();iceCells.setMatrixAt(i,iceCellDummy.matrix);iceCells.setColorAt(i,new THREE.Color((x+y)%2===0?0x78a9c2:0xc8e0ec))}
-iceCells.instanceMatrix.needsUpdate=true;iceCells.instanceColor.needsUpdate=true;iceScene.add(iceCells);
-const iceSeams=new THREE.Group();iceScene.add(iceSeams);
-const seamMat=new THREE.MeshBasicMaterial({color:0x567d94,transparent:true,opacity:.92,depthWrite:false});
-const seamVertical=new THREE.InstancedMesh(new THREE.BoxGeometry(.04,.018,.52),seamMat,9*20),seamHorizontal=new THREE.InstancedMesh(new THREE.BoxGeometry(.52,.018,.04),seamMat,11*16),seamDummy=new THREE.Object3D();
-for(let x=0,i=0;x<=8;x++)for(let s=0;s<20;s++,i++){const wx=x-4,wz=-BH/2+.25+s*.5;seamDummy.position.set(wx,height(wx,wz/ZS)+.055,wz);seamDummy.updateMatrix();seamVertical.setMatrixAt(i,seamDummy.matrix)}
-for(let y=0,i=0;y<=BH;y++)for(let s=0;s<16;s++,i++){const wx=-3.75+s*.5,wz=y-BH/2;seamDummy.position.set(wx,height(wx,wz/ZS)+.055,wz);seamDummy.updateMatrix();seamHorizontal.setMatrixAt(i,seamDummy.matrix)}
-seamVertical.instanceMatrix.needsUpdate=true;seamHorizontal.instanceMatrix.needsUpdate=true;iceSeams.add(seamVertical,seamHorizontal);
 const boardMarks=new THREE.Group();world.add(boardMarks);
 function rail(z,color){const m=mesh(box,mat(color,{metalness:.35}),boardMarks);m.scale.set(8.13,.07,.07);m.position.set(0,.22,z);return m}rail(-BH/2,0xbf9165);rail(BH/2,0x9eae73);
 // The first and last rows are the original scoring zones, one cell deep.
@@ -261,130 +238,12 @@ for(let i=0;i<flowerCount;i++){
 for(const object of[petals,stems,centres,flowerLeaves]){object.receiveShadow=true;world.add(object)}
 const moteGeo=new THREE.BufferGeometry(),motePos=[];for(let i=0;i<22;i++)motePos.push(rand()*12-6,.5+rand()*2.3,rand()*12-6);moteGeo.setAttribute('position',new THREE.Float32BufferAttribute(motePos,3));const motes=new THREE.Points(moteGeo,new THREE.PointsMaterial({color:0xffe3a1,size:.045,transparent:true,opacity:.6,depthWrite:false}));world.add(motes);
 // Retain the same grid and score zones while switching scenery.
-const forest=new THREE.Group(),shared=new Set([grid,iceScene,boardFrame,...world.children.filter(o=>o.geometry?.type==='PlaneGeometry'&&o.geometry.parameters.width===8&&o.geometry.parameters.height===1)]);for(const o of [...world.children])if(!shared.has(o))forest.add(o);world.add(forest);
+const forest=new THREE.Group(),shared=new Set([grid,boardFrame,...world.children.filter(o=>o.geometry?.type==='PlaneGeometry'&&o.geometry.parameters.width===8&&o.geometry.parameters.height===1)]);for(const o of [...world.children])if(!shared.has(o))forest.add(o);world.add(forest);
 /* v238 — sous-bois, rivière vivante et petite faune du Bois tendre */const woodland=createWoodland({forest,river,height,waterHeight,rand,software:!!renderer.isSoftware,crownShapes,leafMats});
-let crater=null,lake=null,skyIsland=null,windLand=null;
-const snowCanvas=document.createElement('canvas');snowCanvas.width=snowCanvas.height=512;const snowCtx=snowCanvas.getContext('2d');
-const snowWash=snowCtx.createLinearGradient(0,0,512,512);snowWash.addColorStop(0,'#d5e5ed');snowWash.addColorStop(.46,'#b5cedb');snowWash.addColorStop(1,'#e5eef2');snowCtx.fillStyle=snowWash;snowCtx.fillRect(0,0,512,512);
-// Broad, soft wind-carved blue shadows with restrained surface grain.
-for(let i=0;i<900;i++){const x=rand()*512,y=rand()*512,w=32+rand()*130;snowCtx.strokeStyle=rand()>.58?'rgba(246,252,255,'+(.035+rand()*.075)+')':'rgba(69,111,139,'+(.012+rand()*.035)+')';snowCtx.lineWidth=1+rand()*3;snowCtx.beginPath();snowCtx.moveTo(x,y);snowCtx.bezierCurveTo(x+w*.22,y-10-rand()*12,x+w*.72,y+8+rand()*14,x+w,y-1-rand()*5);snowCtx.stroke()}
-for(let i=0;i<1900;i++){const x=rand()*512,y=rand()*512,r=.35+rand()*1.5;snowCtx.fillStyle=rand()>.48?'rgba(248,253,255,'+(.035+rand()*.09)+')':'rgba(62,101,128,'+(.012+rand()*.035)+')';snowCtx.beginPath();snowCtx.ellipse(x,y,r,r*(.35+rand()*.35),-.12,0,Math.PI*2);snowCtx.fill()}
-const snowTexture=new THREE.CanvasTexture(snowCanvas);snowTexture.colorSpace=THREE.SRGBColorSpace;snowTexture.wrapS=snowTexture.wrapT=THREE.RepeatWrapping;snowTexture.repeat.set(2.6,3.1);snowTexture.anisotropy=8;
-function iceHeight(x,z){
- const edge=Math.max(0,Math.abs(x)-4.5,Math.abs(z)-5.35);
- return .025+Math.sin(x*.52+z*.31)*.022+Math.cos(z*.43-x*.25)*.018+THREE.MathUtils.smoothstep(edge,0,1.7)*.11
-}
-const iceGround=new THREE.PlaneGeometry(13.48,14.48,80,86);iceGround.rotateX(-Math.PI/2);const iceGroundPos=iceGround.attributes.position;
-for(let i=0;i<iceGroundPos.count;i++){const x=iceGroundPos.getX(i),z=iceGroundPos.getZ(i);iceGroundPos.setY(i,iceHeight(x,z))}
-iceGround.computeVertexNormals();mesh(iceGround,renderer.isSoftware?new THREE.MeshBasicMaterial({color:0xe7f1f5}):mat(0xf4f9fb,{map:snowTexture,bumpMap:snowTexture,bumpScale:.003,roughness:.99}),iceScene);
-
-const snowMat=mat(0xd4e4ec,{roughness:.98}),snowBright=mat(0xf0f6f8,{roughness:.96}),snowShade=mat(0x9fb8c6,{roughness:.98}),birchBark=mat(0xc1d0d4,{roughness:.95}),birchShadow=mat(0x40515b,{roughness:.94}),branchMat=mat(0x4d5960,{roughness:.96}),firMat=mat(0x315b5b,{roughness:.94}),firDark=mat(0x204648,{roughness:.96}),iceCrystal=mat(0x9ac7da,{metalness:.08,roughness:.28,transparent:true,opacity:.82,emissive:0x193b4e,emissiveIntensity:.08}),iceRockMat=mat(0xffffff,{vertexColors:true,roughness:.96}),dryGrassMat=mat(0x81939a,{roughness:.97});
-function outsideBoard(x,z){return Math.abs(x)>5.25||Math.abs(z)>6.15}
-function perimeterPoint(radius){
- const maxX=6.72-radius,maxZ=7.2-radius;
- for(let attempt=0;attempt<48;attempt++){const x=(rand()*2-1)*maxX,z=(rand()*2-1)*maxZ;if(outsideBoard(x,z))return[x,z]}
- return[(rand()>.5?1:-1)*Math.min(maxX,5.35),(rand()*2-1)*Math.min(maxZ,5.6)]
-}
-function snowTree(x,z,s=1){
- const g=new THREE.Group();g.position.set(x,iceHeight(x,z),z);g.rotation.y=rand()*Math.PI;iceScene.add(g);
- const trunk=mesh(new THREE.CylinderGeometry(.045*s,.085*s,.72*s,7),wood,g);trunk.position.y=.34*s;trunk.castShadow=false;
- const branchGeo=new THREE.CylinderGeometry(.058,.012,1,5),snowBranchGeo=new THREE.SphereGeometry(1,9,6),up=new THREE.Vector3(0,1,0);
- for(let tier=0;tier<3;tier++){
-  const h=(1.02-tier*.08)*s,r=(.60-tier*.12)*s,y=(.60+tier*.43)*s;
-  const crown=mesh(new THREE.ConeGeometry(r,h,9),tier===1?firDark:firMat,g);crown.position.y=y;crown.rotation.y=(rand()-.5)*.3;crown.castShadow=false;
-  // Snow follows the spreading boughs in narrow drifts instead of sitting as a cap.
-  for(let b=0;b<6;b++){
-   const angle=b*Math.PI/3+tier*.21+(rand()-.5)*.12,level=y-h*.17+(rand()-.5)*h*.08,length=r*(.58+rand()*.13);
-   const dir=new THREE.Vector3(Math.cos(angle),-.30,Math.sin(angle)).normalize(),start=new THREE.Vector3(Math.cos(angle)*r*.17,level,Math.sin(angle)*r*.17);
-   const branch=mesh(branchGeo,firDark,g);branch.position.copy(start).addScaledVector(dir,length*.52);branch.quaternion.setFromUnitVectors(up,dir);branch.scale.set(s,length,s);branch.castShadow=false;
-   const drift=mesh(snowBranchGeo,rand()>.38?snowBright:snowMat,g);drift.position.copy(start).addScaledVector(dir,length*.68);drift.position.y+=.035*s;drift.rotation.y=-angle;drift.rotation.z=-.18;drift.scale.set(length*.43,.027*s,.075*s);drift.castShadow=false;
-  }
-  // Small uneven snow shelves cling to the crown silhouette between the branches.
-  for(let k=0;k<4;k++){
-   const angle=k*Math.PI/2+tier*.37+(rand()-.5)*.35,u=.34+rand()*.34,yy=y-h*.5+u*h,rad=r*(1-u)*.88;
-   const shelf=mesh(snowBranchGeo,snowBright,g);shelf.position.set(Math.cos(angle)*rad,yy,Math.sin(angle)*rad);shelf.rotation.y=-angle+Math.PI/2;shelf.rotation.z=-.12;
-   shelf.scale.set(.12*s,.025*s,.065*s);shelf.castShadow=false;
-  }
- }
- return g
-}
-[[-5.55,-5.7,1.25],[-6.05,-3.0,.9],[5.5,-5.9,1.1],[6.0,-3.7,.9],[-5.7,4.9,.95],[5.6,4.4,1.05],[-2.9,-6.25,.78],[2.8,6.2,.9]].forEach(a=>snowTree(...a));
-const snowballMaterial=new THREE.MeshStandardMaterial({color:0xffffff,vertexColors:true,roughness:.91,metalness:.015});
-function snowballGeometry(seed){
- const geo=new THREE.SphereGeometry(1,24,16),p=geo.attributes.position,colors=[];
- for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i),n=Math.sin(x*8+seed)*Math.cos(z*7-seed*.7)*.012+Math.sin(y*11+seed*1.3)*.006;
-  p.setXYZ(i,x*(1+n),y*(1+n),z*(1+n));const shade=THREE.MathUtils.clamp((.36-y)*.18+Math.max(0,n)*1.2,0,.15),color=new THREE.Color(0xf8fcff).lerp(new THREE.Color(0xa8c2d0),shade);colors.push(color.r,color.g,color.b)}
- geo.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geo.computeVertexNormals();return geo
-}
-function makeSnowman(x,z,scale,scarfColor,noseColor){
- const snowman=new THREE.Group();snowman.position.set(x,iceHeight(x,z),z);snowman.scale.setScalar(scale);iceScene.add(snowman);
- const snowBody=mesh(snowballGeometry(1),snowballMaterial,snowman);snowBody.position.y=.43;snowBody.scale.set(.43,.396,.387);snowBody.castShadow=false;
- const snowMiddle=mesh(snowballGeometry(2),snowballMaterial,snowman);snowMiddle.position.y=1.0;snowMiddle.scale.setScalar(.30);snowMiddle.castShadow=false;
- const snowHead=mesh(snowballGeometry(3),snowballMaterial,snowman);snowHead.position.y=1.39;snowHead.scale.setScalar(.22);snowHead.castShadow=false;
- const scarf=mesh(new THREE.TorusGeometry(.255,.065,10,22),mat(scarfColor,{roughness:.7}),snowman);scarf.position.y=1.15;scarf.rotation.x=Math.PI/2;
- const hat=mesh(new THREE.CylinderGeometry(.16,.18,.2,10),birchShadow,snowman);hat.position.y=1.6;const hatBrim=mesh(new THREE.CylinderGeometry(.24,.24,.05,12),birchShadow,snowman);hatBrim.position.y=1.48;
- const coal=mat(0x17252b,{roughness:.65});
- for(const [px,py]of[[-.075,1.43],[.075,1.43],[-.045,1.5],[.045,1.5]]){const eye=mesh(new THREE.SphereGeometry(.023,7,6),coal,snowman);eye.position.set(px,py,.2)}
- const nose=mesh(new THREE.ConeGeometry(.045,.26,7),mat(noseColor,{roughness:.6}),snowman);nose.rotation.x=Math.PI/2;nose.position.set(0,1.35,.34);
- for(const py of[.4,.62,.82]){const button=mesh(new THREE.SphereGeometry(.03,7,6),coal,snowman);button.position.set(.02,py,.37)}
- return snowman;
-}
-makeSnowman(-5.1,1.2,1,0x9c4650,0xe68c43);
-makeSnowman(5.0,1.1,.92,0x537ba1,0x974bc5);
-// Uneven, wind-shaped drifts replace the smooth circular snow piles.
-const driftGeo=new THREE.SphereGeometry(1,24,14),driftPos=driftGeo.attributes.position;
-for(let i=0;i<driftPos.count;i++){const x=driftPos.getX(i),y=driftPos.getY(i),z=driftPos.getZ(i),n=Math.sin(x*4.7+z*3.5)*.16+Math.cos(z*4.1-y*3.2)*.11;driftPos.setXYZ(i,x*(1+n),y*(1+n),z*(1+n))}
-driftGeo.computeVertexNormals();
-for(let i=0;i<22;i++){
- const sx=.42+rand()*.52,sz=.30+rand()*.46,[x,z]=perimeterPoint(Math.hypot(sx,sz));
- const mound=mesh(driftGeo,i%5===0?snowBright:i%4===0?snowShade:snowMat,iceScene);mound.position.set(x,iceHeight(x,z)+.025,z);mound.scale.set(sx,.045+rand()*.095,sz);mound.rotation.y=rand()*Math.PI;mound.castShadow=false;mound.receiveShadow=true}
-function glacierRockGeometry(seedValue){
- const geo=new THREE.DodecahedronGeometry(1,1),p=geo.attributes.position,cols=[];
- for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i),hash=Math.abs(Math.sin(seedValue*91+i*17.3)*43758.5)%1,n=(hash-.5)*.09;p.setXYZ(i,x*(1+n),y*(1+n),z*(1+n));const c=new THREE.Color(y>.34&&hash>.18?0xc8d9df:(hash>.5?0x687e8a:0x84969c));c.multiplyScalar(.84+hash*.24);cols.push(c.r,c.g,c.b)}
- geo.setAttribute('color',new THREE.Float32BufferAttribute(cols,3));geo.computeVertexNormals();return geo
-}
-for(let i=0;i<13;i++){
- const size=.28+rand()*.30,sx=size*(1.1+rand()*.45),sz=size*(.85+rand()*.38),[x,z]=perimeterPoint(Math.hypot(sx,sz)),group=new THREE.Group();group.position.set(x,iceHeight(x,z)+.015,z);group.rotation.y=rand()*Math.PI;iceScene.add(group);
- const rock=mesh(glacierRockGeometry(i),iceRockMat,group);rock.scale.set(sx,size*(.55+rand()*.3),sz);rock.castShadow=true;
- const cap=mesh(new THREE.SphereGeometry(1,16,9,0,Math.PI*2,0,Math.PI*.4),snowBright,group);cap.position.y=size*.28;cap.scale.set(size*.78,size*.21,size*.72);cap.castShadow=false
-}
-for(let i=0;i<22;i++){
- const [x,z]=perimeterPoint(.28),g=new THREE.Group();g.position.set(x,iceHeight(x,z),z);g.rotation.y=rand()*Math.PI;iceScene.add(g);
- for(let b=0;b<3;b++){const h=.12+rand()*.19,stem=mesh(new THREE.CylinderGeometry(.008,.018,h,5),dryGrassMat,g);stem.position.set((rand()-.5)*.22,h*.5,(rand()-.5)*.18);stem.rotation.z=(rand()-.5)*.85;stem.castShadow=false;
-  if(rand()>.3){const tip=mesh(new THREE.SphereGeometry(.035,6,5),snowBright,g);tip.position.copy(stem.position);tip.position.y+=h*.48;tip.scale.set(1,.45,1);tip.castShadow=false}}
-}
-for(const [x,z,s]of[[-5.35,-6.0,.4],[-6.0,-2.3,.38],[5.65,-6,.46],[5.85,2.8,.4],[-5.8,4.7,.43],[5.45,5.65,.39],[-6.1,1.3,.42],[6.15,-4.25,.44]]){
- const cluster=new THREE.Group();cluster.position.set(x,iceHeight(x,z),z);iceScene.add(cluster);
- for(let i=0;i<3;i++){const h=s*(.55+rand()*.5),r=s*(.12+rand()*.08),tooth=mesh(new THREE.ConeGeometry(r,h,7),iceCrystal,cluster);tooth.position.set((i-1)*s*.29,h*.48,((i%2)-.5)*s*.2);tooth.rotation.z=(rand()-.5)*.18;tooth.rotation.x=(rand()-.5)*.15;tooth.castShadow=false}
-}
-// Irregular clear-ice patches catch the light between snow banks and beneath a few grid cells.
-const iceMaterial=new THREE.MeshPhysicalMaterial({color:0x82c7e2,metalness:.13,roughness:.16,clearcoat:.95,clearcoatRoughness:.13,transparent:true,opacity:.56,depthWrite:false,side:THREE.DoubleSide});
-const iceEdgeMaterial=new THREE.LineBasicMaterial({color:0xe8f8ff,transparent:true,opacity:.62,depthWrite:false});
-function addIcePatch(cx,cz,rx,rz,seed){
- const steps=32,positions=[cx,iceHeight(cx,cz)+.032,cz],rim=[];
- for(let i=0;i<steps;i++){const a=i/steps*Math.PI*2,w=.82+.11*Math.sin(i*seed*.19)+.07*Math.cos(i*seed*.31),x=cx+Math.cos(a)*rx*w,z=cz+Math.sin(a)*rz*w,y=iceHeight(x,z)+.032;positions.push(x,y,z);rim.push(new THREE.Vector3(x,y+.004,z))}
- const indices=[];for(let i=0;i<steps;i++){const a=i+1,b=(i+1)%steps+1;indices.push(0,b,a)}
- const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geo.setIndex(indices);geo.computeVertexNormals();
- const patch=mesh(geo,iceMaterial,iceScene);patch.castShadow=false;patch.renderOrder=1;
- const edge=new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(rim),iceEdgeMaterial);iceScene.add(edge)
-}
-[[-5.65,-4.0,1.0,.55,1],[5.65,-4.3,1.05,.62,2],[-5.8,.1,.9,.62,3],[5.75,1.8,1.05,.62,4],[-2.2,-6.25,1.1,.38,5],[2.2,6.25,1.15,.38,6],[-5.75,3.6,.95,.55,7],[5.7,4.1,1.0,.62,8],[-2.7,6.25,1.0,.38,9]].forEach(p=>addIcePatch(...p));
-// Snowflakes use lightweight instanced meshes so they render in both WebGL and software fallback.
-function snowflakeGeometry(){
- const verts=[],L=.085,w=.009;
- function bar(x1,y1,x2,y2,width){const dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy),px=-dy/len*width/2,py=dx/len*width/2;
-  const ax=x1+px,ay=y1+py,bx=x1-px,by=y1-py,cx=x2-px,cy=y2-py,dx2=x2+px,dy2=y2+py;
-  verts.push(ax,ay,0,bx,by,0,cx,cy,0,ax,ay,0,cx,cy,0,dx2,dy2,0)}
- for(let i=0;i<3;i++){const a=i*Math.PI/3;bar(-Math.cos(a)*L,-Math.sin(a)*L,Math.cos(a)*L,Math.sin(a)*L,w)}
- for(let arm=0;arm<6;arm++){const a=arm*Math.PI/3,sx=Math.cos(a)*L*.48,sy=Math.sin(a)*L*.48;
-  for(const side of[-1,1]){const end=a+side*.76;bar(sx,sy,sx+Math.cos(end)*L*.35,sy+Math.sin(end)*L*.35,w*.72)}}
- const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));geo.computeVertexNormals();return geo
-}
-const flakeCount=renderer.isSoftware?70:135,flakeGeometry=snowflakeGeometry(),flakeSeeds=[],snowfall=new THREE.InstancedMesh(flakeGeometry,new THREE.MeshBasicMaterial({color:0xf4fbff,transparent:true,opacity:.92,depthWrite:false,depthTest:false,side:THREE.DoubleSide}),flakeCount),flakeDummy=new THREE.Object3D();
-for(let i=0;i<flakeCount;i++){const x=rand()*12-6,y=rand()*6.2+.35,z=rand()*12-6,size=.66+rand()*.7;flakeSeeds.push({x,y,z,phase:rand()*6,size,spin:rand()*6});flakeDummy.position.set(x,y,z);flakeDummy.scale.setScalar(size);flakeDummy.rotation.z=flakeSeeds[i].spin;flakeDummy.updateMatrix();snowfall.setMatrixAt(i,flakeDummy.matrix)}snowfall.instanceMatrix.needsUpdate=true;snowfall.frustumCulled=false;snowfall.renderOrder=3;iceScene.add(snowfall);
+let crater=null,lake=null,skyIsland=null,windLand=null,frostRoad=null;
 // 8×BH board: the scenery is stretched lengthwise; cells, pieces and effects keep their real one-unit spacing.
 const decor=new THREE.Group();decor.scale.z=ZS;for(const o of [...world.children]){world.remove(o);decor.add(o)}world.add(decor);
-for(const o of [grid,iceCells,iceSeams,boardMarks])o.scale.z=1/ZS;
+for(const o of [grid,boardMarks])o.scale.z=1/ZS;
 const pieces=new THREE.Group(),highlights=new THREE.Group();world.add(pieces,highlights);
 const tileGeo=(()=>{const w=.86,r=.12,sh=new THREE.Shape(),hw=w/2;sh.moveTo(-hw+r,-hw);sh.lineTo(hw-r,-hw);sh.quadraticCurveTo(hw,-hw,hw,-hw+r);sh.lineTo(hw,hw-r);sh.quadraticCurveTo(hw,hw,hw-r,hw);sh.lineTo(-hw+r,hw);sh.quadraticCurveTo(-hw,hw,-hw,hw-r);sh.lineTo(-hw,-hw+r);sh.quadraticCurveTo(-hw,-hw,-hw+r,-hw);
  const b=.04,g=new THREE.ExtrudeGeometry(sh,{depth:1-2*b,bevelEnabled:true,bevelThickness:b,bevelSize:.035,bevelSegments:2,curveSegments:5});g.rotateX(-Math.PI/2);g.translate(0,-(1-2*b)/2,0);g.computeVertexNormals();return g})(),topGeo=new THREE.PlaneGeometry(.9,.9),highlightGeo=new THREE.PlaneGeometry(.91,.91),textures=new Map(),tileMats=new Map(),creatureMats=new Map();
@@ -664,12 +523,12 @@ let sceneryKey='';
 function setActive(value,terrainOverride=null){
  active=value;const type=terrainOverride||game.snapshot().terrain,fire=type==='feu',ice=type==='glace',lakeOn=type==='eau',skyOn=type==='foudre',windOn=type==='vent';
  if(!value)placementLens.hidden=true;host.classList.toggle('view3d',value);document.getElementById('land-caption').hidden=!value;
- forest.visible=value&&!fire&&!ice&&!lakeOn&&!skyOn&&!windOn;if(windOn&&value&&!windLand){windLand=createWindHighlands(decor,!!renderer.isSoftware,BH);windLand.root.scale.z=1/ZS}if(windLand)windLand.root.visible=value&&windOn;if(skyOn&&value&&!skyIsland){skyIsland=createSkyIsland(decor,!!renderer.isSoftware,BH);skyIsland.root.scale.z=1/ZS}if(skyIsland)skyIsland.root.visible=value&&skyOn;if(lakeOn&&value&&!lake){lake=createLake(decor,!!renderer.isSoftware,BH);lake.root.scale.z=1/ZS}/* v233 : coordonnées réelles des cases, comme les pièces */if(lake)lake.root.visible=value&&lakeOn;boardFrame.visible=value&&!fire&&!skyOn&&!windOn;glacierClosures.visible=value&&ice;iceScene.visible=value&&ice;grid.visible=true;grid.material.color.set(ice?0x557e98:lakeOn?0x5f7a5a:skyOn?0x7fd8ff:fire?0xffc27a:0xe5d9a0);grid.material.opacity=ice?.22:lakeOn?.18:skyOn?.12:windOn?0:fire?.1:.27;
+ forest.visible=value&&!fire&&!ice&&!lakeOn&&!skyOn&&!windOn;if(windOn&&value&&!windLand){windLand=createWindHighlands(decor,!!renderer.isSoftware,BH);windLand.root.scale.z=1/ZS}if(windLand)windLand.root.visible=value&&windOn;if(skyOn&&value&&!skyIsland){skyIsland=createSkyIsland(decor,!!renderer.isSoftware,BH);skyIsland.root.scale.z=1/ZS}if(skyIsland)skyIsland.root.visible=value&&skyOn;if(lakeOn&&value&&!lake){lake=createLake(decor,!!renderer.isSoftware,BH);lake.root.scale.z=1/ZS}/* v233 : coordonnées réelles des cases, comme les pièces */if(lake)lake.root.visible=value&&lakeOn;boardFrame.visible=value&&!fire&&!skyOn&&!windOn&&!ice;if(ice&&value&&!frostRoad){frostRoad=createFrostRoad(decor,!!renderer.isSoftware,BH);frostRoad.root.scale.z=1/ZS}if(frostRoad)frostRoad.root.visible=value&&ice;/* v240 — La Route vers Forfalla repensée */grid.visible=true;grid.material.color.set(ice?0x557e98:lakeOn?0x5f7a5a:skyOn?0x7fd8ff:fire?0xffc27a:0xe5d9a0);grid.material.opacity=ice?0:lakeOn?.18:skyOn?.12:windOn?0:fire?.1:.27;
  if(fire&&value&&!crater){crater=createEmberlands(decor,game.fireVents,!!renderer.isSoftware,BH);crater.root.scale.z=1/ZS}/* v239 — Terres embrasées repensées */if(crater)crater.root.visible=value&&fire;
  if(sceneryKey!==type){
   sceneryKey=type;
-  const themes={terre:[0x172c25,0x304d3d,0xe9f0d5,0x3c5034,0xffe1a0,3.1,'LE BOIS TENDRE','La rivière murmure. Le duel commence.'],feu:[0x221b20,0x392328,0xf1c6ab,0x3e2023,0xffb16a,2.5,'LES TERRES EMBRASÉES','La roche respire. Les évents sont impraticables.'],glace:[0x385365,0x93b2c4,0xe5f2f8,0x496778,0xcbe7f7,2.25,'LA ROUTE VERS FORFALLA','La neige tombe. La glace entraîne les créatures.'],eau:[0x1c1230,0x4a2c55,0xffd8ec,0x2e1d3c,0xffc9e2,2.1,'LE LAC ROSE','Sous la lune, le vieux sanctuaire dort sur les eaux roses.'],vent:[0x2f5a4c,0x4d7f69,0xeaf8e6,0x35503a,0xfff0cc,2.9,'LES VENTS DE HACKO','Sur le haut plateau, le vent chante entre les pierres levées.'],foudre:[0x2b3242,0x2b3242,0xcad6ff,0x1b1f2c,0xdbe6ff,2.2,'L’ÎLE CÉLESTE','Au-dessus des nuages, l’orage gronde sous le sanctuaire.']};
-  const t=themes[type]||themes.terre;renderer.setClearColor(t[0],1);scene.fog.color.set(t[1]);sky.color.set(t[2]);sky.groundColor.set(t[3]);sky.intensity=ice?1.9:type==='eau'?1.25:type==='foudre'?1.45:type==='vent'?2.1:2.3;sun.color.set(t[4]);sun.intensity=t[5];
+  const themes={terre:[0x172c25,0x304d3d,0xe9f0d5,0x3c5034,0xffe1a0,3.1,'LE BOIS TENDRE','La rivière murmure. Le duel commence.'],feu:[0x221b20,0x392328,0xf1c6ab,0x3e2023,0xffb16a,2.5,'LES TERRES EMBRASÉES','La roche respire. Les évents sont impraticables.'],glace:[0x1b2b40,0x3a5870,0xd6e9f8,0x3d5568,0xd2e6ff,1.9,'LA ROUTE VERS FORFALLA','La neige tombe. La glace entraîne les créatures.'],eau:[0x1c1230,0x4a2c55,0xffd8ec,0x2e1d3c,0xffc9e2,2.1,'LE LAC ROSE','Sous la lune, le vieux sanctuaire dort sur les eaux roses.'],vent:[0x2f5a4c,0x4d7f69,0xeaf8e6,0x35503a,0xfff0cc,2.9,'LES VENTS DE HACKO','Sur le haut plateau, le vent chante entre les pierres levées.'],foudre:[0x2b3242,0x2b3242,0xcad6ff,0x1b1f2c,0xdbe6ff,2.2,'L’ÎLE CÉLESTE','Au-dessus des nuages, l’orage gronde sous le sanctuaire.']};
+  const t=themes[type]||themes.terre;renderer.setClearColor(t[0],1);scene.fog.color.set(t[1]);sky.color.set(t[2]);sky.groundColor.set(t[3]);sky.intensity=ice?1.45:type==='eau'?1.25:type==='foudre'?1.45:type==='vent'?2.1:2.3;sun.color.set(t[4]);sun.intensity=t[5];
   const caption=document.getElementById('land-caption');caption.querySelector('span').textContent=t[6];caption.querySelector('small').textContent=t[7];canvas.setAttribute('aria-label','Plateau 3D '+t[6].toLowerCase()+', huit colonnes et '+BH+' lignes')
  }
  document.getElementById('terrain-status').textContent=({terre:'Terre +1 · Le Bois tendre',feu:'Feu +1 · 6 évents fumants impraticables',glace:'Glace +1 · sol glissant · arrêt au contact',eau:'Eau +1 · Le lac rose · un nénuphar sacré donne +1 à chaque tour',vent:'Vent +1 · Les vents de Hacko · rafales qui poussent vers la gauche',foudre:'Foudre +1 · Île céleste · la foudre frappe 2 cases à chaque tour'})[type];
@@ -698,7 +557,7 @@ window.HackeniaView={get active(){return active},cellAt,sync,setActive,updateLen
 const portalContent=document.getElementById('portal-content');
 if(portalContent){const refreshPreview=()=>{const art=document.getElementById('play-terrain-art');if(art&&document.body.classList.contains('portal-open')){const terrain=document.getElementById('play-terrain')?.value||'terre';preview(terrain,art)}else clearPreview()};new MutationObserver(refreshPreview).observe(portalContent,{childList:true,subtree:true});refreshPreview()}
 function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&!previewMode)||!active||now-lastFrame<(renderer.isSoftware?100:light?32:16))return;const dt=Math.min((now-lastFrame)/1000,.06);lastFrame=now;if(pureFx.length)updatePureFx(now);if(weatherFx.length)updateWeather(now);animateLotus();if(auras.size)updateAuras(now);if(moving)for(const g of creatures.values()){const h=g.userData.hop,m=g.userData.model;if(!h||!m)continue;const u=((now/1000+h.phase)%3.2)/.55;if(u<1){const lift=Math.sin(Math.PI*u);m.position.y=h.base+.24*lift;m.scale.set(1-.05*lift,1+.08*lift,1-.05*lift)}else if(u<1.25){const s=Math.sin(Math.PI*(u-1)/.25);m.position.y=h.base;m.scale.set(1+.07*s,1-.1*s,1+.07*s)}else{m.position.y=h.base;m.scale.set(1,1,1)}}updateZoneGlow(now);const t=moving?now/1000:0;
- if(iceScene.visible){for(let i=0;i<flakeCount;i++){const f=flakeSeeds[i],drop=moving?(t*(.65+f.size*.25)+f.phase)%7.2:0;flakeDummy.position.set(f.x+Math.sin(t*.45+f.phase)*.11,Math.max(.12,f.y-drop),f.z+Math.cos(t*.37+f.phase)*.1);flakeDummy.scale.setScalar(f.size);flakeDummy.rotation.z=f.spin+t*.22;flakeDummy.updateMatrix();snowfall.setMatrixAt(i,flakeDummy.matrix)}snowfall.instanceMatrix.needsUpdate=true}
+ if(frostRoad?.root.visible)frostRoad.update(t,light,moving);
  if(forest.visible){wind.value=t;waterNormals.offset.set(-t*.032,t*.013);
  for(let i=0;i<wp.count;i++){const x=waterOrig[i*3],z=waterOrig[i*3+2];wp.setY(i,waterHeight(x,z,t))}wp.needsUpdate=true;if(!renderer.isSoftware)wg.computeVertexNormals();
  for(const g of glints){
