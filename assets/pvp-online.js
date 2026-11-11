@@ -90,7 +90,7 @@ function createCore(o){
 
 /* ---------- écrans du menu (navigateur uniquement) ---------- */
 let core=null,U={view:'home',err:'',busy:false,name:'',deck:'',terrain:'terre',code:'',tcode:'',offer:[]},host=null,bridge=null,hud=null;
-const TERRAINS=[['terre','🌲','Clairière des murmures'],['feu','🌋','Les Lèvres du Brasier'],['glace','❄️','Glacier éternel'],['vent','☁️','Les vents de Hacko'],['eau','🌊','Le lac rose'],['foudre','⚡','Île céleste']];
+const TERRAINS=[['terre','🌲','Le Bois tendre'],['feu','🌋','Les Terres embrasées'],['glace','🏔️','La Route vers Forfalla'],['vent','🍃','Les vents de Hacko'],['eau','🌊','Le lac rose'],['foudre','⚡','Île céleste']];
 const LIB=['assets/vendor/supabase/supabase.js'];  // dernière version 2.x (compatible avec les clés « publishable ») ; à figer après le premier essai réussi
 function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('script inaccessible'));document.head.append(s)})}
 async function ensureCore(){if(core)return core;const c=root.HACKENIA_PVP_CONFIG;if(!c||!c.url||!c.key)throw new Error('Configuration du mode en ligne manquante.');
