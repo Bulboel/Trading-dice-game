@@ -127,3 +127,5 @@ body:not(.portal-open) #offline-badge{top:calc(env(safe-area-inset-top) + 6px);b
 .wind-veil{position:absolute;inset:0;pointer-events:none;z-index:5;background:linear-gradient(100deg,transparent 0%,rgba(235,255,240,.0) 30%,rgba(235,255,240,.28) 50%,rgba(235,255,240,0) 70%,transparent);background-size:220% 100%;animation:wind-veil 1.8s ease-in-out forwards}
 @keyframes wind-veil{from{background-position:120% 0;opacity:0}20%{opacity:1}to{background-position:-120% 0;opacity:0}}
 @media(prefers-reduced-motion:reduce){.storm-flash,.wind-veil{display:none}}
+.wind-veil span{position:absolute;left:50%;top:18%;transform:translateX(-50%);padding:6px 16px;border-radius:999px;background:#103322cc;border:1px solid #bff0cf88;color:#eafff0;font:700 15px/1.2 Georgia,serif;letter-spacing:.06em;text-shadow:0 1px 3px #000;animation:wind-tag 1.8s ease-in-out forwards}
+@keyframes wind-tag{0%{opacity:0;transform:translate(-30%,0)}20%{opacity:1;transform:translate(-50%,0)}80%{opacity:1}100%{opacity:0;transform:translate(-80%,0)}}

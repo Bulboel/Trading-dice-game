@@ -5,7 +5,7 @@ import { createCrater } from './crater-v135.js?v=20261115-v226';
 import { applyLook } from './variant-look.js?v=20261113-v215';
 import { createLake } from './lake-v230.js?v=20261116-v233c';
 import { createSkyIsland } from './sky-v231.js?v=20261116-v233c';
-import { createWindHighlands } from './wind-v232.js?v=20261116-v233c';
+import { createWindHighlands } from './wind-v232.js?v=20261118-v237';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -481,16 +481,17 @@ function updateAuras(now){const t=now/1000,still=document.documentElement.classL
   for(const m of a.motes){const k=still?.5:(t*m.v+m.o)%1,ang=m.a+(still?0:t*.6);m.sp.position.set(Math.cos(ang)*m.r,.08+k*.95,Math.sin(ang)*m.r);m.sp.material.opacity=.7*Math.sin(Math.PI*k)}}}
 // v234 — Effets des interactions de terrain : éclairs qui frappent deux cases, rafale qui pousse les créatures.
 // v235 — Nénuphar sacré (lac rose) : grande fleur de lotus lumineuse posée sur la case qui donne +1.
-const sacredLotus=(()=>{const g=new THREE.Group();g.visible=false;const petalGeo=new THREE.SphereGeometry(1,10,8);petalGeo.scale(.07,.035,.2);petalGeo.translate(0,.02,.15);
+function makeLotus(){const g=new THREE.Group();g.visible=false;const petalGeo=new THREE.SphereGeometry(1,10,8);petalGeo.scale(.07,.035,.2);petalGeo.translate(0,.02,.15);
  const outer=new THREE.MeshStandardMaterial({color:0xffc2dd,emissive:0xff5fa8,emissiveIntensity:.55,roughness:.45}),inner=new THREE.MeshStandardMaterial({color:0xfff0f6,emissive:0xff8cc4,emissiveIntensity:.45,roughness:.4});
  const petals=[];for(const [n,mat2,tilt,sc] of[[10,outer,.32,1.25],[8,inner,.75,.95],[6,inner,1.1,.7]])for(let k=0;k<n;k++){const p=new THREE.Mesh(petalGeo,mat2);p.rotation.set(0,k/n*Math.PI*2+tilt,0,'YXZ');p.rotation.x=-tilt;p.scale.setScalar(sc);g.add(p);petals.push(p)}
  const pad=new THREE.Mesh(new THREE.CircleGeometry(.44,24,.3,Math.PI*2-.6),new THREE.MeshStandardMaterial({color:0x3f8a58,roughness:.6,side:THREE.DoubleSide}));pad.rotation.x=-Math.PI/2;pad.position.y=-.005;g.add(pad);
  const heart=new THREE.Mesh(new THREE.SphereGeometry(.06,10,8),new THREE.MeshStandardMaterial({color:0xffd76a,emissive:0xffb020,emissiveIntensity:1.1}));heart.position.y=.07;g.add(heart);
  const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:energyGlowTexture(),color:0xff9fce,transparent:true,opacity:.7,blending:THREE.AdditiveBlending,depthWrite:false}));glow.scale.setScalar(1.5);glow.position.y=.1;g.add(glow);
- const light=new THREE.PointLight(0xff8fc6,0,2.6,2);light.position.y=.5;g.add(light);pieces.add(g);return{g,glow,light,born:0,key:''}})();
-function updateLotus(){const L=state.lotus,lake=state.terrain==='eau';if(!L||!lake){sacredLotus.g.visible=false;sacredLotus.key='';return}const key=L.x+','+L.y;if(key!==sacredLotus.key){sacredLotus.key=key;sacredLotus.born=performance.now()}
- const c=state.b[L.y]?.[L.x];sacredLotus.g.position.set(L.x-3.5-.24,.22+(c&&!c.f?.28:0)+.012,L.y-HZ+.24);/* coin de la case : le chiffre reste lisible */sacredLotus.g.visible=true}
-function animateLotus(){if(!sacredLotus.g.visible)return;const t=(performance.now()-sacredLotus.born)/1000,open=Math.min(1,t/1.1),e=1-Math.pow(1-open,3);sacredLotus.g.scale.setScalar((.2+.8*e)*.55);sacredLotus.g.rotation.y=t*.25;sacredLotus.glow.material.opacity=.45+.25*Math.sin(t*2.2);sacredLotus.light.intensity=renderer.isSoftware?0:1.6+.6*Math.sin(t*2.2)}
+ const light=new THREE.PointLight(0xff8fc6,0,2.6,2);light.position.y=.5;g.add(light);pieces.add(g);return{g,glow,light,born:0,key:''}}
+const lotusPool=[];
+function updateLotus(){const list=state.terrain==='eau'?(state.lotus||[]):[];while(lotusPool.length<list.length)lotusPool.push(makeLotus());
+ lotusPool.forEach((L,n)=>{const l=list[n];if(!l){L.g.visible=false;L.key='';return}const key=l.x+','+l.y;if(key!==L.key){L.key=key;L.born=performance.now()}const c=state.b[l.y]?.[l.x];L.g.position.set(l.x-3.5-.24,.22+(c&&!c.f?.28:0)+.012,l.y-HZ+.24);L.g.visible=true})}
+function animateLotus(){for(const L of lotusPool){if(!L.g.visible)continue;const t=(performance.now()-L.born)/1000,open=Math.min(1,t/1.1),e=1-Math.pow(1-open,3);L.g.scale.setScalar((.2+.8*e)*.55);L.g.rotation.y=t*.25;L.glow.material.opacity=.45+.25*Math.sin(t*2.2);L.light.intensity=renderer.isSoftware?0:1.6+.6*Math.sin(t*2.2)}}
 const weatherFx=[];
 function jaggedBolt(top,bottom,jag,branches){const pts=[];let prev=top.clone();const seg=16;for(let i=1;i<=seg;i++){const p=top.clone().lerp(bottom,i/seg);if(i<seg){p.x+=(Math.random()-.5)*jag;p.z+=(Math.random()-.5)*jag}pts.push(prev,p);
  if(branches&&i>3&&i<seg-2&&Math.random()<.2){let q=p.clone();const end=p.clone().add(new THREE.Vector3((Math.random()-.5)*1.4,-.8-Math.random(),(Math.random()-.5)*1.4));for(let k=1;k<=4;k++){const r=p.clone().lerp(end,k/4);r.x+=(Math.random()-.5)*.2;pts.push(q,r);q=r}}prev=p}return new THREE.BufferGeometry().setFromPoints(pts)}
@@ -509,7 +510,7 @@ window.addEventListener('hackenia:wind',e=>{if(!active)return;const now=performa
  if(calm)return;const group=new THREE.Group();pieces.add(group);const streaks=[];
  for(let i=0;i<30;i++){const m=new THREE.Mesh(new THREE.PlaneGeometry(2.6+Math.random()*3,.3),new THREE.MeshBasicMaterial({map:windStreakTexture(),color:0xffffff,transparent:true,opacity:0,depthWrite:false,side:THREE.DoubleSide,fog:false}));m.rotation.x=-.45;m.renderOrder=6;group.add(m);
   streaks.push({m,z:(Math.random()-.5)*BH,y:.45+Math.random()*1.4,speed:7+Math.random()*4,delay:Math.random()*.6})}
- const veil=document.createElement('div');veil.className='wind-veil';host.append(veil);setTimeout(()=>veil.remove(),1900);weatherFx.push({kind:'wind',group,streaks,start:now})});
+ const veil=document.createElement('div');veil.className='wind-veil';veil.innerHTML='<span>🍃 Rafale !</span>';host.append(veil);setTimeout(()=>veil.remove(),1900);weatherFx.push({kind:'wind',group,streaks,start:now})});
 function updateWeather(){const now=performance.now();for(let i=weatherFx.length-1;i>=0;i--){const f=weatherFx[i],t=(now-f.start)/1000;if(t<0)continue;
  if(f.kind==='bolt'){const flick=t<.1?1:t<.18?.25:t<.3?1:t<.38?.4:Math.max(0,1-(t-.38)/.5);f.mats[0].opacity=f.mats[0].opacity&&.55*flick;f.mats[1].opacity=f.mats[1].opacity&&flick;f.glow.material.opacity=Math.max(0,1-t/1);f.glow.scale.setScalar(3.2+t*2.5);f.light.intensity=flick*60;f.scorch.material.opacity=.85*Math.max(0,1-Math.max(0,t-1.2)/1.3);
   if(t>2.6){pieces.remove(f.group);f.group.traverse(o=>{o.geometry?.dispose?.();o.material?.dispose?.()});weatherFx.splice(i,1)}}
