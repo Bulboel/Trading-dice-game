@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v236',title:'Loupe de placement corrigée',items:['En posant un dé au bord ou dans votre zone, l’aperçu des dalles et la loupe s’affichent maintenant correctement.']},
  {id:'v235',title:'Le nénuphar sacré',items:['Le lac rose : à la fin de chaque tour, un nénuphar sacré s’ouvre sur une dalle. La créature qui s’y trouve gagne +1 de force jusqu’au tour suivant.']},
  {id:'v234',title:'Les terrains s’animent',items:['Île céleste : à la fin de chaque tour, la foudre frappe deux cases au hasard et détruit tout ce qui s’y trouve.','Les vents de Hacko : de temps en temps, une rafale se lève et pousse les créatures de trois cases vers la gauche.']},
  {id:'v232',title:'Six terrains, six décors',items:['Trois nouveaux terrains : Le lac rose (eau), l’Île céleste (foudre) et Les vents de Hacko (vent), chacun avec son propre décor en 3D.']},
