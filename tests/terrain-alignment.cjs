@@ -5,4 +5,5 @@ for(const f of['assets/lake-v230.js','assets/sky-v231.js','assets/wind-v232.js']
  assert.ok(s.includes('ch=h/rows')&&s.includes('(p.getZ(i)+HZ)/rows'),f+' : texture cells follow the real rows')}
 const cl=read('assets/clearing-v105.js');
 for(const v of['lake','skyIsland','windLand'])assert.ok(cl.includes(v+'.root.scale.z=1/ZS}'),v+' is not stretched a second time by the decor group');
+assert.ok(!/y>=10\b/.test(cl),'Placement preview and lens use the real number of rows (12), not 10');
 console.log('PASS: lake, sky island and wind highlands use the real board rows and are not stretched: every texture cell sits on a game cell.');

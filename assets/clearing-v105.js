@@ -30,11 +30,11 @@ function drawPlacementLens(){
  const r=canvas.getBoundingClientRect(),c=state.b[point.y]?.[point.x],level=.24+(c&&!c.f?.28:0),project=(x,y,z)=>{const p=world.localToWorld(new THREE.Vector3(x,y,z)).project(camera);return{x:(p.x+1)*r.width/2,y:(1-p.y)*r.height/2}};
  const focus=project(point.x-3.5,level+.25,point.y-HZ),points=[];
  const preview=state.preview.length?state.preview:[[point.x,point.y]];
- for(const [x,y]of preview){if(x<0||x>=8||y<0||y>=10)continue;for(const dx of[-.5,.5])for(const dz of[-.5,.5])points.push(project(x-3.5+dx,level,y-HZ+dz))}
+ for(const [x,y]of preview){if(x<0||x>=8||y<0||y>=BH)continue;for(const dx of[-.5,.5])for(const dz of[-.5,.5])points.push(project(x-3.5+dx,level,y-HZ+dz))}
  // v227 — Le dé flottant fait partie du cadrage : la loupe centre ensemble le dé et ses dalles.
  if(state.mode==='p'&&dieGroup.visible)for(const dx of[-.35,.35])for(const dz of[-.35,.35])for(const dy of[.6,1.3])points.push(project(point.x-3.5+dx,dy,point.y-HZ+dz));
  const size=points.length?Math.max(...points.map(p=>p.x))-Math.min(...points.map(p=>p.x)):50,sy=points.length?Math.max(...points.map(p=>p.y))-Math.min(...points.map(p=>p.y)):50;
- const crop=Math.max(70,Math.min(170,Math.max(size,sy)*1.3)),centerX=points.length?(Math.max(...points.map(p=>p.x))+Math.min(...points.map(p=>p.x)))/2:focus.x,centerY=points.length?(Math.max(...points.map(p=>p.y))+Math.min(...points.map(p=>p.y)))/2:focus.y;
+ const crop=Math.max(70,Math.min(Math.min(r.width,r.height)*.95,Math.max(size,sy)*1.3)),/* v236 : la loupe s'agrandit pour toujours contenir le dé et toutes ses dalles (zoom, bord de zone) */centerX=points.length?(Math.max(...points.map(p=>p.x))+Math.min(...points.map(p=>p.x)))/2:focus.x,centerY=points.length?(Math.max(...points.map(p=>p.y))+Math.min(...points.map(p=>p.y)))/2:focus.y;
  const left=Math.max(0,Math.min(r.width-crop,centerX-crop/2)),top=Math.max(0,Math.min(r.height-crop,centerY-crop/2)),scale=canvas.width/r.width;
  lensContext.fillStyle='#20392c';lensContext.fillRect(0,0,320,320);lensContext.drawImage(canvas,left*scale,top*scale,crop*scale,crop*scale,0,0,320,320);
  const fx=(focus.x-left)/crop*320,fy=(focus.y-top)/crop*320;lensContext.strokeStyle='#fff0ba';lensContext.lineWidth=2;lensContext.setLineDash([5,4]);lensContext.strokeRect(fx-17,fy-17,34,34);lensContext.setLineDash([]);
@@ -567,7 +567,7 @@ function sync(){state=game.snapshot();const type=previewMode?previewTerrain:stat
  updateZoneLabels();updateLotus();
  if(state.sel)highlight(state.sel.x,state.sel.y,0xffe7a5,.26+(state.b[state.sel.y][state.sel.x]&&!state.b[state.sel.y][state.sel.x].f?.28:0));
  if(state.cu&&Date.now()-state.lastJ<3000){const c=state.b[state.cu.y][state.cu.x];highlight(state.cu.x,state.cu.y,0xe8efb5,.26+(c&&!c.f?.28:0))}
- for(const [x,y,v] of state.preview){if(x<0||x>=8||y<0||y>=10||game.isBlocked(x,y)||state.cr.some(k=>k.x===x&&k.y===y))continue;const top=new THREE.Mesh(topGeo,label(v,game.monsters[state.die]?.multi?'multi':previewElement,game.previewBonus(x,y)));top.rotation.x=-Math.PI/2;const c=state.b[y][x];top.position.set(x-3.5,.275+(c&&!c.f?.28:0),y-HZ);top.userData.cachedLabel=true;highlights.add(top)}
+ for(const [x,y,v] of state.preview){if(x<0||x>=8||y<0||y>=BH||game.isBlocked(x,y)||state.cr.some(k=>k.x===x&&k.y===y))continue;const top=new THREE.Mesh(topGeo,label(v,game.monsters[state.die]?.multi?'multi':previewElement,game.previewBonus(x,y)));top.rotation.x=-Math.PI/2;const c=state.b[y][x];top.position.set(x-3.5,.275+(c&&!c.f?.28:0),y-HZ);top.userData.cachedLabel=true;highlights.add(top)}
  const show=!previewMode&&(state.mode==='p'||state.mode==='r'||state.mode==='d')&&(state.pc||(state.mode==='d'&&state.hov));dieGroup.visible=!!show;if(show){const D=game.monsters[state.die];dieGroup.userData.target=new THREE.Vector3((state.pc||state.hov).x-3.5,.95,(state.pc||state.hov).y-HZ);dieBody.material=matForElement(D.el);dieLabel.material=label(D.lv,D.el);dieMetal.color.setHex(game.rarity(D)>=6?0xe7d6f5:game.rarity(D)>=3?0xe4b85f:game.rarity(D)===2?0xd4dce1:0xa97e4d)}
  pieces.visible=!previewMode;highlights.visible=!previewMode;
 }
