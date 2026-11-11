@@ -129,3 +129,13 @@ body:not(.portal-open) #offline-badge{top:calc(env(safe-area-inset-top) + 6px);b
 @media(prefers-reduced-motion:reduce){.storm-flash,.wind-veil{display:none}}
 .wind-veil span{position:absolute;left:50%;top:18%;transform:translateX(-50%);padding:6px 16px;border-radius:999px;background:#103322cc;border:1px solid #bff0cf88;color:#eafff0;font:700 15px/1.2 Georgia,serif;letter-spacing:.06em;text-shadow:0 1px 3px #000;animation:wind-tag 1.8s ease-in-out forwards}
 @keyframes wind-tag{0%{opacity:0;transform:translate(-30%,0)}20%{opacity:1;transform:translate(-50%,0)}80%{opacity:1}100%{opacity:0;transform:translate(-80%,0)}}
+/* v242 — Indicateurs de PA plus discrets (semi-transparents, plus petits sur téléphone) */
+.creature-pa{transition:opacity .25s}
+@media (max-width:720px){.creature-pa{font-size:10px!important;padding:2px 5px!important;border-radius:5px!important}.creature-pa::before{width:5px!important;height:5px!important;margin-right:3px!important}}
+/* v242 — Vignettes de la main : plus d'étoiles blanches (jugées « cheap ») */
+#app #hand .dc.hc.pure3 .hc-art::before,#app #hand .dc.hc.rar-5:not(.pure) .hc-art::before,#app #hand .dc.hc.rar-6:not(.pure) .hc-art::before,#app #hand .dc.hc.rar-6:not(.pure)::after{content:none!important;display:none!important;animation:none!important}
+/* v242 — Divins / légendaires en main : l'anneau et le halo du portrait restent dans le cadre de la carte (Caleïzis…) */
+#app #hand .dc.hc.rar-5:not(.pure) .hc-art::after,#app #hand .dc.hc.rar-6:not(.pure) .hc-art::after,#app #hand .dc.hc.pure3 .hc-art::after{inset:-4px!important}
+#app #hand .dc.hc.rar-6:not(.pure) .hc-art{box-shadow:0 0 0 2px var(--rim),0 0 9px color-mix(in srgb,#e9d4ff 60%,transparent)!important}
+#app #hand .dc.hc.rar-5:not(.pure) .hc-art img,#app #hand .dc.hc.rar-6:not(.pure) .hc-art img{filter:drop-shadow(0 0 3px color-mix(in srgb,var(--rim) 60%,transparent))!important}
+#app #hand .dc.hc{overflow:hidden}

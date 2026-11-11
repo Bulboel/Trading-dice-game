@@ -5,7 +5,7 @@ import { createEmberlands } from './ember-v239.js?v=20261120-v239';
 import { applyLook } from './variant-look.js?v=20261113-v215';
 import { createLake } from './lake-v241.js?v=20261122-v241';
 import { createSkyIsland } from './sky-v231.js?v=20261116-v233c';
-import { createWindHighlands } from './wind-v232.js?v=20261118-v237';
+import { createWindHighlands } from './wind-v232.js?v=20261123-v242';
 import { createWoodland } from './woodland-v238.js?v=20261119-v238';
 import { createFrostRoad } from './frost-v240.js?v=20261121-v240';
 
@@ -300,7 +300,7 @@ function updateCreaturePowers(place){
  for(const [id,g]of creatures){live.add(id);const k=g.userData.k;let badge=powerCaptions.get(id);if(!badge){badge=document.createElement('span');badge.className='creature-pa';boardCaptions.append(badge);powerCaptions.set(id,badge)}
   const i=combat?.fighters.findIndex(c=>c.id===id)??-1,x=Math.max(0,Math.min(7,Math.round(g.position.x+3.5))),y=Math.max(0,Math.min(BH-1,Math.round(g.position.z+HZ))),power=i>=0?combat.stats[i].attack:game.creatureAttack(k,x,y,state.b),text='PA : '+power;
   if(badge.textContent!==text)badge.textContent=text;badge.setAttribute('aria-label',(game.monsters[k.mi]?.cn||k.mn||'Créature')+' · '+text);badge.classList.toggle('opponent',k.o!==game.viewerSeat());badge.style.setProperty?.('--pa',game.elementColors?.[game.monsters[k.mi]?.el]||'#9569c5');badge.style.setProperty?.('--camp-dot','var(--camp'+k.o+'-ui)');
-  const height=.9*(g.userData.animationInfo?.boardHeight||1)+.27;place(badge,g.position.x,g.position.y+height,g.position.z);if(!g.visible)badge.hidden=true;const pose=combat?window.HackeniaCombat.pose(combat,k):null;badge.style.opacity=String(pose?1-pose.defeat:1);
+  const height=.9*(g.userData.animationInfo?.boardHeight||1)+.27;place(badge,g.position.x,g.position.y+height,g.position.z);if(!g.visible)badge.hidden=true;const pose=combat?window.HackeniaCombat.pose(combat,k):null;badge.style.opacity=String((pose?1-pose.defeat:1)*(i>=0?1:.58));/* v242 — PA semi-transparent hors combat : le terrain reste lisible */
  }
  for(const [id,badge]of powerCaptions)if(!live.has(id)){badge.remove();powerCaptions.delete(id)}
 }
@@ -429,7 +429,7 @@ function sync(){state=game.snapshot();const type=previewMode?previewTerrain:stat
  updateZoneLabels();updateLotus();
  if(state.sel)highlight(state.sel.x,state.sel.y,0xffe7a5,.26+(state.b[state.sel.y][state.sel.x]&&!state.b[state.sel.y][state.sel.x].f?.28:0));
  if(state.cu&&Date.now()-state.lastJ<3000){const c=state.b[state.cu.y][state.cu.x];highlight(state.cu.x,state.cu.y,0xe8efb5,.26+(c&&!c.f?.28:0))}
- for(const [x,y,v] of state.preview){if(x<0||x>=8||y<0||y>=BH||game.isBlocked(x,y)||state.cr.some(k=>k.x===x&&k.y===y))continue;const top=new THREE.Mesh(topGeo,label(v,game.monsters[state.die]?.multi?'multi':previewElement,game.previewBonus(x,y)));top.rotation.x=-Math.PI/2;const c=state.b[y][x];top.position.set(x-3.5,.275+(c&&!c.f?.28:0),y-HZ);top.userData.cachedLabel=true;highlights.add(top)}
+ for(const [x,y,v] of state.preview){if(x<0||x>=8||y<0||y>=BH||game.isBlocked(x,y)||(state.cr.some(k=>k.x===x&&k.y===y)&&!state.previewCrushed?.some(q=>q[0]===x&&q[1]===y)))continue;const top=new THREE.Mesh(topGeo,label(v,game.monsters[state.die]?.multi?'multi':previewElement,game.previewBonus(x,y)));top.rotation.x=-Math.PI/2;const c=state.b[y][x];top.position.set(x-3.5,.275+(c&&!c.f?.28:0),y-HZ);top.userData.cachedLabel=true;highlights.add(top)}for(const [x,y] of state.previewCrushed||[])highlight(x,y,0xff3b3b,.6,.55);/* v242 — créature adverse de niveau inférieur : elle sera écrasée */
  const show=!previewMode&&(state.mode==='p'||state.mode==='r'||state.mode==='d')&&(state.pc||(state.mode==='d'&&state.hov));dieGroup.visible=!!show;if(show){const D=game.monsters[state.die];dieGroup.userData.target=new THREE.Vector3((state.pc||state.hov).x-3.5,.95,(state.pc||state.hov).y-HZ);dieBody.material=matForElement(D.el);dieLabel.material=label(D.lv,D.el);dieMetal.color.setHex(game.rarity(D)>=6?0xe7d6f5:game.rarity(D)>=3?0xe4b85f:game.rarity(D)===2?0xd4dce1:0xa97e4d)}
  pieces.visible=!previewMode;highlights.visible=!previewMode;
 }
