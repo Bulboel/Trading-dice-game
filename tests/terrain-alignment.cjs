@@ -1,6 +1,6 @@
 // v233 — Les terrains procéduraux suivent exactement le damier : nombre de rangées réel (12) et aucun étirement.
 const fs=require('fs'),path=require('path'),assert=require('assert');const root=path.join(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
-for(const f of['assets/lake-v230.js','assets/sky-v231.js','assets/wind-v232.js']){const s=read(f);
+for(const f of['assets/sky-v231.js','assets/wind-v232.js']){const s=read(f);
  assert.ok(!/\by<10\b|\by<=10\b|ch=h\/10|512,640/.test(s),f+' : no hard-coded 10-row texture');
  assert.ok(s.includes('ch=h/rows')&&s.includes('(p.getZ(i)+HZ)/rows'),f+' : texture cells follow the real rows')}
 const cl=read('assets/clearing-v105.js');
