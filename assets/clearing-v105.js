@@ -13,7 +13,7 @@ import { createCity } from './city-v246.js?v=20261128-v247';
 import { createCave } from './cave-v246.js?v=20261129-v248';
 import { createAutumn } from './autumn-v253.js?v=20261202-v253';
 import { createNoel } from './noel-v253.js?v=20261202-v253';
-import { createElementWheel } from './element-wheel-v252.js?v=20261201-v252';
+import { createElementWheel } from './element-wheel-v252.js?v=20261203-v254';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -531,7 +531,9 @@ let orbitEnabled=false;document.getElementById('orbit-view').onclick=()=>{orbitE
 document.getElementById('pan-view').onclick=()=>{panEnabled=!panEnabled;if(panEnabled&&orbitEnabled)document.getElementById('orbit-view').click();document.getElementById('pan-view').setAttribute('aria-pressed',String(panEnabled));canvas.classList.toggle('panning',panEnabled)};
 canvas.addEventListener('wheel',e=>{if(!active||e.ctrlKey)return;e.preventDefault();changeZoom(zoom*Math.exp(-e.deltaY*.0015),e)},{passive:false});
 canvas.addEventListener('contextmenu',e=>{if(active)e.preventDefault()});
-const touchPointers=new Map();let pinchDistance=0;
+const touchPointers=new Map();let pinchDistance=0,twistAngle=null,twistMid=null;
+/* v254 — deux doigts : pincer pour zoomer, tourner pour faire pivoter la vue, glisser pour déplacer. Un doigt : déplacer le plateau. */
+function touchTwist(){const p=[...touchPointers.values()];return{a:Math.atan2(p[1].y-p[0].y,p[1].x-p[0].x),x:(p[0].x+p[1].x)/2,y:(p[0].y+p[1].y)/2}}
 function touchPoint(e){return{x:e.clientX,y:e.clientY}}
 function touchPinch(){const p=[...touchPointers.values()];return Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y)}
 function moveTouchCamera(dx,dy){const r=canvas.getBoundingClientRect();if(orbitEnabled){orbitYaw-=dx/r.width*Math.PI*2;orbitPitch=Math.max(.035,Math.min(Math.PI/2-.035,orbitPitch+dy/r.height*Math.PI))}else{panX-=dx/r.width*2*viewSpan*viewAspect/zoom;panY+=dy/r.height*2*viewSpan/zoom;panX=Math.max(-18,Math.min(18,panX));panY=Math.max(-18,Math.min(18,panY))}updateCamera()}
@@ -539,7 +541,7 @@ let touchGesture=null,mouseGesture=null;
 canvas.onpointerdown=e=>{
  if(e.pointerType==='touch'){
   touchPointers.set(e.pointerId,touchPoint(e));canvas.setPointerCapture(e.pointerId);
-  if(touchPointers.size>1){if(touchGesture)touchGesture.multiple=true;pinchDistance=touchPinch();panDrag=null;if(touchPointers.size===2)game.board.onpointercancel(e);e.preventDefault();return}
+  if(touchPointers.size>1){if(touchGesture)touchGesture.multiple=true;pinchDistance=touchPinch();{const T=touchTwist();twistAngle=T.a;twistMid=T}panDrag=null;if(touchPointers.size===2)game.board.onpointercancel(e);e.preventDefault();return}
   const [x,y]=cellAt(e),unit=state.cr.find(c=>c.x===x&&c.y===y&&c.o===state.cur);
   touchGesture={id:e.pointerId,x:e.clientX,y:e.clientY,unit:unit||null,moved:false,multiple:false,dragUnit:false,placing:state.mode==='p'||state.mode==='d'};
  }
@@ -552,7 +554,7 @@ const originalCapture=game.board.setPointerCapture.bind(game.board);game.board.s
 canvas.onpointermove=e=>{
  if(e.pointerType==='touch'&&touchPointers.has(e.pointerId)){
   const previous=touchPointers.get(e.pointerId);touchPointers.set(e.pointerId,touchPoint(e));
-  if(touchPointers.size>=2){const distance=touchPinch();if(pinchDistance>0)changeZoom(zoom*distance/pinchDistance);pinchDistance=distance;return}
+  if(touchPointers.size>=2){const distance=touchPinch();if(pinchDistance>0)changeZoom(zoom*distance/pinchDistance);pinchDistance=distance;const T=touchTwist();if(twistAngle!==null){let d=T.a-twistAngle;d=Math.atan2(Math.sin(d),Math.cos(d));if(Math.abs(d)<.5)orbitYaw+=d}if(twistMid){const r=canvas.getBoundingClientRect();panX-=(T.x-twistMid.x)/r.width*2*viewSpan*viewAspect/zoom;panY+=(T.y-twistMid.y)/r.height*2*viewSpan/zoom;panX=Math.max(-18,Math.min(18,panX));panY=Math.max(-18,Math.min(18,panY))}twistAngle=T.a;twistMid=T;updateCamera();return}
   const g=touchGesture;if(g&&Math.hypot(e.clientX-g.x,e.clientY-g.y)>8)g.moved=true;
   if(g?.multiple)return;
   if(g&&!g.placing&&!panDrag&&g.moved){
@@ -567,7 +569,7 @@ canvas.onpointermove=e=>{
 canvas.onpointerup=e=>{
  const mouse=mouseGesture;mouseGesture=null;if(e.pointerType!=='touch'&&mouse?.dragUnit&&!panDrag){const [x,y]=cellAt(e);if(x!==mouse.unit.x||y!==mouse.unit.y)game.tap(x,y);return}
  if(e.pointerType==='touch'){
-  touchPointers.delete(e.pointerId);pinchDistance=0;const g=touchGesture;
+  touchPointers.delete(e.pointerId);pinchDistance=0;twistAngle=null;twistMid=null;const g=touchGesture;
   if(g?.multiple){if(!touchPointers.size)touchGesture=null;panDrag=null;return}
   touchGesture=null;if(panDrag){panDrag=null;return}
   if(g?.dragUnit){const [x,y]=cellAt(e);if(x!==g.unit.x||y!==g.unit.y)game.tap(x,y);return}
@@ -618,9 +620,12 @@ let elementWheel=null;const wheelRight=new THREE.Vector3(),wheelAnchor=new THREE
 function wheelModel(url){if(!modelCache.has(url))modelCache.set(url,(async()=>{const tools=await getModelTools();const gltf=await tools.loader.loadAsync(url);return{gltf,clone:tools.clone}})().catch(()=>null));return modelCache.get(url).then(a=>a?a.clone(a.gltf.scene):null)}
 function renderElementWheel(t){if(previewMode||!renderer.isWebGLRenderer)return;elementWheel??=createElementWheel({loadModel:wheelModel,software:!!renderer.isSoftware||light});
  const st=state;const d=st&&(st.mode==='p'||st.mode==='d')&&st.die!=null?game.monsters?.[st.die]:null;elementWheel.setFocus(d&&!d.multi?d.el:'');
- wheelRight.set(Math.cos(orbitYaw),0,-Math.sin(orbitYaw));wheelAnchor.copy(wheelRight).multiplyScalar(8.6*Math.max(1,ZS)+4.6).setY(1.2);
- const ndc=wheelAnchor.clone().project(camera);if(Math.abs(ndc.x)>2.6||Math.abs(ndc.y)>2.6)return;if(Math.abs(ndc.x)<1.8)elementWheel.ensureModels();// hors champ : ni rendu ni téléchargement
- elementWheel.place(camera,wheelAnchor,1.5*Math.max(1,ZS*.9));elementWheel.update(t,moving);
+ wheelRight.set(Math.cos(orbitYaw),0,-Math.sin(orbitYaw));wheelAnchor.copy(wheelRight).multiplyScalar(8.6*Math.max(1,ZS)+4.6).setY(1.2);// sur ordinateur : à droite du plateau
+ const cr=canvas.getBoundingClientRect(),hud=cr.width<700;elementWheel.setCompact(hud);
+ if(hud){/* v254 — smartphone : petite roue fixe en haut à gauche de la vue, masquée pendant la loupe de pose */if(!placementLens.hidden||!cr.width)return;const D=Math.min(156,cr.width*.4),cx=10+D/2,cy=10+D/2,perPx=(camera.right-camera.left)/camera.zoom/cr.width;
+  wheelAnchor.set(cx/cr.width*2-1,1-cy/cr.height*2,.5).unproject(camera);elementWheel.ensureModels();elementWheel.place(camera,wheelAnchor,D/2*perPx/3.55)}
+ else{const ndc=wheelAnchor.clone().project(camera);if(Math.abs(ndc.x)>2.6||Math.abs(ndc.y)>2.6)return;if(Math.abs(ndc.x)<1.8)elementWheel.ensureModels();// hors champ : ni rendu ni téléchargement
+ elementWheel.place(camera,wheelAnchor,1.5*Math.max(1,ZS*.9))}elementWheel.update(t,moving);
  const ac=renderer.autoClear;renderer.autoClear=false;renderer.clearDepth();renderer.render(elementWheel.scene,camera);renderer.autoClear=ac}
 window.HackeniaElementWheel={get:()=>elementWheel,anchor:()=>wheelAnchor.clone()};
 function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&!previewMode)||!active||now-lastFrame<(renderer.isSoftware?100:light?32:16))return;const dt=Math.min((now-lastFrame)/1000,.06);lastFrame=now;if(pureFx.length)updatePureFx(now);if(weatherFx.length)updateWeather(now);animateLotus();animateGifts();if(auras.size)updateAuras(now);if(moving)for(const g of creatures.values()){const h=g.userData.hop,m=g.userData.model;if(!h||!m)continue;const u=((now/1000+h.phase)%3.2)/.55;if(u<1){const lift=Math.sin(Math.PI*u);m.position.y=h.base+.24*lift;m.scale.set(1-.05*lift,1+.08*lift,1-.05*lift)}else if(u<1.25){const s=Math.sin(Math.PI*(u-1)/.25);m.position.y=h.base;m.scale.set(1+.07*s,1-.1*s,1+.07*s)}else{m.position.y=h.base;m.scale.set(1,1,1)}}updateZoneGlow(now);const t=moving?now/1000:0;

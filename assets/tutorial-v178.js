@@ -8,7 +8,7 @@
 const T={active:false,i:0,rolls:[],done:false,demoRunning:false,timer:0,base:null};
 const D={kala:37,grimgors:38,fourmi:2,bosco:29,tortue:14,sentierTerre:51,lapin:3};
 const $=id=>document.getElementById(id);
-const cycle='Eau › Foudre › Vent › Terre › Glace › Feu › Eau';
+const cycle='Eau › Feu › Glace › Terre › Vent › Foudre › Eau';
 
 // ——— Outils pour préparer un plateau ———
 function reset(){b=Array.from({length:H},()=>Array(W).fill(null));cr=[];kills=[0,0];bonus=[0,0];over=0;cur=0;mode='i';moved=0;sel=null;movePlan=null;pc=null;hov=null;anim=null;useB=0;hi=0;die=undefined;cubeCls='';

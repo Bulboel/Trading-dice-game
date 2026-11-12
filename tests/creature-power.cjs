@@ -2,7 +2,7 @@ const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/st
 const root=path.join(__dirname,'..'),html=fs.readFileSync(path.join(root,'index.html'),'utf8'),source=html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,'');
 const elements=new Map(),element=()=>({style:{setProperty(){}},classList:{add(){},remove(){},toggle(){}},firstElementChild:{style:{}},setPointerCapture(){},clientWidth:400});
 const c=vm.createContext({window:{},document:{getElementById(id){if(!elements.has(id))elements.set(id,element());return elements.get(id)}},fetch:()=>Promise.resolve({ok:false}),setTimeout:()=>0,clearTimeout(){},setInterval:()=>0,clearInterval(){},Date,Math,console});vm.runInContext(source,c);
-const board=vm.runInContext(`TER=0;b=Array.from({length:H},()=>Array(W).fill(null));b[4][1]={v:4,el:'terre',o:0};b[4][0]={v:2,el:BT.terre,o:1};b[4][2]={v:2,el:'glace',o:1};b[4][3]={v:0,f:1,o:1};b`,c);
+const board=vm.runInContext(`TER=0;b=Array.from({length:H},()=>Array(W).fill(null));b[4][1]={v:4,el:'terre',o:0};b[4][0]={v:2,el:BT.terre,o:1};b[4][2]={v:2,el:'eau',o:1};b[4][3]={v:0,f:1,o:1};b`,c);
 const k={id:8,mi:37,x:1,y:4};const game=c.window.hackeniaGame;
 assert.equal(game.creatureAttack(k),6,'Terrain and neighboring-element bonuses both count');
 assert.equal(game.creatureAttack(k,2,4),2,'Enemy tiles use their actual power');
