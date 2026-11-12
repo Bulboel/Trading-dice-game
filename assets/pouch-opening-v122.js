@@ -23,7 +23,7 @@ function layout(stage){
  const table=compact?h*.50:Math.min(h*.66,h-label-42-s*.9);
  const bw=compact?Math.min(w*(hasDice?.58:.60),h*.44,220):hasDice?Math.min(h*.54*320/350,w*.31,248):Math.min(h*.78*320/350,w*.68,274),bh=bw*350/320;
  const top=hasDice?Math.max(12,(h-bh)/2):Math.max(12,(h-bh-28)/2),bagX=hasDice?w*.29:w*.5;
- const xs=compact?[.89,.89,.89]:[.53,.70,.87],ys=compact?[h*.18,h*.42,h*.66]:[table,table,table];
+ const xs=compact?[.89,.89,.89]:[.53,.70,.87],ys=compact?(()=>{/* v254 — sur mobile, l'écart entre les dés suit la hauteur réelle des étiquettes : plus de chevauchement */const gap=Math.max(h*.24,label+8,s+6),c=Math.min(Math.max(h*.46,gap+label/2+4),h-gap-label/2-4);return[c-gap,c,c+gap]})():[table,table,table];
  stage.classList.toggle('pouch-compact-layout',compact);
  for(const [k,v] of Object.entries({w:bw,h:bh,x:bagX,top}))stage.style.setProperty('--pouch-'+k,v+'px');
  const pouch=stage.querySelector('.pouch-prop-back'),stageRect=stage.getBoundingClientRect(),pouchRect=pouch?.getBoundingClientRect(),actualW=pouchRect?.width||bw,origin=pouchRect?pouchRect.left-stageRect.left+actualW/2:bagX,actualTop=pouchRect?pouchRect.top-stageRect.top:top,mouth=actualTop+actualW*33/320;
