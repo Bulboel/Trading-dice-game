@@ -1,11 +1,11 @@
 /* v252 — Roue des éléments, à droite du plateau, dans la scène 3D.
    Les six dés v2 (modèles 3D) tournent doucement sur un anneau d'or ; des flèches lumineuses vont du plus fort vers sa proie
-   (Eau › Foudre › Vent › Terre › Glace › Feu › Eau) et des étincelles y circulent dans le sens de la domination.
+   (Eau › Feu › Glace › Terre › Vent › Foudre › Eau) et des étincelles y circulent dans le sens de la domination.
    Elle est rendue dans une seconde passe (scène à part, tampon de profondeur vidé) : le décor ne la masque jamais ; ses modèles ne sont chargés qu'à son approche,
    et elle fait toujours face à la caméra. On la découvre en déplaçant la vue vers la droite ; rien ne s'ajoute à l'interface.
    Si un dé élémentaire est sélectionné dans la main, son élément, sa proie et son prédateur s'illuminent. */
 import * as THREE from 'three';
-export const WHEEL_ORDER=['eau','foudre','vent','terre','glace','feu'];
+export const WHEEL_ORDER=['eau','feu','glace','terre','vent','foudre'];
 export const WHEEL_NAMES={eau:'Eau',foudre:'Foudre',vent:'Vent',terre:'Terre',glace:'Glace',feu:'Feu'};
 const COLORS={eau:'#4fb0ff',foudre:'#c78dff',vent:'#5dff86',terre:'#f0a548',glace:'#86f2ff',feu:'#ff5b3a'};
 const FILES={eau:'Dé eau v.2.glb',foudre:'Dé foudre v.2.glb',vent:'Dé vent v.2.glb',terre:'Dé terre v.2.glb',glace:'Dé glace V.2.glb',feu:'Dé Feu v.2.glb'};
@@ -61,6 +61,7 @@ export function createElementWheel({loadModel,software=false}){
  const backHalo=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xd6b26a,transparent:true,opacity:.16,depthWrite:false,blending:THREE.AdditiveBlending}));backHalo.scale.setScalar(R*3.4);backHalo.position.z=-.8;root.add(backHalo);
  const tmpV=new THREE.Vector3(),tmpC=new THREE.Color();let focus='';
  function ensureModels(){if(loaded)return;loaded=true;s_load.forEach(f=>f())}
+ let compact=false;function setCompact(v){if(v===compact)return;compact=v;title.visible=hint.visible=legend.visible=!v;ring3.visible=!v;backHalo.visible=!v}
  function setFocus(el){focus=WHEEL_ORDER.includes(el)?el:''}
  /* Place la roue à droite du plateau (dans le repère de la caméra), face à elle. scale = taille relative. */
  function place(camera,anchor,scale=1){root.quaternion.copy(camera.quaternion);root.position.copy(anchor);root.scale.setScalar(scale)}
@@ -72,5 +73,5 @@ export function createElementWheel({loadModel,software=false}){
   arrows.forEach((a,i)=>{const on=focus&&(a.el===focus||WHEEL_ORDER[(i+1)%6]===focus),target=!focus?0:on?1:-.6;a.hl+=(target-a.hl)*.12;a.tube.material.opacity=a.hl<0?.3:.95;a.head.scale.setScalar(1+Math.max(0,a.hl)*.35);
    a.sparks.forEach(sp=>{const k=moving?((t*.32+sp.off+i*.13)%1):sp.off+.15;a.curve.getPoint(k,tmpV);sp.s.position.copy(tmpV);sp.s.position.z=.08;tmpC.copy(a.c0).lerp(a.c1,k).lerp(new THREE.Color(0xffffff),.35);sp.s.material.color.copy(tmpC);sp.s.material.opacity=(a.hl<0?.3:1)*Math.sin(k*Math.PI);sp.s.scale.setScalar(.3+Math.max(0,a.hl)*.18)})});
   legend.rotation.z=0;ring3.rotation.z=moving?t*.15:0;backHalo.material.opacity=.14+(moving?Math.sin(t*.8)*.03:0)}
- return{scene,root,place,update,setFocus,ensureModels,slots,arrows}
+ return{scene,root,place,update,setFocus,setCompact,ensureModels,slots,arrows}
 }

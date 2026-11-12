@@ -1,0 +1,5 @@
+/* v254 — Bourse sur mobile : étiquettes plus compactes (l'élément est déjà indiqué par son icône) */
+html body.portal-open[data-portal-view="shop"] #portal .pouch-theatre.pouch-compact-layout .draw-label>span.draw-element{display:none!important}
+html body.portal-open[data-portal-view="shop"] #portal .pouch-theatre.pouch-compact-layout .draw-label strong.draw-name{-webkit-line-clamp:2!important;min-height:0!important;margin:1px 0!important}
+html body.portal-open[data-portal-view="shop"] #portal .pouch-theatre.pouch-compact-layout .draw-label{max-width:104px!important;min-width:74px!important;left:calc(89% - var(--pd-size,38px)/2 - 58px)!important}
+html body.portal-open[data-portal-view="shop"] #portal .pouch-theatre.pouch-compact-layout .draw-label strong.draw-name{overflow-wrap:normal!important;word-break:normal!important;hyphens:auto}

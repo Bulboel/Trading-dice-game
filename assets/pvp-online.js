@@ -17,7 +17,10 @@ function applyTrade(profile,give,get){const next=JSON.parse(JSON.stringify(profi
 /* ---------- cœur (aucun accès au DOM) ---------- */
 function createCore(o){
  const sb=o.sb,game=o.game,cfg=o.cfg||{},pollMs=o.pollMs||cfg.pollMs||2500,monsters=o.maxDice||(game&&game.monsters?game.monsters.length:43);
- const S={user:null,gameId:null,code:'',open:false,beat:0,seat:null,players:[],gameRow:null,applied:0,queue:[],started:false,ended:false,endSent:false,opponent:'',error:'',status:'idle',terrain:'',versionOK:true};
+ const S={user:null,gameId:null,code:'',open:false,beat:0,seat:null,players:[],gameRow:null,applied:0,queue:[],started:false,ended:false,endSent:false,opponent:'',error:'',status:'idle',terrain:'',versionOK:true,lastAct:0,lastCur:null,idleLeft:null};
+ /* v254 — inactivité : 2 minutes sans action pendant son tour = défaite. Le joueur inactif abandonne de lui-même ;
+    si son appli est fermée, l'adversaire réclame la victoire 15 s plus tard. */
+ const IDLE_MS=o.idleMs||cfg.idleMs||120000,IDLE_GRACE=15000;
  const T={id:null,code:'',role:null,row:null,done:false};
  const subs=new Set(),tsubs=new Set();
  const emit=()=>subs.forEach(f=>{try{f(S)}catch(e){}}),emitT=()=>tsubs.forEach(f=>{try{f(T)}catch(e){}});
@@ -33,12 +36,12 @@ function createCore(o){
  /* v247 — tables ouvertes : visibles de tous, sans code. La table se signale toutes les 45 s tant qu'elle attend. */
  async function listTables(){await ensureAuth();return (await rpc('open_tables',{}))||[]}
  async function joinGame(p){await ensureAuth();reset();S.gameId=await rpc('join_game',{p_code:p.code,p_name:p.name,p_deck:p.deck});S.status='joining';watch();await refreshGame();emit();return S.gameId}
- function reset(){stopWatch();Object.assign(S,{gameId:null,code:'',seat:null,players:[],gameRow:null,applied:0,queue:[],started:false,ended:false,endSent:false,opponent:'',error:'',status:'idle',versionOK:true})}
+ function reset(){stopWatch();Object.assign(S,{gameId:null,code:'',seat:null,players:[],gameRow:null,applied:0,queue:[],started:false,ended:false,endSent:false,opponent:'',error:'',status:'idle',versionOK:true,lastAct:0,lastCur:null,idleLeft:null})}
  function watch(){stopWatch();const id=S.gameId;
   try{chan=sb.channel('hk-game-'+id).on('postgres_changes',{event:'INSERT',schema:'public',table:'game_events',filter:'game_id=eq.'+id},p=>ingest([p.new])).on('postgres_changes',{event:'*',schema:'public',table:'game_players',filter:'game_id=eq.'+id},()=>refreshGame().catch(()=>{})).on('postgres_changes',{event:'UPDATE',schema:'public',table:'games',filter:'id=eq.'+id},()=>refreshGame().catch(()=>{})).subscribe()}catch(e){chan=null}
   timer=setInterval(tick,pollMs)}
  function stopWatch(){if(timer)clearInterval(timer);timer=null;try{chan&&chan.unsubscribe&&chan.unsubscribe()}catch(e){}chan=null}
- async function tick(){try{if(!S.started){await refreshGame();if(S.open&&!S.started&&Date.now()-S.beat>45000){S.beat=Date.now();rpc('set_table_public',{p_game:S.gameId,p_public:true}).catch(()=>{})}}else{await fetchEvents();await refreshGame();checkEnd()}}catch(e){S.error=e.message;emit()}}
+ async function tick(){try{if(!S.started){await refreshGame();if(S.open&&!S.started&&Date.now()-S.beat>45000){S.beat=Date.now();rpc('set_table_public',{p_game:S.gameId,p_public:true}).catch(()=>{})}}else{await fetchEvents();await refreshGame();checkEnd();idleCheck()}}catch(e){S.error=e.message;emit()}}
  async function refreshGame(){const g=await sb.from('games').select('*').eq('id',S.gameId).single();if(g.error)throw new Error(g.error.message);
   const p=await sb.from('game_players').select('*').eq('game_id',S.gameId);S.gameRow=g.data;S.players=p.data||[];
   const me=S.players.find(x=>x.user_id===S.user.id),op=S.players.find(x=>x.user_id!==S.user.id);if(me)S.seat=me.seat;S.opponent=op?op.name||'Adversaire':'';
@@ -46,7 +49,7 @@ function createCore(o){
   if(S.started&&!S.ended&&S.gameRow.status==='finished'){await fetchEvents();if(S.applied>=Number(S.gameRow.last_seq||0))finishFromServer()}emit()}
  function startMatch(){try{const by=[0,1].map(s=>S.players.find(p=>p.seat===s)),decks=by.map(p=>sanitizeDeck(p.deck,monsters));
    const run=()=>game.startOnline({seat:S.seat,decks,terrain:S.gameRow.terrain,seed:Number(S.gameRow.seed),send:fn=>send(fn),onError:e=>{S.error=e&&e.message||String(e);emit()}});
-   S.started=true;S.status='playing';S.terrain=S.gameRow.terrain;(o.enter||(f=>f()))(run);
+   S.started=true;S.status='playing';S.lastAct=Date.now();S.lastCur=null;S.terrain=S.gameRow.terrain;(o.enter||(f=>f()))(run);
    send(rpc=>rpc('play_action',{p_kind:'hello',p_payload:{version:cfg.version||''}})).catch(()=>{});fetchEvents().catch(()=>{});emit()}
   catch(e){S.error=e.message;S.status='error';emit()}}
  function send(fn){const p=q.then(()=>fn((name,args)=>rpc(name,Object.assign({p_game:S.gameId},args))));q=p.catch(()=>{});return p}
@@ -61,16 +64,21 @@ function createCore(o){
     if(ev.seat!==S.seat){
      if(ev.kind==='roll')game.pushRoll((ev.payload.values||[]).map(Number));
      else if(ev.kind==='hello'){if(String(ev.payload.version||'')!==String(cfg.version||'')){S.versionOK=false;S.error='Ton adversaire n’a pas la même version du jeu : recharge la page des deux côtés.'}}
-     else if(ev.kind==='resign'){game.endOnline(S.seat,'L’adversaire abandonne : victoire !');S.ended=true}
+     else if(ev.kind==='resign'){game.endOnline(S.seat,ev.payload?.reason==='idle'?'Ton adversaire est resté 2 minutes sans jouer : victoire !':'L’adversaire abandonne : victoire !');S.ended=true}
+     else if(ev.kind==='win'&&ev.payload?.reason==='idle'&&!game.onlineState().over){game.endOnline(ev.seat,'Temps écoulé : 2 minutes sans jouer, la partie est perdue.');S.ended=true}
      else if(ev.kind==='place'||ev.kind==='move'){const ok=await waitIdle(ev);if(!ok&&!game.onlineState().over){S.error='Désynchronisation : impossible de rejouer l’action de l’adversaire.';S.status='desync';emit();break}
        if(ok&&!game.applyRemote(ev)){S.error='Désynchronisation : action de l’adversaire refusée par le moteur.';S.status='desync';emit();break}}
     }
-    S.applied=ev.seq;S.queue.shift();emit()}
+    S.applied=ev.seq;S.lastAct=Date.now();S.queue.shift();emit()}
   }finally{pumping=false}}
  function checkEnd(){const st=game.onlineState();if(!st.over||S.endSent)return;S.endSent=true;S.ended=true;
   if(st.result?.outcome==='draw'||st.kills.every(n=>n>=st.kw)){S.status='draw';if(S.seat===0)send(rpc=>rpc('finish_draw',{})).catch(e=>{S.error='Match nul reconnu. Enregistrement serveur indisponible : '+e.message;emit()});emit();return}
   const w=st.result?.winner??[0,1].find(s=>st.scores[s]>=st.win||st.kills[s]>=st.kw);if(w===S.seat)send(rpc=>rpc('play_action',{p_kind:'win',p_payload:{}})).catch(()=>{});emit()}
  function finishFromServer(){S.ended=true;const w=S.gameRow.winner;if(w===null){S.status='draw';game.endOnline(null,'Match nul : les deux camps ont vaincu quatre créatures.')}else if(w===S.seat)game.endOnline(S.seat,'L’adversaire a quitté la partie : victoire !');else if(w!==null&&w!==undefined&&!game.onlineState().over)game.endOnline(w,'Défaite par abandon.');emit()}
+ function idleCheck(now=Date.now()){if(!S.started||S.ended||S.status==='desync')return;const st=game.onlineState();if(st.over){S.idleLeft=null;return}
+  if(st.cur!==S.lastCur||st.busy){S.lastCur=st.cur;S.lastAct=now}const idle=now-S.lastAct;
+  if(st.cur===S.seat){S.idleLeft=Math.max(0,Math.ceil((IDLE_MS-idle)/1000));if(idle>=IDLE_MS){S.ended=true;send(rpc=>rpc('play_action',{p_kind:'resign',p_payload:{reason:'idle'}})).catch(()=>{});game.endOnline(1-S.seat,'Temps écoulé : 2 minutes sans jouer, la partie est perdue.');emit()}}
+  else{S.idleLeft=null;if(idle>=IDLE_MS+IDLE_GRACE){S.ended=true;send(rpc=>rpc('play_action',{p_kind:'win',p_payload:{reason:'idle'}})).catch(()=>{});game.endOnline(S.seat,'Ton adversaire est resté 2 minutes sans jouer : victoire !');emit()}}}
  async function resign(){if(!S.gameId||S.ended)return;S.ended=true;try{await send(rpc=>rpc('play_action',{p_kind:'resign',p_payload:{}}))}catch(e){}game.endOnline(1-S.seat,'Tu as abandonné la partie.');emit()}
  function leave(){stopWatch();const was=S.started;if(S.open&&!was&&S.gameId)rpc('set_table_public',{p_game:S.gameId,p_public:false}).catch(()=>{});reset();try{was&&game.leaveOnline()}catch(e){}emit()}
 
@@ -86,7 +94,7 @@ function createCore(o){
  async function tradeCancel(){await rpc('cancel_trade',{p_trade:T.id});await tradeRefresh()}
  const mySide=()=>T.role==='host'?'host':'guest',otherSide=()=>T.role==='host'?'guest':'host';
 
- return{S,T,rpc,ensureAuth,createGame,joinGame,listTables,resign,leave,stop:stopWatch,onChange:f=>{subs.add(f);return()=>subs.delete(f)},onTrade:f=>{tsubs.add(f);return()=>tsubs.delete(f)},
+ return{S,T,rpc,ensureAuth,createGame,joinGame,listTables,resign,leave,idleCheck,stop:stopWatch,onChange:f=>{subs.add(f);return()=>subs.delete(f)},onTrade:f=>{tsubs.add(f);return()=>tsubs.delete(f)},
   tradeCreate,tradeJoin,setOffer,confirm,tradeCancel,tradeStop:tradeReset,mySide,otherSide,_pump:pump,_tick:tick}
 }
 
@@ -159,9 +167,10 @@ function mount(container,b){bridge=b;host=container;U.view=core&&core.T.id&&core
 /* barre d'état pendant un duel en ligne */
 function updateHud(){if(typeof document==='undefined')return;if(!hud){hud=document.createElement('div');hud.id='pvp-hud';hud.hidden=true;document.body.append(hud);
   hud.addEventListener('click',e=>{const a=e.target.closest('[data-hud]');if(!a)return;if(a.dataset.hud==='resign'){if(confirm('Abandonner la partie ? Ton adversaire sera déclaré vainqueur.'))core.resign()}else if(a.dataset.hud==='quit'){core.leave();hud.hidden=true;bridge.toMenu()}})}
- const S=core.S,on=S.started&&root.hackeniaGame&&root.hackeniaGame.isOnline&&root.hackeniaGame.isOnline();hud.hidden=!on||document.body.classList.contains('portal-open');if(hud.hidden)return;
+ const S=core.S,inMenu=document.body.classList.contains('portal-open');if(inMenu&&S.started&&S.ended)core.leave();/* v254 — retour au menu après la partie : on quitte proprement la session en ligne */
+ const on=S.started&&root.hackeniaGame&&root.hackeniaGame.isOnline&&root.hackeniaGame.isOnline();hud.hidden=!on||inMenu;if(hud.hidden)return;core.idleCheck();
  const camp=S.seat===0?'🟢 Vert':'🟠 Orange';
- hud.innerHTML='<span>🌐 '+(S.status==='draw'?'Match nul':'En ligne')+' · contre <b>'+esc(S.opponent||'…')+'</b> · tu es '+camp+'</span>'+(S.error?'<span class="pvp-hud-err">'+esc(S.error)+'</span>':'')+(S.ended||S.status==='desync'?'<button data-hud="quit">Quitter</button>':'<button data-hud="resign">Abandonner</button>')}
+ hud.innerHTML='<span>🌐 '+(S.status==='draw'?'Match nul':'En ligne')+' · contre <b>'+esc(S.opponent||'…')+'</b> · tu es '+camp+'</span>'+(S.idleLeft!==null&&S.idleLeft<=45&&!S.ended?'<span class="pvp-hud-idle">⏳ '+S.idleLeft+' s pour jouer</span>':'')+(S.error?'<span class="pvp-hud-err">'+esc(S.error)+'</span>':'')+(S.ended||S.status==='desync'?'<button data-hud="quit">Quitter</button>':'<button data-hud="resign">Abandonner</button>')}
 root.HackeniaPVP={mount,updateHud,createCore,sanitizeDeck,raritiesMatch,rarityCounts,applyTrade};
 if(typeof module!=='undefined'&&module.exports)module.exports={createCore,sanitizeDeck,raritiesMatch,rarityCounts,applyTrade};
 })(typeof window!=='undefined'?window:globalThis);
