@@ -18,3 +18,9 @@
 @keyframes tp-pop{0%{transform:scale(.8) rotate(-8deg)}70%{transform:scale(1.12)}100%{transform:none}}
 @media (prefers-reduced-motion:reduce){#portal .tp-item[aria-checked="true"] .tp-ico{animation:none}}
 @media (max-width:420px){#portal .tp-ico{width:34px;height:34px}}
+/* v253 — terrains de saison et événement */
+#portal .tp-item:disabled{opacity:.45;cursor:not-allowed;transform:none;filter:grayscale(.6)}
+#portal .tp-item.event:not(:disabled){border-color:rgba(255,120,120,.55);background:linear-gradient(160deg,rgba(214,32,44,.28),rgba(20,40,90,.55))}
+#portal .tp-item.event:not(:disabled) small{color:#ffd6a0}
+#portal .tp-item.event[aria-checked="true"]{border-color:#ffd36a;box-shadow:0 0 0 1px #ffd36a inset,0 0 18px rgba(255,90,90,.35)}
+#portal .challenge-event{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;font:700 10px/1.6 system-ui,sans-serif;letter-spacing:.05em;color:#fff;background:linear-gradient(90deg,#c21f2c,#2e6fe0);vertical-align:2px}
