@@ -61,7 +61,7 @@ export function createElementWheel({loadModel,software=false}){
  const backHalo=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xd6b26a,transparent:true,opacity:.16,depthWrite:false,blending:THREE.AdditiveBlending}));backHalo.scale.setScalar(R*3.4);backHalo.position.z=-.8;root.add(backHalo);
  const tmpV=new THREE.Vector3(),tmpC=new THREE.Color();let focus='';
  function ensureModels(){if(loaded)return;loaded=true;s_load.forEach(f=>f())}
- let compact=false;function setCompact(v){if(v===compact)return;compact=v;title.visible=hint.visible=legend.visible=!v;ring3.visible=!v;backHalo.visible=!v}
+ let compact=false;function setCompact(v){if(v===compact)return;compact=v;title.visible=hint.visible=legend.visible=!v;ring3.visible=!v;backHalo.visible=!v;slots.forEach(sl=>sl.label.visible=!v)/* v255 : sans les noms sur smartphone */}
  function setFocus(el){focus=WHEEL_ORDER.includes(el)?el:''}
  /* Place la roue à droite du plateau (dans le repère de la caméra), face à elle. scale = taille relative. */
  function place(camera,anchor,scale=1){root.quaternion.copy(camera.quaternion);root.position.copy(anchor);root.scale.setScalar(scale)}
