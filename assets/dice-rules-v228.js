@@ -6,7 +6,7 @@ const RULES={
  1:{name:'Commun',tiles:3,total:6,max:3,min:1,len:3,throw:'1 dé, 2+'},
  2:{name:'Peu commun',tiles:4,total:10,max:4,min:1,len:3,throw:'1 dé, 3+'},
  3:{name:'Rare',tiles:5,total:20,max:6,min:2,len:3,throw:'1 dé, 3+'},
- 5:{name:'Légendaire',tiles:6,total:28,max:6,min:2,len:4,throw:'2 dés, 5+'},
+ 5:{name:'Légendaire',tiles:6,total:28,max:6,min:2,len:4,throw:'2 dés, 4+'},
  6:{name:'Divin',tiles:6,total:32,max:6,min:3,len:4,throw:'2 dés, 5+'}};
 // Multi-élément : bonus de terrain permanent, donc 2 points de force en moins.
 const totalFor=(rarity,element)=>RULES[rarity].total-(element==='multi'?2:0);

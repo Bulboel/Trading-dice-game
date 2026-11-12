@@ -47,7 +47,7 @@ const steps=[
 {title:'Un lancer raté',kind:'action',focus:'hand',
  setup(){reset();pl[0].h=[D.bosco];T.rolls=[[1,3]]},
  targets:()=>anchors(D.bosco),
- text:()=>`<p><b>Bosco</b> est légendaire : il faut <b>5 ou plus</b> avec l’un de ses <b>2 dés</b>. Pose-le et lance… ce lancer va rater.</p>`,
+ text:()=>`<p><b>Bosco</b> est légendaire : il faut <b>4 ou plus</b> avec l’un de ses <b>2 dés</b>. Pose-le et lance… ce lancer va rater.</p>`,
  check:()=>bonus[0]===1&&mode==='i'&&idle(),
  success:()=>`<p>✓ Raté : <b>le dé revient dans ta main</b> et ton tour se termine.</p><p>Consolation : tu gagnes un <b>dé bonus ✦</b>. Il ajoute un dé à un prochain lancer.</p>`},
 {title:'Dé bonus et paire magique',kind:'action',focus:'hand',

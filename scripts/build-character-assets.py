@@ -22,6 +22,8 @@ PORTRAITS = {
  'velmarys':'Velmarys miniature.png', 'ven':'Ven miniature.png', 'zackarie':'Zackarie miniature.png',
  # v214
  'hydrelithe':'Hydrelithe miniature.png', 'myconide':'Myconide miniature.png', 'yoris':'Yoris miniature.png',
+ # v248
+ 'hydrelithe-majeure':'Hydrelithe majeur de terre miniature.png', 'mineur':'Mineur miniature.png', 'araignee':'Araignée miniature.png',
 }
 CLIPS = {
  'eberien': {'spell':('Eberien Spell cast.glb',None), 'victory':('Eberien Victory.glb',None), 'walk':('Eberien chibi.glb','Walking')},
@@ -47,6 +49,9 @@ for key,prefix,walk in [('max','Max','marche'),('max-alastor','Max & Alastor','m
 # (Crouch_Walk_with_Torch, identique au fichier « marche ») ; elle sert aussi d'attaque en attendant une vraie attaque.
 for key,prefix in [('myconide','Myconide'),('yoris','Yoris')]:
  CLIPS[key]={'spell':(f'{prefix} attaque.glb',None), 'victory':(f'{prefix} victoire.glb',None), 'walk':(f'{prefix} marche.glb',None)}
+# v248 — Hydrelithe majeure de terre (divine) et Mineur (sa course sert de marche). L'Araignée n'a pas d'animation.
+CLIPS['hydrelithe-majeure']={'spell':('Hydrelithe majeure de terre attaque.glb',None), 'victory':('Hydrelithe majeure de terre victoire.glb',None), 'walk':('Hydrelithe majeur de terre marche.glb',None)}
+CLIPS['mineur']={'spell':('Mineur attaque.glb',None), 'victory':('Mineur victoire.glb',None), 'walk':('Mineur court.glb',None)}
 CLIPS['hydrelithe']={'spell':('Hydrelithe attaque.glb',None), 'victory':('Hydrelithe victoire.glb',None), 'walk':('Hydrelithe marche.glb',None)}
 def animation_only(source, name, destination):
  data=source.read_bytes(); length=struct.unpack_from('<I',data,12)[0]

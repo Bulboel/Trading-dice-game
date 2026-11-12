@@ -22,7 +22,7 @@ const CREST={
 // ou hausse les épaules (égalité). L'ancien blason reste en petit, posé derrière lui.
 function balai(kind){const img=kind==='loss'?'assets/story/balai-triste.webp':'assets/story/balai-normal.webp';
  const fx=kind==='win'?`<span class="mb-spark s1">✦</span><span class="mb-spark s2">✧</span><span class="mb-spark s3">✦</span><span class="mb-spark s4">✧</span>`
-  :kind==='loss'?`<span class="mb-cloud" aria-hidden="true"><svg viewBox="0 0 120 60"><path d="M28 50h66a20 20 0 0 0 2-40 26 26 0 0 0-49-4 18 18 0 0 0-19 44Z" fill="#7d8899" stroke="#4b5566" stroke-width="2"/></svg>${'<i></i>'.repeat(7)}</span>`:'';
+  :kind==='loss'?`<span class="mb-tears" aria-hidden="true"><i></i><i></i><i></i></span>`:'';/* v248 — plus de nuage : de petites larmes tombent */
  const said=kind==='win'?'Hourra ! Quelle partie !':kind==='loss'?'Oh non… On les aura la prochaine fois.':'Ni vainqueur ni vaincu… hmm.';
  return `<div class="mb-wrap mb-${kind}"><div class="mb-crest">${CREST[kind]}</div><div class="mb-balai"><img src="${img}" alt="Messire Balai ${kind==='loss'?'triste':kind==='win'?'ravi':'pensif'}" draggable="false"></div>${fx}<p class="mb-say">${said}</p></div>`}
 function ensure(){if(root)return root;root=document.createElement('section');root.id='match-end';root.hidden=true;root.setAttribute('role','dialog');root.setAttribute('aria-modal','false');root.setAttribute('aria-labelledby','me-title');
@@ -45,7 +45,7 @@ function show(d){if(document.body.classList.contains('tutorial-mode'))return;con
  // v219 — Expérience gagnée et barre de niveau (avec « Niveau supérieur ! »).
  const G=window.HackeniaProgress?.lastGain,gain=G&&Date.now()-G.at<8000?G:null,xpBox=el.querySelector('.me-xp');xpBox.innerHTML='';xpBox.hidden=!gain;
  if(gain){const up=gain.levels.length,from=up?0:Math.round(gain.before.into/gain.before.need*100),to=gain.after.max?100:Math.round(gain.after.into/gain.after.need*100);
-  xpBox.innerHTML=`<div class="me-xp-row"><span class="me-xp-level">Niv. <b>${gain.after.level}</b></span><span class="me-xp-bar"><i style="width:${motion?from:to}%"></i></span><b class="me-xp-gain">+${gain.xp} XP</b></div>${up?`<p class="me-levelup">⬆ Niveau supérieur ! <b>+${gain.levels.reduce((a,l)=>a+l.gold,0)} Bubulles</b>${gain.levels.filter(l=>l.unlock).map(l=>' · '+esc(l.unlock.label)+' débloqué').join('')}</p>`:''}${gain.done.length?`<p class="me-quests">✔ ${gain.done.map(q=>esc(q.text)).join(' · ')}</p>`:''}`;
+  xpBox.innerHTML=`<div class="me-xp-row"><span class="me-xp-level">Niv. <b>${gain.after.level}</b></span><span class="me-xp-bar"><i style="width:${motion?from:to}%"></i></span><b class="me-xp-gain">+${gain.xp} XP</b></div>${up?`<p class="me-levelup">⬆ Niveau supérieur ! <b>+${gain.levels.reduce((a,l)=>a+l.gold,0)} Bubulles</b>${gain.levels.filter(l=>l.unlock).map(l=>' · '+esc(l.unlock.label)+' débloqué').join('')}</p>`:''}${gain.done.length?`<div class="me-quests">${gain.done.map(q=>`<p><span class="me-quest-tag">✔ Défi validé</span> ${esc(q.text)}${q.reward?` <small>+${q.reward.xp} XP · +${q.reward.gold} Bubulles</small>`:''}</p>`).join('')}</div>`:''}`;
   if(motion)setTimeout(()=>{const i=xpBox.querySelector('.me-xp-bar i');if(i)i.style.width=to+'%'},1500)}
  el.querySelector('.me-actions').innerHTML=story?'':`<button type="button" data-me="board">Voir le plateau</button><button type="button" data-me="menu">Menu</button><button type="button" class="portal-primary" data-me="again">${kind==='loss'?'Revanche':'Rejouer'}</button>`;
  el.hidden=false;requestAnimationFrame(()=>el.classList.add('me-in'));

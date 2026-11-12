@@ -4,7 +4,7 @@
    torches qui vacillent, bassin souterrain, gouttes qui tombent et chauves-souris. Aucun élément n'est favorisé.
    Coordonnées réelles des cases (root.scale.z = 1/ZS appliqué par clearing-v105.js). */
 import * as THREE from 'three';
-export function createCave(world,software=false,rows=10){
+export function createCave(world,software=false,rows=10,helpers={}){
 const root=new THREE.Group();world.add(root);root.visible=false;
 let seed=6607;const rnd=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296};
 const HZ=rows/2,BX=4.3,BZ=HZ+.3,TOP=.2,FX=7.2,FZ=HZ+2.45;
@@ -112,5 +112,14 @@ let chaseD=rnd()*rTot,lastT=0;const turn=(o,yaw,dt)=>{let d=yaw-o.yaw;d=Math.ata
 updates.push((t,l,moving)=>{const dt=Math.min(.1,Math.max(0,t-lastT));lastT=t;if(moving)chaseD+=1.5*dt;
  for(const R of runners){const p=onRing(chaseD-R.off);turn(R,p.yaw,dt);const ph=t*13+R.off*9,bob=moving?Math.abs(Math.sin(ph))*.05:0;R.m.g.position.set(p.x,floorH(p.x,p.z)+bob,p.z);R.m.g.rotation.set(.22,R.yaw,0,'YXZ');R.m.legs[0].rotation.x=moving?Math.sin(ph)*1:0;R.m.legs[1].rotation.x=moving?-Math.sin(ph)*1:0;R.m.arms[0].rotation.set(-2.7+Math.sin(ph*1.3)*.25,0,-.35);R.m.arms[1].rotation.set(-2.7+Math.cos(ph*1.3)*.25,0,.35)}
  for(const S of spiders){const p=onRing(chaseD-S.off),sx=Math.cos(p.yaw)*S.side,sz=-Math.sin(p.yaw)*S.side;turn(S,p.yaw,dt);const x=p.x+sx,z=p.z+sz;S.s.g.position.set(x,floorH(x,z)+(moving?Math.abs(Math.sin(t*9+S.p))*.02:0),z);S.s.g.rotation.y=S.yaw;for(const L of S.s.legs)L.leg.rotation.z=moving?Math.sin(t*26+S.p+L.k*1.6+(L.s>0?Math.PI:0))*.35:0}});
+// v248 — Les vrais modèles remplacent les figurines dès qu'ils sont chargés : Mineurs (course et attaque) et Araignées.
+if(!software&&helpers.spawnWalker){const swap=(fig,model,h)=>{model.group.position.copy(fig.position);model.group.rotation.copy(fig.rotation);fig.visible=false;fig.add?.(new THREE.Group());root.add(model.group);return model};
+ runners.forEach((R,i)=>setTimeout(()=>helpers.spawnWalker('mineur',.9,'walk').then(m=>{if(!m)return;R.real=swap(R.m.g,m)}),400+i*500));
+ diggers.forEach((D,i)=>setTimeout(()=>helpers.spawnWalker('mineur',.9,'spell').then(m=>{if(!m)return;D.real=swap(D.m.g,m);m.group.add(D.spark);D.m.g.remove(D.spark)}),1500+i*500));
+ const tints=[null,'#ff4a24','#9df5b8',null,'#c6f1ff'];spiders.forEach((S,i)=>setTimeout(()=>helpers.spawnWalker('araignee',.3,null,tints[i%tints.length]).then(m=>{if(!m)return;S.real=swap(S.s.g,m)}),2500+i*300))}
+let lastReal=0;updates.push((t,l,moving)=>{const dt=Math.min(.1,Math.max(0,t-lastReal));lastReal=t;
+ for(const R of runners)if(R.real){R.real.group.position.copy(R.m.g.position);R.real.group.position.y=R.m.g.position.y-(moving?Math.abs(Math.sin(t*13+R.off*9))*.05:0);R.real.group.rotation.y=R.yaw;if(moving)R.real.update(dt)}
+ for(const D of diggers)if(D.real&&moving)D.real.update(dt);
+ for(const S of spiders)if(S.real){S.real.group.position.copy(S.s.g.position);S.real.group.rotation.y=S.yaw;S.real.group.rotation.z=moving?Math.sin(t*30+S.p)*.05:0}});
 return{root,update(t,light,moving){for(const u of updates)u(t,light,moving)}};
 }
