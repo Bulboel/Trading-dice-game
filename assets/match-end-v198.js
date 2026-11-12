@@ -22,7 +22,7 @@ const CREST={
 // ou hausse les épaules (égalité). L'ancien blason reste en petit, posé derrière lui.
 function balai(kind){const img=kind==='loss'?'assets/story/balai-triste.webp':'assets/story/balai-normal.webp';
  const fx=kind==='win'?`<span class="mb-spark s1">✦</span><span class="mb-spark s2">✧</span><span class="mb-spark s3">✦</span><span class="mb-spark s4">✧</span>`
-  :kind==='loss'?`<span class="mb-cloud" aria-hidden="true"><svg viewBox="0 0 120 60"><path d="M28 50h66a20 20 0 0 0 2-40 26 26 0 0 0-49-4 18 18 0 0 0-19 44Z" fill="#7d8899" stroke="#4b5566" stroke-width="2"/></svg>${'<i></i>'.repeat(7)}</span>`:'';
+  :kind==='loss'?`<span class="mb-tears" aria-hidden="true"><i></i><i></i><i></i></span>`:'';/* v248 — plus de nuage : de petites larmes tombent */
  const said=kind==='win'?'Hourra ! Quelle partie !':kind==='loss'?'Oh non… On les aura la prochaine fois.':'Ni vainqueur ni vaincu… hmm.';
  return `<div class="mb-wrap mb-${kind}"><div class="mb-crest">${CREST[kind]}</div><div class="mb-balai"><img src="${img}" alt="Messire Balai ${kind==='loss'?'triste':kind==='win'?'ravi':'pensif'}" draggable="false"></div>${fx}<p class="mb-say">${said}</p></div>`}
 function ensure(){if(root)return root;root=document.createElement('section');root.id='match-end';root.hidden=true;root.setAttribute('role','dialog');root.setAttribute('aria-modal','false');root.setAttribute('aria-labelledby','me-title');
