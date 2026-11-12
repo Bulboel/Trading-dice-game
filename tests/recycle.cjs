@@ -5,9 +5,9 @@ const profile={version:1,gold:10,inventory:{0:7,1:4,2:6,3:3,4:2,5:5,6:1},decks:[
 const p=R.plan(profile,defs,rar),by=Object.fromEntries(p.items.map(i=>[i.id,i]));
 assert.equal(by[0].keep,6,'A saved deck using 6 copies keeps 6');assert.equal(by[0].extra,1);
 assert.ok(!by[1],'Exactly 4 uncommon copies: nothing to recycle');assert.ok(!by[6],'Single copy never recycled');
-assert.equal(by[2].extra,2);assert.equal(by[3].extra,2,'Legendary: 1 kept');assert.equal(by[4].extra,1,'Divine: 1 kept');assert.equal(by[5].extra,3,'Énergie: 2 kept');
-assert.equal(p.total,1*1+2*2+2*5+1*20+3*3);assert.equal(p.count,1+2+2+1+3);
-const all=R.apply(profile,defs,rar);assert.equal(all.profile.gold,10+p.total);assert.equal(all.profile.inventory[3],1);assert.equal(all.profile.inventory[5],2);assert.equal(all.profile.recycled,p.count);assert.equal(profile.inventory[3],3,'Input untouched');
+assert.equal(by[2].extra,2);assert.equal(by[3].extra,1,'Legendary: 2 kept (v252)');assert.equal(by[4].extra,1,'Divine: 1 kept');assert.equal(by[5].extra,3,'Énergie: 2 kept');
+assert.equal(p.total,1*1+2*2+1*5+1*20+3*3);assert.equal(p.count,1+2+1+1+3);
+const all=R.apply(profile,defs,rar);assert.equal(all.profile.gold,10+p.total);assert.equal(all.profile.inventory[3],2);assert.equal(all.profile.inventory[5],2);assert.equal(all.profile.recycled,p.count);assert.equal(profile.inventory[3],3,'Input untouched');
 const some=R.apply(profile,defs,rar,[4]);assert.equal(some.gold,20);assert.equal(some.profile.inventory[2],6,'Unchosen dice untouched');
 assert.equal(R.plan(all.profile,defs,rar).count,0,'Nothing left after recycling all');
 // Une bourse entièrement recyclée rapporte nettement moins que son prix (10 Bubulles).

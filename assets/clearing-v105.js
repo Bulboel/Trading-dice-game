@@ -11,6 +11,7 @@ import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20261125-v244
 import { createFrostRoad } from './frost-v240.js?v=20261121-v240';
 import { createCity } from './city-v246.js?v=20261128-v247';
 import { createCave } from './cave-v246.js?v=20261129-v248';
+import { createElementWheel } from './element-wheel-v252.js?v=20261201-v252';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -602,6 +603,16 @@ function cellScreen(x,y){if(!active)return null;const r=canvas.getBoundingClient
 window.HackeniaView={get active(){return active},cellAt,sync,setActive,updateLens,preview,clearPreview,cellScreen};configure();sync();
 const portalContent=document.getElementById('portal-content');
 if(portalContent){const refreshPreview=()=>{const art=document.getElementById('play-terrain-art');if(art&&document.body.classList.contains('portal-open')){const terrain=document.getElementById('play-terrain')?.value||'terre';preview(terrain,art,document.getElementById('play-layout')?.value||'classique')}else clearPreview()};new MutationObserver(refreshPreview).observe(portalContent,{childList:true,subtree:true});refreshPreview()}
+/* v252 — Roue des éléments à droite du plateau (seconde passe de rendu, jamais masquée par le décor). */
+let elementWheel=null;const wheelRight=new THREE.Vector3(),wheelAnchor=new THREE.Vector3();
+function wheelModel(url){if(!modelCache.has(url))modelCache.set(url,(async()=>{const tools=await getModelTools();const gltf=await tools.loader.loadAsync(url);return{gltf,clone:tools.clone}})().catch(()=>null));return modelCache.get(url).then(a=>a?a.clone(a.gltf.scene):null)}
+function renderElementWheel(t){if(previewMode||!renderer.isWebGLRenderer)return;elementWheel??=createElementWheel({loadModel:wheelModel,software:!!renderer.isSoftware||light});
+ const st=state;const d=st&&(st.mode==='p'||st.mode==='d')&&st.die!=null?game.monsters?.[st.die]:null;elementWheel.setFocus(d&&!d.multi?d.el:'');
+ wheelRight.set(Math.cos(orbitYaw),0,-Math.sin(orbitYaw));wheelAnchor.copy(wheelRight).multiplyScalar(8.6*Math.max(1,ZS)+4.6).setY(1.2);
+ const ndc=wheelAnchor.clone().project(camera);if(Math.abs(ndc.x)>2.6||Math.abs(ndc.y)>2.6)return;if(Math.abs(ndc.x)<1.8)elementWheel.ensureModels();// hors champ : ni rendu ni téléchargement
+ elementWheel.place(camera,wheelAnchor,1.5*Math.max(1,ZS*.9));elementWheel.update(t,moving);
+ const ac=renderer.autoClear;renderer.autoClear=false;renderer.clearDepth();renderer.render(elementWheel.scene,camera);renderer.autoClear=ac}
+window.HackeniaElementWheel={get:()=>elementWheel,anchor:()=>wheelAnchor.clone()};
 function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&!previewMode)||!active||now-lastFrame<(renderer.isSoftware?100:light?32:16))return;const dt=Math.min((now-lastFrame)/1000,.06);lastFrame=now;if(pureFx.length)updatePureFx(now);if(weatherFx.length)updateWeather(now);animateLotus();if(auras.size)updateAuras(now);if(moving)for(const g of creatures.values()){const h=g.userData.hop,m=g.userData.model;if(!h||!m)continue;const u=((now/1000+h.phase)%3.2)/.55;if(u<1){const lift=Math.sin(Math.PI*u);m.position.y=h.base+.24*lift;m.scale.set(1-.05*lift,1+.08*lift,1-.05*lift)}else if(u<1.25){const s=Math.sin(Math.PI*(u-1)/.25);m.position.y=h.base;m.scale.set(1+.07*s,1-.1*s,1+.07*s)}else{m.position.y=h.base;m.scale.set(1,1,1)}}updateZoneGlow(now);const t=moving?now/1000:0;
  if(frostRoad?.root.visible)frostRoad.update(t,light,moving);if(cityScene?.root.visible)cityScene.update(t,light,moving);if(caveScene?.root.visible)caveScene.update(t,light,moving);
  if(forest.visible){wind.value=t;waterNormals.offset.set(-t*.032,t*.013);
@@ -628,7 +639,7 @@ function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&
  if(g.userData.mixer&&(moving||(f&&!combat.reduced)))g.userData.mixer.update(dt);if(g.userData.modelRoot&&g.userData.model)orientBoardModel(g.userData.modelRoot,g.userData.model,f,g.userData.idleModelYaw||0,THREE);}
 
  if(dieGroup.visible){dieGroup.position.copy(dieGroup.userData.target);dieGroup.position.y+=moving?Math.sin(t*2)*.08:0;dieGroup.rotation.y=moving&&state.cubeCls!=='land'?t*.7:0;dieGroup.scale.setScalar(state.cubeCls==='poof'?.35:1)}
- highlights.children.forEach(m=>{if(!m.userData.cachedLabel)m.material.opacity=moving?.32+Math.sin(t*3)*.09:.4});renderer.render(scene,camera);projectBoardCaptions(t);drawPlacementLens();
+ highlights.children.forEach(m=>{if(!m.userData.cachedLabel)m.material.opacity=moving?.32+Math.sin(t*3)*.09:.4});renderer.render(scene,camera);renderElementWheel(t);projectBoardCaptions(t);drawPlacementLens();
 }
 requestAnimationFrame(frame);
 }

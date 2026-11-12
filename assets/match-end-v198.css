@@ -96,3 +96,8 @@
 @keyframes mb-tear{0%{opacity:0;transform:translateY(0) scale(.6)}15%{opacity:1;transform:translateY(2px) scale(1)}100%{opacity:0;transform:translateY(60px) scale(.8)}}
 @media(max-width:700px){#match-end .mb-tears{top:44px}}
 #match-end.me-still .mb-tears i{animation:none!important}
+/* v252 — Défis du jour/de la semaine réussis pendant la partie : étiquette « Défi validé » */
+#match-end .me-quests{display:flex;flex-direction:column;gap:5px;margin:8px 0 0}
+#match-end .me-quests p{margin:0;font:600 13px/1.35 system-ui,sans-serif;color:#e9f3df}
+#match-end .me-quest-tag{display:inline-block;margin-right:6px;padding:2px 8px;border-radius:999px;background:linear-gradient(180deg,#7fe0a0,#3c9a62);color:#06210f;font:800 11px/1.4 system-ui,sans-serif;letter-spacing:.03em;text-transform:uppercase;box-shadow:0 0 10px #7fe0a066}
+#match-end .me-quests small{color:#f3d27a;font-weight:700}

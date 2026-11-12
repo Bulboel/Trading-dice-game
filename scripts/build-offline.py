@@ -16,6 +16,7 @@ for f in sorted(os.listdir('assets')):
 refs={r for r in refs if os.path.exists(r.split('?')[0]) and not r.startswith('assets/Models/')}
 shell=['./','./index.html','./site.webmanifest','assets/manifest.json']+sorted(refs)
 shell+=sorted('assets/characters/'+f for f in os.listdir('assets/characters') if f.endswith(('-128.webp','-512.webp')))
+shell+=sorted('assets/elements/'+f for f in os.listdir('assets/elements') if f.startswith('v2-') and f.endswith('-64.webp'))  # v252 : icônes d'élément (chemins construits dynamiquement)
 for dp,_,fs in os.walk('assets/vendor'):
     shell+=sorted(os.path.join(dp,f).replace(os.sep,'/') for f in fs if not f.endswith(('.md','.txt','LICENSE')))
 shell=list(dict.fromkeys(shell))
