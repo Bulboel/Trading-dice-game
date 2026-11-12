@@ -12,7 +12,7 @@ assert.ok(html.includes('function objectiveBanner()')&&html.includes('Encore un 
 // Messire Balai
 assert.ok(me.includes("assets/story/balai-triste.webp")&&me.includes('function balai(kind)')&&mecss.includes('@keyframes mb-hop')&&mecss.includes('.mb-cloud')&&fs.existsSync(path.join(root,'assets/story/balai-triste.webp')),'Messire Balai cheers or sulks at the end');
 // Logo Bubulles + astuces
-assert.ok(portal.includes('wb-back wb-l')&&css.includes('.wallet-bubble img.wb-l'),'Wallet shows a little heap of Bubulles');
+assert.ok(!portal.includes('wb-back wb-l')&&portal.includes('class="wb-main" src="assets/bubulle.webp"'),'v253 — Wallet shows a single Bubulle');
 const tips=eval(portal.match(/const homeTips=(\[[^\]]*\])/)[1]);assert.ok(tips.length>=40&&tips.some(t=>t.includes('Espace'))&&tips.some(t=>t.includes('tout son chemin disparaît'))&&!tips.some(t=>t.includes('cases isolées')),'Tips refreshed');
 // Déplacement libre (expérimental) : vrai moteur
 const el=()=>new Proxy({style:{setProperty(){}},classList:{add(){},remove(){},toggle(){},contains(){return false}},dataset:{}},{get(t,k){return k in t?t[k]:()=>null},set(t,k,v){t[k]=v;return true}}),timers=[];
