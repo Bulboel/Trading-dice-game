@@ -312,6 +312,7 @@ let state,active=true,moving=true,light=false,paused=false,lastFrame=0,currentAn
 const tiles=new Map(),creatures=new Map(),modelCache=new Map(),combatClipCache=new Map();
 let modelTools;
 function getModelTools(){return modelTools??=Promise.all([import('./vendor/three/examples/jsm/loaders/GLTFLoader.js'),import('./vendor/three/examples/jsm/utils/SkeletonUtils.js')]).then(([a,b])=>({loader:new a.GLTFLoader(),clone:b.clone}))}
+
 // Dé élémentaire posé : son modèle 3D apparaît au-dessus des dalles, lévite en tournant doucement puis s'efface (aucune créature ne reste).
 const pureFx=[];
 window.addEventListener('hackenia:pure-placed',async e=>{const {mi,x,y}=e.detail||{};try{const info=await game.modelInfo(mi);if(!info?.glb)return;const url='assets/'+info.glb;
@@ -496,9 +497,12 @@ function updateCamera(){
  const direction=new THREE.Vector3(Math.sin(orbitYaw)*cp,Math.sin(orbitPitch),Math.cos(orbitYaw)*cp);
  const right=new THREE.Vector3(Math.cos(orbitYaw),0,-Math.sin(orbitYaw));
  const up=new THREE.Vector3().crossVectors(direction,right).normalize();
- const offset=right.multiplyScalar(panX).add(up.multiplyScalar(panY));
- offset.lerp(combatCenter,combatFocus);camera.position.copy(direction.multiplyScalar(distance).add(offset));camera.up.set(0,1,0);camera.lookAt(offset);
- camera.zoom=zoom+(Math.max(zoom,3.2)-zoom)*combatFocus;camera.updateProjectionMatrix();camera.updateMatrixWorld(true);
+ const offset=right.clone().multiplyScalar(panX).add(up.clone().multiplyScalar(panY));
+ offset.lerp(combatCenter,combatFocus);
+ const targetZoom=zoom+(Math.max(zoom,3.2)-zoom)*combatFocus;
+
+ camera.position.copy(direction.multiplyScalar(distance).add(offset));camera.up.set(0,1,0);camera.lookAt(offset);
+ camera.zoom=targetZoom;camera.updateProjectionMatrix();camera.updateMatrixWorld(true);
 }
 function changeZoom(value,anchor){
  const next=Math.round(Math.max(1,Math.min(8,value))*100)/100;
