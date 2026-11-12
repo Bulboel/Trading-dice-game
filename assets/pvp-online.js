@@ -92,7 +92,7 @@ function createCore(o){
 
 /* ---------- écrans du menu (navigateur uniquement) ---------- */
 let core=null,U={view:'home',err:'',busy:false,name:'',deck:'',terrain:'terre',code:'',tcode:'',offer:[]},host=null,bridge=null,hud=null;
-const TERRAINS=[['terre','🌲','Le Bois tendre'],['feu','🌋','Les Terres embrasées'],['glace','🏔️','La Route vers Forfalla'],['vent','🍃','Les vents de Hacko'],['eau','🌊','Le lac rose'],['foudre','⚡','Île céleste'],['ville','🏰','La ville de Dassom'],['grotte','🕯️','La grotte souterraine']];
+const TERRAINS=[['terre','🌲','Le Bois tendre'],['feu','🌋','Les Terres embrasées'],['glace','🏔️','La Route vers Forfalla'],['vent','🍃','Les vents de Hacko'],['eau','🌊','Le lac rose'],['foudre','⚡','Île céleste'],['ville','🏰','La ville de Dassom'],['grotte','🕯️','La grotte souterraine'],['automne','🍁','La forêt d’automne'],['noel','🎄','La nuit des Lumières']];
 const LIB=['assets/vendor/supabase/supabase.js'];  // dernière version 2.x (compatible avec les clés « publishable ») ; à figer après le premier essai réussi
 function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('script inaccessible'));document.head.append(s)})}
 async function ensureCore(){if(core)return core;const c=root.HACKENIA_PVP_CONFIG;if(!c||!c.url||!c.key)throw new Error('Configuration du mode en ligne manquante.');
@@ -105,7 +105,7 @@ function saveName(v){U.name=(v||'').trim().slice(0,24)||U.name;try{localStorage.
 function legalDecks(){const p=bridge.getProfile();return p.decks.filter(d=>bridge.legal(d.dice))}
 function draw(){if(!host)return;const f=U.view==='wait'?waitView:U.view==='trade'?tradeView:homeView;host.innerHTML=f()}
 function homeView(){const decks=legalDecks();if(!U.deck||!decks.some(d=>d.id===U.deck))U.deck=decks[0]?decks[0].id:'';
- const dOpts=decks.map(d=>'<option value="'+esc(d.id)+'"'+(U.deck===d.id?' selected':'')+'>'+esc(d.name)+' · 10 dés</option>').join(''),tOpts=TERRAINS.map(t=>'<option value="'+t[0]+'"'+(U.terrain===t[0]?' selected':'')+'>'+t[2]+'</option>').join('');
+ const dOpts=decks.map(d=>'<option value="'+esc(d.id)+'"'+(U.deck===d.id?' selected':'')+'>'+esc(d.name)+' · 10 dés</option>').join(''),tOpts=TERRAINS.filter(t=>root.HackeniaEvents?.terrainOpen?.(t[0])??t[0]!=='noel').map(t=>'<option value="'+t[0]+'"'+(U.terrain===t[0]?' selected':'')+'>'+t[2]+'</option>').join('');
  return '<div class="portal-title"><div><h2>PVP en ligne</h2></div><span class="portal-muted">Duel contre un autre joueur</span></div>'+
  '<p class="portal-muted">Aucune récompense en Bubulles pour l’instant. Les dés sont lancés par le serveur : personne ne peut les truquer.</p>'+
  (U.err?'<p class="pvp-error" role="alert">'+esc(U.err)+'</p>':'')+

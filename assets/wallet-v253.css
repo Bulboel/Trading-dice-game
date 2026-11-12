@@ -1,0 +1,6 @@
+/* v253 — Bubulles : une seule bulle, sans bandeau ni cadre (accueil, en-tête, boutique) */
+html body #portal .wallet,html body.portal-open #portal .portal-head .wallet,html body.portal-open[data-portal-view="home"] #portal>.wallet.wallet-home{background:none!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+html body #portal .wallet-bubble img.wb-back{display:none!important}
+html body #portal .wallet-bubble img.wb-main{position:relative!important;left:auto!important;top:auto!important;right:auto!important;width:100%!important;height:100%!important;object-fit:contain;filter:drop-shadow(0 3px 6px rgba(0,0,0,.55)) drop-shadow(0 0 8px rgba(120,240,200,.35))}
+html body.portal-open[data-portal-view="home"] #portal>.wallet.wallet-home #portal-gold,html body.portal-open[data-portal-view="home"] #portal>.wallet.wallet-home .wallet-copy small{text-shadow:0 1px 3px #000,0 0 8px #000}
+html body.portal-open[data-portal-view="home"] #portal>.wallet.wallet-home .wallet-bubble,html body.portal-open[data-portal-view="home"] #portal>.wallet.wallet-home .wallet-bubble .wallet-bubble-bounce,html body.portal-open[data-portal-view="home"] #portal>.wallet.wallet-home .wallet-bubble img.wb-main{width:42px!important;height:42px!important;flex:0 0 42px!important;display:block!important}
