@@ -88,3 +88,16 @@
 @media(max-width:700px){#match-end .me-crest{margin-top:-120px!important}#match-end .mb-balai{height:150px}#match-end .mb-crest{top:40px;width:120px;height:90px}#match-end .mb-say{font-size:12px}}
 #match-end.me-still .mb-balai,#match-end.me-still .mb-balai img,#match-end.me-still .mb-spark,#match-end.me-still .mb-cloud,#match-end.me-still .mb-cloud i{animation:none!important}
 #match-end.me-still .mb-loss .mb-balai{transform:rotate(-10deg) translateY(8px)}
+/* v248 — Défaite : le vrai Messire Balai triste, des larmes au lieu du nuage */
+#match-end .mb-loss .mb-balai{filter:drop-shadow(0 10px 18px #000c)!important}
+#match-end .mb-tears{position:absolute;z-index:3;left:50%;top:58px;width:60px;height:80px;transform:translateX(-50%);pointer-events:none}
+#match-end .mb-tears i{position:absolute;top:0;width:6px;height:9px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:radial-gradient(circle at 35% 30%,#fff,#9fd3ff 45%,#4f8fd6);opacity:0;animation:mb-tear 1.8s ease-in 1.2s infinite}
+#match-end .mb-tears i:nth-child(1){left:14px}#match-end .mb-tears i:nth-child(2){left:40px;animation-delay:1.9s}#match-end .mb-tears i:nth-child(3){left:20px;animation-delay:2.6s}
+@keyframes mb-tear{0%{opacity:0;transform:translateY(0) scale(.6)}15%{opacity:1;transform:translateY(2px) scale(1)}100%{opacity:0;transform:translateY(60px) scale(.8)}}
+@media(max-width:700px){#match-end .mb-tears{top:44px}}
+#match-end.me-still .mb-tears i{animation:none!important}
+/* v252 — Défis du jour/de la semaine réussis pendant la partie : étiquette « Défi validé » */
+#match-end .me-quests{display:flex;flex-direction:column;gap:5px;margin:8px 0 0}
+#match-end .me-quests p{margin:0;font:600 13px/1.35 system-ui,sans-serif;color:#e9f3df}
+#match-end .me-quest-tag{display:inline-block;margin-right:6px;padding:2px 8px;border-radius:999px;background:linear-gradient(180deg,#7fe0a0,#3c9a62);color:#06210f;font:800 11px/1.4 system-ui,sans-serif;letter-spacing:.03em;text-transform:uppercase;box-shadow:0 0 10px #7fe0a066}
+#match-end .me-quests small{color:#f3d27a;font-weight:700}

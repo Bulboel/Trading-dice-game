@@ -2,7 +2,7 @@
 const fs=require('fs'),vm=require('vm'),path=require('path'),os=require('os'),assert=require('assert'),{pathToFileURL}=require('url');const root=path.join(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const html=read('index.html'),cl=read('assets/clearing-v105.js'),portal=read('assets/portal-v159.js');
 assert.ok(cl.includes("import { createCity } from './city-v246.js")&&cl.includes("import { createCave } from './cave-v246.js")&&cl.includes("['terre','feu','glace','eau','vent','foudre','ville','grotte']"),'New scenes wired');
-assert.ok(portal.includes("['ville','🏰','La ville de Dassom']")&&portal.includes("['grotte','🕯️','La grotte souterraine']")&&portal.includes('id="play-layout"'),'Selectable in Jouer, with board shapes');
+assert.ok(portal.includes("['ville','🏰','La ville de Dassom")&&portal.includes("['grotte','🕯️','La grotte souterraine")&&portal.includes('id="play-layout"'),'Selectable in Jouer, with board shapes');
 global.window={};require(path.join(root,'assets/story-data-v193.js'));const st=Object.fromEntries(window.HACKENIA_STORY.filter(p=>p.duel).map(p=>[p.id,p.duel.terrain]));
 assert.deepEqual(['c1p1','c1p2','c1p4','c1p5','c1p6','c1p6bis','c1p7','c1p8','c1p9','c1p10'].map(k=>st[k]),['terre','terre','grotte','grotte','terre','terre','grotte','eau','eau','eau'],'Chapter 1: Bois tendre until Berdésa, cave in the mine, Bois tendre, cave in the twins’ grotto, then the pink lake');
 const el=()=>new Proxy({style:{setProperty(){}},classList:{add(){},remove(){},toggle(){},contains(){return false}},dataset:{}},{get(t,k){return k in t?t[k]:()=>null},set(t,k,v){t[k]=v;return true}});

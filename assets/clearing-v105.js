@@ -10,7 +10,8 @@ import { createWoodland } from './woodland-v238.js?v=20261119-v238';
 import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20261125-v244';
 import { createFrostRoad } from './frost-v240.js?v=20261121-v240';
 import { createCity } from './city-v246.js?v=20261128-v247';
-import { createCave } from './cave-v246.js?v=20261128-v247';
+import { createCave } from './cave-v246.js?v=20261129-v248';
+import { createElementWheel } from './element-wheel-v252.js?v=20261201-v252';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -398,11 +399,11 @@ function updateWeather(){const now=performance.now();for(let i=weatherFx.length-
  else{let alive=false;for(const s of f.streaks){const u=t-s.delay;if(u<0){alive=true;continue}const x=7-u*s.speed;s.m.position.set(x,s.y,s.z);s.m.material.opacity=x>-7?.9*Math.min(1,u*3)*Math.min(1,(x+7)/3):0;s.m.position.y=s.y+Math.sin(u*4+s.z)*.15;if(x>-7)alive=true}
   if(!alive){pieces.remove(f.group);f.group.traverse(o=>{o.geometry?.dispose?.();o.material?.dispose?.()});weatherFx.splice(i,1)}}}}
 // v247 — Passants des décors (ville de Dassom) : un personnage du jeu avec son animation de marche, à taille de figurant.
-async function spawnWalker(key,height=.8){try{const man=await (spawnWalker.man??=fetch('assets/manifest.json').then(r=>r.json())),info=man.creatures?.[key];if(!info?.glb||!info.animations?.walk)return null;const url='assets/'+info.glb;
+async function spawnWalker(key,height=.8,kind='walk',tint=null){try{const man=await (spawnWalker.man??=fetch('assets/manifest.json').then(r=>r.json())),info=man.creatures?.[key];if(!info?.glb||(kind&&!info.animations?.[kind]))return null;/* v248 : n'importe quel clip (marche, attaque…), ou aucun (modèle statique), avec teinte élémentaire */const url='assets/'+info.glb;
  if(!modelCache.has(url))modelCache.set(url,(async()=>{const tools=await getModelTools();const gltf=await tools.loader.loadAsync(url);return{gltf,clone:tools.clone}})().catch(()=>null));
  const asset=await modelCache.get(url);if(!asset)return null;const root=asset.clone(asset.gltf.scene),pivot=new THREE.Group(),group=new THREE.Group();pivot.add(root);group.add(pivot);root.updateMatrixWorld(true);const b=new THREE.Box3().setFromObject(root),size=b.getSize(new THREE.Vector3());if(!(size.y>0))return null;
- const sc=height/size.y;root.scale.setScalar(sc);root.position.set(-(b.min.x+b.max.x)*sc/2,-b.min.y*sc,-(b.min.z+b.max.z)*sc/2);root.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});
- const clip=await getCombatClip(info.animations.walk);if(!clip)return null;const mixer=new THREE.AnimationMixer(root);mixer.clipAction(clip,root).play();pivot.rotation.y=info.boardYaw??0;
+ const sc=height/size.y;root.scale.setScalar(sc);root.position.set(-(b.min.x+b.max.x)*sc/2,-b.min.y*sc,-(b.min.z+b.max.z)*sc/2);root.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});if(tint)applyLook(root,{kind:'tint',color:tint});pivot.rotation.y=info.boardYaw??0;
+ if(!kind)return{group,update(){}};const clip=await getCombatClip(info.animations[kind]);if(!clip)return null;const mixer=new THREE.AnimationMixer(root);mixer.clipAction(clip,root).play();
  return{group,update(dt){mixer.update(dt);orientBoardModel(root,pivot,{},info.boardYaw??0,THREE)}}}catch{return null}}
 async function attachCreatureModel(g,k){
  const mi=k.mi;g.userData.modelId=mi;
@@ -569,7 +570,7 @@ let sceneryKey='';
 function setActive(value,terrainOverride=null){
  active=value;const type=terrainOverride||game.snapshot().terrain,fire=type==='feu',ice=type==='glace',lakeOn=type==='eau',skyOn=type==='foudre',windOn=type==='vent',cityOn=type==='ville',caveOn=type==='grotte';
  if(!value)placementLens.hidden=true;host.classList.toggle('view3d',value);document.getElementById('land-caption').hidden=!value;
- forest.visible=value&&!fire&&!ice&&!lakeOn&&!skyOn&&!windOn&&!cityOn&&!caveOn;if(cityOn&&value&&!cityScene){cityScene=createCity(decor,!!renderer.isSoftware,BH,{spawnWalker});cityScene.root.scale.z=1/ZS}if(cityScene)cityScene.root.visible=value&&cityOn;if(caveOn&&value&&!caveScene){caveScene=createCave(decor,!!renderer.isSoftware,BH);caveScene.root.scale.z=1/ZS}if(caveScene)caveScene.root.visible=value&&caveOn;/* v246 — terrains neutres */if(windOn&&value&&!windLand){windLand=createWindHighlands(decor,!!renderer.isSoftware,BH);windLand.root.scale.z=1/ZS}if(windLand)windLand.root.visible=value&&windOn;if(skyOn&&value&&!skyIsland){skyIsland=createSkyIsland(decor,!!renderer.isSoftware,BH);skyIsland.root.scale.z=1/ZS}if(skyIsland)skyIsland.root.visible=value&&skyOn;if(lakeOn&&value&&!lake){lake=createLake(decor,!!renderer.isSoftware,BH);lake.root.scale.z=1/ZS}/* v233 : coordonnées réelles des cases, comme les pièces */if(lake)lake.root.visible=value&&lakeOn;boardFrame.visible=value&&!fire&&!skyOn&&!windOn&&!ice&&!cityOn&&!caveOn;if(ice&&value&&!frostRoad){frostRoad=createFrostRoad(decor,!!renderer.isSoftware,BH);frostRoad.root.scale.z=1/ZS}if(frostRoad)frostRoad.root.visible=value&&ice;/* v240 — La Route vers Forfalla repensée */grid.visible=true;grid.material.color.set(ice?0x557e98:lakeOn?0x5f7a5a:skyOn?0xb98cff:fire?0xffc27a:0xe5d9a0);grid.material.opacity=ice||cityOn||caveOn?0:lakeOn?0:skyOn?.12:windOn?0:fire?.1:.27;
+ forest.visible=value&&!fire&&!ice&&!lakeOn&&!skyOn&&!windOn&&!cityOn&&!caveOn;if(cityOn&&value&&!cityScene){cityScene=createCity(decor,!!renderer.isSoftware,BH,{spawnWalker});cityScene.root.scale.z=1/ZS}if(cityScene)cityScene.root.visible=value&&cityOn;if(caveOn&&value&&!caveScene){caveScene=createCave(decor,!!renderer.isSoftware,BH,{spawnWalker});caveScene.root.scale.z=1/ZS}if(caveScene)caveScene.root.visible=value&&caveOn;/* v246 — terrains neutres */if(windOn&&value&&!windLand){windLand=createWindHighlands(decor,!!renderer.isSoftware,BH);windLand.root.scale.z=1/ZS}if(windLand)windLand.root.visible=value&&windOn;if(skyOn&&value&&!skyIsland){skyIsland=createSkyIsland(decor,!!renderer.isSoftware,BH);skyIsland.root.scale.z=1/ZS}if(skyIsland)skyIsland.root.visible=value&&skyOn;if(lakeOn&&value&&!lake){lake=createLake(decor,!!renderer.isSoftware,BH);lake.root.scale.z=1/ZS}/* v233 : coordonnées réelles des cases, comme les pièces */if(lake)lake.root.visible=value&&lakeOn;boardFrame.visible=value&&!fire&&!skyOn&&!windOn&&!ice&&!cityOn&&!caveOn;if(ice&&value&&!frostRoad){frostRoad=createFrostRoad(decor,!!renderer.isSoftware,BH);frostRoad.root.scale.z=1/ZS}if(frostRoad)frostRoad.root.visible=value&&ice;/* v240 — La Route vers Forfalla repensée */grid.visible=true;grid.material.color.set(ice?0x557e98:lakeOn?0x5f7a5a:skyOn?0xb98cff:fire?0xffc27a:0xe5d9a0);grid.material.opacity=ice||cityOn||caveOn?0:lakeOn?0:skyOn?.12:windOn?0:fire?.1:.27;
  if(fire&&value&&!crater){crater=createEmberlands(decor,game.fireVents,!!renderer.isSoftware,BH);crater.root.scale.z=1/ZS}/* v239 — Terres embrasées repensées */if(crater)crater.root.visible=value&&fire;
  if(sceneryKey!==type){
   sceneryKey=type;
@@ -602,6 +603,16 @@ function cellScreen(x,y){if(!active)return null;const r=canvas.getBoundingClient
 window.HackeniaView={get active(){return active},cellAt,sync,setActive,updateLens,preview,clearPreview,cellScreen};configure();sync();
 const portalContent=document.getElementById('portal-content');
 if(portalContent){const refreshPreview=()=>{const art=document.getElementById('play-terrain-art');if(art&&document.body.classList.contains('portal-open')){const terrain=document.getElementById('play-terrain')?.value||'terre';preview(terrain,art,document.getElementById('play-layout')?.value||'classique')}else clearPreview()};new MutationObserver(refreshPreview).observe(portalContent,{childList:true,subtree:true});refreshPreview()}
+/* v252 — Roue des éléments à droite du plateau (seconde passe de rendu, jamais masquée par le décor). */
+let elementWheel=null;const wheelRight=new THREE.Vector3(),wheelAnchor=new THREE.Vector3();
+function wheelModel(url){if(!modelCache.has(url))modelCache.set(url,(async()=>{const tools=await getModelTools();const gltf=await tools.loader.loadAsync(url);return{gltf,clone:tools.clone}})().catch(()=>null));return modelCache.get(url).then(a=>a?a.clone(a.gltf.scene):null)}
+function renderElementWheel(t){if(previewMode||!renderer.isWebGLRenderer)return;elementWheel??=createElementWheel({loadModel:wheelModel,software:!!renderer.isSoftware||light});
+ const st=state;const d=st&&(st.mode==='p'||st.mode==='d')&&st.die!=null?game.monsters?.[st.die]:null;elementWheel.setFocus(d&&!d.multi?d.el:'');
+ wheelRight.set(Math.cos(orbitYaw),0,-Math.sin(orbitYaw));wheelAnchor.copy(wheelRight).multiplyScalar(8.6*Math.max(1,ZS)+4.6).setY(1.2);
+ const ndc=wheelAnchor.clone().project(camera);if(Math.abs(ndc.x)>2.6||Math.abs(ndc.y)>2.6)return;if(Math.abs(ndc.x)<1.8)elementWheel.ensureModels();// hors champ : ni rendu ni téléchargement
+ elementWheel.place(camera,wheelAnchor,1.5*Math.max(1,ZS*.9));elementWheel.update(t,moving);
+ const ac=renderer.autoClear;renderer.autoClear=false;renderer.clearDepth();renderer.render(elementWheel.scene,camera);renderer.autoClear=ac}
+window.HackeniaElementWheel={get:()=>elementWheel,anchor:()=>wheelAnchor.clone()};
 function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&!previewMode)||!active||now-lastFrame<(renderer.isSoftware?100:light?32:16))return;const dt=Math.min((now-lastFrame)/1000,.06);lastFrame=now;if(pureFx.length)updatePureFx(now);if(weatherFx.length)updateWeather(now);animateLotus();if(auras.size)updateAuras(now);if(moving)for(const g of creatures.values()){const h=g.userData.hop,m=g.userData.model;if(!h||!m)continue;const u=((now/1000+h.phase)%3.2)/.55;if(u<1){const lift=Math.sin(Math.PI*u);m.position.y=h.base+.24*lift;m.scale.set(1-.05*lift,1+.08*lift,1-.05*lift)}else if(u<1.25){const s=Math.sin(Math.PI*(u-1)/.25);m.position.y=h.base;m.scale.set(1+.07*s,1-.1*s,1+.07*s)}else{m.position.y=h.base;m.scale.set(1,1,1)}}updateZoneGlow(now);const t=moving?now/1000:0;
  if(frostRoad?.root.visible)frostRoad.update(t,light,moving);if(cityScene?.root.visible)cityScene.update(t,light,moving);if(caveScene?.root.visible)caveScene.update(t,light,moving);
  if(forest.visible){wind.value=t;waterNormals.offset.set(-t*.032,t*.013);
@@ -628,7 +639,7 @@ function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&
  if(g.userData.mixer&&(moving||(f&&!combat.reduced)))g.userData.mixer.update(dt);if(g.userData.modelRoot&&g.userData.model)orientBoardModel(g.userData.modelRoot,g.userData.model,f,g.userData.idleModelYaw||0,THREE);}
 
  if(dieGroup.visible){dieGroup.position.copy(dieGroup.userData.target);dieGroup.position.y+=moving?Math.sin(t*2)*.08:0;dieGroup.rotation.y=moving&&state.cubeCls!=='land'?t*.7:0;dieGroup.scale.setScalar(state.cubeCls==='poof'?.35:1)}
- highlights.children.forEach(m=>{if(!m.userData.cachedLabel)m.material.opacity=moving?.32+Math.sin(t*3)*.09:.4});renderer.render(scene,camera);projectBoardCaptions(t);drawPlacementLens();
+ highlights.children.forEach(m=>{if(!m.userData.cachedLabel)m.material.opacity=moving?.32+Math.sin(t*3)*.09:.4});renderer.render(scene,camera);renderElementWheel(t);projectBoardCaptions(t);drawPlacementLens();
 }
 requestAnimationFrame(frame);
 }

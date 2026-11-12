@@ -485,6 +485,34 @@
         "victory": "characters/yoris-victory.glb",
         "walk": "characters/yoris-walk.glb"
       }
+    },
+    "hydrelithe-majeure": {
+      "glb": "models-web/Hydrelithe majeur de terre idle.glb",
+      "nom": "Hydrelithe majeure de terre",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/hydrelithe-majeure-spell.glb",
+        "victory": "characters/hydrelithe-majeure-victory.glb",
+        "walk": "characters/hydrelithe-majeure-walk.glb"
+      }
+    },
+    "mineur": {
+      "glb": "models-web/Mineur idle.glb",
+      "nom": "Mineur",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/mineur-spell.glb",
+        "victory": "characters/mineur-victory.glb",
+        "walk": "characters/mineur-walk.glb"
+      }
+    },
+    "araignee": {
+      "glb": "models-web/Araignée idle.glb",
+      "nom": "Araignée",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 1.4
     }
   },
   "terrains": {

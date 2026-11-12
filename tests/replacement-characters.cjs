@@ -10,7 +10,7 @@ const expected={30:['Caleizis','caleizis','foudre',6],34:['La fée Pachié','pac
  1:['Max','max','',1],22:['Sameron','sameron','vent',5],18:['Zackarie','zackarie','eau',5],19:['Soryan','soryan','feu',5],4:['Velmarys','velmarys','terre',1],11:['Pennedra','pennedra','vent',2],
  // v197 : nouveaux dés ajoutés après les dés élémentaires.
  55:['Max & Alastor','max-alastor','foudre',3],56:['Orcus','orcus','foudre',5],57:['Ven','ven','glace',1]};
-assert.equal(defs.length,90,'Appended in order: elemental, characters, Énergie, variants, new characters, Hydrelithes, Bosco/Myconide declinations, alternative rarities');
+assert.equal(defs.length,104,'Appended in order: elemental, characters, Énergie, variants, new characters, Hydrelithes, Bosco/Myconide declinations, alternative rarities, v248 Hydrelithe majeure, Mineurs, Araignées');
 function glb(file){const b=fs.readFileSync(file);assert.equal(b.readUInt32LE(0),0x46546c67);assert.equal(b.readUInt32LE(8),b.length);return JSON.parse(b.subarray(20,20+b.readUInt32LE(12)));}
 let clips=0;
 for(const [i,[name,key,el,rarity]] of Object.entries(expected)){
@@ -32,7 +32,7 @@ assert.equal(defs[7].cn,'Statue de Gliska');assert.equal(defs[5].cn,'Ven Ardent'
 const shape=d=>{const xs=d.c.map(a=>a[0]),ys=d.c.map(a=>a[1]),x0=Math.min(...xs),y0=Math.min(...ys);return d.c.map(([x,y])=>(x-x0)+','+(y-y0)).sort().join(' ')};
 for(const i of [55,56])for(let j=0;j<defs.length;j++)if(j!==i)assert.notEqual(shape(defs[i]),shape(defs[j]),defs[i].n+' has a unique shape');
 assert.equal(defs[57].c.length,3,'Ven follows the common rule: three tiles');assert.equal(defs[57].c.reduce((a,c)=>a+c[2],0),6);
-assert.deepEqual([defs[56].nd,defs[56].need],[2,5]);assert.deepEqual([defs[55].nd,defs[55].need],[1,3]);
+assert.deepEqual([defs[56].nd,defs[56].need],[2,4],'v252 : légendaire à 4+');assert.deepEqual([defs[55].nd,defs[55].need],[1,3]);
 (async()=>{
  for(const i of Object.keys(expected))assert.equal((await game.modelInfo(+i)).nom,defs[i].cn,'Model is requested even for peu commun dice');
  assert.equal((await game.modelInfo(3))?.nom,'Orven','v213: former generic commons reuse a character model (Orven du Givre)');
