@@ -13,7 +13,7 @@ import { createCity } from './city-v246.js?v=20261128-v247';
 import { createCave } from './cave-v246.js?v=20261129-v248';
 import { createAutumn } from './autumn-v253.js?v=20261202-v253';
 import { createNoel } from './noel-v253.js?v=20261202-v253';
-import { createElementWheel } from './element-wheel-v252.js?v=20261203-v254';
+import { createElementWheel } from './element-wheel-v252.js?v=20261204-v255';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -622,8 +622,8 @@ function renderElementWheel(t){if(previewMode||!renderer.isWebGLRenderer)return;
  const st=state;const d=st&&(st.mode==='p'||st.mode==='d')&&st.die!=null?game.monsters?.[st.die]:null;elementWheel.setFocus(d&&!d.multi?d.el:'');
  wheelRight.set(Math.cos(orbitYaw),0,-Math.sin(orbitYaw));wheelAnchor.copy(wheelRight).multiplyScalar(8.6*Math.max(1,ZS)+4.6).setY(1.2);// sur ordinateur : à droite du plateau
  const cr=canvas.getBoundingClientRect(),hud=cr.width<700;elementWheel.setCompact(hud);
- if(hud){/* v254 — smartphone : petite roue fixe en haut à gauche de la vue, masquée pendant la loupe de pose */if(!placementLens.hidden||!cr.width)return;const D=Math.min(156,cr.width*.4),cx=10+D/2,cy=10+D/2,perPx=(camera.right-camera.left)/camera.zoom/cr.width;
-  wheelAnchor.set(cx/cr.width*2-1,1-cy/cr.height*2,.5).unproject(camera);elementWheel.ensureModels();elementWheel.place(camera,wheelAnchor,D/2*perPx/3.55)}
+ if(hud){/* v254 — smartphone : petite roue fixe en haut à gauche de la vue, masquée pendant la loupe de pose */if(!placementLens.hidden||!cr.width)return;const D=Math.min(100,cr.width*.25),cx=6+D/2,cy=6+D/2,perPx=(camera.right-camera.left)/camera.zoom/cr.width;
+  wheelAnchor.set(cx/cr.width*2-1,1-cy/cr.height*2,.5).unproject(camera);elementWheel.ensureModels();elementWheel.place(camera,wheelAnchor,D/2*perPx/3.1)}
  else{const ndc=wheelAnchor.clone().project(camera);if(Math.abs(ndc.x)>2.6||Math.abs(ndc.y)>2.6)return;if(Math.abs(ndc.x)<1.8)elementWheel.ensureModels();// hors champ : ni rendu ni téléchargement
  elementWheel.place(camera,wheelAnchor,1.5*Math.max(1,ZS*.9))}elementWheel.update(t,moving);
  const ac=renderer.autoClear;renderer.autoClear=false;renderer.clearDepth();renderer.render(elementWheel.scene,camera);renderer.autoClear=ac}
