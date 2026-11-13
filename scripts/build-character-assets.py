@@ -24,6 +24,8 @@ PORTRAITS = {
  'hydrelithe':'Hydrelithe miniature.png', 'myconide':'Myconide miniature.png', 'yoris':'Yoris miniature.png',
  # v248
  'hydrelithe-majeure':'Hydrelithe majeur de terre miniature.png', 'mineur':'Mineur miniature.png', 'araignee':'Araignée miniature.png',
+ # v256 — Araignée blanche (rare) : petite sans élément et grande multi-élément, même miniature.
+ 'araignee-blanche':'Miniature araignée blanche.png',
 }
 CLIPS = {
  'eberien': {'spell':('Eberien Spell cast.glb',None), 'victory':('Eberien Victory.glb',None), 'walk':('Eberien chibi.glb','Walking')},
