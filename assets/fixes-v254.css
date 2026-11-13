@@ -46,3 +46,8 @@ html body #portal .draw-die:not(:disabled):hover{filter:drop-shadow(0 0 10px var
 #scout-eye b{display:block;margin-bottom:4px;color:#9ff0dc;font-size:12px}#scout-eye small{font-weight:500;color:#b9d8d0}
 #scout-eye ul{margin:0;padding:0;list-style:none;display:grid;gap:2px}#scout-eye li{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #scout-eye li.r5,#scout-eye li.r6{color:#ffe08a;font-weight:700}#scout-eye li.r3{color:#cfe3ff}
+
+/* v262 — l'araignée blanche n'a pas de clip d'animation : respiration et petit balancement dans les fiches */
+@keyframes spider-idle{0%,100%{transform:translateY(0) rotate(0) scale(1,1)}25%{transform:translateY(-2.5%) rotate(1.4deg) scale(1.015,1.03)}50%{transform:translateY(0) rotate(0) scale(.99,.97)}75%{transform:translateY(-1.5%) rotate(-1.4deg) scale(1.01,1.02)}}
+model-viewer.gesture-spider{animation:spider-idle 2.6s ease-in-out infinite;transform-origin:50% 90%}
+@media (prefers-reduced-motion:reduce){model-viewer.gesture-spider{animation:none}}

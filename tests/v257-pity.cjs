@@ -13,10 +13,10 @@ let prof={gold:10,inventory:{},boosters:0,pity:{leg:49,div:10}};
 let n=P.plan(prof,1,low);assert.ok(n.pouchQueue[0].dice.some(i=>r(i)===5),'légendaire garanti à la 50e bourse');assert.equal(n.pity.leg,0);assert.equal(n.pity.div,11);
 // il est inédit tant qu'il en reste
 leg.slice(1).forEach(i=>prof.inventory[i]=1);prof.pity={leg:49,div:0};n=P.plan(prof,1,low);assert.equal(n.pouchQueue[0].dice.find(i=>r(i)===5),leg[0],'de préférence un légendaire que l’on ne possède pas');
-prof={gold:10,inventory:{},boosters:0,pity:{leg:3,div:99}};n=P.plan(prof,1,low);assert.ok(n.pouchQueue[0].dice.some(i=>r(i)===6),'divin garanti à la 100e bourse');assert.equal(n.pity.div,0);assert.equal(n.pity.leg,4);
-prof={gold:10,inventory:{},boosters:0,pity:{leg:49,div:99}};n=P.plan(prof,1,low);const dd=n.pouchQueue[0].dice;assert.ok(dd.some(i=>r(i)===6)&&dd.some(i=>r(i)===5),'les deux garanties dans la même bourse');assert.deepEqual([n.pity.leg,n.pity.div],[0,0]);
+prof={gold:10,inventory:{},boosters:0,pity:{leg:3,div:79}};n=P.plan(prof,1,low);assert.ok(n.pouchQueue[0].dice.some(i=>r(i)===6),'divin garanti à la 80e bourse');assert.equal(n.pity.div,0);assert.equal(n.pity.leg,4);
+prof={gold:10,inventory:{},boosters:0,pity:{leg:49,div:79}};n=P.plan(prof,1,low);const dd=n.pouchQueue[0].dice;assert.ok(dd.some(i=>r(i)===6)&&dd.some(i=>r(i)===5),'les deux garanties dans la même bourse');assert.deepEqual([n.pity.leg,n.pity.div],[0,0]);
 // compteurs
-assert.deepEqual(JSON.parse(JSON.stringify(P.pityLeft({pity:{leg:20,div:30}}))),{leg:30,div:70});assert.deepEqual(JSON.parse(JSON.stringify(P.pityLeft({}))),{leg:50,div:100});
+assert.deepEqual(JSON.parse(JSON.stringify(P.pityLeft({pity:{leg:20,div:30}}))),{leg:30,div:50});assert.deepEqual(JSON.parse(JSON.stringify(P.pityLeft({}))),{leg:50,div:80});
 // Échanges : légendaire et divin seulement avec un double
 const {applyTrade}=require('../assets/pvp-online.js');const rar=i=>r(i);
 const L=leg[0],D=div[0];
