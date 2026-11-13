@@ -15,6 +15,10 @@ ASSETS = ROOT / 'assets'
 OUT = ASSETS / 'models-web'
 TOOL = sys.argv[1:] or ['npx', '--yes', '@gltf-transform/cli@4.5.1']
 SIZE, QUALITY = 1024, 88
+# v267 — modèles riches en textures dont la qualité WebP est réduite pour rester sous le budget de 4 Mo (tests/model-budget.cjs).
+QUALITY_BY_FILE = {'Shauntea idle.glb': 62}
+# Animation d'attente très longue (20 s, 78 os) : rééchantillonnage des images clés (aucune perte visible, tolérance 0,003).
+RESAMPLE = {'Shauntea idle.glb'}
 # Modèles hors manifeste (objets portés…) : nom du fichier source → nom publié dans assets/models-web/.
 EXTRA = {"La bague de l'apprentie équipement.glb": 'bague-chanceuse.glb'}
 
@@ -43,7 +47,11 @@ def main():
                 with tempfile.TemporaryDirectory() as tmp:
                     resized = pathlib.Path(tmp) / 'resized.glb'
                     subprocess.run([*TOOL, 'resize', str(source), str(resized), '--width', str(SIZE), '--height', str(SIZE)], check=True, capture_output=True)
-                    subprocess.run([*TOOL, 'webp', str(resized), str(target), '--quality', str(QUALITY)], check=True, capture_output=True)
+                    subprocess.run([*TOOL, 'webp', str(resized), str(target), '--quality', str(QUALITY_BY_FILE.get(source.name, QUALITY))], check=True, capture_output=True)
+                if source.name in RESAMPLE:
+                    light = target.with_name('_light.tmp.glb')
+                    subprocess.run([*TOOL, 'resample', str(target), str(light), '--tolerance', '0.003'], check=True, capture_output=True)
+                    light.replace(target)
                 print(f'{source.name} : {source.stat().st_size/1e6:.1f} Mo → {target.stat().st_size/1e6:.1f} Mo')
             done[source.name] = True
         info['glb'] = 'models-web/' + source.name

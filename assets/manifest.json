@@ -521,6 +521,101 @@
       "boardYaw": 3.141592653589793,
       "boardHeight": 0.72,
       "gesture": "spider"
+    },
+    "lathandre": {
+      "glb": "models-web/Lathandre idle.glb",
+      "nom": "Lathandre",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.2,
+      "animations": {
+        "spell": "characters/lathandre-spell.glb",
+        "victory": "characters/lathandre-victory.glb",
+        "walk": "characters/lathandre-walk.glb"
+      }
+    },
+    "shauntea": {
+      "glb": "models-web/Shauntea idle.glb",
+      "nom": "Shauntéa",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.1,
+      "animations": {
+        "spell": "characters/shauntea-spell.glb",
+        "victory": "characters/shauntea-victory.glb",
+        "walk": "characters/shauntea-walk.glb"
+      }
+    },
+    "jordan": {
+      "glb": "models-web/Jordan idle.glb",
+      "nom": "Jordan",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 1.5,
+      "gesture": "horse"
+    },
+    "bebementaire-eau": {
+      "glb": "models-web/Bébémentaire eau idle.glb",
+      "nom": "Bébémentaire eau",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 1.15,
+      "animations": {
+        "spell": "characters/bebementaire-eau-spell.glb",
+        "victory": "characters/bebementaire-eau-victory.glb",
+        "walk": "characters/bebementaire-eau-walk.glb"
+      }
+    },
+    "bebementaire-feu": {
+      "glb": "models-web/Bébémentaire feu idle.glb",
+      "nom": "Bébémentaire feu",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 1.15,
+      "animations": {
+        "spell": "characters/bebementaire-feu-spell.glb",
+        "victory": "characters/bebementaire-feu-victory.glb",
+        "walk": "characters/bebementaire-feu-walk.glb"
+      }
+    },
+    "bebementaire-foudre": {
+      "glb": "models-web/Bébémentaire foudre idle.glb",
+      "nom": "Bébémentaire foudre",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 1.15,
+      "animations": {
+        "spell": "characters/bebementaire-foudre-spell.glb",
+        "victory": "characters/bebementaire-foudre-victory.glb",
+        "walk": "characters/bebementaire-foudre-walk.glb"
+      }
+    },
+    "bebementaire-glace": {
+      "glb": "models-web/Bébémentaire glace idle.glb",
+      "nom": "Bébémentaire glace",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 1.15,
+      "animations": {
+        "spell": "characters/bebementaire-glace-spell.glb",
+        "victory": "characters/bebementaire-glace-victory.glb",
+        "walk": "characters/bebementaire-glace-walk.glb"
+      }
+    },
+    "bebementaire-terre": {
+      "glb": "models-web/Bébémentaire terre idle.glb",
+      "nom": "Bébémentaire terre",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 1.15,
+      "animations": {
+        "spell": "characters/bebementaire-terre-spell.glb",
+        "victory": "characters/bebementaire-terre-victory.glb",
+        "walk": "characters/bebementaire-terre-walk.glb"
+      }
+    },
+    "bebementaire-vent": {
+      "glb": "models-web/Bébémentaire vent idle.glb",
+      "nom": "Bébémentaire vent",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 1.15,
+      "animations": {
+        "spell": "characters/bebementaire-vent-spell.glb",
+        "victory": "characters/bebementaire-vent-victory.glb",
+        "walk": "characters/bebementaire-vent-walk.glb"
+      }
     }
   },
   "terrains": {
