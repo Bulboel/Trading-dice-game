@@ -90,3 +90,11 @@ body.tuto-hub-open{overflow:hidden}
 #tuto-hub .tuto-hub-actions button{min-height:38px;padding:8px 16px;border-radius:10px;border:1px solid #baa66e66;background:#17291f;color:#e9e0c6;font:600 13px/1 system-ui,sans-serif;cursor:pointer}
 #tuto-hub button:focus-visible{outline:2px solid #ffe6a6;outline-offset:2px}
 @media(max-width:520px){#tuto-hub .tuto-hub-card{padding:18px 14px}#tuto-hub .tuto-lessons li button{grid-template-columns:auto 1fr;}#tuto-hub .tuto-lessons .go{grid-column:2;justify-self:start}}
+
+/* v275 — Téléphone : le panneau est une colonne ; seul le texte défile, les boutons (Suivant…) restent toujours visibles. */
+@media(max-width:899px){
+ body.tutorial-mode #bw>#tuto-coach{display:flex;flex-direction:column;overflow:hidden;max-height:min(56%,400px)}
+ body.tutorial-mode #bw>#tuto-coach .tuto-text{flex:1 1 auto;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch}
+ body.tutorial-mode #bw>#tuto-coach footer{flex:0 0 auto;padding-top:5px;border-top:1px solid #baa66e33}
+ body.tutorial-mode #bw>#tuto-coach.min{display:block}
+}
