@@ -5,7 +5,7 @@ const context=vm.createContext({window:{dispatchEvent(){}},Event,document:{getEl
 vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,''),context);
 const game=context.window.hackeniaGame,defs=game.monsters;
 assert.equal(defs.length,120);assert.deepEqual(Array.from(defs.slice(36,39),d=>d.n),['Eberien','Kala','Grimgors'],'Existing inventory IDs remain stable');
-for(const d of defs.slice(36,41)){assert.equal(game.rarity(d),3);assert.equal(d.need,3);assert.equal(d.nd,1);assert.equal(d.lv,2);assert.deepEqual(JSON.parse(JSON.stringify(d.c)),JSON.parse(JSON.stringify(defs[36].c)));}
+for(const d of defs.slice(36,41)){assert.equal(game.rarity(d),3);assert.equal(d.need,4);assert.equal(d.nd,1);assert.equal(d.lv,2);assert.deepEqual(JSON.parse(JSON.stringify(d.c)),JSON.parse(JSON.stringify(defs[36].c)));}
 assert.deepEqual(Array.from(defs.slice(38,41),d=>d.el),['eau','vent','feu']);assert.equal(defs[42].el,'','Balai has no elemental affinity');
 const guardian=defs[41],highest=guardian.c.reduce((a,b)=>b[2]>=a[2]?b:a);assert.deepEqual(Array.from(highest),[0,2,6],'Guardian appears on the strong bottom tile of her L');
 function glb(file){const b=fs.readFileSync(file);assert.equal(b.readUInt32LE(0),0x46546c67);assert.equal(b.readUInt32LE(8),b.length);return JSON.parse(b.subarray(20,20+b.readUInt32LE(12)));}
