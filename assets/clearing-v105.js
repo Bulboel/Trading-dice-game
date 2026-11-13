@@ -1,7 +1,7 @@
 /* Presentation adapter. Game legality, turns, decks and combat stay in index.html. */
 import * as THREE from 'three';
 import { orientBoardModel } from './model-facing.js?v=20261103-v73';
-import { createEmberlands } from './ember-v239.js?v=20261120-v239';
+import { createEmberlands } from './ember-v239.js?v=20261205-v257';
 import { applyLook } from './variant-look.js?v=20261113-v215';
 import { createLake } from './lake-v241.js?v=20261122-v241';
 import { createSkyIsland } from './sky-v231.js?v=20261128-v247';
