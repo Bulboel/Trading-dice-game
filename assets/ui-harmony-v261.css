@@ -42,3 +42,8 @@ html body #portal .portal-tools>label.check{flex-direction:row!important;align-i
 @media(max-width:480px){html body #portal .portal-tools{grid-template-columns:1fr!important}}
 html body #portal .portal-tools input[type=checkbox],html body #portal label.check input[type=checkbox]{width:44px!important;min-width:44px!important;max-width:44px!important;height:26px!important;min-height:26px!important;flex:none!important;display:inline-block}
 html body #portal .deck-head-actions,html body #portal .shop-actions,html body #portal .deck-actions{display:flex;flex-wrap:wrap;gap:10px}
+
+/* v262 — Jouer : l'aperçu du terrain suit directement le choix du terrain (mobile) ou reste collé à côté (PC) */
+@media(min-width:900px){html body #portal .deck-layout.play-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)!important;column-gap:22px;align-items:start}
+html body #portal .play-layout .play-pick{grid-column:1;grid-row:1}html body #portal .play-layout .play-rest{grid-column:1;grid-row:2}
+html body #portal .play-layout .terrain-preview{grid-column:2;grid-row:1 / span 2;position:sticky;top:12px}}
