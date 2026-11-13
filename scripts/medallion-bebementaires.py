@@ -5,22 +5,31 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter
 import numpy as np
 ROOT=Path(__file__).resolve().parents[1]/'assets'/'characters'
+COMBOS=('eau-feu','glace-terre','vent-foudre','feu-glace','terre-vent','foudre-eau','eau-glace-vent','feu-terre-foudre')
 COL={'eau':(79,176,255),'feu':(255,110,60),'foudre':(178,120,255),'glace':(130,232,250),'terre':(214,150,70),'vent':(90,235,130)}
 S=1254;SS=2
 def lerp(a,b,t):return tuple(int(a[i]*(1-t)+b[i]*t) for i in range(3))
 def medallion(el):
-    N=S*SS;c=COL[el];dark=lerp(c,(12,10,28),.78);mid=lerp(c,(255,255,255),.15)
+    els=el.split('-');c=COL[els[0]];dark=lerp(c,(12,10,28),.78);mid=lerp(c,(255,255,255),.15)
+    N=S*SS
     yy,xx=np.mgrid[0:N,0:N];r=np.hypot(xx-N/2,yy-N*.46)/(N/2)
     t=np.clip(r,0,1)[...,None];base=np.array(mid,np.float32)*(1-t)+np.array(dark,np.float32)*t
+    if len(els)>1:  # fond en dégradé horizontal : une couleur par bébémentaire
+        cols=[np.array(lerp(COL[e],(255,255,255),.1),np.float32) for e in els];u=np.clip(xx/N,0,.9999)*(len(els)-1);i0=u.astype(int);f=(u-i0)[...,None];grad=np.zeros((N,N,3),np.float32)
+        for k in range(len(els)-1):sel=(i0==k)[...,None];grad=np.where(sel,cols[k]*(1-f)+cols[k+1]*f,grad)
+        base=grad*(1-t*.8)+np.array(dark,np.float32)*(t*.8)
     img=Image.fromarray(np.dstack([base,np.full((N,N),255)]).astype(np.uint8),'RGBA')
-    # personnage : buste (tête et épaules), recadré sur la boîte englobante du rendu
-    r3=Image.open(ROOT/'cutouts'/'renders'/f'bebementaire-{el}.png').convert('RGBA');bb=r3.getchannel('A').getbbox();r3=r3.crop(bb)
-    w,h=r3.size;top=r3.crop((0,0,w,int(h*.64)));tw,th=top.size;k=(N*.78)/max(tw*1.0,th*1.0)*(1 if tw>=th else 1)
-    top=top.resize((int(tw*k),int(th*k)),Image.Resampling.LANCZOS)
-    # ombre douce sous le personnage
-    sh=Image.new('RGBA',img.size,(0,0,0,0));sh.paste(top.filter(ImageFilter.GaussianBlur(N*.012)),(int(N/2-top.width/2),int(N*.13)))
-    a=np.asarray(sh).copy();a[...,:3]=0;a[...,3]=(a[...,3]*.35).astype(np.uint8);img.alpha_composite(Image.fromarray(a,'RGBA'))
-    img.alpha_composite(top,(int(N/2-top.width/2),int(N*.10)))
+    def bust(e):
+        r3=Image.open(ROOT/'cutouts'/'renders'/f'bebementaire-{e}.png').convert('RGBA');bb=r3.getchannel('A').getbbox();r3=r3.crop(bb)
+        w,h=r3.size;return r3.crop((0,0,w,int(h*.64)))
+    n=len(els);order=[0] if n==1 else ([0,1] if n==2 else [0,2,1])   # trio : celui du milieu est dessiné en dernier (devant)
+    size=N*.78/(1.0 if n==1 else (1.55 if n==2 else 2.0));place=[(.5,.10)] if n==1 else ([(.28,.22),(.72,.22)] if n==2 else [(.2,.30),(.8,.30),(.5,.16)])
+    for k in order:
+        top=bust(els[k]);tw,th=top.size;sc=size/max(tw,th);top=top.resize((int(tw*sc),int(th*sc)),Image.Resampling.LANCZOS)
+        cx_,cy_=place[k];x0=int(N*cx_-top.width/2);y0=int(N*cy_)
+        sh=Image.new('RGBA',img.size,(0,0,0,0));sh.paste(top.filter(ImageFilter.GaussianBlur(N*.01)),(x0,y0+int(N*.02)))
+        a=np.asarray(sh).copy();a[...,:3]=0;a[...,3]=(a[...,3]*.35).astype(np.uint8);img.alpha_composite(Image.fromarray(a,'RGBA'))
+        img.alpha_composite(top,(x0,y0))
     # masque rond + cadre
     mask=Image.new('L',(N,N),0);d=ImageDraw.Draw(mask);R=N*.455;cx,cy=N/2,N/2;d.ellipse([cx-R,cy-R,cx+R,cy+R],fill=255)
     out=Image.new('RGBA',(N,N),(0,0,0,0));out.paste(img,(0,0),mask)
@@ -39,5 +48,5 @@ def medallion(el):
     return out.resize((S,S),Image.Resampling.LANCZOS)
 if __name__=='__main__':
     (ROOT/'cutouts').mkdir(exist_ok=True)
-    for el in COL:
-        m=medallion(el);m.save(ROOT/'cutouts'/f'bebementaire-{el}.webp',quality=92,method=6);print(el)
+    for el in [*COL,*COMBOS]:
+        m=medallion(el);m.save(ROOT/'cutouts'/(f'bebementaire-{el}.webp' if el in COL else f'bebe-{el}.webp'),quality=92,method=6);print(el)

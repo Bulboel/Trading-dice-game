@@ -8,12 +8,12 @@ import { createSkyIsland } from './sky-v231.js?v=20261128-v247';
 import { createWindHighlands } from './wind-v232.js?v=20261123-v242';
 import { createWoodland } from './woodland-v238.js?v=20261119-v238';
 import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20261125-v244';
-import { createFrostRoad } from './frost-v240.js?v=20261215-v267';
+import { createFrostRoad } from './frost-v240.js?v=20261216-v268';
 import { createCity } from './city-v246.js?v=20261128-v247';
-import { createCave } from './cave-v246.js?v=20261215-v267';
+import { createCave } from './cave-v246.js?v=20261216-v268';
 import { createAutumn } from './autumn-v253.js?v=20261202-v253';
 import { createNoel } from './noel-v253.js?v=20261202-v253';
-import { createElementWheel } from './element-wheel-v252.js?v=20261215-v267';
+import { createElementWheel } from './element-wheel-v252.js?v=20261216-v268';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -441,9 +441,30 @@ async function spawnFighter(key,height=.9){try{const man=await (spawnWalker.man?
  const mixer=new THREE.AnimationMixer(root),idleClip=asset.gltf.animations?.[0],idle=idleClip?mixer.clipAction(idleClip,root):null;idle?.play();
  let atk=null;const attackClip=info.animations?.spell?await getCombatClip(info.animations.spell):null;if(attackClip){atk=mixer.clipAction(attackClip,root);atk.setLoop(THREE.LoopOnce,1);atk.clampWhenFinished=false}
  return{group,pivot,update(dt){mixer.update(dt);orientBoardModel(root,pivot,{},info.boardYaw??0,THREE)},attack(){if(!atk)return;atk.reset().setEffectiveWeight(1).fadeIn(.12).play();idle?.crossFadeTo?.(atk,.15,false);setTimeout(()=>{idle?.reset().play().fadeIn(.25);atk.fadeOut(.25)},Math.max(400,(attackClip.duration||1.2)*1000-250))}}}catch{return null}}
+/* v268 — Dés double et triple élément : plusieurs bébémentaires réduits sur la même case. Chacun a son propre mixeur ; un « mixeur composite »
+   reprend l'interface d'un seul (clipAction, update, stopAllAction) pour que les clips d'attaque, de marche et de victoire jouent sur tous à la fois. */
+class PartsAction{constructor(a){this.a=a}reset(){this.a.forEach(x=>x.reset());return this}setLoop(m,n){this.a.forEach(x=>x.setLoop(m,n));return this}set clampWhenFinished(v){this.a.forEach(x=>{x.clampWhenFinished=v})}
+ setEffectiveTimeScale(v){this.a.forEach(x=>x.setEffectiveTimeScale(v));return this}setEffectiveWeight(v){this.a.forEach(x=>x.setEffectiveWeight(v));return this}fadeIn(d){this.a.forEach(x=>x.fadeIn(d));return this}fadeOut(d){this.a.forEach(x=>x.fadeOut(d));return this}play(){this.a.forEach(x=>x.play());return this}stop(){this.a.forEach(x=>x.stop());return this}}
+const fittedClips=new WeakMap();/* clip du premier bébémentaire réutilisé sur les autres : on retire les pistes dont l'os n'existe pas (pas d'avertissements) */
+function fitClip(clip,root){let m=fittedClips.get(clip);if(!m)fittedClips.set(clip,m=new WeakMap());if(m.has(root))return m.get(root);const names=new Set();root.traverse(o=>names.add(o.name));const tracks=clip.tracks.filter(t=>names.has(t.name.split('.')[0]));const c=new THREE.AnimationClip(clip.name,clip.duration,tracks);m.set(root,c);return c}
+class PartsMixer{constructor(p){this.p=p}clipAction(clip){return new PartsAction(this.p.map(q=>q.mixer.clipAction(fitClip(clip,q.root),q.root)))}update(dt){this.p.forEach(q=>q.mixer.update(dt))}stopAllAction(){this.p.forEach(q=>q.mixer.stopAllAction())}}
+async function attachCompositeModel(g,k,info){const mi=k.mi;const man=await (spawnWalker.man??=fetch('assets/manifest.json').then(r=>r.json()));
+ const three=info.parts.length>2,layout=three?[[-.27,.17],[.27,.17],[0,-.2]]:[[-.25,.06],[.25,.06]],H=(three?.66:.8)*(game.monsters[mi]?.boardScale||1);
+ const holder=new THREE.Group();holder.userData.imported=true;g.userData.idleModelYaw=info.boardYaw??0;holder.rotation.y=g.userData.idleModelYaw;const parts=[];
+ for(let i=0;i<info.parts.length;i++){const pi=man.creatures?.[info.parts[i]];if(!pi?.glb)return;const url='assets/'+pi.glb;
+  if(!modelCache.has(url))modelCache.set(url,(async()=>{const exists=await fetch(url,{method:'HEAD'});if(!exists.ok)return null;const tools=await getModelTools();const gltf=await tools.loader.loadAsync(url);return{gltf,clone:tools.clone}})().catch(()=>null));
+  const asset=await modelCache.get(url);if(!asset||!g.parent||g.userData.modelId!==mi)return;
+  const root=asset.clone(asset.gltf.scene),sub=new THREE.Group();sub.add(root);root.updateMatrixWorld(true);const b=new THREE.Box3().setFromObject(root),size=b.getSize(new THREE.Vector3());if(!(size.y>0))return;
+  const sc=H/size.y;root.scale.setScalar(sc);root.position.set(-(b.min.x+b.max.x)*sc/2,-b.min.y*sc+.1,-(b.min.z+b.max.z)*sc/2);sub.position.set(layout[i][0],0,layout[i][1]);
+  root.traverse(o=>{o.userData.imported=true;if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});holder.add(sub);parts.push({root,asset,mixer:asset.gltf.animations.length?new THREE.AnimationMixer(root):null})}
+ g.children.forEach((o,i)=>{if(i>0)o.visible=false});g.add(holder);g.userData.model=holder;g.userData.modelRoot=parts[0].root;g.userData.animationInfo=info;
+ if(game.rarity?.(game.monsters[mi]||{})===6)addDivineAura(g,game.monsters[mi]);
+ const live=parts.filter(q=>q.mixer);if(live.length){const idleOf=q=>q.asset.gltf.animations.find(a=>/idle|stand|breath/i.test(a.name))||q.asset.gltf.animations[0];
+  const idle=new PartsAction(live.map(q=>q.mixer.clipAction(idleOf(q))));idle.play();g.userData.idleAction=idle;g.userData.activeAction=idle;g.userData.mixer=new PartsMixer(live);
+  for(const kind of ['spell','victory','walk'])if(info.animations?.[kind])getCombatClip(info.animations[kind]).catch(()=>null)}}
 async function attachCreatureModel(g,k){
  const mi=k.mi;g.userData.modelId=mi;
- try{const info=await game.modelInfo(mi);if(!info?.glb)return;const url='assets/'+info.glb+(mi===37?'?revision=kala-idle-dc1986a2':mi===36?'?revision=eberien-idle-14d7089a':'');
+ try{const info=await game.modelInfo(mi);if(!info?.glb)return;if(info.parts?.length>1){await attachCompositeModel(g,k,info);return}const url='assets/'+info.glb+(mi===37?'?revision=kala-idle-dc1986a2':mi===36?'?revision=eberien-idle-14d7089a':'');
  if(!modelCache.has(url))modelCache.set(url,(async()=>{const exists=await fetch(url,{method:'HEAD'});if(!exists.ok)return null;const tools=await getModelTools();const gltf=await tools.loader.loadAsync(url);return{gltf,clone:tools.clone}})().catch(()=>null));
  const asset=await modelCache.get(url);if(!asset||!g.parent||g.userData.modelId!==mi)return;
  const root=asset.clone(asset.gltf.scene),holder=new THREE.Group();holder.userData.imported=true;if(game.monsters[mi]?.variant)applyLook(root,game.monsters[mi].variant);g.userData.idleModelYaw=info.boardYaw??0;holder.rotation.y=g.userData.idleModelYaw;holder.add(root);root.updateMatrixWorld(true);const bounds=new THREE.Box3().setFromObject(root),size=bounds.getSize(new THREE.Vector3());if(!Number.isFinite(size.y)||size.y<=0)return;
