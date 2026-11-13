@@ -3,7 +3,7 @@ const source=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8').match(
 const timers=[];const els=new Map(),element=()=>({style:{setProperty(){}},classList:{add(){},remove(){},toggle(){}},firstElementChild:{style:{}},setPointerCapture(){},querySelector:()=>null});
 const ctx=vm.createContext({window:{},document:{getElementById(id){if(!els.has(id))els.set(id,element());return els.get(id)}},fetch:()=>Promise.resolve({ok:false}),setTimeout:f=>timers.push(f),clearTimeout(){},setInterval:()=>0,clearInterval(){},Date,Math,console,Event});vm.runInContext(source,ctx);const run=c=>vm.runInContext(c,ctx);
 // Catalogue : 12 dés ajoutés après les personnages, identifiants existants inchangés.
-assert.equal(run('M.length'),120);assert.equal(run('M[42].n'),'Messire Balai');
+assert.equal(run('M.length'),128);assert.equal(run('M[42].n'),'Messire Balai');
 // v3 « Rayon » : rareté Énergie, ligne droite 3-4-4, visuels des v2.
 const v3=JSON.parse(run('JSON.stringify(M.slice(58,64))'));assert.deepEqual(v3.map(d=>d.el),'foudre vent terre glace eau feu'.split(' '));
 for(const d of v3){assert.equal(d.pure,3);assert.equal(d.rarity,7);assert.deepEqual(d.c,[[0,0,3],[0,1,4],[0,2,4]]);assert.equal(d.modelKey,'pur-'+d.el+'-2');assert.ok(d.cn.startsWith('Rayon'))}

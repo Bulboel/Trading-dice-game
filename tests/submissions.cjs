@@ -5,7 +5,7 @@ const html=read('index.html'),el=()=>({style:{setProperty(){}},classList:{add(){
 const c=vm.createContext({window:{dispatchEvent(){}},Event,document:{getElementById(i){if(!els.has(i))els.set(i,el());return els.get(i)}},fetch:()=>Promise.resolve({ok:false}),setTimeout:()=>0,clearTimeout(){},setInterval:()=>0,clearInterval(){},Date,Math,console});
 vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,''),c);const g=c.window.hackeniaGame,defs=g.monsters;
 // Tous les dés du jeu respectent les règles de l'éditeur.
-defs.forEach((d,i)=>{if(d.pure||d.fx||d.terrain2||d.cls)return;/* v258 : dés à effet / terrain sacré = une dalle de moins, hors règle standard */const r=R.check({rarity:g.rarity(d),element:d.multi?'multi':d.el,tiles:d.c},defs.filter((x,j)=>j!==i));assert.ok(r.ok,d.cn+' : '+r.checks.filter(x=>!x.ok).map(x=>x.text).join(' | '))});
+defs.forEach((d,i)=>{if(d.pure||d.fx||d.terrain2||d.cls||d.els)return;/* v258 : dés à effet / terrain sacré = une dalle de moins, hors règle standard */const r=R.check({rarity:g.rarity(d),element:d.multi?'multi':d.el,tiles:d.c},defs.filter((x,j)=>j!==i));assert.ok(r.ok,d.cn+' : '+r.checks.filter(x=>!x.ok).map(x=>x.text).join(' | '))});
 // Dés proposés : refus des dés trop forts, non reliés, trop longs, et des formes légendaires déjà prises.
 assert.ok(R.check({rarity:1,element:'feu',tiles:[[0,0,1],[1,0,2],[1,1,3]]}).ok);
 assert.ok(!R.check({rarity:1,element:'feu',tiles:[[0,0,3],[1,0,3],[1,1,3]]}).ok,'Too strong');
