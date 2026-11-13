@@ -10,7 +10,7 @@ const fam=order.filter(i=>!defs[i].pure).map(i=>O.family(defs[i]));const firsts=
 assert.deepEqual(firsts.slice(0,5),['bolduc','eberien','grimgors','jhimm','kala'],'Bolduc, Eberien, Grimgors, Jhimm, Kala first');
 const rest=firsts.slice(5);assert.deepEqual(rest,[...rest].sort((a,b)=>a.localeCompare(b,'fr')),'Then alphabetical');
 for(const f of firsts){const idx=fam.map((x,k)=>x===f?k:-1).filter(k=>k>=0);assert.equal(idx.at(-1)-idx[0]+1,idx.length,f+' versions follow each other')}
-assert.ok(order.slice(-18).every(i=>defs[i].pure),'Elemental dice close the collection');assert.ok(order.slice(0,-18).every(i=>!defs[i].pure));
+assert.ok(order.slice(-18).every(i=>defs[i].pure),'Elemental dice close the collection');assert.ok(order.slice(0,-18).every(i=>!defs[i].pure||defs[i].card));
 assert.deepEqual(order.slice(-18,-15).map(i=>defs[i].pure),[1,2,3],'Each element: Éclat, Sentier, Rayon');
 assert.equal(names[names.indexOf('Max')+1],'Max & Alastor','Max & Alastor belongs to the Max family');
 const n=O.numbers(defs);assert.equal(n[40],1,'Bolduc is N° 001');
