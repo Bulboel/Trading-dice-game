@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v278',title:'Menu principal plus harmonieux',items:['Sur téléphone, le dé « Quotidien » est aligné avec le dé « Annonces » : même écart avec le bord de l’écran.']},
  {id:'v277',title:'Crépitants en grand',items:['Le zoom en grand d’un personnage Crépitant (bouton agrandir de la fiche) garde maintenant sa texture galaxie et ses couleurs, comme dans la fiche.']},
  {id:'v276',title:'Un ciel dégagé… et des visiteurs',items:['La bannière du haut du menu est détourée : la lune et le ciel étoilé se voient en entier.','De temps en temps, un petit bébémentaire jette un œil depuis le bord de l’écran, fait coucou et disparaît. Saurez-vous le surprendre ?']},
  {id:'v275',title:'Tutoriel : retours de testeurs',items:['Le panneau du tutoriel sur téléphone garde toujours son bouton « Suivant » visible.','Les leçons 1 à 3 se jouent maintenant sur un terrain neutre (la ville de Dassom) ; Le Bois tendre arrive avec les affinités.','Leçon sur les combats raccourcie, et la caméra ne zoome plus pendant les duels du tutoriel.','Les créatures marchent maintenant face à leur direction de déplacement.']},
