@@ -14,7 +14,7 @@ for(const [i,d] of variants){const r=g.rarity(d),v=d.variant;
  if(r===3)assert.ok(v.kind==='metal'&&v.color.toLowerCase()>'#d0','Rares are silver automatons ('+d.cn+')');
  if(r===5)assert.equal(v.color,'#f4c65a','Legendaries are gold ('+d.cn+')');
  if(r===6)assert.equal(v.aura,true,'Divines carry an aura ('+d.cn+')');
- assert.ok(/Affinité|Sans élément/.test(d.lo),d.cn+' states its element')}
+ assert.ok(/Affinité|Sans élément|Multi-élément/.test(d.lo),d.cn+' states its element')}
 assert.deepEqual([64,65,66].map(i=>[defs[i].el,g.rarity(defs[i])]),[['vent',1],['eau',1],['feu',2]]);
 const hy=defs.slice(70,76);assert.deepEqual(hy.map(d=>d.el),'foudre vent terre glace eau feu'.split(' '),'One Hydrelithe per element');for(const d of hy){assert.equal(d.modelKey,'hydrelithe');assert.equal(g.rarity(d),1);assert.ok(!d.multi,'Elemental Hydrelithes follow the normal bonus rules');assert.deepEqual(d.c.map(t=>t[2]).sort(),[1,2,3])}
 const bosco=defs.slice(76,81),myco=defs.slice(81,86);assert.ok(bosco.every(d=>d.modelKey==='bosco'&&g.rarity(d)===1)&&myco.every(d=>d.modelKey==='myconide'&&g.rarity(d)===2));
