@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v279',title:'Menu principal : alignement corrigé',items:['Sur téléphone, les dés « Annonces » et « Quotidien » sont maintenant exactement à la même distance du bord de l’écran.']},
  {id:'v278',title:'Menu principal plus harmonieux',items:['Sur téléphone, le dé « Quotidien » est aligné avec le dé « Annonces » : même écart avec le bord de l’écran.']},
  {id:'v277',title:'Crépitants en grand',items:['Le zoom en grand d’un personnage Crépitant (bouton agrandir de la fiche) garde maintenant sa texture galaxie et ses couleurs, comme dans la fiche.']},
  {id:'v276',title:'Un ciel dégagé… et des visiteurs',items:['La bannière du haut du menu est détourée : la lune et le ciel étoilé se voient en entier.','De temps en temps, un petit bébémentaire jette un œil depuis le bord de l’écran, fait coucou et disparaît. Saurez-vous le surprendre ?']},
