@@ -122,3 +122,6 @@ body.portal-open[data-portal-view="home"] #home-learn:hover{transform:translateY
 
 /* v276 — Accueil : la bannière du haut est détourée (plus de fond, de flou ni de filet) pour laisser voir toute la lune et le ciel. */
 body.portal-open[data-portal-view="home"] #portal .portal-head{background:none!important;border-bottom-color:transparent!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+
+/* v278 — Téléphone : le dé « Quotidien » est décalé vers la gauche pour avoir le même écart au bord que le dé « Annonces ». */
+@media(max-width:700px){body.portal-open[data-portal-view="home"] #daily-die{right:calc(8px + (34px - var(--daily-w,67px)) / 2 + 15px)!important}}
