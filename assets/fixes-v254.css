@@ -56,3 +56,8 @@ model-viewer.gesture-spider{animation:spider-idle 2.6s ease-in-out infinite;tran
 .pvp-seats li{padding:9px 12px;border-radius:10px;border:1px solid #ffffff22;background:#ffffff0a}
 .pvp-seats li.pvp-seat-on{border-color:#7fc98c88;background:#7fc98c14}
 .pvp-seats li.pvp-seat-off{opacity:.7}
+/* v266 — PVP en ligne : choix du mode (1 contre 1 / 2 contre 2) */
+.pvp-modes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 14px}
+.pvp-modes button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 8px;border-radius:12px;border:1px solid #ffffff2a;background:#ffffff0d;color:inherit;font:700 15px/1.2 system-ui,sans-serif;cursor:pointer}
+.pvp-modes button small{font:500 11px/1.2 system-ui,sans-serif;opacity:.75}
+.pvp-modes button.on{border-color:#e2c987;background:linear-gradient(#e2c98733,#e2c9871a);box-shadow:0 0 0 1px #e2c98766 inset}
