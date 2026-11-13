@@ -1,7 +1,7 @@
 /* Presentation adapter. Game legality, turns, decks and combat stay in index.html. */
 import * as THREE from 'three';
 import { orientBoardModel } from './model-facing.js?v=20261103-v73';
-import { createEmberlands } from './ember-v239.js?v=20261205-v257';
+import { createEmberlands } from './ember-v239.js?v=20261208-v260';
 import { applyLook } from './variant-look.js?v=20261113-v215';
 import { createLake } from './lake-v241.js?v=20261122-v241';
 import { createSkyIsland } from './sky-v231.js?v=20261128-v247';
@@ -357,6 +357,19 @@ function makeLotus(){const g=new THREE.Group();g.visible=false;const petalGeo=ne
  const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:energyGlowTexture(),color:0xff9fce,transparent:true,opacity:.7,blending:THREE.AdditiveBlending,depthWrite:false}));glow.scale.setScalar(1.5);glow.position.y=.1;g.add(glow);
  const light=new THREE.PointLight(0xff8fc6,0,2.6,2);light.position.y=.5;g.add(light);pieces.add(g);return{g,glow,light,born:0,key:''}}
 const lotusPool=[];
+// v260 — Murs de glace et pièges (dés de carte) : blocs de glace translucides ; pièges à pointes visibles seulement pour leur propriétaire.
+const wallPool=[],trapPool=[];
+function makeWall(){const g=new THREE.Group(),ice=new THREE.MeshPhysicalMaterial({color:0xcdeeff,transparent:true,opacity:.74,roughness:.06,metalness:0,emissive:0x4fb8ff,emissiveIntensity:.3,clearcoat:1}),blk=new THREE.Mesh(new THREE.BoxGeometry(.9,.78,.9),ice);blk.position.y=.39;g.add(blk);
+ for(const [x,z,h] of[[-.2,.1,.5],[.22,-.15,.62],[.05,.28,.4]]){const c=new THREE.Mesh(new THREE.OctahedronGeometry(.16,0),ice);c.scale.set(.7,h*2.2,.7);c.position.set(x,.78+h*.3,z);g.add(c)}
+ const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:energyGlowTexture(),color:0x8fd8ff,transparent:true,opacity:.5,depthWrite:false,blending:THREE.AdditiveBlending}));glow.scale.setScalar(1.7);glow.position.y=.5;g.add(glow);g.visible=false;world.add(g);return{g,glow,key:''}}
+function makeTrap(){const g=new THREE.Group(),plate=new THREE.Mesh(new THREE.BoxGeometry(.78,.05,.78),new THREE.MeshStandardMaterial({color:0x2b2220,roughness:.8,metalness:.4}));plate.position.y=.03;g.add(plate);
+ const sp=new THREE.MeshStandardMaterial({color:0xd8cfc0,metalness:.6,roughness:.35});for(const [x,z] of[[0,0],[-.22,-.22],[.22,-.22],[-.22,.22],[.22,.22]]){const c=new THREE.Mesh(new THREE.ConeGeometry(.07,.26,6),sp);c.position.set(x,.17,z);g.add(c)}
+ const ring=new THREE.Mesh(new THREE.TorusGeometry(.36,.025,6,24),new THREE.MeshBasicMaterial({color:0xff5a2a}));ring.rotation.x=Math.PI/2;ring.position.y=.07;g.add(ring);g.visible=false;world.add(g);return{g,ring,key:''}}
+function updateFxBoard(){const W=state.walls||[],T=state.traps||[];while(wallPool.length<W.length)wallPool.push(makeWall());while(trapPool.length<T.length)trapPool.push(makeTrap());
+ const top=(x,y)=>{const c=state.b[y]?.[x];return .22+(c&&!c.f?.28:0)};
+ wallPool.forEach((o,i)=>{const w=W[i];if(!w){o.g.visible=false;o.key='';return}const key=w.x+','+w.y;if(key!==o.key){o.key=key;o.born=performance.now()}o.g.position.set(w.x-3.5,top(w.x,w.y),w.y-HZ);o.g.visible=true});
+ trapPool.forEach((o,i)=>{const t=T[i];if(!t){o.g.visible=false;o.key='';return}o.g.position.set(t.x-3.5,top(t.x,t.y),t.y-HZ);o.g.visible=true})}
+function animateFxBoard(){const now=performance.now();for(const o of wallPool){if(!o.g.visible)continue;const k=Math.min(1,(now-(o.born||0))/600),e=1-Math.pow(1-k,3);o.g.scale.set(1,.2+.8*e,1);o.glow.material.opacity=.4+(moving?.15*Math.sin(now/400):0)}for(const o of trapPool){if(!o.g.visible)continue;o.ring.material.color.setHex(Math.floor(now/450)%2?0xff5a2a:0xaa2a10)}}
 // v253 — Cadeau de Noël (Nuit des Lumières) : un paquet qui tombe du ciel et scintille sur la case qui donne +1.
 const giftPool=[],GIFT_COLS=[0xd6202c,0x2e6fe0,0x1f8a4c,0x8a2be2];
 function makeGift(i){const g=new THREE.Group(),col=GIFT_COLS[i%4],box=new THREE.Mesh(new THREE.BoxGeometry(.34,.28,.34),new THREE.MeshStandardMaterial({color:col,roughness:.45,emissive:col,emissiveIntensity:.15})),rib=new THREE.MeshStandardMaterial({color:0xf2c75a,metalness:.7,roughness:.3,emissive:0x5a3a00,emissiveIntensity:.4});box.position.y=.14;g.add(box);
@@ -365,7 +378,7 @@ function makeGift(i){const g=new THREE.Group(),col=GIFT_COLS[i%4],box=new THREE.
 function updateGifts(){const list=state.terrain==='noel'?(state.lotus||[]):[];while(giftPool.length<list.length)giftPool.push(makeGift(giftPool.length));
  giftPool.forEach((G,n)=>{const l=list[n];if(!l){G.g.visible=false;G.key='';return}const key=l.x+','+l.y;if(key!==G.key){G.key=key;G.born=performance.now()}const c=state.b[l.y]?.[l.x];G.g.position.set(l.x-3.5+.26,.22+(c&&!c.f?.28:0),l.y-HZ-.26);G.baseY=G.g.position.y;G.g.visible=true})}
 function animateGifts(){for(const G of giftPool){if(!G.g.visible)continue;const t=(performance.now()-G.born)/1000,drop=Math.min(1,t/.7),e=1-Math.pow(1-drop,3);G.g.position.y=(G.baseY||.22)+(1-e)*2.5+(moving?Math.sin(t*2.2)*.03:0);G.g.rotation.y=moving?t*.6:0;G.g.scale.setScalar(1.3);G.glow.material.opacity=.45+(moving?.2*Math.sin(t*3):0)}}
-function updateLotus(){const list=state.terrain==='eau'?(state.lotus||[]):[];updateGifts();while(lotusPool.length<list.length)lotusPool.push(makeLotus());
+function updateLotus(){const list=state.terrain==='eau'?(state.lotus||[]):[];updateGifts();updateFxBoard();while(lotusPool.length<list.length)lotusPool.push(makeLotus());
  lotusPool.forEach((L,n)=>{const l=list[n];if(!l){L.g.visible=false;L.key='';return}const key=l.x+','+l.y;if(key!==L.key){L.key=key;L.born=performance.now()}const c=state.b[l.y]?.[l.x];L.g.position.set(l.x-3.5-.24,.22+(c&&!c.f?.28:0)+.012,l.y-HZ+.24);L.g.visible=true})}
 function animateLotus(){for(const L of lotusPool){if(!L.g.visible)continue;const t=(performance.now()-L.born)/1000,open=Math.min(1,t/1.1),e=1-Math.pow(1-open,3);L.g.scale.setScalar((.2+.8*e)*.55);L.g.rotation.y=t*.25;L.glow.material.opacity=.45+.25*Math.sin(t*2.2);L.light.intensity=renderer.isSoftware?0:1.6+.6*Math.sin(t*2.2)}}
 const weatherFx=[];
@@ -637,7 +650,7 @@ function renderElementWheel(t){if(previewMode||!renderer.isWebGLRenderer)return;
  elementWheel.place(camera,wheelAnchor,1.5*Math.max(1,ZS*.9))}elementWheel.update(t,moving);
  const ac=renderer.autoClear;renderer.autoClear=false;renderer.clearDepth();renderer.render(elementWheel.scene,camera);renderer.autoClear=ac}
 window.HackeniaElementWheel={get:()=>elementWheel,anchor:()=>wheelAnchor.clone()};
-function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&!previewMode)||!active||now-lastFrame<(renderer.isSoftware?100:light?32:16))return;const dt=Math.min((now-lastFrame)/1000,.06);lastFrame=now;if(pureFx.length)updatePureFx(now);if(weatherFx.length)updateWeather(now);animateLotus();animateGifts();if(auras.size)updateAuras(now);if(moving)for(const g of creatures.values()){const h=g.userData.hop,m=g.userData.model;if(!h||!m)continue;const u=((now/1000+h.phase)%3.2)/.55;if(u<1){const lift=Math.sin(Math.PI*u);m.position.y=h.base+.24*lift;m.scale.set(1-.05*lift,1+.08*lift,1-.05*lift)}else if(u<1.25){const s=Math.sin(Math.PI*(u-1)/.25);m.position.y=h.base;m.scale.set(1+.07*s,1-.1*s,1+.07*s)}else{m.position.y=h.base;m.scale.set(1,1,1)}}updateZoneGlow(now);const t=moving?now/1000:0;
+function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&!previewMode)||!active||now-lastFrame<(renderer.isSoftware?100:light?32:16))return;const dt=Math.min((now-lastFrame)/1000,.06);lastFrame=now;if(pureFx.length)updatePureFx(now);if(weatherFx.length)updateWeather(now);animateLotus();animateGifts();animateFxBoard();if(auras.size)updateAuras(now);if(moving)for(const g of creatures.values()){const h=g.userData.hop,m=g.userData.model;if(!h||!m)continue;const u=((now/1000+h.phase)%3.2)/.55;if(u<1){const lift=Math.sin(Math.PI*u);m.position.y=h.base+.24*lift;m.scale.set(1-.05*lift,1+.08*lift,1-.05*lift)}else if(u<1.25){const s=Math.sin(Math.PI*(u-1)/.25);m.position.y=h.base;m.scale.set(1+.07*s,1-.1*s,1+.07*s)}else{m.position.y=h.base;m.scale.set(1,1,1)}}updateZoneGlow(now);const t=moving?now/1000:0;
  if(frostRoad?.root.visible)frostRoad.update(t,light,moving);if(cityScene?.root.visible)cityScene.update(t,light,moving);if(caveScene?.root.visible)caveScene.update(t,light,moving);if(autumnScene?.root.visible)autumnScene.update(t,light,moving);if(noelScene?.root.visible)noelScene.update(t,light,moving);
  if(forest.visible){wind.value=t;waterNormals.offset.set(-t*.032,t*.013);
  for(let i=0;i<wp.count;i++){const x=waterOrig[i*3],z=waterOrig[i*3+2];wp.setY(i,waterHeight(x,z,t))}wp.needsUpdate=true;if(!renderer.isSoftware)wg.computeVertexNormals();

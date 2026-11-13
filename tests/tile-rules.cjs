@@ -6,7 +6,7 @@ const c=vm.createContext({window:{dispatchEvent(){}},Event,document:{getElementB
 const g=c.window.hackeniaGame,want={1:3,2:4,3:5,5:6,6:6},sum=d=>d.c.reduce((a,t)=>a+t[2],0);
 const canon=cells=>{const out=[];let p=cells.map(([x,y])=>[x,y]);for(const f of[1,-1]){let q=p.map(([x,y])=>[x*f,y]);for(let r=0;r<4;r++){q=q.map(([x,y])=>[-y,x]);const mx=Math.min(...q.map(a=>a[0])),my=Math.min(...q.map(a=>a[1]));out.push(q.map(([x,y])=>(x-mx)+','+(y-my)).sort().join(' '))}}return out.sort()[0]};
 const legends=[],divins=[];
-g.monsters.forEach((d,i)=>{if(d.pure)return;const r=g.rarity(d);assert.equal(d.c.length,want[r]-(d.fx||d.terrain2?1:0),`${d.cn} (${i}) : ${want[r]-(d.fx||d.terrain2?1:0)} dalles attendues pour sa rareté`);
+g.monsters.forEach((d,i)=>{if(d.pure)return;const r=g.rarity(d);assert.equal(d.c.length,want[r]-(d.fx||d.terrain2||d.cls?1:0),`${d.cn} (${i}) : ${want[r]-(d.fx||d.terrain2||d.cls?1:0)} dalles attendues pour sa rareté`);
  const cells=new Set(d.c.map(([x,y])=>x+','+y));assert.equal(cells.size,d.c.length,d.cn+' : pas de dalles superposées');
  const linked=new Set([d.c[0][0]+','+d.c[0][1]]),todo=[d.c[0]];while(todo.length){const [x,y]=todo.pop();for(const [dx,dy] of[[1,0],[-1,0],[0,1],[0,-1]]){const k=(x+dx)+','+(y+dy);if(cells.has(k)&&!linked.has(k)){linked.add(k);todo.push([x+dx,y+dy])}}}assert.equal(linked.size,cells.size,d.cn+' : dalles reliées');
  assert.ok(Number.isInteger(d.sp)&&d.c[d.sp],d.cn+' : case d’apparition définie');assert.equal(d.c[d.sp][2],Math.max(...d.c.map(t=>t[2])),d.cn+' : la créature naît sur sa plus forte dalle');
