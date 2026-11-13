@@ -10,5 +10,5 @@ const monsters=JSON.parse(vm.runInContext('JSON.stringify(M)',ctx)),p=vm.createC
 const tally={1:0,2:0,3:0,4:0,5:0,6:0,7:0},N=6000;let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
 for(let k=0;k<N/3;k++)p.window.HackeniaPurchases.plan({gold:10,inventory:{},boosters:0},1,rnd).pouchQueue[0].dice.forEach(i=>tally[r[i]]++);
 const pct=k=>tally[k]/N*100;assert.equal(tally[4],0);
-for(const [k,want] of [[1,33],[2,27],[3,22],[5,6],[6,1.5],[7,10.5]])assert.ok(Math.abs(pct(k)-want)<2.5,`rarity ${k}: ${pct(k).toFixed(1)} % vs ${want} %`);
-console.log('PASS: six rarities (no Épique), level IV dice are legendary, pouch odds 33/27/22/6/1.5/10.5 % ('+[1,2,3,5,6,7].map(k=>pct(k).toFixed(1)).join(' / ')+').');
+for(const [k,want] of [[1,33],[2,27],[3,22],[5,6],[6,0.8],[7,10.5]])assert.ok(Math.abs(pct(k)-want)<2.5,`rarity ${k}: ${pct(k).toFixed(1)} % vs ${want} %`);
+console.log('PASS: six rarities (no Épique), level IV dice are legendary, pouch odds 33/27/22/6/0.8/10.5 % ('+[1,2,3,5,6,7].map(k=>pct(k).toFixed(1)).join(' / ')+').');
