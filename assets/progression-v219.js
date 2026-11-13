@@ -14,8 +14,9 @@ function levelReward(level){const palier=level%5===0;return{gold:20+2*level+(pal
 // Expérience d'une partie.
 const PLAY_WIN={facile:30,moyen:40,difficile:50,divin:60};
 function matchXp(result,mode,difficulty){if(!['quick','play','story','online'].includes(mode))return 0;
- if(result==='draw')return mode==='online'?40:20;if(result!=='win')return mode==='online'?30:15;
- return mode==='online'?80:mode==='story'?50:mode==='play'?(PLAY_WIN[difficulty]??40):40}
+ if(mode==='online')return 25;/* v257 — PVP en ligne : 25 XP quel que soit le résultat */
+ if(result==='draw')return 20;if(result!=='win')return 15;
+ return mode==='story'?50:mode==='play'?(PLAY_WIN[difficulty]??40):40}
 // Quêtes.
 const DAILY=[
  {id:'win2',text:'Gagnez 2 parties',kind:'win',target:2},

@@ -3,3 +3,41 @@ html body.portal-open[data-portal-view="shop"] #portal .pouch-theatre.pouch-comp
 html body.portal-open[data-portal-view="shop"] #portal .pouch-theatre.pouch-compact-layout .draw-label strong.draw-name{-webkit-line-clamp:2!important;min-height:0!important;margin:1px 0!important}
 html body.portal-open[data-portal-view="shop"] #portal .pouch-theatre.pouch-compact-layout .draw-label{max-width:104px!important;min-width:74px!important;left:calc(89% - var(--pd-size,38px)/2 - 58px)!important}
 html body.portal-open[data-portal-view="shop"] #portal .pouch-theatre.pouch-compact-layout .draw-label strong.draw-name{overflow-wrap:normal!important;word-break:normal!important;hyphens:auto}
+/* v257 — compteur de garantie de la boutique */
+#portal .pity-line{margin:10px 0 0;font:600 12px/1.4 system-ui,sans-serif;color:#d9c48a;text-align:center;letter-spacing:.02em}#portal .pity-line b{color:#fff3c4}
+/* v257 — bourse : halo doré (légendaire) / éclat divin (arc-en-ciel, ondes de choc, secousse) */
+#portal .pouch-theatre.pouch-gold-halo .pouch-rarity-aura{filter:drop-shadow(0 0 8px #ffcf5a) drop-shadow(0 0 16px #ff9d2e)!important}
+#portal .pouch-theatre.pouch-gold-halo .pouch-rainbow-spark{filter:sepia(1) saturate(5) hue-rotate(-12deg) brightness(1.15) drop-shadow(0 0 5px #ffd97a)!important}
+#portal .pouch-theatre.pouch-gold-halo .pouch-prop .dice-pouch>svg{filter:drop-shadow(0 13px 12px #0005) drop-shadow(0 0 8px #ffcf5a)!important}
+.pouch-divine-burst{position:absolute;inset:0;z-index:30;pointer-events:none;overflow:hidden;border-radius:inherit}
+.pouch-divine-burst b{position:absolute;inset:0;background:radial-gradient(circle at 50% 55%,#fff 0,#fff8d6cc 22%,#ffffff00 62%);opacity:0;animation:divine-flash 1.5s ease-out}
+.pouch-divine-burst i{position:absolute;left:50%;top:55%;width:40px;height:40px;margin:-20px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 22px #fff,0 0 40px #8fe9ff,inset 0 0 18px #ffb6f0;opacity:0;animation:divine-ring 1.8s ease-out}
+.pouch-divine-burst i:nth-child(2){animation-delay:.22s;border-color:#ffe98a}.pouch-divine-burst i:nth-child(3){animation-delay:.44s;border-color:#a9f0ff}
+@keyframes divine-flash{0%{opacity:0}12%{opacity:.95}100%{opacity:0}}
+@keyframes divine-ring{0%{opacity:.95;transform:scale(.4)}100%{opacity:0;transform:scale(14)}}
+#portal .pouch-theatre.pouch-divine-shake{animation:divine-shake .55s ease-in-out 2}
+@keyframes divine-shake{0%,100%{transform:none}20%{transform:translate(-5px,2px) rotate(-.4deg)}45%{transform:translate(6px,-3px) rotate(.4deg)}70%{transform:translate(-3px,3px)}}
+.no-motion .pouch-divine-burst,.no-motion #portal .pouch-theatre.pouch-divine-shake{animation:none!important}
+@media(prefers-reduced-motion:reduce){.pouch-divine-burst{display:none}#portal .pouch-theatre.pouch-divine-shake{animation:none}}
+/* v257 — un filtre sur le cube aplatissait ses faces au survol (filter force transform-style:flat) : le halo passe sur le conteneur */
+html body #portal .draw-die:not(:disabled):hover .pd-cube{filter:none!important;transform:translateY(-6px) rotateX(-23deg) rotateY(-32deg)!important}
+html body #portal .draw-die:not(:disabled):hover{filter:drop-shadow(0 0 10px var(--die-metal))}
+/* v258 — teaser des dés double-élément */
+#portal .duo-teaser{margin:28px auto 8px;max-width:720px;padding:18px 18px 14px;border:1px dashed rgba(214,178,106,.5);border-radius:18px;background:linear-gradient(160deg,rgba(40,28,70,.55),rgba(12,20,34,.65));text-align:center}
+#portal .duo-teaser h3{margin:0 0 12px;font:700 15px/1.2 "Cinzel",Georgia,serif;letter-spacing:.06em;color:#f1d98f}
+#portal .duo-row{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+#portal .duo-card{position:relative;width:92px;padding:10px 6px 8px;border-radius:14px;border:1px solid rgba(214,178,106,.35);background:rgba(8,12,22,.7);filter:saturate(.35) brightness(.8);animation:duo-pulse 2.8s ease-in-out infinite}
+#portal .duo-card:nth-child(2){animation-delay:.5s}#portal .duo-card:nth-child(3){animation-delay:1s}
+#portal .duo-icons{display:flex;justify-content:center}
+#portal .duo-ico{width:44px;height:44px;object-fit:contain;margin:0 -7px;filter:drop-shadow(0 2px 3px #000a)}
+#portal .duo-card b{display:block;margin-top:2px;font:700 22px/1 "Cinzel",Georgia,serif;color:#d9c48a}
+#portal .duo-teaser p{margin:12px 0 0;font:500 12.5px/1.45 system-ui,sans-serif;color:#c9c3b3}
+@keyframes duo-pulse{0%,100%{opacity:.7}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce){#portal .duo-card{animation:none}}
+/* v259 — case « 2 contre 2 » du mode Jouer */
+#portal label.team2-opt{display:flex;align-items:flex-start;gap:10px;margin:0 0 16px;padding:10px 12px;border:1px solid rgba(214,178,106,.3);border-radius:12px;background:rgba(10,14,22,.5);cursor:pointer;text-transform:none;letter-spacing:0;font:500 13px/1.35 system-ui,sans-serif;color:#efe7d2}
+#portal label.team2-opt input{margin-top:3px;width:18px;height:18px;min-height:0;flex:none;accent-color:#d6b26a}
+#portal label.team2-opt b{display:block;font:700 14px/1.2 system-ui,sans-serif;color:#f1d98f}
+#portal label.team2-opt small{display:block;margin-top:2px;color:#b8b19c;font-size:11.5px}
+#portal label.team2-opt:has(input:checked){border-color:#d6b26a;background:linear-gradient(135deg,rgba(214,178,106,.2),rgba(10,14,22,.6))}
+#portal label.team2-opt b,#portal label.team2-opt small{text-transform:none!important;letter-spacing:0!important}

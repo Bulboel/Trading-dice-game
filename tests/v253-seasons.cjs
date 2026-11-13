@@ -6,7 +6,7 @@ const html=read('index.html'),clearing=read('assets/clearing-v105.js'),portal=re
 assert.ok(html.includes("TL=['terre','feu','glace','vent','eau','foudre','ville','grotte','automne','noel']"));
 const boost=eval('('+html.match(/const TERRAIN_BOOST=(\{[^}]+\})/)[1]+')');
 assert.deepStrictEqual(boost,{automne:['terre','vent'],noel:['foudre','glace','feu']});
-assert.ok(html.includes('const terrainBonus=boosted(c.el)?1:0')&&!/el===TL\[TER\]/.test(html),'le bonus de terrain passe partout par boosted()');
+assert.ok(html.includes('const terrainBonus=boosted(c.el)?(c.t2?2:1):0')&&!/el===TL\[TER\]/.test(html),'le bonus de terrain passe partout par boosted()');
 assert.ok(html.includes("if(t==='noel'){")&&html.includes("lotus.push({x,y,until:turnNumber+4,gift:1})"),'un cadeau (+1, 2 tours) par tour sur la nuit des Lumières');
 assert.ok(html.includes("const open=TL.filter(t=>window.HackeniaEvents?.terrainOpen?.(t)??t!=='noel')"),'Noël hors tirage aléatoire en dehors de l’événement');
 // Grelot des neiges : une relance par duel, joueur local, hors ligne

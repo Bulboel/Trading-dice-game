@@ -120,6 +120,47 @@ updates.push((t,light,moving)=>{const T=moving?t:0;
  for(const b of bubbles){const a=(T*.3+b.p)%1,k=a<.8?a/.8:1-(a-.8)/.2;b.m.scale.set(.02+k*.07,.01+k*.05,.02+k*.07);b.m.material.opacity=a<.8?.9:1-(a-.8)*4;b.m.visible=moving}
  for(const f of flames){const k=moving?1+Math.sin(t*5.1+f.p)*.16+Math.sin(t*8.3+f.p)*.07:1;f.g.scale.set(f.s*(2-k),f.s*1.7*k,f.s);f.g.rotation.y=moving?Math.sin(t*1.8+f.p)*.2:0;f.m.opacity=.8+(moving?Math.sin(t*4+f.p)*.12:0)}
  for(const s of smokes){const a=moving?(t*.12+s.p)%1:s.p;s.s.position.set(s.x+Math.sin(a*4+s.p*9)*a*.25,s.y+a*1.5*Math.min(1.6,s.size*.6),s.z+Math.cos(a*3)*a*.2);s.s.scale.setScalar((.25+a*.75)*s.size*.55);s.s.material.opacity=Math.sin(a*Math.PI)*.42}});
+
+// ---------- 9. v257 — Terres vivantes : coulées de lave, arbres calcinés, squelettes, fumerolles ----------
+// Coulées : rubans de lave qui dévalent la rive vers les douves (texture qui défile), avec lueur et bulles à la source.
+const flowTex=canvasTex(64,256,(g,w,h)=>{const gr=g.createLinearGradient(0,0,w,0);gr.addColorStop(0,'#3a0c04');gr.addColorStop(.18,'#c8310a');gr.addColorStop(.5,'#ffb232');gr.addColorStop(.82,'#c8310a');gr.addColorStop(1,'#3a0c04');g.fillStyle=gr;g.fillRect(0,0,w,h);for(let i=0;i<46;i++){const y=rnd()*h,x=8+rnd()*(w-16);g.fillStyle=`rgba(255,${200+rnd()*55},${80+rnd()*80},${.35+rnd()*.4})`;g.beginPath();g.ellipse(x,y,2+rnd()*5,6+rnd()*16,0,0,7);g.fill()}for(let i=0;i<22;i++){g.fillStyle='rgba(40,8,2,.55)';g.beginPath();g.ellipse(6+rnd()*(w-12),rnd()*h,2+rnd()*3,4+rnd()*8,0,0,7);g.fill()}});
+flowTex.repeat.set(1,3);
+const flowMat=new THREE.MeshBasicMaterial({map:flowTex,side:THREE.DoubleSide});
+function lavaFlow(points,width){const curve=new THREE.CatmullRomCurve3(points.map(([x,z])=>new THREE.Vector3(x,0,z))),N=48,pos=[],uv=[],idx=[];let len=0,prev=curve.getPoint(0);
+ for(let i=0;i<=N;i++){const k=i/N,c=curve.getPoint(k),tan=curve.getTangent(k),nx=-tan.z,nz=tan.x,w=width*(.55+.5*Math.sin(k*Math.PI)*(.8+.4*Math.sin(k*9+points[0][0])));len+=c.distanceTo(prev);prev=c;
+  for(const side of[-1,1]){const x=c.x+nx*w*side*.5,z=c.z+nz*w*side*.5;pos.push(x,Math.max(groundH(x,z),-.5)+.035,z);uv.push(side<0?0:1,len*.35)}}
+ for(let i=0;i<N;i++){const a=i*2;idx.push(a,a+1,a+2,a+1,a+3,a+2)}
+ const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));geo.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));geo.setIndex(idx);const m=new THREE.Mesh(geo,flowMat);m.renderOrder=-1;root.add(m);
+ const src=points[0],g=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,opacity:.7}));g.position.set(src[0],groundH(src[0],src[1])+.15,src[1]);g.scale.setScalar(1.5);root.add(g);lavaGlows.push(g);return m}
+const lavaGlows=[];
+// départs en retrait de la rive (loin de la caméra), arrivées dans les douves
+lavaFlow([[-FX+.4,-FZ+2.2],[-FX+1.2,-FZ+3.6],[-BX-1.4,-BZ-.5],[-BX-.55,-BZ+.5]],.62);
+lavaFlow([[-FX+.4,.5],[-BX-2.6,1.4],[-BX-1.6,2.6],[-BX-.55,3.2]],.5);
+lavaFlow([[FX-.4,-FZ+1.4],[FX-1.4,-FZ+3],[BX+1.5,-BZ-.7],[BX+.55,-BZ+.2]],.55);
+if(!software)lavaFlow([[-1.5,-FZ+.35],[-.6,-FZ+1.1],[.4,-BZ-.5],[.2,-BZ+.15]],.45);
+updates.push((t,light,moving)=>{if(moving)flowTex.offset.y=-t*.18;for(const g of lavaGlows)g.material.opacity=.55+(moving?Math.sin(t*2.1+g.position.x)*.15:0)});
+// Arbres calcinés : tronc tordu, branches nues, quelques braises à la fourche. Hors du champ de la caméra (côtés et fond).
+const charMat=mat(0x1a1514,{roughness:1,flatShading:true}),emberTwig=new THREE.MeshBasicMaterial({color:0xff6a22});
+function branch(parent,len,r,depth,tilt){const g=new THREE.Group();parent.add(g);const m=add(new THREE.CylinderGeometry(r*.55,r,len,5),charMat,g);m.position.y=len/2;
+ if(depth>0){const n=depth>1?2:2+Math.floor(rnd()*2);for(let i=0;i<n;i++){const c=new THREE.Group();c.position.y=len*(.55+rnd()*.4);c.rotation.set((rnd()-.5)*1.3,rnd()*6.3,.45+rnd()*.7);g.add(c);branch(c,len*(.55+rnd()*.2),r*.6,depth-1,tilt)}}else if(rnd()<.35){const e=new THREE.Mesh(new THREE.SphereGeometry(r*1.4,5,4),emberTwig);e.position.y=len;g.add(e)}return g}
+function deadTree(x,z,h){const g=new THREE.Group();g.position.set(x,groundH(x,z)-.03,z);g.rotation.set((rnd()-.5)*.14,rnd()*6.3,(rnd()-.5)*.14);root.add(g);branch(g,h,h*.07,3,0);const root2=add(new THREE.ConeGeometry(h*.12,h*.12,6),charMat,g,false);root2.position.y=.03;return g}
+for(let i=0;i<(software?7:16);i++){let x,z,k=0;do{x=(rnd()*2-1)*(FX-.6);z=(rnd()*2-1)*(FZ-.6);k++}while((outside(x,z)<2.5||groundH(x,z)<-.1||(x>1.6&&z>1)||(x>0&&z>HZ-.5))&&k<80);if(k<80)deadTree(x,z,.75+rnd()*.6)}
+// Squelettes : crâne, cage thoracique, os épars, couchés sur la cendre.
+const boneMat=mat(0xe6dcc3,{roughness:.8}),sockMat=new THREE.MeshBasicMaterial({color:0x120d0c});
+function skull(parent,s=1){const g=new THREE.Group();parent.add(g);const c=add(new THREE.SphereGeometry(.1*s,10,8),boneMat,g);c.scale.set(1,.92,1.1);c.position.y=.1*s;const j=add(new THREE.BoxGeometry(.11*s,.04*s,.1*s),boneMat,g);j.position.set(0,.03*s,.07*s);for(const sx of[-1,1]){const e=new THREE.Mesh(new THREE.SphereGeometry(.028*s,6,5),sockMat);e.position.set(sx*.04*s,.115*s,.085*s);g.add(e)}const n=new THREE.Mesh(new THREE.ConeGeometry(.012*s,.03*s,4),sockMat);n.rotation.x=Math.PI/2;n.position.set(0,.08*s,.105*s);g.add(n);return g}
+function ribcage(parent,s=1){const g=new THREE.Group();parent.add(g);const sp=add(new THREE.CylinderGeometry(.018*s,.018*s,.9*s,6),boneMat,g,false);sp.rotation.z=Math.PI/2;sp.position.y=.05*s;for(let i=0;i<7;i++){const x=-.36*s+i*.12*s,w=(.1+Math.sin(i/6*Math.PI)*.1)*s;for(const sz of[-1,1]){const r=add(new THREE.TorusGeometry(w,.011*s,4,10,Math.PI*.9),boneMat,g,false);r.rotation.set(0,Math.PI/2,sz>0?0:Math.PI);r.position.set(x,.05*s,0);r.scale.set(1,1,.8)}}return g}
+function bone(parent,x,z,len,ry){const b=add(new THREE.CylinderGeometry(.014,.014,len,5),boneMat,parent,false);b.rotation.set(Math.PI/2,0,ry);b.position.set(x,.02,z);for(const e of[-1,1]){const k=add(new THREE.SphereGeometry(.026,5,4),boneMat,parent,false);k.position.set(x+Math.sin(ry)*e*len/2,.02,z+Math.cos(ry)*e*len/2)}}
+function skeleton(x,z,ry,s=1){const g=new THREE.Group();g.position.set(x,groundH(x,z)+.02,z);g.rotation.y=ry;root.add(g);const rc=ribcage(g,s);rc.position.x=.12*s;const sk=skull(g,s);sk.position.set(-.5*s,0,.04);sk.rotation.y=-1.2;for(const [dx,dz,l] of[[.1,.28,.5],[.35,-.27,.45],[.62,.12,.42],[.7,-.1,.4],[-.1,-.32,.34]])bone(g,dx*s,dz*s,l*s,rnd()*6)}
+const bonePlaces=[[-5.8,-3.4],[5.7,-2.6],[-6.1,3.2],[2.6,-FZ+.9],[-2.2,FZ-.8],[5.9,3.6]];
+bonePlaces.forEach(([x,z],i)=>{if(outside(x,z)>1.2)skeleton(x,z,rnd()*6.3,.85+rnd()*.35)});
+// Côte géante d'un dragon planté dans la cendre (au fond, à gauche).
+{const g=new THREE.Group();g.position.set(-FX+.7,groundH(-FX+.7,-FZ+.8)-.05,-FZ+.8);g.rotation.y=.12;root.add(g);for(let i=0;i<5;i++){const r=add(new THREE.TorusGeometry(.95-.07*Math.abs(i-2),.07,6,14,Math.PI*.92),boneMat,g);r.rotation.set(0,Math.PI/2,0);r.rotation.z=Math.PI*.04;r.position.set(i*.4,0,0);r.scale.set(1,1+(.2-.05*Math.abs(i-2)),1)}const sp=add(new THREE.CylinderGeometry(.08,.1,2.4,7),boneMat,g);sp.rotation.z=Math.PI/2;sp.position.set(.8,.02,0);const sk=skull(g,4);sk.position.set(-.75,0,.1);sk.rotation.y=.4}
+// Fumerolles : petits cratères qui sifflent de la vapeur, lueur rouge au fond des fissures.
+const fumarole=[];
+function vent2(x,z,s=1){const y=groundH(x,z);const cone=add(new THREE.ConeGeometry(.26*s,.2*s,9,1,true),mat(0x4a3d3a,{flatShading:true,side:THREE.DoubleSide}),root,false);cone.position.set(x,y+.08*s,z);const crack=new THREE.Mesh(new THREE.CircleGeometry(.1*s,10),new THREE.MeshBasicMaterial({color:0xff5a1a}));crack.rotation.x=-Math.PI/2;crack.position.set(x,y+.16*s,z);root.add(crack);
+ const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,opacity:.55}));halo.position.set(x,y+.2*s,z);halo.scale.setScalar(.9*s);root.add(halo);fumarole.push(halo);smoke(x,y+.22*s,z,.75*s,software?2:4)}
+for(let i=0;i<(software?5:12);i++){let x,z,k=0;do{x=(rnd()*2-1)*(FX-.5);z=(rnd()*2-1)*(FZ-.5);k++}while((outside(x,z)<1.45||groundH(x,z)<-.1)&&k<60);if(k<60)vent2(x,z,.7+rnd()*.7)}
+updates.push((t,light,moving)=>{for(const h of fumarole)h.material.opacity=.4+(moving?Math.sin(t*3.1+h.position.x*2)*.18+Math.sin(t*9+h.position.z)*.06:0)});
 // Une seule lumière chaude, près du grand volcan (aucune en mode léger).
 if(!software){const heat=new THREE.PointLight(0xff6a25,3.2,9,1.6);heat.position.set(-FX+1.5,2.2,VZ+.6);root.add(heat);updates.push((t,l,moving)=>{heat.intensity=3.2+(moving?Math.sin(t*1.7)*.5:0)})}
 return{root,update(t,light,moving){for(const u of updates)u(t,light,moving)}};
