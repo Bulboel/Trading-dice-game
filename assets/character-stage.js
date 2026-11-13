@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import {alignModelForward} from './model-facing.js?v=20261103-v71';
 import { GLTFLoader } from './vendor/three/examples/jsm/loaders/GLTFLoader.js';
+import { applyLook } from './variant-look.js?v=20261113-v215';
 import { OrbitControls } from './vendor/three/examples/jsm/controls/OrbitControls.js';
 
 export async function createCharacterStage(host,info,isCurrent){
@@ -14,7 +15,7 @@ export async function createCharacterStage(host,info,isCurrent){
  let root,mixer,action,frame=0,dead=false,observer;const meshes=[],rest=[];let distance=4;
  function dispose(){if(dead)return;dead=true;cancelAnimationFrame(frame);observer?.disconnect();controls.dispose();mixer?.stopAllAction();meshes.forEach(mesh=>{mesh.geometry?.dispose();const materials=Array.isArray(mesh.material)?mesh.material:[mesh.material];materials.forEach(m=>{if(!m)return;Object.values(m).forEach(t=>{if(t?.isTexture)t.dispose()});m.dispose()})});renderer.dispose();renderer.forceContextLoss();canvas.remove()}
  try{
- const gltf=await new GLTFLoader().loadAsync('assets/'+info.glb);root=gltf.scene;root.traverse(o=>{if(o.isMesh)meshes.push(o);rest.push({node:o,position:o.position.clone(),quaternion:o.quaternion.clone(),scale:o.scale.clone()})});
+ const gltf=await new GLTFLoader().loadAsync('assets/'+info.glb);root=gltf.scene;if(info.variant)applyLook(root,info.variant);root.traverse(o=>{if(o.isMesh)meshes.push(o);rest.push({node:o,position:o.position.clone(),quaternion:o.quaternion.clone(),scale:o.scale.clone()})});
  if(!isCurrent()){dispose();throw Error('closed')}
  // Keep normalization outside the animated root, whose transform may be keyed.
  const box=new THREE.Box3().setFromObject(root),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3()),factor=2/Math.max(size.y,.001),normalized=new THREE.Group();normalized.scale.setScalar(factor);normalized.position.set(-center.x*factor,-box.min.y*factor,-center.z*factor);normalized.add(root);const display=new THREE.Group();display.add(normalized);scene.add(display);
