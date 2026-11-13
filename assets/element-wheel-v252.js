@@ -22,21 +22,19 @@ function haloTexture(){const c=document.createElement('canvas');c.width=c.height
  const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t}
 export function createElementWheel({loadModel,software=false}){
  const scene=new THREE.Scene(),root=new THREE.Group();scene.add(root);
+ const K=.62,layout=new THREE.Group();root.add(layout);/* v265 — smartphone : anneaux, flèches et médaillon se resserrent (K) pour que les six dés se touchent presque, sans grand vide au centre */
  scene.add(new THREE.HemisphereLight(0xfff4dc,0x3a2f55,1.9));const key=new THREE.DirectionalLight(0xffffff,2.4);key.position.set(2,4,6);scene.add(key);const rim=new THREE.DirectionalLight(0xb8d4ff,1.1);rim.position.set(-4,-1,-3);scene.add(rim);
  const glowTex=glowTexture(),angleOf=i=>Math.PI/2-i*Math.PI/3;// Eau en haut, puis sens des aiguilles d'une montre
  const pos=i=>new THREE.Vector3(Math.cos(angleOf(i))*R,Math.sin(angleOf(i))*R,0);
  // Médaillon sombre + anneaux d'or
- const disc=new THREE.Mesh(new THREE.PlaneGeometry(R*2.9,R*2.9),new THREE.MeshBasicMaterial({map:haloTexture(),transparent:true,depthWrite:false}));disc.position.z=-.6;root.add(disc);
+ const disc=new THREE.Mesh(new THREE.PlaneGeometry(R*2.9,R*2.9),new THREE.MeshBasicMaterial({map:haloTexture(),transparent:true,depthWrite:false}));disc.position.z=-.6;layout.add(disc);
  const gold=new THREE.MeshStandardMaterial({color:0xd6b26a,metalness:.85,roughness:.32,emissive:0x3a2a08,emissiveIntensity:.5});
- const ring=new THREE.Mesh(new THREE.TorusGeometry(R,.045,10,160),gold);ring.position.z=-.25;root.add(ring);
- const ring2=new THREE.Mesh(new THREE.TorusGeometry(R*1.2,.022,8,160),gold);ring2.position.z=-.3;root.add(ring2);
- const ring3=new THREE.Mesh(new THREE.TorusGeometry(R*.42,.02,8,96),gold);ring3.position.z=-.3;root.add(ring3);
+ const ring=new THREE.Mesh(new THREE.TorusGeometry(R,.045,10,160),gold);ring.position.z=-.25;layout.add(ring);
+ const ring2=new THREE.Mesh(new THREE.TorusGeometry(R*1.2,.022,8,160),gold);ring2.position.z=-.3;layout.add(ring2);
+ const ring3=new THREE.Mesh(new THREE.TorusGeometry(R*.42,.02,8,96),gold);ring3.position.z=-.3;layout.add(ring3);
  // petites gemmes sur l'anneau extérieur, entre les éléments
- for(let i=0;i<6;i++){const a=angleOf(i)-Math.PI/6,gem=new THREE.Mesh(new THREE.OctahedronGeometry(.07,0),gold);gem.position.set(Math.cos(a)*R*1.2,Math.sin(a)*R*1.2,-.3);root.add(gem)}
- // Titre et légende
- const title=new THREE.Mesh(new THREE.PlaneGeometry(3.6,.56),new THREE.MeshBasicMaterial({map:textTexture(['ROUE DES ÉLÉMENTS'],{w:768,h:120,font:'700 62px Georgia,serif',color:'#f3d896',glow:'rgba(214,178,106,.9)'}),transparent:true,depthWrite:false}));title.position.set(0,R*1.2+.95,0);root.add(title);
- const legend=new THREE.Mesh(new THREE.PlaneGeometry(1.75,.84),new THREE.MeshBasicMaterial({map:textTexture([['domine','italic 600 46px Georgia,serif','#f3d896'],['➜','700 58px system-ui,sans-serif','#f3d896'],['+1 à côté','600 34px system-ui,sans-serif','#e8e0cc']],{w:340,h:164}),transparent:true,depthWrite:false}));legend.position.z=.05;root.add(legend);
- const hint=new THREE.Mesh(new THREE.PlaneGeometry(5.2,.9),new THREE.MeshBasicMaterial({map:textTexture([['La flèche part du plus fort :','600 40px system-ui,sans-serif','#f1e9d4'],['posé à côté de sa proie, il gagne +1.','500 36px system-ui,sans-serif','#e8e0cc']],{w:1040,h:180}),transparent:true,depthWrite:false}));hint.position.set(0,-R*1.2-1.2,0);root.add(hint);
+ for(let i=0;i<6;i++){const a=angleOf(i)-Math.PI/6,gem=new THREE.Mesh(new THREE.OctahedronGeometry(.07,0),gold);gem.position.set(Math.cos(a)*R*1.2,Math.sin(a)*R*1.2,-.3);layout.add(gem)}
+ // v265 — la roue se suffit à elle-même : plus de titre, de légende ni de phrase d'aide (seuls les noms d'éléments restent sur ordinateur)
  // Emplacements des six dés : halo coloré, nom, modèle 3D
  const s_load=[];let loaded=false;// les modèles ne se chargent qu'à l'approche de la roue (économie de données sur mobile)
  const slots=WHEEL_ORDER.map((el,i)=>{const g=new THREE.Group();g.position.copy(pos(i));root.add(g);const col=new THREE.Color(COLORS[el]);
@@ -53,15 +51,15 @@ export function createElementWheel({loadModel,software=false}){
   const curve=new THREE.Curve();curve.getPoint=(t,o=new THREE.Vector3())=>{const a=a0+(a1-a0)*t;return o.set(Math.cos(a)*rr,Math.sin(a)*rr,.02)};
   const geo=new THREE.TubeGeometry(curve,40,.07,10,false),n=geo.attributes.position.count,colors=new Float32Array(n*3),c0=new THREE.Color(COLORS[el]),c1=new THREE.Color(COLORS[WHEEL_ORDER[(i+1)%6]]),tmp=new THREE.Color();
   for(let k=0;k<n;k++){const seg=Math.floor(k/11)/40;tmp.copy(c0).lerp(c1,seg*.85);colors.set([tmp.r,tmp.g,tmp.b],k*3)}geo.setAttribute('color',new THREE.BufferAttribute(colors,3));
-  const tube=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({vertexColors:true,transparent:true,opacity:.95,depthWrite:false,toneMapped:false}));root.add(tube);
+  const tube=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({vertexColors:true,transparent:true,opacity:.95,depthWrite:false,toneMapped:false}));layout.add(tube);
   const end=curve.getPoint(1),before=curve.getPoint(.94),dir=end.clone().sub(before).normalize();
-  const head=new THREE.Mesh(new THREE.ConeGeometry(.17,.36,16),new THREE.MeshBasicMaterial({color:c0.clone().lerp(c1,.85),toneMapped:false}));head.position.copy(end).addScaledVector(dir,.12);head.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir);root.add(head);
-  const sparks=[];for(let k=0;k<(software?1:3);k++){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xffffff,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));s.scale.setScalar(.34);root.add(s);sparks.push({s,off:k/3})}
+  const head=new THREE.Mesh(new THREE.ConeGeometry(.17,.36,16),new THREE.MeshBasicMaterial({color:c0.clone().lerp(c1,.85),toneMapped:false}));head.position.copy(end).addScaledVector(dir,.12);head.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir);layout.add(head);
+  const sparks=[];for(let k=0;k<(software?1:3);k++){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xffffff,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));s.scale.setScalar(.34);layout.add(s);sparks.push({s,off:k/3})}
   return{el,curve,tube,head,sparks,c0,c1,hl:0}});
  const backHalo=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xd6b26a,transparent:true,opacity:.16,depthWrite:false,blending:THREE.AdditiveBlending}));backHalo.scale.setScalar(R*3.4);backHalo.position.z=-.8;root.add(backHalo);
  const tmpV=new THREE.Vector3(),tmpC=new THREE.Color();let focus='';
  function ensureModels(){if(loaded)return;loaded=true;s_load.forEach(f=>f())}
- let compact=false;function setCompact(v){if(v===compact)return;compact=v;title.visible=hint.visible=legend.visible=!v;ring3.visible=!v;backHalo.visible=!v;slots.forEach(sl=>sl.label.visible=!v)/* v255 : sans les noms sur smartphone */}
+ let compact=false;function setCompact(v){if(v===compact)return;compact=v;ring3.visible=!v;backHalo.visible=!v;slots.forEach((sl,i)=>{sl.label.visible=!v;sl.g.position.copy(pos(i)).multiplyScalar(v?K:1)});layout.scale.set(v?K:1,v?K:1,1)/* v255 : sans les noms sur smartphone ; v265 : disposition resserrée */}
  function setFocus(el){focus=WHEEL_ORDER.includes(el)?el:''}
  /* Place la roue à droite du plateau (dans le repère de la caméra), face à elle. scale = taille relative. */
  function place(camera,anchor,scale=1){root.quaternion.copy(camera.quaternion);root.position.copy(anchor);root.scale.setScalar(scale)}
@@ -72,6 +70,6 @@ export function createElementWheel({loadModel,software=false}){
    s.label.material.opacity=s.hl<0?.45:1});
   arrows.forEach((a,i)=>{const on=focus&&(a.el===focus||WHEEL_ORDER[(i+1)%6]===focus),target=!focus?0:on?1:-.6;a.hl+=(target-a.hl)*.12;a.tube.material.opacity=a.hl<0?.3:.95;a.head.scale.setScalar(1+Math.max(0,a.hl)*.35);
    a.sparks.forEach(sp=>{const k=moving?((t*.32+sp.off+i*.13)%1):sp.off+.15;a.curve.getPoint(k,tmpV);sp.s.position.copy(tmpV);sp.s.position.z=.08;tmpC.copy(a.c0).lerp(a.c1,k).lerp(new THREE.Color(0xffffff),.35);sp.s.material.color.copy(tmpC);sp.s.material.opacity=(a.hl<0?.3:1)*Math.sin(k*Math.PI);sp.s.scale.setScalar(.3+Math.max(0,a.hl)*.18)})});
-  legend.rotation.z=0;ring3.rotation.z=moving?t*.15:0;backHalo.material.opacity=.14+(moving?Math.sin(t*.8)*.03:0)}
- return{scene,root,place,update,setFocus,setCompact,ensureModels,slots,arrows}
+  ring3.rotation.z=moving?t*.15:0;backHalo.material.opacity=.14+(moving?Math.sin(t*.8)*.03:0)}
+ return{scene,root,place,update,setFocus,setCompact,ensureModels,slots,arrows,compactK:K}
 }
