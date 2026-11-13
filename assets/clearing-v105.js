@@ -10,7 +10,7 @@ import { createWoodland } from './woodland-v238.js?v=20261119-v238';
 import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20261125-v244';
 import { createFrostRoad } from './frost-v240.js?v=20261121-v240';
 import { createCity } from './city-v246.js?v=20261128-v247';
-import { createCave } from './cave-v246.js?v=20261129-v248';
+import { createCave } from './cave-v246.js?v=20261210-v262';
 import { createAutumn } from './autumn-v253.js?v=20261202-v253';
 import { createNoel } from './noel-v253.js?v=20261202-v253';
 import { createElementWheel } from './element-wheel-v252.js?v=20261204-v255';
@@ -450,13 +450,13 @@ async function attachCreatureModel(g,k){
 }
 /* v256 — Gestuelle procédurale des créatures sans clip (araignées) : respiration au repos, coup de tête en avant
    quand elle attaque, cabrage de joie quand elle gagne un combat ou la partie. */
-function animateGesture(g,k,f,combat,t){const G=g.userData.gest,n=G.node,T=moving?t:0;let z=0,rx=0,y=0,sy=1+.035*Math.sin(T*2.4+G.phase),sxz=1-.018*Math.sin(T*2.4+G.phase);
+function animateGesture(g,k,f,combat,t){const G=g.userData.gest,n=G.node,T=moving?t:0;let z=0,rx=.07*Math.sin(T*1.9+G.phase),y=.02*Math.abs(Math.sin(T*2.6+G.phase)),rz=.09*Math.sin(T*1.3+G.phase),sy=1+.07*Math.sin(T*2.6+G.phase),sxz=1-.035*Math.sin(T*2.6+G.phase);/* v262 — respiration et balancement plus marqués : l'araignée blanche n'a pas de clip d'animation */
  if(f&&combat&&!combat.reduced){const p=combat.progress,att=k.id===combat.fighters[0].id;
   if(att&&p>.16&&p<.3){const s=Math.sin(Math.PI*(p-.16)/.14);rx=-.22*s;z=-.06*s}
   else if(att&&p>=.3&&p<.58){const s=Math.sin(Math.PI*(p-.3)/.28);rx=.5*s;z=.32*s;y=.04*s}
   if(!f.loser&&p>.7&&combat.stats[0].attack!==combat.stats[1].attack){const s=Math.abs(Math.sin((p-.7)*Math.PI*6));rx=-.38*s;y=.1*s}}
  else if(G.celebrate&&moving){const s=Math.abs(Math.sin(T*4+G.phase));rx=-.34*s;y=.08*s}
- n.position.set(0,y,z);n.rotation.x=rx;n.scale.set(sxz,sy,sxz)}
+ n.position.set(0,y,z);n.rotation.set(rx,0,rz);n.scale.set(sxz,sy,sxz)}
 async function getCombatClip(path){const url='assets/'+path;if(!combatClipCache.has(url))combatClipCache.set(url,getModelTools().then(tools=>tools.loader.loadAsync(url)).then(data=>data.animations[0]||null).catch(()=>null));return combatClipCache.get(url)}
 async function playCombatClip(g,kind,combat){const tag=combat.sequence+':'+kind;if(g.userData.combatClipTag===tag)return;const path=g.userData.animationInfo?.animations?.[kind];if(!path||!g.userData.mixer)return;g.userData.combatClipTag=tag;const clip=await getCombatClip(path);if(!clip||!g.parent||g.userData.combatClipTag!==tag||window.HackeniaCombat?.current()?.sequence!==combat.sequence)return;if(kind==='spell'&&combat.progress>.65)return;const next=g.userData.mixer.clipAction(clip,g.userData.modelRoot),previous=g.userData.activeAction;if(previous!==next)previous?.fadeOut(.12);next.reset().setLoop(THREE.LoopOnce,1);next.clampWhenFinished=true;if(kind==='victory'){const speed=Math.max(1,clip.duration/4);next.setEffectiveTimeScale(speed);window.HackeniaCombat?.holdVictory(combat.sequence,clip.duration/speed)}else next.setEffectiveTimeScale(1);next.fadeIn(.12).play();g.userData.activeAction=next}
 // v198 — Fin de partie : les personnages du camp gagnant jouent leur animation de victoire en boucle.

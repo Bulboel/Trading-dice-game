@@ -120,6 +120,6 @@ if(!software&&helpers.spawnWalker){const swap=(fig,model,h)=>{model.group.positi
 let lastReal=0;updates.push((t,l,moving)=>{const dt=Math.min(.1,Math.max(0,t-lastReal));lastReal=t;
  for(const R of runners)if(R.real){R.real.group.position.copy(R.m.g.position);R.real.group.position.y=R.m.g.position.y-(moving?Math.abs(Math.sin(t*13+R.off*9))*.05:0);R.real.group.rotation.y=R.yaw;if(moving)R.real.update(dt)}
  for(const D of diggers)if(D.real&&moving)D.real.update(dt);
- for(const S of spiders)if(S.real){S.real.group.position.copy(S.s.g.position);S.real.group.rotation.y=S.yaw;S.real.group.rotation.z=moving?Math.sin(t*30+S.p)*.05:0}});
+ for(const S of spiders)if(S.real){S.real.group.position.copy(S.s.g.position);S.real.group.rotation.y=S.yaw+Math.PI;S.real.group.rotation.z=moving?Math.sin(t*30+S.p)*.05:0}});
 return{root,update(t,light,moving){for(const u of updates)u(t,light,moving)}};
 }
