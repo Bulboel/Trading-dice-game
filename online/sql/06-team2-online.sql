@@ -157,6 +157,28 @@ end $function$;
 REVOKE ALL ON FUNCTION public.play_action(uuid, text, jsonb, integer, smallint) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION public.play_action(uuid, text, jsonb, integer, smallint) TO authenticated;
 
+-- 6b. roll_dice : même contrôle de tour que play_action (le lancer est enregistré comme un événement « roll »),
+--     et l'hôte peut lancer pour un siège IA qu'il pilote (p_as_seat).
+DROP FUNCTION IF EXISTS public.roll_dice(uuid, integer);
+CREATE OR REPLACE FUNCTION public.roll_dice(p_game uuid, p_n integer, p_as_seat smallint DEFAULT NULL)
+RETURNS integer[]
+LANGUAGE plpgsql SECURITY DEFINER SET search_path TO 'public'
+AS $function$
+declare
+  v_vals int[] := '{}';
+  i      int;
+  v_seq  int;
+begin
+  if p_n < 1 or p_n > 4 then raise exception 'nombre de dés invalide'; end if;
+  for i in 1..p_n loop
+    v_vals := v_vals || (1 + floor(random() * 6))::int;
+  end loop;
+  v_seq := public.play_action(p_game, 'roll', jsonb_build_object('values', to_jsonb(v_vals)), null, p_as_seat);
+  return v_vals;
+end $function$;
+REVOKE ALL ON FUNCTION public.roll_dice(uuid, integer, smallint) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.roll_dice(uuid, integer, smallint) TO authenticated;
+
 -- 7. Tables ouvertes : le 1v1 ne montre plus les tables 2v2, et une liste dédiée pour le 2v2 -------------------
 CREATE OR REPLACE FUNCTION public.open_tables()
 RETURNS TABLE(game_code text, host_name text, terrain text, opened_at timestamptz)
