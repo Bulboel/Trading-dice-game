@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Le sac sans fond">
+<defs><radialGradient id="a" cx="50%" cy="55%" r="50%"><stop offset="0" stop-color="#c9a8ff" stop-opacity=".5"/><stop offset=".5" stop-color="#5a3ac8" stop-opacity=".22"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+<linearGradient id="v" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4b2f8f"/><stop offset=".55" stop-color="#2a1a5c"/><stop offset="1" stop-color="#130b30"/></linearGradient>
+<radialGradient id="m" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#0a0418"/><stop offset=".6" stop-color="#2b1470"/><stop offset="1" stop-color="#8a5cff"/></radialGradient></defs>
+<circle cx="100" cy="108" r="96" fill="url(#a)"/>
+<path d="M70 70 Q40 100 44 138 Q50 176 100 180 Q150 176 156 138 Q160 100 130 70 Z" fill="url(#v)" stroke="#e2c27a" stroke-width="3"/>
+<path d="M60 84 Q100 100 140 84" fill="none" stroke="#e2c27a" stroke-width="2.4" opacity=".6"/>
+<ellipse cx="100" cy="68" rx="32" ry="12" fill="url(#m)" stroke="#e2c27a" stroke-width="3"/>
+<g fill="#fff"><circle cx="92" cy="67" r="1.6"/><circle cx="104" cy="70" r="1.2"/><circle cx="110" cy="65" r="1.5"/><circle cx="96" cy="72" r="1"/></g>
+<path d="M76 64 Q70 52 80 48 M124 64 Q130 52 120 48" fill="none" stroke="#e2c27a" stroke-width="5" stroke-linecap="round"/>
+<path d="M100 56 C92 40 90 24 100 12 C110 24 108 40 100 56Z" fill="#c9a8ff" opacity=".7"/>
+<g fill="#ffeaa8"><path d="M156 40 l3 8 8 3-8 3-3 8-3-8-8-3 8-3z"/><path d="M40 52 l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/><path d="M162 112 l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" opacity=".8"/></g>
+<g fill="#e2c27a" opacity=".8"><circle cx="70" cy="120" r="3"/><circle cx="88" cy="140" r="2.4"/><circle cx="118" cy="128" r="2.8"/><circle cx="104" cy="156" r="2"/></g>
+</svg>

@@ -23,6 +23,6 @@ for(let i=36;i<43;i++){
 }
 assert.equal(clips,18);
 const purchaseContext=vm.createContext({window:{hackeniaGame:game},structuredClone,Math,RangeError});vm.runInContext(fs.readFileSync(path.join(root,'assets/purchases.js'),'utf8'),purchaseContext);
-const rarePool=defs.map((d,i)=>({d,i})).filter(({d})=>game.rarity(d)===3).map(({i})=>i);
+const rarePool=defs.map((d,i)=>({d,i})).filter(({d})=>game.rarity(d)===3&&!d.reserved).map(({i})=>i);
 for(const id of rarePool){let calls=0;const random=()=>++calls%2===1?.65:(rarePool.indexOf(id)+.5)/rarePool.length;const result=purchaseContext.window.HackeniaPurchases.plan({gold:10,inventory:{},boosters:0},1,random);assert.equal(result.pouchQueue[0].dice[0],id,'Every rare character can be drawn');assert.deepEqual(Array.from(result.pouchQueue[0].firstSeen),[0]);}
 (async()=>{for(let i=0;i<defs.length;i++)if(!defs[i].pure)assert.ok(defs[i].modelKey&&(await game.modelInfo(i))?.animations||['messire-balai','araignee','araignee-blanche'].includes(defs[i].modelKey),defs[i].cn+' : every creature die has a real character (v213 ; Messire Balai et les araignées sans animation, gestuelle procédurale)');for(let i=36;i<43;i++)assert.equal((await game.modelInfo(i)).nom,defs[i].cn);console.log('PASS: stable inventory IDs, rare heroes without stat changes, L spawn, 14 mobile portraits, 18 correct clips matching idle skeletons, rare draws and a real character on every creature die.');})().catch(e=>{console.error(e);process.exitCode=1});

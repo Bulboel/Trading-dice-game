@@ -17,6 +17,7 @@ const definitions=[
  {id:'dassom',title:'Citoyen de Dassom',goal:'Gagnez trois matchs dans la ville de Dassom.',kind:'terrain',terrain:'ville',target:3,reward:'150 Bubulles',gold:150},
  {id:'deep',title:'Mineur de fond',goal:'Gagnez trois matchs dans la grotte souterraine.',kind:'terrain',terrain:'grotte',target:3,reward:'150 Bubulles',gold:150},
  {id:'divine',title:'Défier les dieux',goal:'Battez l’IA Divine dans « Jouer ».',kind:'divine',target:1,reward:'300 Bubulles',gold:300},
+ {id:'collector',title:'Collectionneur',goal:'Possédez 50 dés différents.',kind:'collect',target:50,reward:'Le sac sans fond (objet porté) : un dé rare supplémentaire au début de chaque duel',item:'sac-sans-fond'},
  {id:'hundred',title:'Héros d’Hackénia',goal:'Gagnez cent matchs.',kind:'wins',target:100,reward:'1 000 Bubulles',gold:1000},
  // Événement de Noël : la nuit des Lumières (du 1er décembre au 6 janvier)
  {id:'noel1',title:'Premier flocon',goal:'Gagnez un match sur la nuit des Lumières.',kind:'terrain',terrain:'noel',target:1,reward:'Dés à lancer sucre d’orge et 100 Bubulles',roll:'candy',gold:100,event:'noel'},
@@ -29,7 +30,7 @@ for(const d of definitions)if(d.kind==='story')Object.defineProperty(d,'target',
 const count=n=>Number.isSafeInteger(n)&&n>=0?n:0;
 const TERRAINS=['terre','feu','glace','vent','eau','foudre','ville','grotte','automne','noel'];
 function stats(profile){const s=profile.challengeStats||{};return{wins:count(s.wins),balai:count(s.balai),divine:count(s.divine),terrain:Object.fromEntries(TERRAINS.map(el=>[el,count(s.terrain?.[el])]))}}
-function progress(profile,d){if(d.kind==='story'){const done=profile?.story?.done||{},ids=chapterParts(d.chapter);return Math.min(d.target,ids?ids.filter(id=>done[id]).length:Object.keys(done).filter(id=>new RegExp('^c'+d.chapter+'p\\d+(bis)?$').test(id)&&done[id]).length)}const s=stats(profile);return Math.min(d.target,d.kind==='terrain'?s.terrain[d.terrain]||0:s[d.kind]||0)}
+function progress(profile,d){if(d.kind==='collect'){const n=Object.values(profile?.inventory||{}).filter(q=>q>0).length;return Math.min(d.target,n)}if(d.kind==='story'){const done=profile?.story?.done||{},ids=chapterParts(d.chapter);return Math.min(d.target,ids?ids.filter(id=>done[id]).length:Object.keys(done).filter(id=>new RegExp('^c'+d.chapter+'p\\d+(bis)?$').test(id)&&done[id]).length)}const s=stats(profile);return Math.min(d.target,d.kind==='terrain'?s.terrain[d.terrain]||0:s[d.kind]||0)}
 function unlocked(profile){return definitions.filter(d=>progress(profile,d)>=d.target)}
 function advance(profile,{won=false,terrain=null,balai=false,mode='quick',difficulty=null}={}){if(!['quick','play','story','online'].includes(mode)||(!won&&!balai))return profile;const next=structuredClone(profile),s=stats(profile);if(won){s.wins++;if(Object.hasOwn(s.terrain,terrain))s.terrain[terrain]++;if(mode==='play'&&difficulty==='divin')s.divine++}if(balai)s.balai++;next.challengeStats=s;return payGold(next)}
 // v253 — Bubulles des défis : versées une seule fois par défi accompli (liste profile.challengeGold).

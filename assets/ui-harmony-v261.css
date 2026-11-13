@@ -1,0 +1,44 @@
+/* v261 — Harmonisation du portail : mêmes tailles, mêmes rayons et mêmes styles pour les champs, menus, cases à cocher et boutons d'action.
+   Chargée en dernier : elle remplace les variantes accumulées au fil des versions. */
+#portal{--ctl-h:44px;--ctl-r:12px;--ctl-bd:1px solid rgba(214,178,106,.32);--ctl-bg:linear-gradient(180deg,rgba(32,48,64,.96),rgba(15,26,38,.96));--ctl-tx:#efe7d2;--ctl-focus:#e9c874}
+/* — Champs et menus déroulants : une seule hauteur, un seul style — */
+html body #portal select,html body #portal input[type=search],html body #portal input[type=text],html body #portal input[type=number],html body #portal input:not([type]){box-sizing:border-box;height:var(--ctl-h)!important;min-height:var(--ctl-h)!important;padding:0 14px!important;border:var(--ctl-bd)!important;border-radius:var(--ctl-r)!important;background:var(--ctl-bg)!important;color:var(--ctl-tx)!important;font:600 14px/1.2 system-ui,sans-serif!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important;text-overflow:ellipsis}
+html body #portal select{appearance:none;-webkit-appearance:none;padding-right:38px!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%23d6b26a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"),var(--ctl-bg)!important;background-repeat:no-repeat!important;background-position:right 14px center,0 0!important;cursor:pointer}
+html body #portal select option{background:#13202c;color:#efe7d2}
+html body #portal input::placeholder{color:#8b97a0;font-weight:500}
+html body #portal select:hover,html body #portal input[type=search]:hover,html body #portal input[type=text]:hover{border-color:rgba(233,200,116,.6)!important}
+html body #portal select:focus-visible,html body #portal input:focus-visible,html body #portal button:focus-visible{outline:2px solid var(--ctl-focus)!important;outline-offset:2px}
+html body #portal .play-controls select,html body #portal .play-controls input[type=text]{width:100%!important;margin:8px 0 16px!important}
+/* — Cases à cocher : un seul interrupteur — */
+html body #portal input[type=checkbox]{appearance:none;-webkit-appearance:none;box-sizing:border-box;flex:none;width:44px!important;height:26px!important;min-height:0!important;margin:0!important;padding:0!important;border-radius:999px!important;border:var(--ctl-bd)!important;background:#14202c!important;position:relative;cursor:pointer;transition:background .2s,border-color .2s}
+html body #portal input[type=checkbox]::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#b9b29c;box-shadow:0 1px 3px #0008;transition:transform .2s,background .2s}
+html body #portal input[type=checkbox]:checked{background:linear-gradient(135deg,#7a5a1e,#d6b26a)!important;border-color:#e9c874!important}
+html body #portal input[type=checkbox]:checked::after{transform:translateX(18px);background:#fff8e0}
+html body #portal label.team2-opt{align-items:center;gap:14px}
+html body #portal label.team2-opt input{order:2;margin-left:auto!important}
+html body #portal label.team2-opt>span{order:1}
+html body #portal .tools label.check,html body #portal .portal-tools label.check{display:flex;align-items:center;gap:10px;height:var(--ctl-h);text-transform:none;letter-spacing:0;font:600 13px/1.2 system-ui,sans-serif;color:var(--ctl-tx)}
+/* — Boutons d'action : même hauteur, même rayon ; doré = action principale, vert = secondaire — */
+html body #portal .deck-actions>button,html body #portal .portal-title>button,html body #portal .portal-tools>button,html body #portal .shop-actions>button,html body #portal .shop-followup button,html body #portal .play-controls .deck-actions button{box-sizing:border-box;height:var(--ctl-h)!important;min-height:var(--ctl-h)!important;padding:0 18px!important;border-radius:var(--ctl-r)!important;border:var(--ctl-bd)!important;background:linear-gradient(180deg,#3a5a47,#27402f)!important;color:#f3ecd6!important;font:650 14px/1 system-ui,sans-serif!important;letter-spacing:0!important;text-transform:none!important;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 0 rgba(0,0,0,.25)!important;transition:filter .15s,transform .15s}
+html body #portal .deck-actions>button:hover:not(:disabled),html body #portal .portal-title>button:hover:not(:disabled),html body #portal .portal-tools>button:hover:not(:disabled),html body #portal .shop-actions>button:hover:not(:disabled){filter:brightness(1.12);transform:translateY(-1px)}
+html body #portal .portal-primary,html body #portal .deck-actions>button.portal-primary,html body #portal .shop-actions>button.portal-primary{background:linear-gradient(180deg,#f0d487,#c79a3c)!important;color:#241a08!important;border-color:#f3dc9a!important;box-shadow:0 2px 0 rgba(90,60,10,.5),0 6px 16px rgba(214,178,106,.18)!important}
+html body #portal button:disabled{opacity:.5;cursor:not-allowed;filter:grayscale(.3)}
+/* — Zone des boutons du mode Jouer : une colonne, pleine largeur — */
+html body #portal .play-controls .deck-actions{display:grid;grid-template-columns:1fr;gap:10px;margin-top:6px}
+html body #portal .play-controls .deck-actions button{width:100%}
+/* — Barre de filtres de la Collection et de Mes decks : grille régulière — */
+html body #portal .portal-tools{display:grid!important;grid-template-columns:minmax(200px,1.5fr) repeat(3,minmax(150px,1fr)) auto auto;gap:12px 14px;align-items:end;padding:6px 0 4px}
+html body #portal .portal-tools>label{display:flex;flex-direction:column;gap:6px;min-width:0;margin:0;font:700 11px/1 system-ui,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#d3b675}
+html body #portal .portal-tools>label select,html body #portal .portal-tools>label input{width:100%!important;max-width:none!important}
+@media(max-width:900px){html body #portal .portal-tools{grid-template-columns:1fr 1fr}html body #portal .portal-tools>label.search{grid-column:1/-1}html body #portal .portal-tools>button{grid-column:1/-1}}
+@media(max-width:520px){html body #portal .portal-tools{grid-template-columns:1fr}}
+/* — Onglets des Options : pastilles de même taille — */
+html body #portal .opt-tabs button{height:40px!important;min-height:40px!important;padding:0 16px!important;border-radius:999px!important;font:650 13.5px/1 system-ui,sans-serif!important}
+/* — Titres de page : même gabarit — */
+html body #portal .portal-title{align-items:center;gap:14px}
+html body #portal .portal-tools>label.check{flex-direction:row!important;align-items:center;justify-content:flex-start;height:var(--ctl-h);gap:10px;text-transform:none!important;letter-spacing:0!important;font:600 13px/1.2 system-ui,sans-serif!important;color:var(--ctl-tx)!important;white-space:nowrap}
+@media(min-width:901px){html body #portal .portal-tools{grid-template-columns:minmax(190px,1.2fr) repeat(3,minmax(178px,1fr)) auto auto}}
+@media(max-width:900px){html body #portal .portal-tools{grid-template-columns:1fr 1fr!important}html body #portal .portal-tools>label.search,html body #portal .portal-tools>button,html body #portal .portal-tools>label.check{grid-column:1/-1}}
+@media(max-width:480px){html body #portal .portal-tools{grid-template-columns:1fr!important}}
+html body #portal .portal-tools input[type=checkbox],html body #portal label.check input[type=checkbox]{width:44px!important;min-width:44px!important;max-width:44px!important;height:26px!important;min-height:26px!important;flex:none!important;display:inline-block}
+html body #portal .deck-head-actions,html body #portal .shop-actions,html body #portal .deck-actions{display:flex;flex-wrap:wrap;gap:10px}
