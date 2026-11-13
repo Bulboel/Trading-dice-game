@@ -5,7 +5,7 @@
    de feu et un élémentaire de glace se disputent sans fin (boules de feu contre éclats de glace).
    Coordonnées réelles des cases (root.scale.z = 1/ZS appliqué par clearing-v105.js). Règles : moteur du jeu. */
 import * as THREE from 'three';
-export function createFrostRoad(world,software=false,rows=10){
+export function createFrostRoad(world,software=false,rows=10,helpers={}){
 const root=new THREE.Group();world.add(root);root.visible=false;
 let seed=5381;const rnd=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296};
 const HZ=rows/2,BX=4.3,BZ=HZ+.3,TOP=.2,FX=7.2,FZ=HZ+2.45;
@@ -116,8 +116,16 @@ const shard=new THREE.Group();duel.add(shard);const shardMesh=add(shardGeo,cryst
 const burst=[];for(let i=0;i<(software?8:18);i++){const g=glow(0xffffff,.1,0,true);duel.add(g);burst.push({g,v:new THREE.Vector3((rnd()-.5)*2,rnd()*1.6+.3,(rnd()-.5)*2)})}
 const steam=[];for(let i=0;i<4;i++){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:dotTex,color:0xb8c8d4,transparent:true,depthWrite:false,opacity:0}));duel.add(s);steam.push(s)}
 const PERIOD=4.6;
+/* v267 — Les vrais bébémentaires de feu et de glace remplacent les élémentaires fabriqués : ils se font face et s'attaquent à tour de rôle
+   (clip d'attaque du personnage), les projectiles et les impacts restent ceux de la scène. Sans modèle (mode logiciel), l'ancienne mise en scène reste. */
+const fighters={fire:null,ice:null};
+if(!software&&helpers.spawnFighter){
+ helpers.spawnFighter('bebementaire-feu',1.3).then(f=>{if(!f)return;f.group.rotation.y=Math.PI;fire.add(f.group);fighters.fire=f;fireBody.visible=false;if(fireLight)fireLight.position.set(0,.6,0)});
+ helpers.spawnFighter('bebementaire-glace',1.3).then(f=>{if(!f)return;ice.add(f.group);fighters.ice=f;iceBody.visible=false;if(iceLight)iceLight.position.set(0,.6,0)})}
+let lastPh=0,lastT=0;
 function arc(from,to,k,lift){return new THREE.Vector3(0,mix(from.y,to.y,k)+Math.sin(k*Math.PI)*lift,mix(from.z,to.z,k))}
 updates.push((t,light,moving)=>{const T=moving?t:1.2,ph=(T%PERIOD)/PERIOD;
+ {const dt=Math.min(.1,Math.max(0,t-lastT));lastT=t;if(moving){fighters.fire?.update(dt);fighters.ice?.update(dt);if(ph<lastPh)fighters.fire?.attack();if(ph>=.5&&lastPh<.5)fighters.ice?.attack()}lastPh=ph}
  // Respiration et lévitation
  fireBody.position.y=Math.sin(T*2.1)*.05+.05;iceBody.position.y=Math.sin(T*1.7+1)*.04+.04;
  const fPos=new THREE.Vector3(0,fire.position.y+.95,DZ-.3),iPos=new THREE.Vector3(0,ice.position.y+.95,-DZ+.3);

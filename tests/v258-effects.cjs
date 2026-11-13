@@ -6,8 +6,8 @@ const c=vm.createContext({window:{dispatchEvent(){}},Event,document:{getElementB
 vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,''),c);const run=s=>vm.runInContext(s,c);
 const M=c.window.hackeniaGame.monsters;
 const fxDice=M.map((d,i)=>[i,d]).filter(([,d])=>d.fx),sacred=M.map((d,i)=>[i,d]).filter(([,d])=>d.terrain2);
-assert.equal(fxDice.length,6);assert.equal(sacred.length,4);
-for(const [i,d] of fxDice){assert.equal(d.rarity,3,d.cn+' est rare');assert.equal(d.c.length,4,d.cn+' : 4 dalles (une de moins)');assert.equal(d.c.reduce((a,t)=>a+t[2],0),18)}
+assert.equal(fxDice.length,6);assert.equal(sacred.length,3,'v267 : Shauntéa a pris la place d\'un divin sacré mis de côté');
+for(const [i,d] of fxDice){assert.equal(d.rarity,3,d.cn+' est rare');assert.equal(d.c.length,4,d.cn+' : 4 dalles (une de moins)');assert.equal(d.c.reduce((a,t)=>a+t[2],0),d.multi?16:18,d.cn+' : total 18 (16 pour un multi-élément)')}
 for(const [i,d] of sacred){assert.equal(d.rarity??d.lv,6);assert.equal(d.c.length,5,d.cn+' : 5 dalles (une de moins)');assert.equal(d.c.reduce((a,t)=>a+t[2],0),26)}
 const idx=n=>M.findIndex(d=>d.cn===n);
 const setup=()=>run(`TER=TL.indexOf('terre');b=Array.from({length:H},()=>Array(W).fill(null));cr=[];lotus=[]`);
@@ -22,7 +22,12 @@ setup();mi=idx('Eberien le Rempart');place(3,5,0,4,'');unit(3,5,0,mi);assert.equ
 // Éclaireur : seul
 setup();mi=idx('Jhimm l’Éclaireur');place(3,5,0,4,'');unit(3,5,0,mi);assert.equal(atk(3,5),5,'seul : +1');place(4,5,0,2,'');unit(4,5,0,0);assert.equal(atk(3,5),4,'allié adjacent : pas de bonus');
 // Duelliste : ennemi adjacent
-setup();mi=idx('Bolduc le Duelliste');place(3,5,0,4,'');unit(3,5,0,mi);assert.equal(atk(3,5),4);place(4,5,1,2,'');unit(4,5,1,0);assert.equal(atk(3,5),5,'ennemi adjacent : +1');
+// v267 — Jordan (rare multi-élément, Destrier) : +1 par Bolduc allié sur le plateau (2 au plus) ; un Bolduc ennemi ne compte pas
+setup();mi=idx('Jordan');place(3,5,0,4,'');unit(3,5,0,mi);assert.equal(atk(3,5),4,'seul : pas de bonus');
+place(0,9,1,2,'');unit(0,9,1,idx('Bolduc'));assert.equal(atk(3,5),4,'un Bolduc ennemi ne compte pas');
+place(4,5,0,2,'');unit(4,5,0,idx('Bolduc'));assert.equal(atk(3,5),5,'un Bolduc allié : +1');
+place(6,2,0,2,'');unit(6,2,0,idx('Bolduc légendaire'));assert.equal(atk(3,5),6,'deux Bolduc alliés : +2');
+place(2,2,0,2,'');unit(2,2,0,idx('Bolduc d’argent'));assert.equal(atk(3,5),6,'plafonné à +2');
 // Meute : +1 par allié, 2 au plus
 setup();mi=idx('Kala, cheffe de meute');place(3,5,0,4,'');unit(3,5,0,mi);for(const [x,y] of[[4,5],[2,5],[3,4]]){place(x,y,0,2,'');unit(x,y,0,0)}assert.equal(atk(3,5),6,'2 au plus');
 // Vaillance : dalle de 3 ou moins
