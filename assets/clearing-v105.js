@@ -1,7 +1,7 @@
 /* Presentation adapter. Game legality, turns, decks and combat stay in index.html. */
 import * as THREE from 'three';
 import { orientBoardModel } from './model-facing.js?v=20261103-v73';
-import { createEmberlands } from './ember-v239.js?v=20261120-v239';
+import { createEmberlands } from './ember-v239.js?v=20261205-v257';
 import { applyLook } from './variant-look.js?v=20261113-v215';
 import { createLake } from './lake-v241.js?v=20261122-v241';
 import { createSkyIsland } from './sky-v231.js?v=20261128-v247';
@@ -556,7 +556,7 @@ canvas.onpointerdown=e=>{
  }
  if(e.pointerType!=='touch'){const [x,y]=cellAt(e);mouseGesture={x:e.clientX,y:e.clientY,unit:state.cr.find(c=>c.x===x&&c.y===y&&c.o===state.cur),dragUnit:false}}
  if(panEnabled||orbitEnabled||e.button===2||e.shiftKey||e.altKey){e.preventDefault();canvas.setPointerCapture(e.pointerId);panDrag={id:e.pointerId,x:e.clientX,y:e.clientY,orbit:orbitEnabled||e.altKey};return}
- if(state.over||(state.ai&&state.cur===1)||window.HackeniaCombat?.busy)return;e.preventDefault();canvas.setPointerCapture(e.pointerId);game.board.onpointerdown({clientX:e.clientX,clientY:e.clientY,pointerId:e.pointerId,preventDefault(){}})
+ if(state.over||(state.aiTurn??(state.ai&&state.cur===1))||window.HackeniaCombat?.busy)return;e.preventDefault();canvas.setPointerCapture(e.pointerId);game.board.onpointerdown({clientX:e.clientX,clientY:e.clientY,pointerId:e.pointerId,preventDefault(){}})
 };
 // Visible canvas owns capture; a tap must still reach creature selection.
 const originalCapture=game.board.setPointerCapture.bind(game.board);game.board.setPointerCapture=id=>active?canvas.setPointerCapture(id):originalCapture(id);
