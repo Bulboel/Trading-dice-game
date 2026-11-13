@@ -5,7 +5,7 @@
      3. Les combats          → gagner des duels (2e façon de gagner)
      4. Les affinités        → bonus de terrain et d'élément pour gagner un duel
    Une 5e leçon facultative (« Pour aller plus loin ») couvre les ripostes, le dé bonus, les dés élémentaires et le déroulement d'un tour.
-   Il tourne sur le vrai moteur de jeu, sur Le Bois tendre (terrain terre). Chaque étape prépare un plateau précis, surligne en doré
+   Il tourne sur le vrai moteur de jeu, sur La ville de Dassom (terrain neutre), puis Le Bois tendre pour les affinités. Chaque étape prépare un plateau précis, surligne en doré
    les cases utiles et attend l'action du joueur (ou joue une courte démonstration). Les lancers sont fixés à l'avance.
    Camp du joueur : ligne du bas (y = 11). Camp adverse : ligne du haut (y = 0). */
 (()=>{'use strict';
@@ -47,7 +47,7 @@ const LESSONS=[
   text:()=>`<p>Tu joues <b>en bas</b> (ton camp). L’adversaire joue <b>en haut</b>.</p><p>Chaque leçon est une <b>mini-partie</b> avec un petit but. Ici : <b>poser un dé</b>.</p>`},
  {title:'Ta main de dés',kind:'info',focus:'hand',
   setup(){reset();pl[0].h=[D.fourmi,D.kala,D.tortue,D.bosco,D.sentierTerre]},
-  text:()=>`<p>En bas, ta <b>main</b> : tes dés. Chaque carte montre sa <b>forme dépliée</b> et le <b>lancer à réussir</b> (ex. « 1 dé · 4+ »).</p><p>Touche une carte pour ouvrir sa fiche.</p>`},
+  text:()=>`<p>En bas, ta <b>main</b> : tes dés. Chaque carte montre sa <b>forme dépliée</b> et le <b>lancer à réussir</b> (ex. « 1 dé · 4+ »).</p><p>Reste appuyé sur une carte pour ouvrir sa fiche.</p>`},
  {title:'Pose ton premier dé',kind:'action',focus:'hand',
   setup(){reset();pl[0].h=[D.kala];T.rolls=[[4]]},
   targets:()=>anchors(D.kala),
@@ -87,36 +87,29 @@ const LESSONS=[
  {title:'Leçon 2 réussie !',kind:'final',lessonEnd:true,
   setup(){reset()},
   text:()=>`<p>🏆 Tu sais <b>poser des dés</b> et <b>traverser le terrain</b> : tu peux déjà gagner une partie !</p><p>Prochaine leçon : <b>les combats</b>.</p>`}]},
-{id:'fight',title:'Les combats',goal:'Remporter 2 duels : la deuxième façon de gagner (4 duels en partie normale).',steps:[
+{id:'fight',title:'Les combats',goal:'Gagner ton premier duel et savoir quand éviter un combat.',steps:[
  {title:'Ton premier duel',kind:'action',
   setup(){reset();path(3,[10,9,8,7],0,[5,5,5,5],'vent');unit(0,3,10,D.kala);tile(4,7,1,2,'vent');tile(4,6,1,2,'vent');unit(1,4,7,D.grimgors)},
   targets:()=>[[3,7]],
   text:()=>`<p>Un ennemi ! Touche-le pour voir son attaque (<b>${atk(4,7)}</b>), puis Kala (<b>5</b>).</p><p><b>À toi :</b> avance Kala à côté de lui (case dorée) : <b>la plus forte attaque gagne</b>.</p>`,
   check:()=>kills[0]>=1&&idle(),
   retry:()=>moved&&idle()&&kills[0]<1,
-  success:()=>`<p>✓ <b>Duel gagné !</b> 1 duel sur 2.</p><p>Une créature s’arrête toujours au contact d’un ennemi : impossible de passer sans combattre.</p>`},
+  success:()=>`<p>✓ <b>Duel gagné !</b> C’est la <b>deuxième façon de gagner</b> : remporter <b>4 duels</b>.</p><p>Une créature s’arrête toujours au contact d’un ennemi : impossible de passer sans combattre.</p>`},
  {title:'Quand on perd',kind:'demo',demoLabel:'Voir le combat',
-  setup(){reset();path(3,[10,9,8,7],0,[2,2,2,2],'vent');unit(0,3,10,D.kala);tile(4,7,1,6,'vent');tile(4,6,1,6,'vent');unit(1,4,7,D.grimgors);kills[0]=1},
+  setup(){reset();path(3,[10,9,8,7],0,[2,2,2,2],'vent');unit(0,3,10,D.kala);tile(4,7,1,6,'vent');tile(4,6,1,6,'vent');unit(1,4,7,D.grimgors)},
   targets:()=>[[3,7],[4,7]],
   demo(){cur=0;mv(mine()[0],3,7);render()},
   check:()=>kills[1]>=1&&idle(),
   text:()=>`<p>Cette fois, Kala n’a que <b>2</b> d’attaque, et l’ennemi <b>6</b>. Que se passe-t-il si elle s’approche ?</p>`,
   success:()=>`<p>✗ <b>Kala a perdu</b> et disparaît : l’adversaire marque un duel.</p><p><b>Compare toujours les attaques avant d’avancer.</b> À égalité, les deux créatures disparaissent.</p>`},
- {title:'Attaque directe : le 2e duel',kind:'action',
-  setup(){reset();path(3,[9,8,7],0,[2,1,5],'vent');tile(3,6,1,3,'vent');tile(3,5,1,3,'vent');unit(0,3,9,D.kala);unit(1,3,6,D.grimgors);kills[0]=1},
-  targets:()=>[[3,6]],
-  text:()=>`<p>Tu peux aussi viser <b>directement la case</b> de l’ennemi. <b>À toi :</b> touche Kala, puis la <b>case dorée de l’ennemi</b>, puis confirme.</p><p>Ta force est celle de la <b>dernière case de ton trajet</b> (ici un 5), pas de ta case de départ : <b>5</b> contre <b>${atk(3,6)}</b>.</p>`,
-  check:()=>kills[0]>=2&&idle(),
-  retry:()=>moved&&idle()&&kills[0]<2,
-  success:()=>`<p>✓ <b>2 duels remportés !</b> Ta créature prend la place de l’ennemi vaincu.</p><p>En partie normale, il en faut <b>4</b> pour gagner.</p>`},
  {title:'Leçon 3 réussie !',kind:'final',lessonEnd:true,suggestPlay:true,
   setup(){reset()},
   text:()=>`<p>🏆 Tu sais <b>poser, avancer et combattre</b> : tu peux déjà tenter une <b>partie contre l’IA facile</b> !</p><p>Prochaine leçon (au choix) : <b>les affinités</b>, pour gagner encore plus de duels.</p>`}]},
-{id:'affinity',title:'Les affinités',goal:'Utiliser les bonus de terrain et d’élément pour gagner un duel.',steps:[
+{id:'affinity',terrain:'terre',title:'Les affinités',goal:'Utiliser les bonus de terrain et d’élément pour gagner un duel.',steps:[
  {title:'Le bonus de terrain',kind:'action',
   setup(){duelBoard({v:3,el:'vent'},{v:3,el:'terre'},3)},
   targets:()=>[[2,6],[4,6]],
-  text:()=>`<p>Le terrain est <b>Le Bois tendre</b> : les dalles de <b>terre</b> gagnent <b>+1</b>. L’ennemi a <b>3</b> d’attaque.</p><p><b>À toi :</b> deux cases permettent d’attaquer (vent ou terre, toutes deux à 3). <b>Choisis la bonne</b> !</p>`,
+  text:()=>`<p>Nous sommes maintenant dans <b>Le Bois tendre</b>, un terrain de <b>terre</b> : chaque terrain favorise un élément, et ses dalles de <b>terre</b> gagnent <b>+1</b>. L’ennemi a <b>3</b> d’attaque.</p><p><b>À toi :</b> deux cases permettent d’attaquer (vent ou terre, toutes deux à 3). <b>Choisis la bonne</b> !</p>`,
   check:()=>kills[0]>=1&&mine().length>0&&idle(),
   retry:()=>moved&&idle()&&!(kills[0]>=1&&mine().length>0),
   success:()=>`<p>✓ <b>Duel gagné !</b> Sur la dalle de <b>terre</b>, 3 + 1 = <b>4</b> contre 3.</p><p>Sur la dalle de vent, c’était une égalité.</p>`},
@@ -203,7 +196,7 @@ function drawMarks(){if(!T.active)return;let layer=$('tuto-marks');if(!layer){la
 // ——— Démarrer / quitter ———
 // start() ouvre le menu des leçons ; start(n) lance directement la leçon n (0 à 4).
 function start(n){if(Number.isInteger(n)&&LESSONS[n])begin(n);else showHub()}
-function begin(l){closeHub();if(T.active){clearInterval(T.timer);cancelAnimationFrame(T.raf)}T.l=l;T.i=0;T.done=false;T.rolls=[];ONLINE=null;ai=false;chosenDeck=null;TER=TL.indexOf('terre');gamePaused=false;matchStarted=false;window.HackeniaPortal&&document.body.classList.remove('portal-open');document.body.classList.add('tutorial-mode');location.hash='partie';init();P[0]=window.HackeniaSettings?.get?.().playerName||'Toi';P[1]='Adversaire';T.active=true;T.min=false;clearInterval(T.timer);T.timer=setInterval(tick,250);go(0);cancelAnimationFrame(T.raf);T.raf=requestAnimationFrame(drawMarks);window.dispatchEvent(new Event('resize'))}
+function begin(l){closeHub();if(T.active){clearInterval(T.timer);cancelAnimationFrame(T.raf)}T.l=l;T.i=0;T.done=false;T.rolls=[];ONLINE=null;ai=false;chosenDeck=null;TER=TL.indexOf(LESSONS[l].terrain||'ville');gamePaused=false;matchStarted=false;window.HackeniaPortal&&document.body.classList.remove('portal-open');document.body.classList.add('tutorial-mode');location.hash='partie';init();P[0]=window.HackeniaSettings?.get?.().playerName||'Toi';P[1]='Adversaire';T.active=true;T.min=false;clearInterval(T.timer);T.timer=setInterval(tick,250);go(0);cancelAnimationFrame(T.raf);T.raf=requestAnimationFrame(drawMarks);window.dispatchEvent(new Event('resize'))}
 function stop(toMenu){closeHub();if(!T.active){if(toMenu)window.HackeniaPortal?.afterTutorial?.();return}T.active=false;clearInterval(T.timer);cancelAnimationFrame(T.raf);$('tuto-marks')?.remove();T.rolls=[];document.body.classList.remove('tutorial-mode');delete document.body.dataset.tutoFocus;$('tuto-coach')?.remove();window.hackeniaGame.resetSession();if(toMenu)window.HackeniaPortal?.afterTutorial?.()}
 function nextRoll(n){if(!T.active||!T.rolls.length)return null;const r=T.rolls.shift();return Array.from({length:n},(_,k)=>r[k%r.length])}
 function targets(){if(!T.active||T.done)return null;const t=step()?.targets;return t?t():null}
