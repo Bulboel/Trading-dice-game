@@ -112,3 +112,10 @@ model-viewer.gesture-horse{animation:horse-idle 3.2s ease-in-out infinite;transf
 .collect-card.crep .collect-art::after{animation-delay:-1.6s;background-position:62% 10%,24% 46%,88% 84%,8% 66%,70% 56%,44% 92%}
 .collect-card.crep{background-size:180% 180%,180% 180%,100% 100%!important;animation:crep-drift 18s ease-in-out infinite alternate}
 @media (prefers-reduced-motion:reduce){.collect-card.crep,.collect-card.crep .collect-art::before,.collect-card.crep .collect-art::after{animation:none}}
+
+/* v274 — raccourci « Apprendre à jouer » (menu principal, en bas à gauche) */
+#home-learn{display:none}
+body.portal-open[data-portal-view="home"] #home-learn{display:inline-flex;align-items:center;gap:8px;position:fixed;left:14px;bottom:14px;z-index:80;min-height:40px;padding:8px 14px 8px 11px;border-radius:999px;border:1px solid #e7cd8a88;background:linear-gradient(160deg,#21392dee,#101e18ee);color:#f1e7c6;font:600 13px/1 system-ui,sans-serif;letter-spacing:.2px;cursor:pointer;box-shadow:0 6px 18px #0008;transition:transform .15s,border-color .15s}
+body.portal-open[data-portal-view="home"] #home-learn:hover{transform:translateY(-1px);border-color:#ffe6a6}
+#home-learn:focus-visible{outline:2px solid #ffe6a6;outline-offset:2px}
+@media(max-width:520px){body.portal-open[data-portal-view="home"] #home-learn{left:10px;bottom:10px;min-height:38px;padding:7px 12px 7px 10px;font-size:12.5px}}
