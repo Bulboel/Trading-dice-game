@@ -51,3 +51,8 @@ html body #portal .draw-die:not(:disabled):hover{filter:drop-shadow(0 0 10px var
 @keyframes spider-idle{0%,100%{transform:translateY(0) rotate(0) scale(1,1)}25%{transform:translateY(-2.5%) rotate(1.4deg) scale(1.015,1.03)}50%{transform:translateY(0) rotate(0) scale(.99,.97)}75%{transform:translateY(-1.5%) rotate(-1.4deg) scale(1.01,1.02)}}
 model-viewer.gesture-spider{animation:spider-idle 2.6s ease-in-out infinite;transform-origin:50% 90%}
 @media (prefers-reduced-motion:reduce){model-viewer.gesture-spider{animation:none}}
+/* v264 — 2 contre 2 en ligne : sièges de la salle d'attente */
+.pvp-seats{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:6px}
+.pvp-seats li{padding:9px 12px;border-radius:10px;border:1px solid #ffffff22;background:#ffffff0a}
+.pvp-seats li.pvp-seat-on{border-color:#7fc98c88;background:#7fc98c14}
+.pvp-seats li.pvp-seat-off{opacity:.7}
