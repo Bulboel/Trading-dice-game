@@ -119,3 +119,6 @@ body.portal-open[data-portal-view="home"] #home-learn{display:inline-flex;align-
 body.portal-open[data-portal-view="home"] #home-learn:hover{transform:translateY(-1px);border-color:#ffe6a6}
 #home-learn:focus-visible{outline:2px solid #ffe6a6;outline-offset:2px}
 @media(max-width:520px){body.portal-open[data-portal-view="home"] #home-learn{left:10px;bottom:10px;min-height:38px;padding:7px 12px 7px 10px;font-size:12.5px}}
+
+/* v276 — Accueil : la bannière du haut est détourée (plus de fond, de flou ni de filet) pour laisser voir toute la lune et le ciel. */
+body.portal-open[data-portal-view="home"] #portal .portal-head{background:none!important;border-bottom-color:transparent!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
