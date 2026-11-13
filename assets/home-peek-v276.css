@@ -1,0 +1,7 @@
+/* v276 — Bébémentaire qui jette un œil depuis le bord de l'écran (menu principal). */
+.home-peek{position:fixed;z-index:40;width:clamp(74px,17vw,118px);height:auto;pointer-events:none;user-select:none;filter:drop-shadow(0 6px 10px #0009);will-change:transform}
+.home-peek.left{left:0;transform:translateX(-105%);transform-origin:0 70%;animation:peek-l .95s cubic-bezier(.3,.8,.4,1) both}
+.home-peek.right{right:0;transform:translateX(105%) scaleX(-1);transform-origin:100% 70%;animation:peek-r .95s cubic-bezier(.3,.8,.4,1) both}
+@keyframes peek-l{0%{transform:translateX(-105%) rotate(0)}26%{transform:translateX(-26%) rotate(12deg)}40%{transform:translateX(-30%) rotate(2deg)}54%{transform:translateX(-26%) rotate(13deg)}72%{transform:translateX(-27%) rotate(8deg)}100%{transform:translateX(-105%) rotate(0)}}
+@keyframes peek-r{0%{transform:translateX(105%) scaleX(-1) rotate(0)}26%{transform:translateX(26%) scaleX(-1) rotate(12deg)}40%{transform:translateX(30%) scaleX(-1) rotate(2deg)}54%{transform:translateX(26%) scaleX(-1) rotate(13deg)}72%{transform:translateX(27%) scaleX(-1) rotate(8deg)}100%{transform:translateX(105%) scaleX(-1) rotate(0)}}
+@media(prefers-reduced-motion:reduce){.home-peek{display:none}}
