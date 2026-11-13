@@ -8,12 +8,12 @@ import { createSkyIsland } from './sky-v231.js?v=20261128-v247';
 import { createWindHighlands } from './wind-v232.js?v=20261123-v242';
 import { createWoodland } from './woodland-v238.js?v=20261119-v238';
 import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20261125-v244';
-import { createFrostRoad } from './frost-v240.js?v=20261221-v273';
+import { createFrostRoad } from './frost-v240.js?v=20261223-v275';
 import { createCity } from './city-v246.js?v=20261128-v247';
-import { createCave } from './cave-v246.js?v=20261221-v273';
+import { createCave } from './cave-v246.js?v=20261223-v275';
 import { createAutumn } from './autumn-v253.js?v=20261202-v253';
 import { createNoel } from './noel-v253.js?v=20261202-v253';
-import { createElementWheel } from './element-wheel-v252.js?v=20261221-v273';
+import { createElementWheel } from './element-wheel-v252.js?v=20261223-v275';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -576,7 +576,7 @@ function updateCamera(){
  const up=new THREE.Vector3().crossVectors(direction,right).normalize();
  const offset=right.clone().multiplyScalar(panX).add(up.clone().multiplyScalar(panY));
  offset.lerp(combatCenter,combatFocus);
- const targetZoom=zoom+(Math.max(zoom,3.2)-zoom)*combatFocus;
+ const targetZoom=document.body.classList.contains('tutorial-mode')?zoom:zoom+(Math.max(zoom,3.2)-zoom)*combatFocus;
 
  camera.position.copy(direction.multiplyScalar(distance).add(offset));camera.up.set(0,1,0);camera.lookAt(offset);
  camera.zoom=targetZoom;camera.updateProjectionMatrix();camera.updateMatrixWorld(true);
@@ -717,7 +717,7 @@ function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&
  const walk=!combat&&moving&&k.walk&&Date.now()<k.walk.started+k.walk.duration?k.walk:null;
  if(walk){const t=Math.max(0,(Date.now()-walk.started)/walk.duration)*(walk.points.length-1),i=Math.min(walk.points.length-2,Math.floor(t)),a=walk.points[i],b=walk.points[i+1],p=t-i;const ca=state.b[a[1]]?.[a[0]],cb=state.b[b[1]]?.[b[0]],ya=.23+(ca&&!ca.f?.28:0),yb=.23+(cb&&!cb.f?.28:0);g.position.set(a[0]+(b[0]-a[0])*p-3.5,ya+(yb-ya)*p+Math.sin(t*7)*.025,a[1]+(b[1]-a[1])*p-HZ);g.rotation.y=Math.atan2(b[0]-a[0],b[1]-a[1]);playWalkClip(g,k)}
  else if(g.userData.walkTag&&!f?.arriving){g.userData.walkTag=null;if(!combat){g.userData.activeAction?.fadeOut(.12);g.userData.idleAction?.reset().fadeIn(.12).play();g.userData.activeAction=g.userData.idleAction}}
- if(g.userData.mixer&&(moving||(f&&!combat.reduced)))g.userData.mixer.update(dt);if(g.userData.gest)animateGesture(g,k,f,combat,t);if(g.userData.modelRoot&&g.userData.model)orientBoardModel(g.userData.modelRoot,g.userData.model,f,g.userData.idleModelYaw||0,THREE);}
+ if(g.userData.mixer&&(moving||(f&&!combat.reduced)))g.userData.mixer.update(dt);if(g.userData.gest)animateGesture(g,k,f,combat,t);if(g.userData.modelRoot&&g.userData.model)orientBoardModel(g.userData.modelRoot,g.userData.model,f||walk,g.userData.idleModelYaw||0,THREE);}
 
  if(dieGroup.visible){dieGroup.position.copy(dieGroup.userData.target);dieGroup.position.y+=moving?Math.sin(t*2)*.08:0;dieGroup.rotation.y=moving&&state.cubeCls!=='land'?t*.7:0;dieGroup.scale.setScalar(state.cubeCls==='poof'?.35:1)}
  highlights.children.forEach(m=>{if(!m.userData.cachedLabel)m.material.opacity=moving?.32+Math.sin(t*3)*.09:.4});renderer.render(scene,camera);renderElementWheel(t);projectBoardCaptions(t);drawPlacementLens();

@@ -49,5 +49,5 @@ X.go(1);move(0,2,6);X.tick();assert.ok(X.T.done,'affinités 2 : la dalle voisine
 L.forEach((l,k)=>{X.begin(k);X.go(l.steps.length-1);if(k+1<L.length){X.begin(k+1);assert.equal(X.T.i,0,'leçon '+(k+2)+' repart de la première étape');assert.equal(X.T.l,k+1)}});
 // Menu des leçons et vues
 assert.ok(/data-tuto="lesson"/.test(tuto)&&tuto.includes('Apprendre à jouer')&&tuto.includes('Leçon suivante')&&tuto.includes('Menu des leçons')&&tuto.includes('Rejouer la leçon'),'menu des leçons et boutons de fin de leçon');
-assert.ok(tuto.includes("TER=TL.indexOf('terre')"),'toujours sur le terrain de terre');
+assert.ok(tuto.includes("TER=TL.indexOf(LESSONS[l].terrain||'ville')")&&tuto.includes("id:'affinity',terrain:'terre'"),'terrain neutre (Dassom) sauf les affinités (Bois tendre)');
 console.log('PASS: 5 leçons, '+stepsRun+' étapes jouées par un joueur automatique (placer, traverser, combattre, affinités, bonus), mauvais choix détectés, progression enregistrée.');
