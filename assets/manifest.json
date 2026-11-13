@@ -512,7 +512,15 @@
       "glb": "models-web/Araignée idle.glb",
       "nom": "Araignée",
       "boardYaw": 3.141592653589793,
-      "boardHeight": 1.4
+      "boardHeight": 1.4,
+      "gesture": "spider"
+    },
+    "araignee-blanche": {
+      "glb": "models-web/Araignée blanche v.1.glb",
+      "nom": "Araignée blanche",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 1.2,
+      "gesture": "spider"
     }
   },
   "terrains": {
