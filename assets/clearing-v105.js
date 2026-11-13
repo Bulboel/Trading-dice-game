@@ -8,12 +8,12 @@ import { createSkyIsland } from './sky-v231.js?v=20261128-v247';
 import { createWindHighlands } from './wind-v232.js?v=20261123-v242';
 import { createWoodland } from './woodland-v238.js?v=20261119-v238';
 import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20261125-v244';
-import { createFrostRoad } from './frost-v240.js?v=20261220-v272';
+import { createFrostRoad } from './frost-v240.js?v=20261221-v273';
 import { createCity } from './city-v246.js?v=20261128-v247';
-import { createCave } from './cave-v246.js?v=20261220-v272';
+import { createCave } from './cave-v246.js?v=20261221-v273';
 import { createAutumn } from './autumn-v253.js?v=20261202-v253';
 import { createNoel } from './noel-v253.js?v=20261202-v253';
-import { createElementWheel } from './element-wheel-v252.js?v=20261220-v272';
+import { createElementWheel } from './element-wheel-v252.js?v=20261221-v273';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -684,7 +684,7 @@ if(portalContent){const refreshPreview=()=>{const art=document.getElementById('p
 /* v252 — Roue des éléments à droite du plateau (seconde passe de rendu, jamais masquée par le décor). */
 let elementWheel=null;const wheelRight=new THREE.Vector3(),wheelAnchor=new THREE.Vector3();
 function wheelModel(url){if(!modelCache.has(url))modelCache.set(url,(async()=>{const tools=await getModelTools();const gltf=await tools.loader.loadAsync(url);return{gltf,clone:tools.clone}})().catch(()=>null));return modelCache.get(url).then(a=>a?a.clone(a.gltf.scene):null)}
-function renderElementWheel(t){if(previewMode||!renderer.isWebGLRenderer)return;elementWheel??=createElementWheel({loadModel:wheelModel,software:!!renderer.isSoftware||light});
+function renderElementWheel(t){if(previewMode||!renderer.isWebGLRenderer)return;if(window.HackeniaTutorial?.active&&window.HackeniaTutorial.showWheel===false)return;/* v273 : tutoriel, roue masquée avant la leçon des affinités */elementWheel??=createElementWheel({loadModel:wheelModel,software:!!renderer.isSoftware||light});
  const st=state;const d=st&&(st.mode==='p'||st.mode==='d')&&st.die!=null?game.monsters?.[st.die]:null;elementWheel.setFocus(d&&!d.multi?d.el:'');
  wheelRight.set(Math.cos(orbitYaw),0,-Math.sin(orbitYaw));wheelAnchor.copy(wheelRight).multiplyScalar(8.6*Math.max(1,ZS)+6.4).setY(1.2);// sur ordinateur : à droite du plateau
  const cr=canvas.getBoundingClientRect(),hud=cr.width<700;elementWheel.setCompact(hud);
