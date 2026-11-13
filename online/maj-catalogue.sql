@@ -1,7 +1,7 @@
--- Catalogue des dés : 128 dés dans le jeu (2026-11-13)
--- La rareté 7 (Énergie) doit être acceptée par la table : on remplace la contrainte (sans effet si elle l'accepte déjà).
+-- Catalogue des dés : 180 dés dans le jeu (2026-11-13)
+-- Les raretés 7 (Énergie) et 8 (Crépitant) doivent être acceptées par la table : on remplace la contrainte (sans effet si elle l'accepte déjà).
 alter table public.dice_catalog drop constraint if exists dice_catalog_rarity_check;
-alter table public.dice_catalog add constraint dice_catalog_rarity_check check (rarity in (1,2,3,5,6,7));
+alter table public.dice_catalog add constraint dice_catalog_rarity_check check (rarity in (1,2,3,5,6,7,8));
 insert into public.dice_catalog (id, name, rarity, active) values
   (0, 'Maebril', 1, true),
   (1, 'Max', 1, true),
@@ -130,7 +130,59 @@ insert into public.dice_catalog (id, name, rarity, active) values
   (124, 'Jumeaux des Dunes', 5, true),
   (125, 'Jumeaux de l’Orage', 5, true),
   (126, 'Trio de la Brume', 6, true),
-  (127, 'Trio du Brasier', 6, true)
+  (127, 'Trio du Brasier', 6, true),
+  (128, 'Maebril Crépitant', 8, true),
+  (129, 'Max Crépitant', 8, true),
+  (130, 'Orven Crépitant', 8, true),
+  (131, 'Velmarys Crépitant', 8, true),
+  (132, 'Frolgor Crépitant', 8, true),
+  (133, 'Bulbalina Crépitant', 8, true),
+  (134, 'Pennedra Crépitant', 8, true),
+  (135, 'Zackarie Crépitant', 8, true),
+  (136, 'Soryan Crépitant', 8, true),
+  (137, 'Sameron Crépitant', 8, true),
+  (138, 'Gliska Crépitant', 8, true),
+  (139, 'Kayla légendaire Crépitant', 8, true),
+  (140, 'Hilam Crépitant', 8, true),
+  (141, 'Eberien légendaire Crépitant', 8, true),
+  (142, 'Bolduc légendaire Crépitant', 8, true),
+  (143, 'Bosco Crépitant', 8, true),
+  (144, 'Caleizis Crépitant', 8, true),
+  (145, 'Lathandre Crépitant', 8, true),
+  (146, 'La fée Pachié Crépitant', 8, true),
+  (147, 'Eberien Crépitant', 8, true),
+  (148, 'Kala Crépitant', 8, true),
+  (149, 'Grimgors Crépitant', 8, true),
+  (150, 'Jhimm Crépitant', 8, true),
+  (151, 'Bolduc Crépitant', 8, true),
+  (152, 'Gardienne du lac Crépitant', 8, true),
+  (153, 'Messire Balai Crépitant', 8, true),
+  (154, 'Max & Alastor Crépitant', 8, true),
+  (155, 'Orcus Crépitant', 8, true),
+  (156, 'Ven Crépitant', 8, true),
+  (157, 'Hydrelithe Crépitant', 8, true),
+  (158, 'Myconide Crépitant', 8, true),
+  (159, 'Yoris Crépitant', 8, true),
+  (160, 'Bébémentaire de terre Crépitant', 8, true),
+  (161, 'Bébémentaire d’eau Crépitant', 8, true),
+  (162, 'Bébémentaire de feu Crépitant', 8, true),
+  (163, 'Bébémentaire de foudre Crépitant', 8, true),
+  (164, 'Bébémentaire de vent Crépitant', 8, true),
+  (165, 'Bébémentaire de glace Crépitant', 8, true),
+  (166, 'Hydrelithe majeure de terre Crépitant', 8, true),
+  (167, 'Mineur Crépitant', 8, true),
+  (168, 'Araignée Crépitant', 8, true),
+  (169, 'Araignée blanche Crépitant', 8, true),
+  (170, 'Grande araignée blanche Crépitant', 8, true),
+  (171, 'Shauntéa Crépitant', 8, true),
+  (172, 'Duo de la Vapeur Crépitant', 8, true),
+  (173, 'Duo du Permafrost Crépitant', 8, true),
+  (174, 'Duo de la Tempête Crépitant', 8, true),
+  (175, 'Jumeaux de l’Éclipse Crépitant', 8, true),
+  (176, 'Jumeaux des Dunes Crépitant', 8, true),
+  (177, 'Jumeaux de l’Orage Crépitant', 8, true),
+  (178, 'Trio de la Brume Crépitant', 8, true),
+  (179, 'Trio du Brasier Crépitant', 8, true)
 on conflict (id) do update set name = excluded.name, rarity = excluded.rarity, active = true;
 -- Dés qui ne sont plus dans le jeu : conservés dans le catalogue mais retirés des échanges
-update public.dice_catalog set active = false where id not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127);
+update public.dice_catalog set active = false where id not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179);
