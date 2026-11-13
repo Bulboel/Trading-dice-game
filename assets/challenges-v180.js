@@ -8,7 +8,8 @@ const definitions=[
  {id:'ten',title:'Aventurier confirmé',goal:'Gagnez dix matchs.',kind:'wins',target:10,reward:'Nouveau skin de bourse',pouch:'argent'},
  {id:'fifty',title:'Légende d’Hackénia',goal:'Gagnez cinquante matchs.',kind:'wins',target:50,reward:'Nouveau skin de bourse',pouch:'dore'},
  {id:'balai',title:'Un grand coup de balai',goal:'Battez cinq monstres avec Messire Balai.',kind:'balai',target:5,reward:'Bourse Messire Balai et tissu en soie',pouch:'balai'},
- {id:'chapter1',title:'Les jumeaux de Dassom',goal:'Finissez le chapitre 1 de l’histoire (toutes les parties principales).',kind:'story',chapter:1,target:11,reward:'Bague chanceuse (objet porté) : un dé de jet bonus au début de chaque duel',item:'bague-chanceuse'},
+ {id:'chapter1',title:'Les jumeaux de Dassom',goal:'Finissez le chapitre 1 de l’histoire (toutes les parties principales).',kind:'story',chapter:1,target:11,reward:'Bubulles et l’histoire continue au chapitre 2',gold:50},
+ {id:'chapter3',title:'Le secret de la grotte',goal:'Finissez le chapitre 3 de l’histoire (toutes les parties principales).',kind:'story',chapter:3,target:11,reward:'Bague chanceuse (objet porté) : un dé de jet bonus au début de chaque duel',item:'bague-chanceuse'},
  // v253 — nouveaux défis : terrains manquants, saisons, IA divine, grands paliers (certains rapportent des Bubulles)
  {id:'wind',title:'Les vents de Hacko',goal:'Gagnez un match dans les vents de Hacko.',kind:'terrain',terrain:'vent',target:1,reward:'Dés à lancer jade',roll:'jade'},
  {id:'lake',title:'Le lac rose',goal:'Gagnez un match au lac rose.',kind:'terrain',terrain:'eau',target:1,reward:'Dés à lancer rose',roll:'rose'},

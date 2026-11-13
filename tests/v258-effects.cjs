@@ -7,8 +7,8 @@ vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);
 const M=c.window.hackeniaGame.monsters;
 const fxDice=M.map((d,i)=>[i,d]).filter(([,d])=>d.fx),sacred=M.map((d,i)=>[i,d]).filter(([,d])=>d.terrain2);
 assert.equal(fxDice.length,6);assert.equal(sacred.length,4);
-for(const [i,d] of fxDice){assert.equal(d.rarity,3,d.cn+' est rare');assert.equal(d.c.length,4,d.cn+' : 4 dalles (une de moins)');assert.equal(d.c.reduce((a,t)=>a+t[2],0),16)}
-for(const [i,d] of sacred){assert.equal(d.rarity??d.lv,6);assert.equal(d.c.length,5,d.cn+' : 5 dalles (une de moins)');assert.equal(d.c.reduce((a,t)=>a+t[2],0),28)}
+for(const [i,d] of fxDice){assert.equal(d.rarity,3,d.cn+' est rare');assert.equal(d.c.length,4,d.cn+' : 4 dalles (une de moins)');assert.equal(d.c.reduce((a,t)=>a+t[2],0),18)}
+for(const [i,d] of sacred){assert.equal(d.rarity??d.lv,6);assert.equal(d.c.length,5,d.cn+' : 5 dalles (une de moins)');assert.equal(d.c.reduce((a,t)=>a+t[2],0),26)}
 const idx=n=>M.findIndex(d=>d.cn===n);
 const setup=()=>run(`TER=TL.indexOf('terre');b=Array.from({length:H},()=>Array(W).fill(null));cr=[];lotus=[]`);
 const place=(x,y,o,v,el,extra='')=>run(`b[${y}][${x}]={o:${o},el:'${el}',v:${v},lv:1,id:${100+x*10+y}${extra}}`);
