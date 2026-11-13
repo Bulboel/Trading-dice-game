@@ -1,7 +1,7 @@
 // v240 — La Route vers Forfalla repensée : dalles de glace lisibles, neige dans les joints, et le duel des élémentaires hors damier.
 const fs=require('fs'),path=require('path'),os=require('os'),assert=require('assert'),{pathToFileURL}=require('url');
 const root=path.join(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8'),src=read('assets/frost-v240.js'),cl=read('assets/clearing-v105.js');
-assert.ok(cl.includes("import { createFrostRoad } from './frost-v240.js")&&cl.includes('frostRoad=createFrostRoad(decor,!!renderer.isSoftware,BH);frostRoad.root.scale.z=1/ZS')&&cl.includes('frostRoad.update(t,light,moving)'),'New ice terrain wired with real cell coordinates');
+assert.ok(cl.includes("import { createFrostRoad } from './frost-v240.js")&&cl.includes('frostRoad=createFrostRoad(decor,!!renderer.isSoftware,BH,{spawnFighter});frostRoad.root.scale.z=1/ZS')&&cl.includes('frostRoad.update(t,light,moving)'),'New ice terrain wired with real cell coordinates');
 assert.ok(!/iceScene|glacierClosures|snowfall|iceCells/.test(cl),'Old ice scenery removed from the clearing');
 for(const k of['dalles de glace','Sapins chargés de neige','porte de Forfalla','Lanternes','dispute des élémentaires','Élémentaire de feu','Élémentaire de glace','Aurore boréale'])assert.ok(src.includes(k),'Frost road has '+k);
 const ctx=new Proxy({},{get:(t,k)=>k==='createRadialGradient'||k==='createLinearGradient'?()=>({addColorStop(){}}):k==='createImageData'?(w,h)=>({data:new Uint8ClampedArray(w*h*4)}):k==='getImageData'?()=>({data:[]}):()=>{},set:()=>true});
