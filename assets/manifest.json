@@ -519,7 +519,7 @@
       "glb": "models-web/Araignée blanche v.1.glb",
       "nom": "Araignée blanche",
       "boardYaw": 3.141592653589793,
-      "boardHeight": 1.2,
+      "boardHeight": 0.72,
       "gesture": "spider"
     }
   },

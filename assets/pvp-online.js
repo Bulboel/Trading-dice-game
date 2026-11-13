@@ -8,8 +8,10 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 function sanitizeDeck(deck,max){if(!Array.isArray(deck)||deck.length!==10||!deck.every(i=>Number.isInteger(i)&&i>=0&&i<max))throw new Error('Deck invalide');return deck.slice()}
 function rarityCounts(ids,rarityOf){const c={};for(const i of ids){const r=rarityOf(i);c[r]=(c[r]||0)+1}return c}
 function raritiesMatch(a,b,rarityOf){if(!a.length||!b.length)return false;const x=rarityCounts(a,rarityOf),y=rarityCounts(b,rarityOf);for(const k of new Set([...Object.keys(x),...Object.keys(y)]))if((x[k]||0)!==(y[k]||0))return false;return true}
-function applyTrade(profile,give,get){const next=JSON.parse(JSON.stringify(profile)),inv=next.inventory;
- for(const i of give){if(!(inv[i]>0))throw new Error('Dé manquant dans ta collection');inv[i]-=1;if(inv[i]===0)delete inv[i]}
+/* v257 — un dé légendaire ou divin ne s'échange que s'il en reste un exemplaire après l'échange (il faut un double). */
+const KEEP_ONE=new Set([5,6]);
+function applyTrade(profile,give,get,rarityOf){const next=JSON.parse(JSON.stringify(profile)),inv=next.inventory;
+ for(const i of give){if(!(inv[i]>0))throw new Error('Dé manquant dans ta collection');if(rarityOf&&KEEP_ONE.has(rarityOf(i))&&inv[i]<2)throw new Error('Un dé légendaire ou divin ne s’échange que si vous en possédez un double.');inv[i]-=1;if(inv[i]===0)delete inv[i]}
  for(const i of get)inv[i]=(inv[i]||0)+1;
  for(const d of next.decks){const used={};d.dice=d.dice.filter(i=>{used[i]=(used[i]||0)+1;return used[i]<=(inv[i]||0)})}
  return next}
@@ -131,14 +133,15 @@ function tradeView(){const T=core.T,row=T.row,p=bridge.getProfile(),rar=i=>bridg
  const me=core.mySide(),ot=core.otherSide(),mine=row[me+'_offer']||[],theirs=row[ot+'_offer']||[],okMe=row[me+'_ok'],okOt=row[ot+'_ok'],opp=row[ot+'_name']||'En attente…',match=raritiesMatch(mine,theirs,rar),done=row.status==='done',cancelled=row.status==='cancelled';
  const list=(ids,rm)=>ids.length?ids.map((id,k)=>'<li><span class="pvp-chip r'+rar(id)+'">'+RARE[rar(id)-1]+'</span> '+esc(bridge.defs[id].cn||bridge.defs[id].n)+(rm?' <button class="pvp-x" data-pvp="rm" data-k="'+k+'" aria-label="Retirer">✕</button>':'')+'</li>').join(''):'<li class="portal-muted">Aucun dé proposé</li>';
  const counts={};mine.forEach(i=>counts[i]=(counts[i]||0)+1);
- const owned=Object.keys(p.inventory).map(Number).filter(i=>(p.inventory[i]-(counts[i]||0))>0&&bridge.defs[i]).sort((a,b)=>rar(a)-rar(b)||a-b);
- const cards=owned.map(i=>'<button class="pvp-die r'+rar(i)+'" data-pvp="add" data-id="'+i+'"'+(mine.length>=5||done||cancelled?' disabled':'')+'><b>'+esc(bridge.defs[i].cn||bridge.defs[i].n)+'</b><small>'+RARE[rar(i)-1]+' · ×'+(p.inventory[i]-(counts[i]||0))+'</small></button>').join('');
- let state=done?'<p class="pvp-ok">✅ Échange réalisé ! Ta collection est à jour.</p>':cancelled?'<p class="pvp-error">Échange annulé.</p>':!row.guest_id?'<p class="portal-muted">En attente du deuxième joueur. Code : <b class="pvp-code-inline">'+esc(T.code)+'</b></p>':(mine.length&&theirs.length?(match?'<p class="pvp-ok">Raretés équivalentes ✔</p>':'<p class="pvp-error">Il faut le même nombre de dés de chaque rareté des deux côtés.</p>'):'<p class="portal-muted">Chacun propose 1 à 5 dés de rareté équivalente.</p>');
+ const spare=i=>p.inventory[i]-(counts[i]||0)-(KEEP_ONE.has(rar(i))?1:0);// légendaires et divins : un exemplaire reste toujours dans la collection
+ const owned=Object.keys(p.inventory).map(Number).filter(i=>spare(i)>0&&bridge.defs[i]).sort((a,b)=>rar(a)-rar(b)||a-b);
+ const cards=owned.map(i=>'<button class="pvp-die r'+rar(i)+'" data-pvp="add" data-id="'+i+'"'+(mine.length>=5||done||cancelled?' disabled':'')+'><b>'+esc(bridge.defs[i].cn||bridge.defs[i].n)+'</b><small>'+RARE[rar(i)-1]+' · ×'+spare(i)+'</small></button>').join('');
+ let state=done?'<p class="pvp-ok">✅ Échange réalisé ! Ta collection est à jour.</p>':cancelled?'<p class="pvp-error">Échange annulé.</p>':!row.guest_id?'<p class="portal-muted">En attente du deuxième joueur. Code : <b class="pvp-code-inline">'+esc(T.code)+'</b></p>':(mine.length&&theirs.length?(match?'<p class="pvp-ok">Raretés équivalentes ✔</p>':'<p class="pvp-error">Il faut le même nombre de dés de chaque rareté des deux côtés.</p>'):'<p class="portal-muted">Chacun propose 1 à 5 dés de rareté équivalente (un dé légendaire ou divin ne s’échange que si vous en avez un double).</p>');
  return '<div class="portal-title"><div><h2>Échange de dés</h2></div><span class="portal-muted">Code '+esc(T.code)+'</span></div>'+(U.err?'<p class="pvp-error" role="alert">'+esc(U.err)+'</p>':'')+state+
  '<div class="pvp-cols"><section class="pvp-card"><h3>Ton offre'+(okMe?' ✔':'')+'</h3><ul class="pvp-list">'+list(mine,!done&&!cancelled)+'</ul></section><section class="pvp-card"><h3>'+esc(opp)+(okOt?' ✔':'')+'</h3><ul class="pvp-list">'+list(theirs,false)+'</ul></section></div>'+
  (done||cancelled?'<div class="deck-actions"><button class="portal-primary" data-pvp="trade-home">Retour</button></div>':'<div class="deck-actions"><button class="portal-primary" data-pvp="confirm"'+(!(row.guest_id&&match&&mine.length)?' disabled':'')+'>'+(okMe?'Retirer ma confirmation':'Je confirme l’échange')+'</button><button data-pvp="trade-cancel">Annuler l’échange</button></div><h3>Mes dés</h3><div class="pvp-dice">'+(cards||'<p class="portal-muted">Aucun dé disponible.</p>')+'</div>')}
 async function maybeApplyTrade(){const T=core.T,row=T.row;if(!row||row.status!=='done'||T.done)return;T.done=true;
- try{const me=core.mySide(),ot=core.otherSide(),next=applyTrade(bridge.getProfile(),row[me+'_offer'],row[ot+'_offer']);if(bridge.commit(next))bridge.toast('Échange réussi ✅')}catch(e){U.err='Échange réalisé sur le serveur, mais ta collection locale n’a pas pu être mise à jour : '+e.message}}
+ try{const me=core.mySide(),ot=core.otherSide(),next=applyTrade(bridge.getProfile(),row[me+'_offer'],row[ot+'_offer'],i=>bridge.rarity(bridge.defs[i]));if(bridge.commit(next))bridge.toast('Échange réussi ✅')}catch(e){U.err='Échange réalisé sur le serveur, mais ta collection locale n’a pas pu être mise à jour : '+e.message}}
 async function act(a,el){U.err='';
  try{
   if(a==='tables'){await refreshTables();return}
@@ -172,5 +175,5 @@ function updateHud(){if(typeof document==='undefined')return;if(!hud){hud=docume
  const camp=S.seat===0?'🟢 Vert':'🟠 Orange';
  hud.innerHTML='<span>🌐 '+(S.status==='draw'?'Match nul':'En ligne')+' · contre <b>'+esc(S.opponent||'…')+'</b> · tu es '+camp+'</span>'+(S.idleLeft!==null&&S.idleLeft<=45&&!S.ended?'<span class="pvp-hud-idle">⏳ '+S.idleLeft+' s pour jouer</span>':'')+(S.error?'<span class="pvp-hud-err">'+esc(S.error)+'</span>':'')+(S.ended||S.status==='desync'?'<button data-hud="quit">Quitter</button>':'<button data-hud="resign">Abandonner</button>')}
 root.HackeniaPVP={mount,updateHud,createCore,sanitizeDeck,raritiesMatch,rarityCounts,applyTrade};
-if(typeof module!=='undefined'&&module.exports)module.exports={createCore,sanitizeDeck,raritiesMatch,rarityCounts,applyTrade};
+if(typeof module!=='undefined'&&module.exports)module.exports={createCore,sanitizeDeck,raritiesMatch,rarityCounts,applyTrade,KEEP_ONE};
 })(typeof window!=='undefined'?window:globalThis);

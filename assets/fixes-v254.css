@@ -3,3 +3,22 @@ html body.portal-open[data-portal-view="shop"] #portal .pouch-theatre.pouch-comp
 html body.portal-open[data-portal-view="shop"] #portal .pouch-theatre.pouch-compact-layout .draw-label strong.draw-name{-webkit-line-clamp:2!important;min-height:0!important;margin:1px 0!important}
 html body.portal-open[data-portal-view="shop"] #portal .pouch-theatre.pouch-compact-layout .draw-label{max-width:104px!important;min-width:74px!important;left:calc(89% - var(--pd-size,38px)/2 - 58px)!important}
 html body.portal-open[data-portal-view="shop"] #portal .pouch-theatre.pouch-compact-layout .draw-label strong.draw-name{overflow-wrap:normal!important;word-break:normal!important;hyphens:auto}
+/* v257 — compteur de garantie de la boutique */
+#portal .pity-line{margin:10px 0 0;font:600 12px/1.4 system-ui,sans-serif;color:#d9c48a;text-align:center;letter-spacing:.02em}#portal .pity-line b{color:#fff3c4}
+/* v257 — bourse : halo doré (légendaire) / éclat divin (arc-en-ciel, ondes de choc, secousse) */
+#portal .pouch-theatre.pouch-gold-halo .pouch-rarity-aura{filter:drop-shadow(0 0 8px #ffcf5a) drop-shadow(0 0 16px #ff9d2e)!important}
+#portal .pouch-theatre.pouch-gold-halo .pouch-rainbow-spark{filter:sepia(1) saturate(5) hue-rotate(-12deg) brightness(1.15) drop-shadow(0 0 5px #ffd97a)!important}
+#portal .pouch-theatre.pouch-gold-halo .pouch-prop .dice-pouch>svg{filter:drop-shadow(0 13px 12px #0005) drop-shadow(0 0 8px #ffcf5a)!important}
+.pouch-divine-burst{position:absolute;inset:0;z-index:30;pointer-events:none;overflow:hidden;border-radius:inherit}
+.pouch-divine-burst b{position:absolute;inset:0;background:radial-gradient(circle at 50% 55%,#fff 0,#fff8d6cc 22%,#ffffff00 62%);opacity:0;animation:divine-flash 1.5s ease-out}
+.pouch-divine-burst i{position:absolute;left:50%;top:55%;width:40px;height:40px;margin:-20px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 22px #fff,0 0 40px #8fe9ff,inset 0 0 18px #ffb6f0;opacity:0;animation:divine-ring 1.8s ease-out}
+.pouch-divine-burst i:nth-child(2){animation-delay:.22s;border-color:#ffe98a}.pouch-divine-burst i:nth-child(3){animation-delay:.44s;border-color:#a9f0ff}
+@keyframes divine-flash{0%{opacity:0}12%{opacity:.95}100%{opacity:0}}
+@keyframes divine-ring{0%{opacity:.95;transform:scale(.4)}100%{opacity:0;transform:scale(14)}}
+#portal .pouch-theatre.pouch-divine-shake{animation:divine-shake .55s ease-in-out 2}
+@keyframes divine-shake{0%,100%{transform:none}20%{transform:translate(-5px,2px) rotate(-.4deg)}45%{transform:translate(6px,-3px) rotate(.4deg)}70%{transform:translate(-3px,3px)}}
+.no-motion .pouch-divine-burst,.no-motion #portal .pouch-theatre.pouch-divine-shake{animation:none!important}
+@media(prefers-reduced-motion:reduce){.pouch-divine-burst{display:none}#portal .pouch-theatre.pouch-divine-shake{animation:none}}
+/* v257 — un filtre sur le cube aplatissait ses faces au survol (filter force transform-style:flat) : le halo passe sur le conteneur */
+html body #portal .draw-die:not(:disabled):hover .pd-cube{filter:none!important;transform:translateY(-6px) rotateX(-23deg) rotateY(-32deg)!important}
+html body #portal .draw-die:not(:disabled):hover{filter:drop-shadow(0 0 10px var(--die-metal))}
