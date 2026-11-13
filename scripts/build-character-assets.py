@@ -1,5 +1,5 @@
 """Build lightweight web portraits and animation-only GLBs from the uploaded exports."""
-import copy, json, pathlib, struct
+import copy, json, pathlib, struct, unicodedata
 from PIL import Image
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 ASSETS = ROOT / 'assets'
@@ -55,6 +55,25 @@ for key,prefix in [('myconide','Myconide'),('yoris','Yoris')]:
 CLIPS['hydrelithe-majeure']={'spell':('Hydrelithe majeure de terre attaque.glb',None), 'victory':('Hydrelithe majeure de terre victoire.glb',None), 'walk':('Hydrelithe majeur de terre marche.glb',None)}
 CLIPS['mineur']={'spell':('Mineur attaque.glb',None), 'victory':('Mineur victoire.glb',None), 'walk':('Mineur court.glb',None)}
 CLIPS['hydrelithe']={'spell':('Hydrelithe attaque.glb',None), 'victory':('Hydrelithe victoire.glb',None), 'walk':('Hydrelithe marche.glb',None)}
+# v267 — nouveaux personnages : Lathandre (remplace l'Eberien divin), Shauntéa, Jordan (sans animation) et les six bébémentaires.
+# Les miniatures sont détourées par scripts/cutout-miniatures.py ; celles des bébémentaires sont rendues depuis leur modèle 3D
+# (scripts/render-bebementaires.cjs puis scripts/medallion-bebementaires.py). v268 : médaillons des dés double et triple élément.
+for key in ('lathandre','shauntea','jordan'): PORTRAITS[key]=None
+ELEMENTS=('eau','feu','foudre','glace','terre','vent')
+for el in ELEMENTS: PORTRAITS['bebementaire-'+el]=None
+COMBOS=('eau-feu','glace-terre','vent-foudre','feu-glace','terre-vent','foudre-eau','eau-glace-vent','feu-terre-foudre')
+for c in COMBOS: PORTRAITS['bebe-'+c]=None
+CLIPS['lathandre']={'spell':('Lathandre attaque.glb',None),'victory':('Lathandre victoire.glb',None),'walk':('Lathandre marche.glb',None)}
+CLIPS['shauntea']={'spell':('Shauntéa attaque.glb',None),'victory':('Shauntea victoire.glb',None),'walk':('Shauntéa marche.glb',None)}
+for el in ELEMENTS: CLIPS['bebementaire-'+el]={'spell':(f'Bébémentaire {el} attaque.glb',None),'victory':(f'Bébémentaire {el} victoire.glb',None),'walk':(f'Bébémentaire {el} marche.glb',None)}
+def find(name):
+    # tolère les différences de casse et de forme Unicode (NFC/NFD) dans les noms de fichiers livrés
+    exact=SOURCE/name
+    if exact.exists(): return exact
+    key=unicodedata.normalize('NFC',name).casefold()
+    for p in SOURCE.iterdir():
+        if unicodedata.normalize('NFC',p.name).casefold()==key: return p
+    raise FileNotFoundError(name)
 def animation_only(source, name, destination):
  data=source.read_bytes(); length=struct.unpack_from('<I',data,12)[0]
  doc=json.loads(data[20:20+length]); binary=data[28+length:]
@@ -83,5 +102,5 @@ for key,filename in PORTRAITS.items():
    image=original.convert('RGBA');image.thumbnail((size,size),Image.Resampling.LANCZOS)
    image.save(OUTPUT/f'{key}-{size}.webp',quality=88,method=6)
 for key,clips in CLIPS.items():
- for kind,(source,name) in clips.items(): animation_only(SOURCE/source,name,OUTPUT/f'{key}-{kind}.glb')
+ for kind,(source,name) in clips.items(): animation_only(find(source),name,OUTPUT/f'{key}-{kind}.glb')
 print(f'Built {2*len(PORTRAITS)} portraits and {sum(map(len,CLIPS.values()))} animation-only clips.')

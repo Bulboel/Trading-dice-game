@@ -25,6 +25,6 @@ assert.ok(!/terrainList\.map\(\(\[id,em,name\]\)=>'<option value="'\+id\+'">'\+e
 // Rival, légendaires, défis.
 assert.ok(/ai\?\(rival\?\.name\|\|'IA'\)/.test(html));
 assert.ok(html.includes("M.forEach(d=>{if(!d.pure&&(d.rarity??d.lv)===5)d.need=4});"));
-assert.ok(/DECK_LIMITS=\{6:1,5:2,7:2,3:4\}/.test(portal));
+assert.ok(/DECK_LIMITS=\{6:1,5:2,7:2,3:4,8:1\}/.test(portal));
 assert.ok(me.includes('Défi validé'));
 console.log('v252 wheel + icons OK');

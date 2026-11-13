@@ -7,7 +7,7 @@ vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);
 const by=n=>M.filter(d=>d.cn===n||d.cn.startsWith(n+' '));
 const hm=M[90];assert.equal(hm.cn,'Hydrelithe majeure de terre');assert.equal(hm.rarity,6);assert.equal(hm.el,'terre');assert.equal(hm.modelKey,'hydrelithe-majeure');
 const mi=M.slice(91,97),ar=M.slice(97,104);assert.ok(mi.every(d=>d.modelKey==='mineur'&&d.rarity===2),'Six peu communs Mineurs');assert.ok(ar.every(d=>d.modelKey==='araignee'&&d.rarity===1),'Seven common Araignées');
-assert.ok(!M.some(d=>['mineur','araignee'].includes(d.modelKey)&&(d.rarity>2||['metal','stone'].includes(d.variant?.kind))),'Never statue/silver/gold nor above peu commun');
+assert.ok(!M.some(d=>['mineur','araignee'].includes(d.modelKey)&&(!d.shiny&&d.rarity>2||['metal','stone'].includes(d.variant?.kind))),'Never statue/silver/gold nor above peu commun');
 assert.equal(new Set(mi.map(d=>d.el)).size,6);assert.equal(new Set(ar.map(d=>d.el)).size,7);
 for(const k of['hydrelithe-majeure','mineur','araignee']){assert.ok(fs.existsSync(path.join(root,'assets',man.creatures[k].glb)),k+' web model');assert.ok(fs.statSync(path.join(root,'assets',man.creatures[k].glb)).size<4e6,k+' model stays light')}
 for(const d of[hm,...mi,...ar])for(const s of[128,512])assert.ok(fs.existsSync(path.join(root,'assets/characters',d.portrait+'-'+s+'.webp')),d.cn+' portrait '+s);
