@@ -1,4 +1,7 @@
 -- Catalogue des dés : 116 dés dans le jeu (2026-11-13)
+-- La rareté 7 (Énergie) doit être acceptée par la table : on remplace la contrainte (sans effet si elle l'accepte déjà).
+alter table public.dice_catalog drop constraint if exists dice_catalog_rarity_check;
+alter table public.dice_catalog add constraint dice_catalog_rarity_check check (rarity in (1,2,3,5,6,7));
 insert into public.dice_catalog (id, name, rarity, active) values
   (0, 'Maebril', 1, true),
   (1, 'Max', 1, true),
