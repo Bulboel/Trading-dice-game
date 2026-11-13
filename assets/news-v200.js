@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v266',title:'PVP en ligne : choix du mode',items:['Un sélecteur « Duel 1 contre 1 / 2 contre 2 » en haut du menu PVP en ligne : le deck et le terrain sont choisis une fois, puis chaque mode affiche ses propres tables et son code à saisir.']},
  {id:'v265',title:'Roue des éléments plus lisible',items:['Sur smartphone, les six éléments sont resserrés : plus de grand vide au centre de la roue.','Sur ordinateur, la roue ne porte plus de textes superflus (titre, légende, phrase d’aide) et s’éloigne un peu du terrain.']},
  {id:'v264',title:'2 contre 2 en ligne',items:['Le PVP en ligne accueille le 2 contre 2 : deux équipes de deux, jouées à tour de rôle. Créez une table (ouverte à tous ou privée avec un code) et rejoignez celles des autres joueurs.','S’il manque des joueurs, des IA complètent la table : toi + un ami contre deux IA, toi + une IA contre un joueur + une IA, ou une seule IA pour compléter à trois humains.','Victoire d’équipe : 3 passages ou 6 combats, comme en mode 2 contre 2 hors ligne.']},
  {id:'v263',title:'Dés rares : réussite dès 4',items:['Poser un dé rare demande désormais un 4 ou plus au jet (au lieu de 3). Les parties ont été resimulées : leur durée reste quasiment inchangée.']},
