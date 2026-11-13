@@ -5,7 +5,7 @@ const c=vm.createContext({window:{dispatchEvent(){}},Event,document:{getElementB
 vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,''),c);const defs=c.window.hackeniaGame.monsters,O=require(path.join(__dirname,'../assets/collection-order-v223.js'));
 const order=O.order(defs),names=order.map(i=>defs[i].cn);
 assert.equal(order.length,defs.length);assert.equal(new Set(order).size,defs.length,'Every die appears exactly once');
-assert.deepEqual(names.slice(0,4),['Bolduc','Bolduc légendaire','Bolduc d’argent','Eberien'],'Starts with Bolduc and all its versions (v261 : les dés mis de côté sont numérotés en dernier)');
+assert.deepEqual(names.slice(0,5),['Bolduc','Bolduc légendaire','Bolduc d’argent','Bolduc légendaire Crépitant','Bolduc Crépitant'],'Starts with Bolduc and all its versions (v261 : les dés mis de côté sont numérotés en dernier)');
 const fam=order.filter(i=>!defs[i].pure&&!defs[i].reserved).map(i=>O.family(defs[i]));const firsts=[...new Set(fam)];
 assert.deepEqual(firsts.slice(0,5),['bolduc','eberien','grimgors','jhimm','kala'],'Bolduc, Eberien, Grimgors, Jhimm, Kala first');
 const rest=firsts.slice(5);assert.deepEqual(rest,[...rest].sort((a,b)=>a.localeCompare(b,'fr')),'Then alphabetical');

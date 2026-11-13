@@ -65,3 +65,26 @@ model-viewer.gesture-spider{animation:spider-idle 2.6s ease-in-out infinite;tran
 @keyframes horse-idle{0%,100%{transform:translateY(0) rotate(0)}18%{transform:translateY(-3%) rotate(-1.6deg)}30%{transform:translateY(0) rotate(0)}60%{transform:translateY(-1%) rotate(1deg)}}
 model-viewer.gesture-horse{animation:horse-idle 3.2s ease-in-out infinite;transform-origin:50% 90%}
 @media (prefers-reduced-motion:reduce){model-viewer.gesture-horse{animation:none}}
+
+/* v269 — Rareté « Crépitant » : dés shiny à texture de galaxie ; étincelles qui crépitent (sautent d'une position à l'autre) autour du personnage. */
+@keyframes crep-a{0%{background-position:12% 22%,78% 14%,32% 70%,88% 62%,55% 38%,20% 88%;opacity:1}17%{background-position:70% 30%,18% 52%,60% 18%,40% 86%,86% 44%,8% 12%;opacity:.35}34%{background-position:24% 64%,86% 28%,12% 34%,66% 76%,38% 14%,92% 84%;opacity:1}51%{background-position:58% 12%,34% 78%,82% 58%,14% 20%,70% 90%,46% 52%;opacity:.5}68%{background-position:90% 56%,48% 24%,26% 90%,76% 36%,10% 62%,60% 8%;opacity:1}84%{background-position:36% 40%,64% 66%,92% 12%,22% 58%,52% 80%,80% 30%;opacity:.4}}
+@keyframes crep-b{0%{background-position:44% 80%,10% 10%,90% 40%,30% 30%,64% 62%,76% 92%;opacity:.4}20%{background-position:84% 18%,56% 70%,20% 84%,70% 8%,34% 46%,12% 36%;opacity:1}40%{background-position:16% 46%,92% 90%,48% 12%,86% 54%,60% 28%,30% 70%;opacity:.45}60%{background-position:62% 88%,28% 36%,74% 64%,8% 78%,90% 16%,42% 24%;opacity:1}80%{background-position:30% 14%,72% 48%,6% 56%,52% 94%,80% 72%,66% 40%;opacity:.5}}
+.crepitant{position:relative}
+.crepitant::before,.crepitant::after{content:'';position:absolute;inset:-3%;pointer-events:none;z-index:7;background-repeat:no-repeat;background-size:15px 15px;filter:drop-shadow(0 0 4px #fff);
+ background-image:radial-gradient(circle,#fff 0 1.7px,transparent 2.6px),radial-gradient(circle,#9fe9ff 0 1.4px,transparent 2.4px),radial-gradient(circle,#ff9ff0 0 1.6px,transparent 2.6px),radial-gradient(circle,#fff 0 1.2px,transparent 2.1px),radial-gradient(circle,#c9a7ff 0 1.6px,transparent 2.5px),radial-gradient(circle,#fff 0 1.5px,transparent 2.6px);
+ animation:crep-a 1.9s steps(1,end) infinite}
+.crepitant::after{animation-name:crep-b;animation-duration:2.4s}
+@media (prefers-reduced-motion:reduce){.crepitant::before,.crepitant::after{animation:none;opacity:.7}}
+/* carte en main */
+#app #hand .dc.hc.rar-8:not(.pure){background:radial-gradient(circle at 20% 15%,#7a3fd0 0,transparent 45%),radial-gradient(circle at 85% 80%,#1fa8d8 0,transparent 42%),linear-gradient(160deg,#0d0830,#1c0f4d 60%,#2d0f55);box-shadow:0 6px 18px #0008,0 0 24px #b07bff99,inset 0 0 0 1px #ffffff55;border-color:#ff8bf0}
+#app #hand .dc.hc.rar-8:not(.pure)::after{content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:radial-gradient(circle,#fff 0 1px,transparent 2px) 12% 22%/18px 18px,radial-gradient(circle,#9fe9ff 0 1px,transparent 2px) 70% 60%/22px 22px;animation:crep-b 2.2s steps(1,end) infinite}
+/* collection */
+.collect-card.crep{background:radial-gradient(circle at 18% 12%,#6a37b8 0,transparent 46%),radial-gradient(circle at 88% 86%,#1c93c4 0,transparent 44%),linear-gradient(160deg,#0b0728,#1a0e47 60%,#2a0f52)!important;border-color:#ff8bf0!important;box-shadow:0 0 0 1px #ff8bf066,0 0 20px #a67bff88}
+.collect-card.crep .collect-art{position:relative}
+.collect-card.crep .collect-art::before,.collect-card.crep .collect-art::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:3;background-repeat:no-repeat;background-size:12px 12px;filter:drop-shadow(0 0 3px #fff);background-image:radial-gradient(circle,#fff 0 1.5px,transparent 2.3px),radial-gradient(circle,#9fe9ff 0 1.2px,transparent 2.1px),radial-gradient(circle,#ff9ff0 0 1.4px,transparent 2.3px),radial-gradient(circle,#fff 0 1px,transparent 1.9px),radial-gradient(circle,#c9a7ff 0 1.4px,transparent 2.2px),radial-gradient(circle,#fff 0 1.3px,transparent 2.2px);animation:crep-a 2s steps(1,end) infinite}
+.collect-card.crep .collect-art::after{animation-name:crep-b;animation-duration:2.5s}
+@media (prefers-reduced-motion:reduce){.collect-card.crep .collect-art::before,.collect-card.crep .collect-art::after{animation:none;opacity:.7}}
+/* découverte d'un dé dans la bourse */
+.discovery-backdrop.tier-crep{--tier:#ff8bf0}
+.discovery-backdrop.tier-crep .db-nebula{background:radial-gradient(circle at 30% 30%,#7a3fd088,transparent 55%),radial-gradient(circle at 75% 70%,#1fa8d877,transparent 52%),radial-gradient(circle at 50% 50%,#ff8bf033,transparent 60%)!important}
+.discovery-backdrop.tier-crep .db-rays{display:block!important;inset:auto;left:50%;top:60%;width:140vmin;height:140vmin;margin:-70vmin 0 0 -70vmin;background:repeating-conic-gradient(from 0deg,#9fe9ff33 0 4deg,transparent 4deg 10deg,#ff8bf033 10deg 14deg,transparent 14deg 20deg);animation:db-spin 22s linear infinite}

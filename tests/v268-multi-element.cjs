@@ -6,7 +6,7 @@ const el=()=>({style:{setProperty(){}},classList:{add(){},remove(){},toggle(){}}
 const c=vm.createContext({window:{dispatchEvent(){}},Event,document:{getElementById(i){if(!els.has(i))els.set(i,el());return els.get(i)}},fetch:()=>Promise.resolve({ok:false}),setTimeout:()=>0,clearTimeout(){},setInterval:()=>0,clearInterval(){},Date,Math,console});
 vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,''),c);const run=s=>vm.runInContext(s,c);
 const g=c.window.hackeniaGame,M=g.monsters,manifest=JSON.parse(fs.readFileSync(path.join(root,'assets/manifest.json'),'utf8'));
-const multi=M.map((d,i)=>[i,d]).filter(([,d])=>d.els);
+const multi=M.map((d,i)=>[i,d]).filter(([,d])=>d.els&&!d.shiny);
 assert.equal(multi.length,8,'3 duos rares + 3 duos légendaires + 2 trios divins');
 const sum=d=>d.c.reduce((a,t)=>a+t[2],0);
 for(const [i,d] of multi){const r=g.rarity(d),n=d.els.length;

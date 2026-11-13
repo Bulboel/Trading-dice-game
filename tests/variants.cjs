@@ -4,8 +4,8 @@ const root=path.join(__dirname,'..'),html=fs.readFileSync(path.join(root,'index.
 const el=()=>({style:{setProperty(){}},classList:{add(){},remove(){},toggle(){}},firstElementChild:{style:{}},setPointerCapture(){}}),els=new Map();
 const c=vm.createContext({window:{dispatchEvent(){}},Event,document:{getElementById(i){if(!els.has(i))els.set(i,el());return els.get(i)}},fetch:()=>Promise.resolve({ok:false}),setTimeout:()=>0,clearTimeout(){},setInterval:()=>0,clearInterval(){},Date,Math,console});
 vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,''),c);
-const g=c.window.hackeniaGame,defs=g.monsters,variants=defs.map((d,i)=>[i,d]).filter(([,d])=>d.variant);
-assert.equal(variants.length,47,'v267 : six dés à teinte remplacés par les bébémentaires ; v258 Kayla sacrée + 18 generic dice replaced + 3 new dice + 6 Hydrelithes + 10 Bosco/Myconide + 4 alternative rarities + 5 Mineurs + 6 Araignées (v248)');
+const g=c.window.hackeniaGame,defs=g.monsters,variants=defs.map((d,i)=>[i,d]).filter(([,d])=>d.variant&&!d.shiny);/* v269 : les 52 dés Crépitants (galaxie) sont testés à part */
+assert.equal(variants.length,46,'v267 : six dés à teinte remplacés par les bébémentaires ; v258 Kayla sacrée + 18 generic dice replaced + 3 new dice + 6 Hydrelithes + 10 Bosco/Myconide + 4 alternative rarities + 5 Mineurs + 6 Araignées (v248)');
 const names=new Set();
 for(const [i,d] of variants){const r=g.rarity(d),v=d.variant;
  assert.ok(manifest.creatures[d.modelKey]?.glb,d.cn+' reuses an existing 3D model');assert.ok(!names.has(d.cn),d.cn+' has a unique name');names.add(d.cn);

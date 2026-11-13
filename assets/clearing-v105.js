@@ -8,12 +8,12 @@ import { createSkyIsland } from './sky-v231.js?v=20261128-v247';
 import { createWindHighlands } from './wind-v232.js?v=20261123-v242';
 import { createWoodland } from './woodland-v238.js?v=20261119-v238';
 import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20261125-v244';
-import { createFrostRoad } from './frost-v240.js?v=20261216-v268';
+import { createFrostRoad } from './frost-v240.js?v=20261217-v269';
 import { createCity } from './city-v246.js?v=20261128-v247';
-import { createCave } from './cave-v246.js?v=20261216-v268';
+import { createCave } from './cave-v246.js?v=20261217-v269';
 import { createAutumn } from './autumn-v253.js?v=20261202-v253';
 import { createNoel } from './noel-v253.js?v=20261202-v253';
-import { createElementWheel } from './element-wheel-v252.js?v=20261216-v268';
+import { createElementWheel } from './element-wheel-v252.js?v=20261217-v269';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -343,6 +343,15 @@ function addDivineAura(g,d){if(g.userData.aura)return;const col=new THREE.Color(
  const ringMat=new THREE.MeshBasicMaterial({map:auraRingTexture(),color:col,transparent:true,opacity:.42,depthWrite:false,blending:THREE.AdditiveBlending}),ring=new THREE.Mesh(new THREE.PlaneGeometry(1.5,1.5),ringMat);ring.rotation.x=-Math.PI/2;ring.position.y=.13;ring.renderOrder=2;group.add(ring);
  const motes=[];for(let i=0;i<7;i++){const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:energyGlowTexture(),color:i%3?col:new THREE.Color('#ffffff'),transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending}));sp.scale.setScalar(.09+(i%3)*.03);group.add(sp);motes.push({sp,a:i/7*Math.PI*2,r:.36+(i%3)*.07,v:.35+(i%4)*.08,o:i/7})}
  g.add(group);g.userData.aura={group,ring,motes};auras.add(g)}
+/* v269 — Dés Crépitants : des étincelles claquent autour de la créature (flash bref, nouvelle position à chaque éclair). */
+const crackles=new Set();
+function addCrackle(g){if(g.userData.crackle)return;const group=new THREE.Group();group.userData.imported=true;const cols=['#ffffff','#9fe9ff','#ff9ff0','#c9a7ff'],sparks=[];
+ for(let i=0;i<14;i++){const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:energyGlowTexture(),color:new THREE.Color(cols[i%4]),transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending}));sp.scale.setScalar(.07);group.add(sp);sparks.push({sp,seed:Math.random()*100,rate:1.6+Math.random()*3.4})}
+ g.add(group);g.userData.crackle={group,sparks};crackles.add(g)}
+function updateCrackles(now){const t=now/1000,still=document.documentElement.classList.contains('no-motion')||matchMedia('(prefers-reduced-motion: reduce)').matches;
+ for(const g of crackles){const c=g.userData.crackle;if(!g.parent||!c){crackles.delete(g);continue}
+  for(const s of c.sparks){const x=t*s.rate+s.seed,i=Math.floor(x),k=x-i,h=Math.abs(Math.sin(i*12.9898+s.seed)*43758.5453)%1,h2=Math.abs(Math.sin(i*78.233+s.seed*3.1)*12345.678)%1,h3=Math.abs(Math.sin(i*3.7+s.seed))%1,a=h*Math.PI*2,r=.26+h2*.36;
+   s.sp.position.set(Math.cos(a)*r,.12+h3*1.15,Math.sin(a)*r);const flash=still?.5:Math.max(0,1-k*3.4);s.sp.material.opacity=flash*flash*.95;s.sp.scale.setScalar(.05+flash*.14)}}}
 function updateAuras(now){const t=now/1000,still=document.documentElement.classList.contains('no-motion')||matchMedia('(prefers-reduced-motion: reduce)').matches;
  for(const g of auras){const a=g.userData.aura;if(!g.parent||!a){auras.delete(g);continue}
   a.ring.material.opacity=.38+(still?0:.12*Math.sin(t*2.1));a.ring.scale.setScalar(1+(still?0:.06*Math.sin(t*1.4)));
@@ -456,8 +465,8 @@ async function attachCompositeModel(g,k,info){const mi=k.mi;const man=await (spa
   const asset=await modelCache.get(url);if(!asset||!g.parent||g.userData.modelId!==mi)return;
   const root=asset.clone(asset.gltf.scene),sub=new THREE.Group();sub.add(root);root.updateMatrixWorld(true);const b=new THREE.Box3().setFromObject(root),size=b.getSize(new THREE.Vector3());if(!(size.y>0))return;
   const sc=H/size.y;root.scale.setScalar(sc);root.position.set(-(b.min.x+b.max.x)*sc/2,-b.min.y*sc+.1,-(b.min.z+b.max.z)*sc/2);sub.position.set(layout[i][0],0,layout[i][1]);
-  root.traverse(o=>{o.userData.imported=true;if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});holder.add(sub);parts.push({root,asset,mixer:asset.gltf.animations.length?new THREE.AnimationMixer(root):null})}
- g.children.forEach((o,i)=>{if(i>0)o.visible=false});g.add(holder);g.userData.model=holder;g.userData.modelRoot=parts[0].root;g.userData.animationInfo=info;
+  if(game.monsters[mi]?.variant)applyLook(root,game.monsters[mi].variant);root.traverse(o=>{o.userData.imported=true;if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});holder.add(sub);parts.push({root,asset,mixer:asset.gltf.animations.length?new THREE.AnimationMixer(root):null})}
+ g.children.forEach((o,i)=>{if(i>0)o.visible=false});g.add(holder);g.userData.model=holder;g.userData.modelRoot=parts[0].root;g.userData.animationInfo=info;if(game.monsters[mi]?.shiny)addCrackle(g);
  if(game.rarity?.(game.monsters[mi]||{})===6)addDivineAura(g,game.monsters[mi]);
  const live=parts.filter(q=>q.mixer);if(live.length){const idleOf=q=>q.asset.gltf.animations.find(a=>/idle|stand|breath/i.test(a.name))||q.asset.gltf.animations[0];
   const idle=new PartsAction(live.map(q=>q.mixer.clipAction(idleOf(q))));idle.play();g.userData.idleAction=idle;g.userData.activeAction=idle;g.userData.mixer=new PartsMixer(live);
@@ -470,7 +479,7 @@ async function attachCreatureModel(g,k){
  const root=asset.clone(asset.gltf.scene),holder=new THREE.Group();holder.userData.imported=true;if(game.monsters[mi]?.variant)applyLook(root,game.monsters[mi].variant);g.userData.idleModelYaw=info.boardYaw??0;holder.rotation.y=g.userData.idleModelYaw;holder.add(root);root.updateMatrixWorld(true);const bounds=new THREE.Box3().setFromObject(root),size=bounds.getSize(new THREE.Vector3());if(!Number.isFinite(size.y)||size.y<=0)return;
  const scale=.9*(info.boardHeight?info.boardHeight/size.y:Math.min(.95/size.y,.78/Math.max(size.x,.01),.78/Math.max(size.z,.01)))*(game.monsters[mi]?.boardScale||1);root.scale.setScalar(scale);/* v256 — boardScale : version plus grosse d'un même modèle */root.position.set(-(bounds.min.x+bounds.max.x)*scale/2,-bounds.min.y*scale+.1,-(bounds.min.z+bounds.max.z)*scale/2);if(mi===37){/* Le modèle est déjà centré dans root.position avant rotation. Ne pas le décaler une seconde fois. */holder.position.z=.42;}
  root.traverse(o=>{o.userData.imported=true;if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});g.children.forEach((o,i)=>{if(i>0)o.visible=false});if(info.gesture){const gest=new THREE.Group();gest.userData.imported=true;gest.add(holder);g.add(gest);g.userData.gest={node:gest,kind:info.gesture,phase:Math.random()*6}}else g.add(holder);g.userData.model=holder;
- g.userData.animationInfo=info;g.userData.modelRoot=root;
+ g.userData.animationInfo=info;g.userData.modelRoot=root;if(game.monsters[mi]?.shiny)addCrackle(g);
  // v207 — Personnage sans clips d'animation (ex. Messire Balai) : petits bonds sur place de temps en temps.
  if(!info.animations&&!info.gesture)g.userData.hop={base:holder.position.y,phase:Math.random()*3.2};
  if(game.rarity?.(game.monsters[mi]||{})===6)addDivineAura(g,game.monsters[mi]);
@@ -685,7 +694,7 @@ function renderElementWheel(t){if(previewMode||!renderer.isWebGLRenderer)return;
  elementWheel.place(camera,wheelAnchor,1.5*Math.max(1,ZS*.9))}elementWheel.update(t,moving);
  const ac=renderer.autoClear;renderer.autoClear=false;renderer.clearDepth();renderer.render(elementWheel.scene,camera);renderer.autoClear=ac}
 window.HackeniaElementWheel={get:()=>elementWheel,anchor:()=>wheelAnchor.clone()};
-function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&!previewMode)||!active||now-lastFrame<(renderer.isSoftware?100:light?32:16))return;const dt=Math.min((now-lastFrame)/1000,.06);lastFrame=now;if(pureFx.length)updatePureFx(now);if(weatherFx.length)updateWeather(now);animateLotus();animateGifts();animateFxBoard();animateForecast();if(auras.size)updateAuras(now);if(moving)for(const g of creatures.values()){const h=g.userData.hop,m=g.userData.model;if(!h||!m)continue;const u=((now/1000+h.phase)%3.2)/.55;if(u<1){const lift=Math.sin(Math.PI*u);m.position.y=h.base+.24*lift;m.scale.set(1-.05*lift,1+.08*lift,1-.05*lift)}else if(u<1.25){const s=Math.sin(Math.PI*(u-1)/.25);m.position.y=h.base;m.scale.set(1+.07*s,1-.1*s,1+.07*s)}else{m.position.y=h.base;m.scale.set(1,1,1)}}updateZoneGlow(now);const t=moving?now/1000:0;
+function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&!previewMode)||!active||now-lastFrame<(renderer.isSoftware?100:light?32:16))return;const dt=Math.min((now-lastFrame)/1000,.06);lastFrame=now;if(pureFx.length)updatePureFx(now);if(weatherFx.length)updateWeather(now);animateLotus();animateGifts();animateFxBoard();animateForecast();if(auras.size)updateAuras(now);updateCrackles(now);if(moving)for(const g of creatures.values()){const h=g.userData.hop,m=g.userData.model;if(!h||!m)continue;const u=((now/1000+h.phase)%3.2)/.55;if(u<1){const lift=Math.sin(Math.PI*u);m.position.y=h.base+.24*lift;m.scale.set(1-.05*lift,1+.08*lift,1-.05*lift)}else if(u<1.25){const s=Math.sin(Math.PI*(u-1)/.25);m.position.y=h.base;m.scale.set(1+.07*s,1-.1*s,1+.07*s)}else{m.position.y=h.base;m.scale.set(1,1,1)}}updateZoneGlow(now);const t=moving?now/1000:0;
  if(frostRoad?.root.visible)frostRoad.update(t,light,moving);if(cityScene?.root.visible)cityScene.update(t,light,moving);if(caveScene?.root.visible)caveScene.update(t,light,moving);if(autumnScene?.root.visible)autumnScene.update(t,light,moving);if(noelScene?.root.visible)noelScene.update(t,light,moving);
  if(forest.visible){wind.value=t;waterNormals.offset.set(-t*.032,t*.013);
  for(let i=0;i<wp.count;i++){const x=waterOrig[i*3],z=waterOrig[i*3+2];wp.setY(i,waterHeight(x,z,t))}wp.needsUpdate=true;if(!renderer.isSoftware)wg.computeVertexNormals();

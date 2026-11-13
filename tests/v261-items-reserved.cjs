@@ -37,5 +37,5 @@ run("b[6][3]={o:0,el:'',v:3,lv:1,id:5};cr.push({o:0,x:3,y:6,mi:0,lv:1,id:9});nex
 assert.deepEqual(JSON.parse(run('JSON.stringify([cr[0].x,cr[0].y,scarfLeft])')),[3,6,0],'la créature reste en place, l’écharpe est consommée');
 run("nextPick={t:'vent',cells:[[3,6]]};turnNumber=4;terrainEvent()");assert.ok(run('cr.length===0||cr[0].x!==3||cr[0].y!==6')||true);
 // Collection : dés mis de côté masqués tant qu'ils ne sont pas possédés
-const portal=fs.readFileSync(path.join(__dirname,'../assets/portal-v159.js'),'utf8');assert.ok(portal.includes('(!d.reserved||profile.inventory[i]>0)'));
+const portal=fs.readFileSync(path.join(__dirname,'../assets/portal-v159.js'),'utf8');assert.ok(portal.includes('((!d.reserved&&!d.shiny)||profile.inventory[i]>0)'));
 console.log('v261 items + reserved OK');
