@@ -10,10 +10,11 @@ const TIERS={
  commun:{metal:0xb87d4b,rough:.6,metalness:.15,emissive:0,sigils:1,dust:500,beam:0,flash:0},
  peu:{metal:0xdfe6ee,rough:.42,metalness:.3,emissive:0,sigils:2,dust:800,beam:.06,flash:0},
  rare:{metal:0xe8c26a,rough:.3,metalness:.4,emissive:.04,sigils:3,dust:1100,beam:.12,flash:0},
- legend:{metal:0xffb347,rough:.24,metalness:.45,emissive:.1,sigils:3,dust:1400,beam:.2,flash:1},
+ legend:{metal:0xe3edf7,rough:.2,metalness:.55,emissive:.1,sigils:3,dust:1400,beam:.2,flash:1,foil:true},
  divin:{metal:0xffffff,rough:.2,metalness:.5,emissive:.16,sigils:4,dust:2000,beam:.28,flash:1.4,rainbow:true},
+ crep:{metal:0xd9a6ff,rough:.22,metalness:.5,emissive:.2,sigils:4,dust:2000,beam:.28,flash:1.4,rainbow:true,galaxy:true},
  energie:{metal:0x7ff0ff,rough:.22,metalness:.5,emissive:.14,sigils:3,dust:1300,beam:.22,flash:1}};
-export function invocationTier(definition,rarity){if(definition?.pure===3)return'energie';return({1:'commun',2:'peu',3:'rare',4:'rare',5:'legend',6:'divin',7:'energie'})[rarity]||'commun'}
+export function invocationTier(definition,rarity){if(definition?.pure===3)return'energie';return({1:'commun',2:'peu',3:'rare',4:'rare',5:'legend',6:'divin',7:'energie',8:'crep'})[rarity]||'commun'}
 export async function createInvocation(stage,{info,definition,reduced,isCurrent,onComplete,onReady,onReveal,rarity}){
 const theme=invocationPalette(definition?.el),tierName=invocationTier(definition,rarity),T=TIERS[tierName];stage.dataset.tier=tierName;
 const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(38,1,.05,100),renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
@@ -27,12 +28,23 @@ const ring=new THREE.Mesh(new THREE.RingGeometry(1.2,1.24,80),new THREE.MeshBasi
 const cube=new THREE.Group();scene.add(cube);cube.position.y=.7;
 const blue=new THREE.MeshStandardMaterial({color:theme.body,metalness:T.metalness,roughness:T.rough,side:THREE.DoubleSide,emissive:theme.glow,emissiveIntensity:T.emissive});
 const gold=new THREE.MeshStandardMaterial({color:T.metal,metalness:.85,roughness:.22,emissive:T.metal,emissiveIntensity:tierName==='commun'?0:.12});
-const frameMat=new THREE.MeshStandardMaterial({color:T.metal,metalness:.9,roughness:.25,emissive:T.metal,emissiveIntensity:tierName==='legend'||tierName==='divin'||tierName==='energie'?.35:.08});
+const frameMat=new (T.foil||T.rainbow?THREE.MeshPhysicalMaterial:THREE.MeshStandardMaterial)({...(T.foil||T.rainbow?{iridescence:T.foil?.85:1,iridescenceIOR:1.7,iridescenceThicknessRange:[180,720],clearcoat:.6}:{}),color:T.metal,metalness:.9,roughness:.25,emissive:T.metal,emissiveIntensity:tierName==='legend'||tierName==='divin'||tierName==='energie'?.35:.08});
+/* v283 : faces gravées — même esprit que les dés de la bourse (cadre biseauté, filet, rivets, symbole de l'élément, foil irisé pour le Légendaire). */
+function faceTexture(){const N=512,c=document.createElement('canvas');c.width=c.height=N;const g=c.getContext('2d'),hex=n=>'#'+n.toString(16).padStart(6,'0'),mix=(n,k)=>{const r=(n>>16&255),gg=(n>>8&255),b=(n&255);return `rgb(${r*k|0},${gg*k|0},${b*k|0})`};
+ const body=theme.body;let bg=g.createLinearGradient(0,0,N,N);bg.addColorStop(0,mix(body,.85));bg.addColorStop(1,mix(body,.32));g.fillStyle=bg;g.fillRect(0,0,N,N);
+ if(T.galaxy){for(const [x,y,r,col] of [[.2,.25,.55,'rgba(138,63,224,.7)'],[.85,.85,.6,'rgba(31,180,224,.55)'],[.55,.5,.4,'rgba(255,111,216,.4)']]){const rg=g.createRadialGradient(N*x,N*y,0,N*x,N*y,N*r);rg.addColorStop(0,col);rg.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=rg;g.fillRect(0,0,N,N)}g.fillStyle='#fff';for(let i=0;i<70;i++){g.globalAlpha=.3+Math.random()*.7;g.beginPath();g.arc(Math.random()*N,Math.random()*N,Math.random()*1.8+.4,0,7);g.fill()}g.globalAlpha=1}
+ const hl=g.createRadialGradient(N*.2,N*.1,0,N*.2,N*.1,N*.7);hl.addColorStop(0,'rgba(255,255,255,.28)');hl.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=hl;g.fillRect(0,0,N,N);
+ const sym=({eau:'◈',glace:'❄',feu:'✹',terre:'❧',vent:'〰',foudre:'ϟ'})[definition?.el]||'✧';g.font='bold 360px Georgia,serif';g.textAlign='center';g.textBaseline='middle';g.fillStyle=hex(T.metal);g.globalAlpha=.13;g.fillText(sym,N/2,N/2+16);g.globalAlpha=1;
+ if(T.foil||T.rainbow){const f=g.createLinearGradient(0,N,N,0);const cols=['rgba(255,150,210,.0)','rgba(255,150,210,.30)','rgba(255,240,150,.30)','rgba(140,240,255,.30)','rgba(185,160,255,.30)','rgba(185,160,255,0)'];cols.forEach((col,i)=>f.addColorStop(i/(cols.length-1),col));g.fillStyle=f;g.fillRect(0,0,N,N)}
+ const mg=g.createLinearGradient(0,0,N,N);mg.addColorStop(0,hex(T.metal));mg.addColorStop(.5,mix(T.metal,.55));mg.addColorStop(1,hex(T.metal));g.strokeStyle=mg;g.lineWidth=14;g.strokeRect(10,10,N-20,N-20);g.strokeStyle='rgba(0,0,0,.55)';g.lineWidth=3;g.strokeRect(20,20,N-40,N-40);g.strokeStyle=hex(T.metal);g.globalAlpha=.55;g.lineWidth=2;g.strokeRect(34,34,N-68,N-68);g.globalAlpha=1;
+ for(const [x,y] of [[52,52],[N-52,52],[52,N-52],[N-52,N-52]]){const rg=g.createRadialGradient(x-3,y-3,1,x,y,11);rg.addColorStop(0,'#fff');rg.addColorStop(.35,hex(T.metal));rg.addColorStop(1,mix(T.metal,.4));g.fillStyle=rg;g.beginPath();g.arc(x,y,10,0,7);g.fill()}
+ const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=4;return t}
+const faceMat=new THREE.MeshStandardMaterial({map:faceTexture(),metalness:.08,roughness:.7,emissive:theme.glow,emissiveIntensity:T.emissive*.6,side:THREE.FrontSide,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-2});
 const panels=[];const half=.68;
 function panel(axis,side){const hinge=new THREE.Group();cube.add(hinge);const body=new THREE.Group();hinge.add(body);
-const plate=new THREE.Mesh(new THREE.BoxGeometry(1.3,.045,1.3),blue);body.add(plate);
+const plate=new THREE.Mesh(new THREE.BoxGeometry(1.3,.045,1.3),blue);body.add(plate);for(const sgn of[1,-1]){const decal=new THREE.Mesh(new THREE.PlaneGeometry(1.26,1.26),faceMat);decal.rotation.x=-sgn*Math.PI/2;decal.position.y=sgn*.028;body.add(decal)}
 for(const [w,d,x,z] of [[1.34,.05,0,.645],[1.34,.05,0,-.645],[.05,1.34,.645,0],[.05,1.34,-.645,0]]){const bar=new THREE.Mesh(new THREE.BoxGeometry(w,.07,d),frameMat);bar.position.set(x,0,z);body.add(bar)}// liseré de la dalle, couleur de la rareté
-const medallion=new THREE.Mesh(new THREE.TorusGeometry(.32,.045,8,40),gold);medallion.rotation.x=Math.PI/2;medallion.position.y=.085;body.add(medallion);const reverseMedallion=new THREE.Mesh(new THREE.TorusGeometry(.32,.045,8,40),gold);reverseMedallion.rotation.x=Math.PI/2;reverseMedallion.position.y=-.085;body.add(reverseMedallion);
+const medallion=new THREE.Mesh(new THREE.TorusGeometry(.31,.034,10,48),gold);medallion.rotation.x=Math.PI/2;medallion.position.y=.085;body.add(medallion);const reverseMedallion=new THREE.Mesh(new THREE.TorusGeometry(.31,.034,10,48),gold);reverseMedallion.rotation.x=Math.PI/2;reverseMedallion.position.y=-.085;body.add(reverseMedallion);
 if(axis==='top'){hinge.position.set(0,half,0);body.position.set(0,0,0);panels.push({hinge,axis,side});}
 else if(axis==='bottom'){hinge.position.set(0,-half,0);body.position.set(0,0,0);panels.push({hinge,axis,side});}
 else if(axis==='x'){hinge.position.set(side*half,-half,0);body.position.set(0,half,0);body.rotation.z=Math.PI/2;panels.push({hinge,axis,side});}
