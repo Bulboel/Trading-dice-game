@@ -1,0 +1,72 @@
+/* v282 — Dés de la bourse : mêmes métaux que la collection (bronze, argent, or, platine, arc-en-ciel, Crépitant), biseaux, gravures,
+   médaillon du personnage sur la face avant, filet de rareté sur l'étiquette. */
+html body #portal .pouch-theatre .draw-die{
+ --m1:#f0c8a0;--m2:#b87a45;--m3:#6d3f20;--glow:#d08a50;--ink:#fff1de}
+html body #portal .pouch-theatre .draw-die[data-rarity="Commun"]{--m1:#f2cfa6;--m2:#b9783f;--m3:#6a3b1c;--glow:#d08a50;--ink:#fff0dc}
+html body #portal .pouch-theatre .draw-die[data-rarity="Peu commun"]{--m1:#ffffff;--m2:#b8c4cd;--m3:#6f7b86;--glow:#cfe0ec;--ink:#f6fbff}
+html body #portal .pouch-theatre .draw-die[data-rarity="Rare"]{--m1:#fff0b4;--m2:#e2b445;--m3:#8d6310;--glow:#ffd45e;--ink:#fff7d6}
+html body #portal .pouch-theatre .draw-die[data-rarity="Épique"]{--m1:#f1d8ff;--m2:#b680e6;--m3:#66359b;--glow:#cf9bff;--ink:#fbeeff}
+html body #portal .pouch-theatre .draw-die[data-rarity="Légendaire"]{--m1:#ffffff;--m2:#cfdde9;--m3:#7f95a8;--glow:#e9f4ff;--ink:#ffffff}
+html body #portal .pouch-theatre .draw-die[data-rarity="Divin"]{--m1:#ffffff;--m2:#f4dcff;--m3:#a98bd6;--glow:#f0c8ff;--ink:#ffffff}
+html body #portal .pouch-theatre .draw-die[data-rarity="Énergie"]{--m1:#d8ffff;--m2:#52d9f0;--m3:#117a96;--glow:#7ff0ff;--ink:#eaffff}
+html body #portal .pouch-theatre .draw-die[data-rarity="Crépitant"]{--m1:#ffe3fb;--m2:#c48cff;--m3:#5b2fa3;--glow:#ff8bf0;--ink:#fff0fd}
+@keyframes pd-rainbow{to{background-position:300% 0,300% 0}}
+@keyframes pd-twinkle{0%,100%{opacity:.25}50%{opacity:1}}
+/* Face : cadre métallique biseauté + panneau gravé à la couleur de l'élément. */
+html body #portal .pouch-theatre .draw-die .pd-face{
+ border:3px solid transparent!important;border-radius:11px!important;overflow:hidden;
+ background:
+  radial-gradient(130% 90% at 18% 6%,#ffffff48,transparent 52%) padding-box,
+  radial-gradient(90% 70% at 85% 100%,color-mix(in srgb,var(--die-body) 55%,transparent),transparent 70%) padding-box,
+  linear-gradient(150deg,color-mix(in srgb,var(--die-body) 42%,#1d2634),#0b1520 78%) padding-box,
+  linear-gradient(135deg,var(--m1),var(--m2) 38%,var(--m3) 62%,var(--m2) 82%,var(--m1)) border-box!important;
+ box-shadow:inset 0 0 0 1px #000a,inset 0 0 0 2px color-mix(in srgb,var(--m2) 55%,transparent),inset 0 -10px 16px #0006,inset 0 6px 10px #ffffff12,0 0 10px color-mix(in srgb,var(--glow) 28%,transparent)!important}
+/* Filet intérieur gravé + quatre rivets aux coins. */
+html body #portal .pouch-theatre .draw-die .pd-face::before{content:"";position:absolute;inset:4px;border-radius:7px;border:1px solid color-mix(in srgb,var(--m1) 38%,transparent);pointer-events:none;
+ background:
+  radial-gradient(circle at 5px 5px,var(--m1) 0 1.2px,transparent 1.8px),radial-gradient(circle at calc(100% - 5px) 5px,var(--m1) 0 1.2px,transparent 1.8px),
+  radial-gradient(circle at 5px calc(100% - 5px),var(--m1) 0 1.2px,transparent 1.8px),radial-gradient(circle at calc(100% - 5px) calc(100% - 5px),var(--m1) 0 1.2px,transparent 1.8px)}
+/* Chiffre gravé en relief. */
+html body #portal .pouch-theatre .draw-die .pd-face b{position:relative;z-index:2;font:700 calc(var(--pd-size,56px)*.5)/1 "Cinzel",Georgia,serif!important;color:var(--ink)!important;
+ text-shadow:0 1px 0 var(--m2),0 2px 0 var(--m3),0 3px 4px #000c,0 0 14px color-mix(in srgb,var(--glow) 65%,transparent)!important}
+/* Symbole de l'élément en filigrane. */
+html body #portal .pouch-theatre .draw-die .pd-glyph{position:absolute;inset:0;display:grid;place-items:center;z-index:1;font-style:normal;font-size:calc(var(--pd-size,56px)*.95);line-height:1;color:var(--m1);opacity:.14;pointer-events:none;filter:blur(.3px)}
+/* Face avant : médaillon du personnage, chiffre en pastille. */
+html body #portal .pouch-theatre .draw-die .pd-front .pd-portrait{position:absolute;inset:11%;z-index:1;border-radius:50%;overflow:hidden;
+ box-shadow:0 0 0 2px var(--m2),0 0 0 3.5px #000b,0 0 0 5px var(--m1),0 3px 8px #000a;background:#0c1520}
+html body #portal .pouch-theatre .draw-die .pd-front .pd-portrait *{width:100%!important;height:100%!important;max-width:none!important;object-fit:cover;display:block;margin:0!important;border:0!important;border-radius:50%!important;box-shadow:none!important;background:none!important}
+html body #portal .pouch-theatre .draw-die .pd-front b{position:absolute;right:5%;bottom:5%;z-index:3;display:grid;place-items:center;width:34%;height:34%;border-radius:50%;font-size:calc(var(--pd-size,56px)*.24)!important;
+ background:radial-gradient(circle at 30% 25%,var(--m1),var(--m2) 55%,var(--m3));color:#1b1209!important;text-shadow:0 1px 0 #ffffff88!important;box-shadow:0 0 0 1.5px #000b,0 2px 5px #000a}
+/* Divin : arc-en-ciel qui défile sur le cadre. */
+html body #portal .pouch-theatre .draw-die[data-rarity="Divin"] .pd-face{
+ background:
+  radial-gradient(130% 90% at 18% 6%,#ffffff55,transparent 52%) padding-box,
+  radial-gradient(90% 70% at 85% 100%,#b58cff55,transparent 70%) padding-box,
+  linear-gradient(150deg,#3a2c5e,#0f0b25 80%) padding-box,
+  linear-gradient(100deg,#ff6b8b,#ffd36b,#7af0b5,#6fc8ff,#c79bff,#ff6b8b,#ffd36b,#7af0b5,#6fc8ff,#c79bff) border-box!important;
+ background-size:auto,auto,auto,300% 100%!important;animation:pd-rainbow 5s linear infinite}
+html body #portal .pouch-theatre .draw-die[data-rarity="Divin"] .pd-front .pd-portrait{box-shadow:0 0 0 2px #fff,0 0 0 3.5px #000b,0 0 0 5px #d9b6ff,0 0 14px #e9d4ff}
+/* Crépitant : cadre galaxie et panneau étoilé. */
+html body #portal .pouch-theatre .draw-die[data-rarity="Crépitant"] .pd-face{
+ background:
+  radial-gradient(60% 70% at 15% 20%,#8a3fe0aa,transparent 70%) padding-box,
+  radial-gradient(55% 75% at 90% 90%,#1fb4e099,transparent 70%) padding-box,
+  radial-gradient(40% 50% at 55% 50%,#ff6fd855,transparent 75%) padding-box,
+  linear-gradient(150deg,#241347,#080616 85%) padding-box,
+  linear-gradient(100deg,#ff8bf0,#7fe6ff,#b99cff,#ff8bf0,#7fe6ff,#b99cff) border-box!important;
+ background-size:auto,auto,auto,auto,300% 100%!important;animation:pd-rainbow 7s linear infinite}
+html body #portal .pouch-theatre .draw-die[data-rarity="Crépitant"] .pd-face::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:4;
+ background:radial-gradient(circle at 18% 22%,#fff 0 1px,transparent 2px),radial-gradient(circle at 78% 16%,#9fe9ff 0 1px,transparent 2px),radial-gradient(circle at 62% 74%,#ffc2f4 0 1.2px,transparent 2.4px),radial-gradient(circle at 28% 80%,#fff 0 1px,transparent 2px),radial-gradient(circle at 88% 58%,#fff 0 .8px,transparent 1.8px);animation:pd-twinkle 2.6s ease-in-out infinite}
+/* Légendaire / Divin / Énergie / Crépitant : halo autour du dé. */
+html body #portal .pouch-theatre .draw-die[data-rarity="Légendaire"],html body #portal .pouch-theatre .draw-die[data-rarity="Divin"],html body #portal .pouch-theatre .draw-die[data-rarity="Énergie"],html body #portal .pouch-theatre .draw-die[data-rarity="Crépitant"]{filter:drop-shadow(0 0 9px color-mix(in srgb,var(--glow) 55%,transparent))}
+/* Étiquette : filet métallique à la couleur de la rareté, comme les cartes de la collection. */
+html body #portal .pouch-theatre .draw-label{--l1:#f2cfa6;--l2:#b9783f;--l3:#6a3b1c;border:2px solid transparent!important;border-radius:12px!important;
+ background:linear-gradient(160deg,#17222c,#0c141c) padding-box,linear-gradient(135deg,var(--l1),var(--l2) 45%,var(--l3) 70%,var(--l2)) border-box!important;box-shadow:0 4px 12px #0009,inset 0 0 14px #0006!important}
+html body #portal .pouch-theatre .draw-label[data-rarity="Peu commun"]{--l1:#fff;--l2:#b8c4cd;--l3:#6f7b86}
+html body #portal .pouch-theatre .draw-label[data-rarity="Rare"]{--l1:#fff0b4;--l2:#e2b445;--l3:#8d6310}
+html body #portal .pouch-theatre .draw-label[data-rarity="Épique"]{--l1:#f1d8ff;--l2:#b680e6;--l3:#66359b}
+html body #portal .pouch-theatre .draw-label[data-rarity="Légendaire"]{--l1:#fff;--l2:#cfdde9;--l3:#7f95a8}
+html body #portal .pouch-theatre .draw-label[data-rarity="Divin"]{background:linear-gradient(160deg,#241a3d,#0d0a1e) padding-box,linear-gradient(100deg,#ff6b8b,#ffd36b,#7af0b5,#6fc8ff,#c79bff,#ff6b8b,#ffd36b,#7af0b5,#6fc8ff,#c79bff) border-box!important;background-size:auto,300% 100%!important;animation:pd-rainbow 5s linear infinite}
+html body #portal .pouch-theatre .draw-label[data-rarity="Énergie"]{--l1:#d8ffff;--l2:#52d9f0;--l3:#117a96}
+html body #portal .pouch-theatre .draw-label[data-rarity="Crépitant"]{background:linear-gradient(160deg,#2a1650,#0a0719) padding-box,linear-gradient(100deg,#ff8bf0,#7fe6ff,#b99cff,#ff8bf0,#7fe6ff,#b99cff) border-box!important;background-size:auto,300% 100%!important;animation:pd-rainbow 7s linear infinite;box-shadow:0 4px 14px #0009,0 0 14px #b97bff55!important}
+@media(prefers-reduced-motion:reduce){html body #portal .pouch-theatre .draw-die .pd-face,html body #portal .pouch-theatre .draw-label,html body #portal .pouch-theatre .draw-die .pd-face::after{animation:none!important}}
