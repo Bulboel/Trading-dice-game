@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v291',title:'La caméra suit l’IA',items:['Pendant le tour de l’adversaire, la caméra se centre et zoome légèrement sur l’emplacement où l’IA déplace une créature ou pose son dé.']},
  {id:'v290',title:'Histoire sur téléphone et textes',items:['Mode Histoire sur smartphone : la scène ne déborde plus de l’écran, les personnages, la légende et la boîte de dialogue sont bien cadrés.','Les récompenses de l’Histoire annoncent des Bubulles au lieu de pièces d’or.','Astuce corrigée : un dé de niveau supérieur posé sur une créature adverse l’écrase.']},
  {id:'v289',title:'Astuces plus courtes, duos et trios en découverte',items:['Astuces : la Crépitant est résumée en une phrase et l’astuce sur les bébémentaires, trop confuse, est retirée.','Animation de découverte d’un dé double ou triple élément : tous les bébémentaires apparaissent côte à côte (et plus un seul).']},
  {id:'v288',title:'Menu du tutoriel',items:['Le menu « Apprendre à jouer » n’est plus coupé en haut sur les petits écrans : il commence en haut et défile jusqu’en bas.']},
