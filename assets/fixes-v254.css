@@ -132,3 +132,10 @@ body.portal-open[data-portal-view="home"]:not(.onboarding-done) #portal>.wallet.
 body.portal-open[data-portal-view="home"]:not(.onboarding-done) #portal{padding-bottom:max(24px,env(safe-area-inset-bottom))}
 /* Le cercle des dés se réduit pour laisser tout le cadre « Premiers pas » à l'écran. */
 @media(max-width:700px){body.portal-open[data-portal-view="home"]:not(.onboarding-done) #portal #portal-nav .home-dice-ring{--ring-d:max(250px,min(calc(100vw - 96px),calc(100dvh - 600px)))!important}}
+
+/* v295 — Téléphone, premiers pas : la page n'est plus verrouillée à la hauteur de l'écran (la barre du système cachait le bas du cadre). Elle défile, avec une grande marge basse pour passer au-dessus de la barre de navigation. */
+@media(max-width:700px){
+ html body.portal-open[data-portal-view="home"]:not(.onboarding-done){height:auto!important;max-height:none!important;min-height:100dvh!important;overflow-y:auto!important}
+ html body.portal-open[data-portal-view="home"]:not(.onboarding-done) #portal{height:auto!important;max-height:none!important;min-height:100dvh!important;overflow:visible!important;padding-bottom:calc(96px + env(safe-area-inset-bottom))!important}
+ html body.portal-open[data-portal-view="home"]:not(.onboarding-done) #portal #portal-nav{flex:0 0 auto!important;height:min(112vw,64dvh)!important}
+}

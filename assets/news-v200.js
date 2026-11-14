@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v295',title:'Premiers pas visibles en entier',items:['Sur téléphone, tant que le guide « Premiers pas » est affiché, l’accueil défile et garde une grande marge en bas : la barre du système ne cache plus le bas du cadre.']},
  {id:'v294',title:'Premiers pas dégagés, caméra de l’IA plus tardive',items:['Tant que le guide « Premiers pas » est affiché, le bouton « Apprendre à jouer » et la bulle Bubulles flottante sont masqués : plus de superposition, le cadre est visible en entier.','Pendant le tour de l’IA, la caméra attend un instant avant de se rapprocher.']},
  {id:'v293',title:'Règle des dalles dans les zones de camp',items:['Dans la zone d’un camp (première et dernière rangée), seules les dalles de votre propre camp vous permettent d’avancer. Entre les deux camps, toutes les dalles restent utilisables par tout le monde.']},
  {id:'v292',title:'Appui long sur une créature',items:['Sur smartphone, maintenez le doigt sur une créature du terrain pour ouvrir sa fiche. Le toucher rapide sert toujours à la déplacer.']},
