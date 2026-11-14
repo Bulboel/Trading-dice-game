@@ -14,7 +14,7 @@ html body #portal .pouch-theatre .draw-die[data-rarity="Crépitant"]{--m1:#ffe3f
 @keyframes pd-twinkle{0%,100%{opacity:.25}50%{opacity:1}}
 /* Face : cadre métallique biseauté + panneau gravé à la couleur de l'élément. */
 html body #portal .pouch-theatre .draw-die .pd-face{
- border:3px solid transparent!important;border-radius:11px!important;overflow:hidden;
+ border:3px solid transparent!important;border-radius:3px!important;overflow:hidden;
  background:
   radial-gradient(130% 90% at 18% 6%,#ffffff48,transparent 52%) padding-box,
   radial-gradient(90% 70% at 85% 100%,color-mix(in srgb,var(--die-body) 55%,transparent),transparent 70%) padding-box,
@@ -22,7 +22,7 @@ html body #portal .pouch-theatre .draw-die .pd-face{
   linear-gradient(135deg,var(--m1),var(--m2) 38%,var(--m3) 62%,var(--m2) 82%,var(--m1)) border-box!important;
  box-shadow:inset 0 0 0 1px #000a,inset 0 0 0 2px color-mix(in srgb,var(--m2) 55%,transparent),inset 0 -10px 16px #0006,inset 0 6px 10px #ffffff12,0 0 10px color-mix(in srgb,var(--glow) 28%,transparent)!important}
 /* Filet intérieur gravé + quatre rivets aux coins. */
-html body #portal .pouch-theatre .draw-die .pd-face::before{content:"";position:absolute;inset:4px;border-radius:7px;border:1px solid color-mix(in srgb,var(--m1) 38%,transparent);pointer-events:none;
+html body #portal .pouch-theatre .draw-die .pd-face::before{content:"";position:absolute;inset:4px;border-radius:1px;border:1px solid color-mix(in srgb,var(--m1) 38%,transparent);pointer-events:none;
  background:
   radial-gradient(circle at 5px 5px,var(--m1) 0 1.2px,transparent 1.8px),radial-gradient(circle at calc(100% - 5px) 5px,var(--m1) 0 1.2px,transparent 1.8px),
   radial-gradient(circle at 5px calc(100% - 5px),var(--m1) 0 1.2px,transparent 1.8px),radial-gradient(circle at calc(100% - 5px) calc(100% - 5px),var(--m1) 0 1.2px,transparent 1.8px)}
@@ -87,3 +87,18 @@ html body #portal .pouch-theatre .draw-label[data-rarity="Légendaire"] .draw-na
 /* Découverte : bouton « Passer tout » (ouverture de plusieurs dés). */
 #pouch-discovery-dialog .discovery-skipall{margin-left:auto;margin-right:8px;padding:8px 12px;border-radius:10px;border:1px solid #ffffff44;background:#ffffff10;color:#d8e2ea;font:600 13px/1 system-ui,sans-serif;cursor:pointer}
 #pouch-discovery-dialog .discovery-skipall:hover{background:#ffffff1c}
+
+/* v284 — Angles du cube : coins quasi droits et équerres métalliques, pour que les sommets ne paraissent plus creux. */
+html body #portal .pouch-theatre .draw-die .pd-face::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:4;
+ background:
+  linear-gradient(135deg,var(--m1) 0 40%,var(--m3) 41% 52%,transparent 53%) 0 0/16px 16px no-repeat,
+  linear-gradient(225deg,var(--m1) 0 40%,var(--m3) 41% 52%,transparent 53%) 100% 0/16px 16px no-repeat,
+  linear-gradient(45deg,var(--m1) 0 40%,var(--m3) 41% 52%,transparent 53%) 0 100%/16px 16px no-repeat,
+  linear-gradient(315deg,var(--m1) 0 40%,var(--m3) 41% 52%,transparent 53%) 100% 100%/16px 16px no-repeat}
+html body #portal .pouch-theatre .draw-die[data-rarity="Crépitant"] .pd-face::after{
+ background:
+  linear-gradient(135deg,var(--m1) 0 40%,var(--m3) 41% 52%,transparent 53%) 0 0/16px 16px no-repeat,
+  linear-gradient(225deg,var(--m1) 0 40%,var(--m3) 41% 52%,transparent 53%) 100% 0/16px 16px no-repeat,
+  linear-gradient(45deg,var(--m1) 0 40%,var(--m3) 41% 52%,transparent 53%) 0 100%/16px 16px no-repeat,
+  linear-gradient(315deg,var(--m1) 0 40%,var(--m3) 41% 52%,transparent 53%) 100% 100%/16px 16px no-repeat,
+  radial-gradient(circle at 18% 22%,#fff 0 1px,transparent 2px),radial-gradient(circle at 78% 16%,#9fe9ff 0 1px,transparent 2px),radial-gradient(circle at 62% 74%,#ffc2f4 0 1.2px,transparent 2.4px),radial-gradient(circle at 28% 80%,#fff 0 1px,transparent 2px)!important}
