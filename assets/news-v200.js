@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v290',title:'Histoire sur téléphone et textes',items:['Mode Histoire sur smartphone : la scène ne déborde plus de l’écran, les personnages, la légende et la boîte de dialogue sont bien cadrés.','Les récompenses de l’Histoire annoncent des Bubulles au lieu de pièces d’or.','Astuce corrigée : un dé de niveau supérieur posé sur une créature adverse l’écrase.']},
  {id:'v289',title:'Astuces plus courtes, duos et trios en découverte',items:['Astuces : la Crépitant est résumée en une phrase et l’astuce sur les bébémentaires, trop confuse, est retirée.','Animation de découverte d’un dé double ou triple élément : tous les bébémentaires apparaissent côte à côte (et plus un seul).']},
  {id:'v288',title:'Menu du tutoriel',items:['Le menu « Apprendre à jouer » n’est plus coupé en haut sur les petits écrans : il commence en haut et défile jusqu’en bas.']},
  {id:'v287',title:'Dés de la bourse : angles nets et médaillons agrandis',items:['Les dés de la table ont de nouveau des angles vifs, sans aucun vide aux sommets, et leurs couches sont alignées au pixel près.','Le médaillon du personnage est plus grand sur les dés de la table comme sur le dé de l’animation de découverte.']},
