@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v282',title:'Des dés de bourse dignes de la collection',items:['Les dés qui sortent de la bourse sont refaits : cadre métallique biseauté à la couleur de la rareté (bronze, argent, or, platine, arc-en-ciel animé, galaxie pour les Crépitants), rivets, chiffres gravés en relief et symbole de l’élément en filigrane.','Chaque dé montre le médaillon de son personnage sur sa face avant, et les étiquettes reprennent le même filet de rareté.','Les dés sont aussi plus grands sur la table.']},
  {id:'v281',title:'Duos et trios en grand',items:['Le zoom des dés double et triple élément (duos, trios, y compris Crépitants) fonctionne maintenant : les bébémentaires s’affichent côte à côte en 3D, animés.','Le dé « Quotidien » est décalé de 3 px vers la droite sur téléphone.']},
  {id:'v280',title:'Menu principal : ajustement',items:['Sur téléphone, le dé « Quotidien » est encore un peu décalé vers la gauche pour mieux équilibrer le haut du menu.']},
  {id:'v279',title:'Menu principal : alignement corrigé',items:['Sur téléphone, les dés « Annonces » et « Quotidien » sont maintenant exactement à la même distance du bord de l’écran.']},
