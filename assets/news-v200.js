@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v293',title:'Règle des dalles dans les zones de camp',items:['Dans la zone d’un camp (première et dernière rangée), seules les dalles de votre propre camp vous permettent d’avancer. Entre les deux camps, toutes les dalles restent utilisables par tout le monde.']},
  {id:'v292',title:'Appui long sur une créature',items:['Sur smartphone, maintenez le doigt sur une créature du terrain pour ouvrir sa fiche. Le toucher rapide sert toujours à la déplacer.']},
  {id:'v291',title:'La caméra suit l’IA',items:['Pendant le tour de l’adversaire, la caméra se centre et zoome légèrement sur l’emplacement où l’IA déplace une créature ou pose son dé.']},
  {id:'v290',title:'Histoire sur téléphone et textes',items:['Mode Histoire sur smartphone : la scène ne déborde plus de l’écran, les personnages, la légende et la boîte de dialogue sont bien cadrés.','Les récompenses de l’Histoire annoncent des Bubulles au lieu de pièces d’or.','Astuce corrigée : un dé de niveau supérieur posé sur une créature adverse l’écrase.']},
