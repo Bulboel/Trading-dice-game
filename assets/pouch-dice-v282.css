@@ -88,20 +88,16 @@ html body #portal .pouch-theatre .draw-label[data-rarity="Légendaire"] .draw-na
 #pouch-discovery-dialog .discovery-skipall{margin-left:auto;margin-right:8px;padding:8px 12px;border-radius:10px;border:1px solid #ffffff44;background:#ffffff10;color:#d8e2ea;font:600 13px/1 system-ui,sans-serif;cursor:pointer}
 #pouch-discovery-dialog .discovery-skipall:hover{background:#ffffff1c}
 
-/* v284 — Angles du cube : coins quasi droits et équerres métalliques, pour que les sommets ne paraissent plus creux. */
-html body #portal .pouch-theatre .draw-die .pd-face::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:4;
- background:
-  linear-gradient(135deg,var(--m2) 0 45%,transparent 46%) 0 0/8px 8px no-repeat,
-  linear-gradient(225deg,var(--m2) 0 45%,transparent 46%) 100% 0/8px 8px no-repeat,
-  linear-gradient(45deg,var(--m2) 0 45%,transparent 46%) 0 100%/8px 8px no-repeat,
-  linear-gradient(315deg,var(--m2) 0 45%,transparent 46%) 100% 100%/8px 8px no-repeat}
+/* v287 — Cube net : faces à angles vifs (aucun vide aux sommets), couches alignées au pixel. */
 html body #portal .pouch-theatre .draw-die[data-rarity="Crépitant"] .pd-face::after{
  background:
-  linear-gradient(135deg,var(--m2) 0 45%,transparent 46%) 0 0/8px 8px no-repeat,
-  linear-gradient(225deg,var(--m2) 0 45%,transparent 46%) 100% 0/8px 8px no-repeat,
-  linear-gradient(45deg,var(--m2) 0 45%,transparent 46%) 0 100%/8px 8px no-repeat,
-  linear-gradient(315deg,var(--m2) 0 45%,transparent 46%) 100% 100%/8px 8px no-repeat,
   radial-gradient(circle at 18% 22%,#fff 0 1px,transparent 2px),radial-gradient(circle at 78% 16%,#9fe9ff 0 1px,transparent 2px),radial-gradient(circle at 62% 74%,#ffc2f4 0 1.2px,transparent 2.4px),radial-gradient(circle at 28% 80%,#fff 0 1px,transparent 2px)!important}
 
 /* v286 — Entre-deux : coins légèrement arrondis, équerres discrètes, médaillon du personnage plus grand. */
 html body #portal .pouch-theatre .draw-die .pd-front b{width:30%!important;height:30%!important;right:3%!important;bottom:3%!important}
+
+html body #portal .pouch-theatre .draw-die .pd-face{border-width:2px!important;border-radius:0!important}
+html body #portal .pouch-theatre .draw-die .pd-face::before{inset:3px!important;border-radius:0!important}
+html body #portal .pouch-theatre .draw-die .pd-front .pd-portrait{inset:5%!important;box-shadow:0 0 0 1.5px var(--m2),0 0 0 2.5px #000b,0 0 0 3.5px var(--m1),0 2px 6px #000a!important}
+html body #portal .pouch-theatre .draw-die[data-rarity="Divin"] .pd-front .pd-portrait{box-shadow:0 0 0 1.5px #fff,0 0 0 2.5px #000b,0 0 0 3.5px #d9b6ff,0 0 10px #e9d4ff!important}
+html body #portal .pouch-theatre .draw-die .pd-front b{width:32%!important;height:32%!important;right:2%!important;bottom:2%!important}
