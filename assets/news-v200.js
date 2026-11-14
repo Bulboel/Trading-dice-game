@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v288',title:'Menu du tutoriel',items:['Le menu « Apprendre à jouer » n’est plus coupé en haut sur les petits écrans : il commence en haut et défile jusqu’en bas.']},
  {id:'v287',title:'Dés de la bourse : angles nets et médaillons agrandis',items:['Les dés de la table ont de nouveau des angles vifs, sans aucun vide aux sommets, et leurs couches sont alignées au pixel près.','Le médaillon du personnage est plus grand sur les dés de la table comme sur le dé de l’animation de découverte.']},
  {id:'v286',title:'Dés de la bourse : l’entre-deux',items:['Les dés de la table retrouvent des angles discrets : coins légèrement arrondis, petites équerres, cadre plus fin et médaillon du personnage plus grand.','Dans l’animation de découverte, les anneaux sont collés aux faces du dé (légèrement enfoncés).']},
  {id:'v285',title:'Boutique : la bourse en grand',items:['Sur téléphone, la barre d’actions de la boutique est compacte (Délier la bourse, ×10, ⚡ rapide ×10 et ⚙ Personnaliser sur deux lignes) : la scène d’ouverture occupe presque tout l’écran.','Les dés qui sortent de la bourse sont plus grands et plus faciles à admirer.']},

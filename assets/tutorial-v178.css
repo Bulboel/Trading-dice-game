@@ -98,3 +98,7 @@ body.tuto-hub-open{overflow:hidden}
  body.tutorial-mode #bw>#tuto-coach footer{flex:0 0 auto;padding-top:5px;border-top:1px solid #baa66e33}
  body.tutorial-mode #bw>#tuto-coach.min{display:block}
 }
+
+/* v288 — Menu des leçons : le centrage flex coupait le haut quand la carte dépasse l'écran ; marges automatiques à la place (centré si ça tient, défilable sinon). */
+#tuto-hub{align-items:flex-start!important;justify-content:center;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+#tuto-hub .tuto-hub-card{margin:auto!important}
