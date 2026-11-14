@@ -1,6 +1,6 @@
 /* The pouch and the dice share one stage: the mouth is the actual launch origin. */
 (()=>{'use strict';const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let invocationModule;const getInvocationModule=()=>invocationModule??=import('./invocation-v212.js?v=20261224-v294');
+let invocationModule;const getInvocationModule=()=>invocationModule??=import('./invocation-v212.js?v=20261224-v295');
 const ELEMENT_GLYPHS={
 eau:'<path d="M12 2.7C9.3 6.8 4.8 11.5 4.8 16.1a7.2 7.2 0 0 0 14.4 0C19.2 11.5 14.7 6.8 12 2.7Z"/><path d="M7.3 15.8c1.1-1.3 2.2-1.3 3.3 0s2.2 1.3 3.3 0 2.2-1.3 3.1 0M9 19.2c1 .7 2 .9 3 .9"/>',
 feu:'<path d="M13.2 2.8c.5 3.2-.9 4.8-2.6 6.4-.2-1.6-1-2.8-2.2-3.7C8.2 9 4.5 11.6 4.5 16.2a7.5 7.5 0 0 0 15 0c0-4.5-2.6-7.3-6.3-13.4Z"/><path d="M12.3 12.2c.2 1.8-2.2 2.8-2.2 5a2 2 0 0 0 3.9.6c.4-1.2-.2-2.2-1.7-5.6Z"/>',
