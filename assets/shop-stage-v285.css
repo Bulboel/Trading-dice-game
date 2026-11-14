@@ -1,0 +1,15 @@
+/* v285 — Boutique : barre d'actions compacte et scène d'ouverture agrandie (le plus d'écran possible pour la bourse et les dés). */
+.sh-short{display:none}
+@media(max-width:800px){
+ html body.portal-open[data-portal-view="shop"] #portal .shop-actions{display:grid!important;grid-template-columns:1fr 1fr auto;gap:6px!important;margin:0 0 6px!important;padding:0!important;align-items:stretch}
+ html body.portal-open[data-portal-view="shop"] #portal .shop-actions>button{margin:0!important;width:auto!important;max-width:none!important;min-width:0!important;min-height:38px!important;height:auto!important;padding:6px 10px!important;font-size:12.5px!important;line-height:1.15!important;white-space:nowrap;border-radius:10px!important}
+ html body.portal-open[data-portal-view="shop"] #portal .shop-actions>.portal-primary{grid-column:1/-1;min-height:46px!important;font-size:15.5px!important}
+ html body.portal-open[data-portal-view="shop"] #portal .shop-actions>[data-action="open-all"]{grid-column:1/-1}
+ html body.portal-open[data-portal-view="shop"] #portal .shop-actions>.shop-custom{min-width:42px!important;padding:6px 10px!important;font-size:17px!important}
+ html body.portal-open[data-portal-view="shop"] #portal .shop-actions .sh-long{display:none}
+ html body.portal-open[data-portal-view="shop"] #portal .shop-actions .sh-short{display:inline}
+ html body.portal-open[data-portal-view="shop"] #portal .shop-actions>[data-action="buy-ten"] .sh-long{display:none}
+ /* Scène : prend toute la hauteur disponible sous la barre d'actions. */
+ html body.portal-open[data-portal-view="shop"] #portal .pouch-theatre{height:clamp(440px,calc(100dvh - 285px),780px)!important;min-height:0!important;margin:0 0 4px!important}
+ html body.portal-open[data-portal-view="shop"] #portal .pouch-open-hint{margin:2px 0 6px!important}
+}
