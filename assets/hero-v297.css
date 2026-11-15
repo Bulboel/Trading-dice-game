@@ -49,3 +49,16 @@ body.portal-open[data-portal-view="home"] #portal .portal-head .portal-level.has
 #hero-dialog .hero-orig{display:grid;place-items:center;background:#17291f;color:#efe7cf;font-size:16px}
 #hero-dialog .hero-sw[aria-pressed="true"].hero-orig{box-shadow:0 0 0 2px #ffe6a6}
 #hero-dialog .hero-stage{position:sticky;top:0;z-index:3;height:min(32dvh,240px);box-shadow:0 8px 12px -6px #000a}
+
+#avatar-dialog{width:min(520px,calc(100vw - 20px));max-height:calc(100dvh - 20px);overflow:auto;padding:16px;border:1px solid #e7cd8a99;border-radius:18px;background:linear-gradient(160deg,#21392d,#101e18);color:#efe7cf;font:13px/1.35 system-ui}
+#avatar-dialog::backdrop{background:#000b}
+#avatar-dialog h2{margin:0 0 4px;font:700 20px "Cinzel",Georgia,serif;color:#f6e2a3;text-align:center}
+#avatar-dialog .av-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0}
+#avatar-dialog .av-grid button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 3px;border-radius:12px;border:2px solid #baa66e44;background:#17291f;color:#e9e0c6;cursor:pointer;font:600 10.5px/1.1 system-ui}
+#avatar-dialog .av-grid button[aria-pressed="true"]{border-color:#ffe6a6;background:#223b2c;box-shadow:0 0 10px #e2c47766}
+#avatar-dialog .av-grid span{display:block;width:100%;aspect-ratio:1;overflow:hidden;border-radius:50%}
+#avatar-dialog .av-grid span *{width:100%!important;height:100%!important;object-fit:cover;border-radius:50%!important}
+#avatar-dialog .av-hero{display:grid;place-items:center;font-size:24px;background:#0f1d18}
+#avatar-dialog .hero-intro{margin:0 0 6px;text-align:center;color:#d8ceb0}
+#avatar-dialog .hero-actions{display:flex;justify-content:flex-end}
+#avatar-dialog .hero-actions button{min-height:40px;padding:8px 16px;border-radius:10px;border:1px solid #baa66e66;background:#17291f;color:#e9e0c6;font:600 14px system-ui;cursor:pointer}
