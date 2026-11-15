@@ -37,14 +37,21 @@ function draw(){const b=seq[step];scene.className='ss '+(b.c||[]).map(c=>'ss-'+c
  const nx=scene.querySelector('.ss-next');nx.hidden=!!b.choices;nx.textContent=step===seq.length-1?(b.next||'Continuer'):'Continuer';scene.querySelector('[data-ss="prev"]').disabled=step===0;scene.querySelector('.ss-progress').textContent=(step+1)+' / '+seq.length}
 
 // ——— Déroulement d’une partie ———
+/* v302 — avant chaque duel de l'Histoire : confirmer (ou changer) le deck utilisé. */
+function chooseDeck(go){const decks=P()?.legalDecks?.()||[];if(!decks.length){go();return}
+ document.getElementById('story-deck')?.remove();const dlg=document.createElement('dialog');dlg.id='story-deck';dlg.setAttribute('aria-labelledby','story-deck-title');const cur=P().preferredDeck?.()?.id||decks[0].id;
+ const names=d=>d.dice.map(i=>game.monsters[i]?.cn||'?').join(', ');
+ dlg.innerHTML=`<h3 id="story-deck-title">Avec quel deck ?</h3><p>Choisissez le deck de ce duel.</p><select aria-label="Deck">${decks.map(d=>`<option value="${esc(d.id)}" ${d.id===cur?'selected':''}>${esc(d.name)}</option>`).join('')}</select><p class="sd-list"></p><div class="sd-actions"><button type="button" data-sd="cancel">Retour</button><button type="button" class="sd-go" data-sd="go">Lancer le duel</button></div>`;
+ const sel=dlg.querySelector('select'),list=dlg.querySelector('.sd-list'),show=()=>{const d=decks.find(x=>x.id===sel.value);list.textContent=d?names(d):''};sel.onchange=show;show();
+ dlg.addEventListener('click',e=>{const a=e.target.closest('[data-sd]')?.dataset.sd;if(a==='go'){P().setPreferredDeck?.(sel.value);dlg.close();go()}else if(a==='cancel'){dlg.close();P()?.open('story')}});dlg.addEventListener('cancel',()=>{P()?.open('story')});dlg.addEventListener('close',()=>dlg.remove());document.body.append(dlg);dlg.showModal()}
 function start(id){const part=PARTS.find(p=>p.id===id);if(!part||!unlocked(id))return;
- const afterIntro=()=>part.duel?duel(part):complete(part.id)||P()?.open('story');
- play(part.intro,afterIntro,go=>{if(go==='duel')duel(part);else play(part.silence||[],()=>{complete(part.id);P()?.open('story')})});}
+ const afterIntro=()=>part.duel?chooseDeck(()=>duel(part)):complete(part.id)||P()?.open('story');
+ play(part.intro,afterIntro,go=>{if(go==='duel')chooseDeck(()=>duel(part));else play(part.silence||[],()=>{complete(part.id);P()?.open('story')})});}
 function duel(part){const d=part.duel,deck=P()?.preferredDeck();pending={id:part.id};document.body.classList.remove('portal-open');location.hash='partie';
  game.start(deck?deck.dice:LOAN,d.terrain,'story',d.level,{name:d.foe,dice:d.dice});window.dispatchEvent(new Event('resize'));
  if(!deck)setTimeout(()=>P()?.toast('Aucun deck valide : Kayla vous prête un deck de départ pour ce duel.'),600)}
 function after(won){if(!pending)return;const part=PARTS.find(p=>p.id===pending.id);pending=null;if(!part)return;
- setTimeout(()=>{game.pause?.();if(won)play(part.victory||[],()=>{complete(part.id);P()?.open('story')});else play(part.lose&&part.lose.length?part.lose:[{s:'Voix off',t:'Ce duel est perdu… Reprenez votre souffle et retentez votre chance depuis le menu Histoire.',l:part.title,c:[],cast:[],next:'Retour au menu'}],()=>P()?.open('story'))},2600)}
+ setTimeout(()=>{game.pause?.();if(won||part.id==='c1p1')play(part.victory||[],()=>{complete(part.id);P()?.open('story')});else play(part.lose&&part.lose.length?part.lose:[{s:'Voix off',t:'Ce duel est perdu… Reprenez votre souffle et retentez votre chance depuis le menu Histoire.',l:part.title,c:[],cast:[],next:'Retour au menu'}],()=>P()?.open('story'))},2600)}
 window.addEventListener('hackenia-player-victory',e=>{if(e.gameMode==='story')after(true)});
 window.addEventListener('hackenia-player-defeat',e=>{if(e.gameMode==='story')after(false)});
 window.addEventListener('hackenia-player-draw',e=>{if(e.gameMode==='story')after(false)});
