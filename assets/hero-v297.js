@@ -4,13 +4,14 @@
 const ELS=[['foudre','Foudre','ϟ','#a799df'],['vent','Vent','〰','#9cc995'],['terre','Terre','❧','#b29b86'],['glace','Glace','❄','#9dcfdf'],['eau','Eau','◈','#7eaeed'],['feu','Feu','✹','#eaa078']];
 const SKINS=['#fbe2cf','#f3c9a5','#e8b08c','#d39a72','#b87a55','#8d5a3b','#6a4129','#4a2c1d','#c8d9a8','#9fc2e8'],EYES=['#3a8fd0','#2f9e6a','#7a5230','#4a4a4a','#8a5cc8','#c24a4a','#d4a537','#35c9d6'];
 const ANIMS={idle:['Balancement joyeux','Posture détendue'],walk:['Marche','Démarche assurée','Course'],spell:['Coup ascendant','Coup de pied spartiate','Sort de mage','Sort chargé'],victory:['Danse hip-hop','Génie magique','Danse rigolote','Défilé']};
+const PIECES={hair:[['','Aucune'],['court','Courte'],['longs','Longue']],outfit:[['','Aucune'],['tenue1','Feuilles'],['tenue2','Mage'],['tenue4','Aventurier']]},DYES=['#2b1d14','#5a3a22','#a8672f','#e0b25c','#d9d9d9','#c24a4a','#3a8fd0','#2f9e6a','#8a5cc8','#e87fb8'],NAMES={hair:'Coiffure',outfit:'Tenue'};
 const LABEL={idle:'Attente',walk:'Marche',spell:'Attaque',victory:'Victoire'};
 const g=()=>window.hackeniaGame,P=()=>window.HackeniaPortal,esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let dlg=null,stage=null;
 const later=()=>{try{sessionStorage.setItem('hackenia-hero-later','1')}catch{}};
 const skipped=()=>{try{return sessionStorage.getItem('hackenia-hero-later')==='1'}catch{return false}};
 function open(edit){const prof=P()?.profile?.();if(dlg||!prof)return;const cur=prof.hero||null;edit=!!edit&&!!cur;if(!edit&&cur)return;
- const st={name:cur?.name||'',el:cur?.el||'terre',skin:cur?.skin||'#e8b08c',eye:cur?.eye||'#3a8fd0',anim:{idle:1,walk:1,spell:1,victory:1,...(cur?.anim||{})}};
+ const st={name:cur?.name||'',el:cur?.el||'terre',skin:cur?.skin||'#e8b08c',eye:cur?.eye||'#3a8fd0',anim:{idle:1,walk:1,spell:1,victory:1,...(cur?.anim||{})},hair:{id:cur?.hair?.id||'',color:cur?.hair?.color||''},outfit:{id:cur?.outfit?.id||'',color:cur?.outfit?.color||''}};
  dlg=document.createElement('dialog');dlg.id='hero-dialog';dlg.setAttribute('aria-labelledby','hero-title');
  dlg.innerHTML=`<h2 id="hero-title">${edit?'Votre héros':'Créez votre héros'}</h2>
  <p class="hero-intro">Il commence chaque partie contre l’IA dans votre zone à protéger, hors deck. Sa dalle de départ est de <b>force 0</b> ; elle gagne +1 tous les 10 niveaux de joueur (6 au maximum).</p>
@@ -18,27 +19,30 @@ function open(edit){const prof=P()?.profile?.();if(dlg||!prof)return;const cur=p
  <label class="hero-name">Nom<input id="hero-name" maxlength="18" autocomplete="off" placeholder="Votre héros" value="${esc(st.name)}"></label>
  <fieldset><legend>Couleur de peau</legend><div class="hero-colors" data-k="skin">${SKINS.map(c=>`<button type="button" class="hero-sw" data-c="${c}" style="--c:${c}" aria-label="Peau ${c}"></button>`).join('')}<label class="hero-pick" title="Palette complète"><input type="color" value="${st.skin}" aria-label="Couleur de peau personnalisée"><span>Palette</span></label></div></fieldset>
  <fieldset><legend>Couleur des yeux</legend><div class="hero-colors" data-k="eye">${EYES.map(c=>`<button type="button" class="hero-sw" data-c="${c}" style="--c:${c}" aria-label="Yeux ${c}"></button>`).join('')}<label class="hero-pick" title="Palette complète"><input type="color" value="${st.eye}" aria-label="Couleur des yeux personnalisée"><span>Palette</span></label></div></fieldset>
+${['hair','outfit'].map(k=>`<fieldset><legend>${NAMES[k]}</legend><div class="hero-pieces" data-piece="${k}">${PIECES[k].map(([id,n])=>`<button type="button" class="hero-piece" data-id="${id}">${n}</button>`).join('')}</div><div class="hero-colors hero-dye" data-dye="${k}"><button type="button" class="hero-sw hero-orig" data-c="" aria-label="Couleur d’origine" title="Couleur d’origine">↺</button>${DYES.map(c=>`<button type="button" class="hero-sw" data-c="${c}" style="--c:${c}" aria-label="${NAMES[k]} ${c}"></button>`).join('')}<label class="hero-pick" title="Palette complète"><input type="color" value="${st[k].color||'#a8672f'}" aria-label="Couleur personnalisée"><span>Palette</span></label></div></fieldset>`).join('')}
  <fieldset><legend>Animations <em>(touchez pour les voir)</em></legend><div class="hero-anims">${Object.keys(ANIMS).map(k=>`<label>${LABEL[k]}<select data-anim="${k}">${ANIMS[k].map((n,i)=>`<option value="${i+1}">${n}</option>`).join('')}</select></label>`).join('')}</div></fieldset>
  <fieldset><legend>Élément ${edit?'<em>(définitif)</em>':'<em>(définitif, à choisir avec soin)</em>'}</legend><div class="hero-els">${ELS.map(([k,n,s,c])=>`<button type="button" class="hero-el" data-el="${k}" style="--c:${c}" ${edit?'disabled':''}><b>${s}</b> ${n}</button>`).join('')}</div></fieldset>
  <div class="hero-actions"><button type="button" data-later>${edit?'Annuler':'Plus tard'}</button><button type="button" class="hero-go" data-go>${edit?'Enregistrer':'Créer mon héros'}</button></div>`;
  document.body.append(dlg);
- const look=()=>({kind:'skin',skin:st.skin,eye:st.eye}),sync=()=>{dlg.querySelectorAll('.hero-colors').forEach(w=>{const k=w.dataset.k;w.querySelectorAll('.hero-sw').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.c.toLowerCase()===st[k].toLowerCase())));w.querySelector('input').value=st[k]});dlg.querySelectorAll('.hero-el').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.el===st.el)));dlg.querySelectorAll('[data-anim]').forEach(s=>s.value=String(st.anim[s.dataset.anim]))};
- let t=0;const apply=()=>{clearTimeout(t);t=setTimeout(()=>stage?.setLook(look()),90)};
+ const look=()=>({kind:'skin',skin:st.skin,eye:st.eye}),sync=()=>{dlg.querySelectorAll('.hero-colors[data-k]').forEach(w=>{const k=w.dataset.k;w.querySelectorAll('.hero-sw').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.c.toLowerCase()===st[k].toLowerCase())));w.querySelector('input').value=st[k]});dlg.querySelectorAll('.hero-el').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.el===st.el)));for(const k of['hair','outfit']){dlg.querySelectorAll('[data-piece="'+k+'"] .hero-piece').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.id===st[k].id)));const w=dlg.querySelector('[data-dye="'+k+'"]');w.hidden=!st[k].id;w.querySelectorAll('.hero-sw').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.c.toLowerCase()===(st[k].color||'').toLowerCase())));if(st[k].color)w.querySelector('input').value=st[k].color}dlg.querySelectorAll('[data-anim]').forEach(s=>s.value=String(st.anim[s.dataset.anim]))};
+ let t=0,tp=0;const apply=()=>{clearTimeout(t);t=setTimeout(()=>stage?.setLook(look()),90)},applyParts=()=>{clearTimeout(tp);tp=setTimeout(()=>stage?.setHeroParts({hair:st.hair,outfit:st.outfit}),120)};
  const play=k=>{const n=st.anim[k];stage?.playClip('assets/characters/hero-'+k+n+'.glb').catch(()=>{})};
  sync();
  dlg.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
-  if(b.classList.contains('hero-sw')){st[b.parentElement.dataset.k]=b.dataset.c;sync();apply()}
+  if(b.classList.contains('hero-piece')){st[b.parentElement.dataset.piece].id=b.dataset.id;sync();applyParts()}
+  else if(b.classList.contains('hero-sw')&&b.parentElement.dataset.dye){st[b.parentElement.dataset.dye].color=b.dataset.c;sync();applyParts()}
+  else if(b.classList.contains('hero-sw')){st[b.parentElement.dataset.k]=b.dataset.c;sync();apply()}
   else if(b.dataset.el&&!b.disabled){st.el=b.dataset.el;sync()}
   else if('later' in b.dataset){if(!edit)later();dlg.close()}
   else if('go' in b.dataset){const name=(dlg.querySelector('#hero-name').value||'').trim()||'Héros',pr=structuredClone(P().profile());
    let avatar=pr.hero?.avatar||'';try{avatar=stage?.snapshot({bust:true,size:256})||avatar}catch{}
-   pr.hero={...(pr.hero||{}),name:name.slice(0,18),el:st.el,skin:st.skin,eye:st.eye,anim:st.anim,avatar,at:pr.hero?.at||Date.now()};delete pr.hero.mi;
+   pr.hero={...(pr.hero||{}),name:name.slice(0,18),el:st.el,skin:st.skin,eye:st.eye,anim:st.anim,hair:st.hair.id?st.hair:null,outfit:st.outfit.id?st.outfit:null,avatar,at:pr.hero?.at||Date.now()};delete pr.hero.mi;
    if(P().commit(pr)){dlg.close();window.HackeniaPortalToast?.(edit?'Votre héros a été mis à jour.':'Votre héros « '+name+' » est prêt : il vous attend dans chaque partie contre l’IA !')}}});
- dlg.addEventListener('input',e=>{const i=e.target;if(i.type==='color'){st[i.closest('.hero-colors').dataset.k]=i.value;sync();apply()}});
+ dlg.addEventListener('input',e=>{const i=e.target;if(i.type==='color'){const w=i.closest('.hero-colors');if(w.dataset.dye){st[w.dataset.dye].color=i.value;sync();applyParts()}else{st[w.dataset.k]=i.value;sync();apply()}}});
  dlg.addEventListener('change',e=>{const s=e.target.closest('[data-anim]');if(s){st.anim[s.dataset.anim]=+s.value;play(s.dataset.anim)}});
  dlg.addEventListener('close',()=>{clearTimeout(t);stage?.dispose();stage=null;dlg.remove();dlg=null;refreshAvatar()});dlg.addEventListener('cancel',()=>{if(!edit)later()});
  dlg.showModal();
- (async()=>{try{const game=g();game.loadModelViewer?.();const info=await game.heroModelInfo({...st,anim:st.anim});if(!info||!dlg)return;const mod=await import('./character-stage.js?v=20261226-v300');const host=dlg.querySelector('.hero-stage');if(!dlg)return;const s=await mod.createCharacterStage(host,{...info,variant:look()},()=>!!dlg&&dlg.open);if(!dlg){s.dispose();return}stage=s;host.querySelector('.hero-loading')?.remove();s.playClip('assets/characters/hero-idle'+st.anim.idle+'.glb').catch(()=>s.setPose('idle'))}catch(err){const h=dlg?.querySelector('.hero-loading');if(h)h.textContent='Aperçu 3D indisponible sur cet appareil.'}})()}
+ (async()=>{try{const game=g();game.loadModelViewer?.();const info=await game.heroModelInfo({...st,anim:st.anim});if(!info||!dlg)return;const mod=await import('./character-stage.js?v=20261226-v301');const host=dlg.querySelector('.hero-stage');if(!dlg)return;const s=await mod.createCharacterStage(host,{...info,variant:look(),heroParts:{hair:st.hair,outfit:st.outfit}},()=>!!dlg&&dlg.open);if(!dlg){s.dispose();return}stage=s;host.querySelector('.hero-loading')?.remove();s.zoom('in');s.playClip('assets/characters/hero-idle'+st.anim.idle+'.glb').catch(()=>s.setPose('idle'))}catch(err){const h=dlg?.querySelector('.hero-loading');if(h)h.textContent='Aperçu 3D indisponible sur cet appareil.'}})()}
 /* Avatar du héros dans la pastille de niveau (menu et en-têtes). */
 function refreshAvatar(){const btn=document.getElementById('portal-level'),ring=btn?.querySelector('.pl-ring');if(!ring)return;const a=P()?.profile?.()?.hero?.avatar;let img=ring.querySelector('.pl-avatar');
  if(!a){img?.remove();btn.classList.remove('has-avatar');return}
@@ -47,5 +51,9 @@ function refreshAvatar(){const btn=document.getElementById('portal-level'),ring=
 setInterval(()=>{refreshAvatar();if(dlg||skipped()||!document.body.classList.contains('portal-open')||document.body.dataset.portalView!=='home'||document.querySelector('dialog[open],#tuto-hub'))return;
  const sm=document.querySelector('.start-content');if(sm&&sm.offsetParent)return;const p=P()?.profile?.();if(!p||p.hero||!g()?.monsters)return;open()},1500);
 window.addEventListener('hackenia-profile-saved',refreshAvatar);
-window.HackeniaHero={open,edit:()=>open(true),refreshAvatar};
+/* Fiche de créature (en partie) : même rendu 3D que le zoom, avec coiffure et tenue. */
+async function mount(stageEl,hero){try{const game=g(),info=await game.heroModelInfo(hero);if(!info||!stageEl.isConnected)return;const host=document.createElement('div');host.className='hero-card-3d';host.style.cssText='position:absolute;inset:0;z-index:2';stageEl.append(host);
+ const mod=await import('./character-stage.js?v=20261226-v301');const s=await mod.createCharacterStage(host,{...info,variant:game.heroLook(hero),heroParts:{hair:hero.hair,outfit:hero.outfit}},()=>host.isConnected);const fb=stageEl.querySelector('.sc,.hv-emoji,.hv-portrait');if(fb)fb.style.visibility='hidden';s.zoom('in');s.playClip('assets/characters/hero-idle'+(hero.anim?.idle||1)+'.glb').catch(()=>s.setPose('idle'));
+ const mo=new MutationObserver(()=>{if(!host.isConnected){s.dispose();mo.disconnect()}});mo.observe(document.body,{childList:true,subtree:true})}catch{}}
+window.HackeniaHeroView={mount};window.HackeniaHero={open,edit:()=>open(true),refreshAvatar,mount};
 })();

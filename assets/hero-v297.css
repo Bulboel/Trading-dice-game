@@ -42,3 +42,10 @@ body.portal-open[data-portal-view="home"] #portal .portal-head .portal-level.has
 @media(max-width:700px){body.portal-open[data-portal-view="home"] #portal .portal-head .portal-level.has-avatar{width:52px;height:52px}body.portal-open[data-portal-view="home"] #portal .portal-head .portal-level.has-avatar .pl-ring{width:46px;height:46px}body.portal-open:not([data-portal-view="home"]) #portal .portal-head .portal-level.has-avatar .pl-ring{width:30px;height:30px}}
 #hero-dialog .hero-anims{grid-template-columns:repeat(2,minmax(0,1fr))}
 #hero-dialog .hero-anims select{width:100%;min-width:0;box-sizing:border-box}
+#hero-dialog .hero-pieces{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+#hero-dialog .hero-piece{padding:8px 14px;border-radius:10px;border:2px solid #baa66e44;background:#17291f;color:#efe7cf;font:600 13px system-ui;cursor:pointer}
+#hero-dialog .hero-piece[aria-pressed="true"]{border-color:#ffe6a6;background:#223b2c;box-shadow:0 0 10px #e2c47755}
+#hero-dialog .hero-dye[hidden]{display:none}
+#hero-dialog .hero-orig{display:grid;place-items:center;background:#17291f;color:#efe7cf;font-size:16px}
+#hero-dialog .hero-sw[aria-pressed="true"].hero-orig{box-shadow:0 0 0 2px #ffe6a6}
+#hero-dialog .hero-stage{position:sticky;top:0;z-index:3;height:min(32dvh,240px);box-shadow:0 8px 12px -6px #000a}
