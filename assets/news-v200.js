@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v306',title:'Parcours de bienvenue et vrais dés',items:['Nouveau joueur : tutoriel (facultatif), création du héros, boutique avec ses 50 Bubulles, message « Tu as assez de dés pour jouer ! », puis menu Jouer avec le bouton « Deck optimal » mis en avant. La carte « Premiers pas » disparaît.','« Deck optimal » est maintenant juste sous le choix du deck dans le menu Jouer.','Nouveau son de dés qui roulent : de vrais claquements de dés en plastique à la sortie de la bourse et au lancer.']},
  {id:'v305',title:'Héros : dernières retouches',items:['Coiffures : calotte de la couleur des cheveux à l’arrière du crâne, cheveux courts agrandis.','Tenues : Feuilles abaissée, Mage reculée, Aventurier avancée pour ne plus laisser voir le torse.']},
  {id:'v304',title:'Héros : réglages fins et avatar au choix',items:['Cheveux longs deux fois plus petits, cheveux courts remontés, tenues Feuilles (plus grande, bretelles sur les épaules), Aventurier (plus petite, plus basse) et Mage (centrée, sans déformation) réajustées.','Options › Joueur › Avatar du menu : affichez dans votre pastille de niveau votre héros ou n’importe quel dé de votre collection.']},
  {id:'v303',title:'Héros mieux habillé, nouvel éclair',items:['Coiffures et tenues du héros réajustées : tailles, positions et épaisseur (les cheveux épousent maintenant la tête).','Nouvelle icône d’éclair pour l’effet de dé bonus « Éclair ».']},
