@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v310',title:'Héros : vêtements peaufinés',items:['Plus de fissures sur les vêtements unis, cols et manches plus nets.','La coiffure courte est un peu avancée : plus de mèches dans le visage.']},
  {id:'v309',title:'Héros : vrais vêtements',items:['Nouveau : Tee-shirt col rond, Tee-shirt col en V et Débardeur, avec effet tissu, et Short en jean ou en tissu — haut et bas se choisissent séparément.','Nouveau : Combinaison complète en 5 textures (unie, rayée, à pois, à carreaux, camouflage), coloris au choix.','La tenue Feuilles est retirée, et la coiffure courte est un peu plus petite.']},
  {id:'v308',title:'Héros : vêtements simples',items:['Tenue Aventurier retirée. Nouveaux vêtements simples créés directement sur le corps du héros : Combinaison et Tee-shirt, de la couleur de votre choix.','Tenue Feuilles : une sous-couche verte évite de voir la peau entre le haut et la jupe.','Coiffures : l’arrière de la ligne de cheveux est redescendu (courte et longue).']},
  {id:'v307',title:'Héros : coiffures et tenues retouchées',items:['Tenue Mage retirée. Tenue Aventurier mieux ajustée au torse, tenue Feuilles plus basse et plus avancée.','Cheveux courts redressés, et calotte de remplissage refaite : dessus et arrière du crâne, sans toucher les oreilles.']},

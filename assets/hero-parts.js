@@ -3,9 +3,9 @@
    copient les poids du sommet du corps le plus proche. La couleur se change avec la teinte du jeu (variant-look.js, kind « tint »). */
 import * as THREE from 'three';
 import {GLTFLoader} from './vendor/three/examples/jsm/loaders/GLTFLoader.js';
-import {applyLook} from './variant-look.js?v=20270102-v309';
+import {applyLook} from './variant-look.js?v=20270102-v310';
 export const PARTS={
- hair:{court:{label:'Courte',file:'hero-cheveux-court.glb',s:.84,xs:.85,zs:.96,rx:-.32,x:0,y:1.52,z:-.03,cap:'#2f8f2f'},
+ hair:{court:{label:'Courte',file:'hero-cheveux-court.glb',s:.84,xs:.85,zs:.96,rx:-.32,x:0,y:1.52,z:-.02,cap:'#2f8f2f'},
        longs:{label:'Longue',file:'hero-cheveux-longs.glb',s:.4,xs:1.02,zs:1,rx:-.24,x:0,y:1.465,z:-.025,cap:'#5a3a22'}},
  top:{rond:{label:'Tee-shirt col rond',gen:'tee',neck:'round',tex:'knit',color:'#c4553f'},
       v:{label:'Tee-shirt col en V',gen:'tee',neck:'v',tex:'knit',color:'#3f8fc4'},
@@ -23,28 +23,32 @@ export const PARTS={
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),NECK_Y=1.118;
 function neckField(neck,x,y,z,wide){/* >0 : tissu ; <0 : ouverture du col (devant plus profond que derrière) */
  const front=clamp((z+.03)/.1,0,1),rx=wide?.115:.088;
- if(neck==='v'){const depth=.11*front+.012,lim=NECK_Y-depth*clamp(1-Math.abs(x)/.098,0,1);return Math.abs(x)<.098?lim-y:1}
+ if(neck==='v'){const depth=.11*front+.012,lim=NECK_Y-depth*clamp(1-Math.abs(x)/.098,0,1);return lim-y}
  const ry=(.02+.058*front)*(wide?1.25:1),g=(x/rx)**2+((y-NECK_Y)/ry)**2-1;return g*.05}
 const FIELDS={
  tee:o=>(x,y,z)=>Math.min(NECK_Y-y,.27-Math.abs(x),y-.8,neckField(o.neck,x,y,z,false)),
  tank:o=>(x,y,z)=>Math.min(NECK_Y-y,.172-Math.abs(x),y-.8,neckField('round',x,y,z,true)),
  short:()=>(x,y,z)=>Math.min(.88-y,y-.53,.245-Math.abs(x)),
  suit:()=>(x,y,z)=>Math.min(NECK_Y-y,.39-Math.abs(x),y-.14,neckField('round',x,y,z,false)+.02)};
-const OFFSET={tee:.013,tank:.013,short:.009,suit:.01};
+const OFFSET={tee:.016,tank:.016,short:.012,suit:.013};
 function genGeometry(def,body){const bg=body.geometry,pa=bg.attributes.position,na=bg.attributes.normal,bi=bg.attributes.skinIndex,bw=bg.attributes.skinWeight,idx=bg.index.array,n=pa.count,f=FIELDS[def.gen](def),off=OFFSET[def.gen],fv=new Float32Array(n);
- /* le champ est évalué sur les sommets ; la jambe ne doit pas capter l'avant-bras : (suit) on reste dans |x|<.26 sous la taille */
  for(let v=0;v<n;v++)fv[v]=f(pa.getX(v),pa.getY(v),pa.getZ(v));
+ /* normales soudées par position : les sommets dédoublés (coutures UV) se déplacent ensemble, donc plus de fentes entre triangles */
+ const key=v=>Math.round(pa.getX(v)*2e4)+','+Math.round(pa.getY(v)*2e4)+','+Math.round(pa.getZ(v)*2e4),acc=new Map();
+ for(let v=0;v<n;v++){const k=key(v),a=acc.get(k)||[0,0,0];a[0]+=na.getX(v);a[1]+=na.getY(v);a[2]+=na.getZ(v);acc.set(k,a)}
+ const wn=new Float32Array(n*3);for(let v=0;v<n;v++){const a=acc.get(key(v)),L=Math.hypot(a[0],a[1],a[2])||1;wn[v*3]=a[0]/L;wn[v*3+1]=a[1]/L;wn[v*3+2]=a[2]/L}
  const P=[],N=[],SI=[],SW=[],UV=[];
- const push=(v,w=null)=>{/* sommet d'origine v, ou intersection (a,b,t) */};
- const vert=(a,b,t)=>{const lerp=(A,B)=>A+(B-A)*t,hi=t<.5?a:b;let x,y,z,nx,ny,nz;
-  x=lerp(pa.getX(a),pa.getX(b));y=lerp(pa.getY(a),pa.getY(b));z=lerp(pa.getZ(a),pa.getZ(b));nx=lerp(na.getX(a),na.getX(b));ny=lerp(na.getY(a),na.getY(b));nz=lerp(na.getZ(a),na.getZ(b));
+ const vert=(a,b,t)=>{/* t cherché par dichotomie sur le vrai champ : bords lisses, indépendants de la taille des triangles */
+  if(t>0){let lo=0,hi=1;const pt=u=>[pa.getX(a)+(pa.getX(b)-pa.getX(a))*u,pa.getY(a)+(pa.getY(b)-pa.getY(a))*u,pa.getZ(a)+(pa.getZ(b)-pa.getZ(a))*u];
+   const inA=fv[a]>=0;for(let k=0;k<12;k++){const m=(lo+hi)/2,q=pt(m);if((f(q[0],q[1],q[2])>=0)===inA)lo=m;else hi=m}t=(lo+hi)/2}
+  const lerp=(A,B)=>A+(B-A)*t;let x=lerp(pa.getX(a),pa.getX(b)),y=lerp(pa.getY(a),pa.getY(b)),z=lerp(pa.getZ(a),pa.getZ(b)),nx=lerp(wn[a*3],wn[b*3]),ny=lerp(wn[a*3+1],wn[b*3+1]),nz=lerp(wn[a*3+2],wn[b*3+2]);
   const L=Math.hypot(nx,ny,nz)||1;nx/=L;ny/=L;nz/=L;P.push(x+nx*off,y+ny*off,z+nz*off);N.push(nx,ny,nz);
-  const sgn=clamp(x/.05,-1,1),k=11,u=k*(x+.8*z*sgn),vv=k*y;UV.push(u,vv);
-  const src=fv[a]>=fv[b]?a:b;for(let q=0;q<4;q++){SI.push(bi.getComponent(src,q));SW.push(bw.getComponent(src,q))}};
+  const sgn=clamp(x/.05,-1,1),k=11;UV.push(k*(x+.8*z*sgn),k*y);
+  const src=t<.5?a:b;for(let q=0;q<4;q++){SI.push(bi.getComponent(src,q));SW.push(bw.getComponent(src,q))}};
  for(let t=0;t<idx.length;t+=3){const ia=idx[t],ib=idx[t+1],ic=idx[t+2],tri=[ia,ib,ic],fs=[fv[ia],fv[ib],fv[ic]];
   if(fs[0]<0&&fs[1]<0&&fs[2]<0)continue;
   const poly=[];for(let k=0;k<3;k++){const a=tri[k],b=tri[(k+1)%3],fa=fs[k],fb=fs[(k+1)%3];
-   if(fa>=0)poly.push([a,a,0]);if((fa>=0)!==(fb>=0)){const tt=fa/(fa-fb);poly.push([a,b,tt])}}
+   if(fa>=0)poly.push([a,a,0]);if((fa>=0)!==(fb>=0)){const tt=fa/(fa-fb);poly.push(fa>=0?[a,b,tt]:[b,a,1-tt])}}
   for(let k=1;k+1<poly.length;k++)for(const q of [poly[0],poly[k],poly[k+1]])vert(q[0],q[1],q[2])}
  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(P,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(N,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(UV,2));
  g.setAttribute('skinIndex',new THREE.Uint16BufferAttribute(SI,4));g.setAttribute('skinWeight',new THREE.Float32BufferAttribute(SW,4));g.computeBoundingSphere();return g}
