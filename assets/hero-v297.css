@@ -20,3 +20,4 @@
 #hero-dialog .hero-actions button{min-height:42px;padding:8px 16px;border-radius:10px;border:1px solid #baa66e66;background:#17291f;color:#e9e0c6;font:600 14px system-ui;cursor:pointer}
 #hero-dialog .hero-actions .hero-go{background:linear-gradient(140deg,#e2c477,#a9853c);color:#1b1407;border-color:#f2dc9e}
 #hero-dialog button:focus-visible,#hero-dialog input:focus-visible{outline:2px solid #ffe6a6;outline-offset:2px}
+#portal .opt-hero-btn{margin-top:8px;padding:10px 16px;border-radius:10px;border:1px solid #f2dc9e;background:linear-gradient(140deg,#e2c477,#a9853c);color:#1b1407;font:700 14px system-ui;cursor:pointer}

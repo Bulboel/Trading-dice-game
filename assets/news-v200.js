@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v299',title:'Héros : accès depuis les Options, Velmarys corrigé',items:['Vous n’avez pas encore de héros ? Options › Joueur › « Votre héros » : bouton « Créer mon héros ». La fenêtre de création se propose aussi d’elle-même sur l’accueil.','Velmarys est bien un homme : sa fiche et une scène de l’Histoire sont corrigées.']},
  {id:'v298',title:'Le héros monte en niveau',items:['Votre héros est de niveau 1, puis passe niveau 2 dès le niveau 20 de joueur, 3 au niveau 30, 4 au niveau 40 et 5 au niveau 50 (maximum).']},
  {id:'v297',title:'Votre héros',items:['Nouveau : créez votre héros (nom, apparence, élément définitif). Il vous attend au début de chaque partie contre l’IA, dans votre zone à protéger, hors deck.','Sa dalle de départ est de force 0 et gagne +1 tous les 10 niveaux de joueur (6 au maximum). Il avance comme les autres créatures, grâce à vos dalles ; s’il est vaincu, il ne revient pas et compte comme une créature vaincue.']},
  {id:'v296',title:'Éclats élémentaires plus discrets',items:['Dans l’animation de découverte, le modèle des dés élémentaires de niveau 1 (Éclat) est réduit de moitié.']},
