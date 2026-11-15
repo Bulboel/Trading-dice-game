@@ -62,3 +62,18 @@ body.portal-open[data-portal-view="home"] #portal .portal-head .portal-level.has
 #avatar-dialog .hero-intro{margin:0 0 6px;text-align:center;color:#d8ceb0}
 #avatar-dialog .hero-actions{display:flex;justify-content:flex-end}
 #avatar-dialog .hero-actions button{min-height:40px;padding:8px 16px;border-radius:10px;border:1px solid #baa66e66;background:#17291f;color:#e9e0c6;font:600 14px system-ui;cursor:pointer}
+
+/* v306 — parcours guidé */
+#onb-dialog{width:min(420px,calc(100vw - 24px));padding:20px;border:1px solid #e7cd8a99;border-radius:18px;background:linear-gradient(160deg,#21392d,#101e18);color:#efe7cf;font:15px/1.5 system-ui;text-align:center;box-shadow:0 14px 44px #000a}
+#onb-dialog::backdrop{background:#000b}
+#onb-dialog h2{margin:0 0 8px;font:700 22px "Cinzel",Georgia,serif;color:#f6e2a3}
+#onb-dialog p{margin:0 0 16px}
+#onb-dialog .onb-actions button{min-height:46px;padding:10px 22px;font-size:16px}
+#portal .play-optimal-btn{display:block;width:100%;margin:-8px 0 14px;padding:11px;border-radius:12px;font-weight:700}
+#portal .onb-target{position:relative;outline:3px solid #ff4a4a;outline-offset:3px;animation:onb-pulse 1.4s ease-in-out infinite}
+#portal .onb-target::before{content:"▼";position:absolute;left:50%;top:-34px;transform:translateX(-50%);font-size:28px;line-height:1;color:#ff3b3b;text-shadow:0 0 8px #ff3b3b99;animation:onb-bob 1s ease-in-out infinite}
+@keyframes onb-bob{50%{transform:translate(-50%,6px)}}
+@keyframes onb-pulse{50%{outline-color:#ff9a9a}}
+#portal .onb-callout{margin:-4px 0 14px;padding:10px 12px;border-radius:12px;border:1px solid #ff6b6b99;background:#3a1d1dcc;color:#ffe3e3;font-size:13.5px;line-height:1.45}
+#portal .onb-callout b{color:#fff}
+@media(prefers-reduced-motion:reduce){#portal .onb-target,#portal .onb-target::before{animation:none}}
