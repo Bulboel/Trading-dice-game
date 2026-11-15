@@ -3,12 +3,23 @@
    copient les poids du sommet du corps le plus proche. La couleur se change avec la teinte du jeu (variant-look.js, kind « tint »). */
 import * as THREE from 'three';
 import {GLTFLoader} from './vendor/three/examples/jsm/loaders/GLTFLoader.js';
-import {applyLook} from './variant-look.js?v=20270101-v307';
+import {applyLook} from './variant-look.js?v=20270102-v308';
 export const PARTS={
- hair:{court:{label:'Courte',file:'hero-cheveux-court.glb',s:.9,xs:.88,zs:1,rx:-.17,x:0,y:1.53,z:-.03,cap:'#2f8f2f'},
-       longs:{label:'Longue',file:'hero-cheveux-longs.glb',s:.4,xs:1.02,zs:1,x:0,y:1.47,z:-.02,cap:'#5a3a22'}},
- outfit:{tenue1:{label:'Feuilles',file:'hero-tenue1.glb',s:.47,xs:1.08,zs:1,x:0,y:.71,z:.045},
-         tenue4:{label:'Aventurier',file:'hero-tenue4.glb',s:.43,xs:1.05,zs:1.45,x:0,y:.76,z:.11,torso:true}}};
+ hair:{court:{label:'Courte',file:'hero-cheveux-court.glb',s:.9,xs:.88,zs:1,rx:-.32,x:0,y:1.525,z:-.03,cap:'#2f8f2f'},
+       longs:{label:'Longue',file:'hero-cheveux-longs.glb',s:.4,xs:1.02,zs:1,rx:-.24,x:0,y:1.465,z:-.025,cap:'#5a3a22'}},
+ outfit:{tenue1:{label:'Feuilles',under:'tunique',underColor:'#4f7a33',file:'hero-tenue1.glb',s:.47,xs:1.08,ys:1.1,zs:1.05,x:0,y:.69,z:.05},
+         tunique:{label:'Combinaison',gen:'tunique',color:'#3f6fc4'},
+         tee:{label:'Tee-shirt',gen:'tee',color:'#c4553f'}}};
+/* Vêtements générés : copie de la peau du corps (mêmes sommets, mêmes poids) légèrement gonflée, découpée par os. Rien à modéliser. */
+const NOT=/^(Head|HeadTop_End|LeftForeArm|RightForeArm|LeftLeg|RightLeg|LeftFoot|RightFoot|LeftToeBase|RightToeBase|Bone_\d+)$|Hand/;
+const GEN={
+ tunique:{ok:(bone,x,y)=>!NOT.test(bone)&&y>.56&&y<1.13&&(!/^(Left|Right)Arm$/.test(bone)||Math.abs(x)<.27),off:.011},
+ tee:{ok:(bone,x,y)=>!NOT.test(bone)&&y>.78&&y<1.13&&(!/^(Left|Right)Arm$/.test(bone)||Math.abs(x)<.27)&&!/UpLeg$/.test(bone),off:.011}};
+function generated(kind,body){const bg=body.geometry,pa=bg.attributes.position,na=bg.attributes.normal,bi=bg.attributes.skinIndex,bw=bg.attributes.skinWeight,bn=body.skeleton.bones,idx=bg.index.array,rule=GEN[kind],n=pa.count,keep=new Uint8Array(n);
+ for(let v=0;v<n;v++){let bj=0,m=-1;for(let a=0;a<4;a++){const w=bw.getComponent(v,a);if(w>m){m=w;bj=bi.getComponent(v,a)}}keep[v]=rule.ok((bn[bj]?.name||'').replace(/^mixamorig:?/,''),pa.getX(v),pa.getY(v))?1:0}
+ const out=[];for(let t=0;t<idx.length;t+=3){const a=idx[t],b=idx[t+1],c=idx[t+2];if(keep[a]&&keep[b]&&keep[c])out.push(a,b,c)}
+ const g=new THREE.BufferGeometry(),pos=new Float32Array(n*3);for(let v=0;v<n;v++){pos[v*3]=pa.getX(v)+na.getX(v)*rule.off;pos[v*3+1]=pa.getY(v)+na.getY(v)*rule.off;pos[v*3+2]=pa.getZ(v)+na.getZ(v)*rule.off}
+ g.setAttribute('position',new THREE.BufferAttribute(pos,3));g.setAttribute('normal',na.clone());g.setAttribute('skinIndex',bi.clone());g.setAttribute('skinWeight',bw.clone());g.setIndex(out);g.computeBoundingSphere();return g}
 const loader=new GLTFLoader(),prepared=new Map();
 function bodyMesh(root){let m=null;root.traverse(o=>{if(!m&&o.isSkinnedMesh)m=o});return m}
 function skin(geom,body,torso){const pos=geom.attributes.position,n=pos.count,bg=body.geometry,bp=bg.attributes.position,bi=bg.attributes.skinIndex,bw=bg.attributes.skinWeight,idx=new Uint16Array(n*4),wt=new Float32Array(n*4);
@@ -22,16 +33,18 @@ function skin(geom,body,torso){const pos=geom.attributes.position,n=pos.count,bg
   geom.setAttribute('skinIndex',new THREE.Uint16BufferAttribute(idx,4));geom.setAttribute('skinWeight',new THREE.Float32BufferAttribute(wt,4));
 }
 async function prepare(kind,id,body){const def=PARTS[kind]?.[id];if(!def)return null;const key=kind+'/'+id;if(prepared.has(key))return prepared.get(key);
- const job=(async()=>{const gltf=await loader.loadAsync('assets/models-web/'+def.file);let mesh=null;gltf.scene.traverse(o=>{if(!mesh&&o.isMesh)mesh=o});if(!mesh)return null;
-  mesh.updateWorldMatrix(true,false);const geom=mesh.geometry.clone();geom.applyMatrix4(mesh.matrixWorld);geom.scale(def.s*(def.xs||1),def.s,def.s*(def.zs||1));if(def.rx)geom.rotateX(def.rx);geom.translate(def.x,def.y,def.z);geom.computeBoundingSphere();geom.computeBoundingBox();
+ const job=(async()=>{if(def.gen)return{geom:generated(def.gen,body),mat:new THREE.MeshStandardMaterial({color:def.color,roughness:.85,side:THREE.DoubleSide}),gen:true};const gltf=await loader.loadAsync('assets/models-web/'+def.file);let mesh=null;gltf.scene.traverse(o=>{if(!mesh&&o.isMesh)mesh=o});if(!mesh)return null;
+  mesh.updateWorldMatrix(true,false);const geom=mesh.geometry.clone();geom.applyMatrix4(mesh.matrixWorld);geom.scale(def.s*(def.xs||1),def.s*(def.ys||1),def.s*(def.zs||1));if(def.rx)geom.rotateX(def.rx);geom.translate(def.x,def.y,def.z);geom.computeBoundingSphere();geom.computeBoundingBox();
   skin(geom,body,def.torso);
   const mat=mesh.material;if(mat.map){mat.map.colorSpace=THREE.SRGBColorSpace}mat.side=THREE.DoubleSide;
   let cap=null;if(def.cap){const mk=(r,ps,pl,tl,ts=0)=>{const g=new THREE.SphereGeometry(r,28,16,ps,pl,ts,tl);g.translate(0,1.45,-.012);skin(g,body);return g};/* calotte : dessus du crâne + arrière du crâne, sans jamais toucher les oreilles (côtés) */cap={geoms:[mk(.254,0,Math.PI*2,Math.PI*.42),mk(.256,Math.PI*1.22,Math.PI*.56,Math.PI*.78,Math.PI*.3)],color:def.cap}}
-  return{geom,mat,cap}})().catch(()=>null);prepared.set(key,job);return job}
+  const under=def.under?{geom:generated(def.under,body),color:def.underColor}:null;
+  return{geom,mat,cap,under}})().catch(()=>null);prepared.set(key,job);return job}
 /* Habille `root` (clone du modèle neutre) avec la coiffure et la tenue de `hero` ({hair:{id,color},outfit:{id,color}}). Remplace les pièces précédentes. */
 export async function attachHeroParts(root,hero,isCurrent=()=>true){const body=bodyMesh(root);if(!body)return;
  (root.userData.heroPieces||[]).forEach(m=>{m.parent?.remove(m)});root.userData.heroPieces=[];
  for(const kind of['outfit','hair']){const sel=hero?.[kind];if(!sel?.id)continue;const p=await prepare(kind,sel.id,body);if(!p||!isCurrent())continue;
   const m=new THREE.SkinnedMesh(p.geom,p.mat.clone());m.frustumCulled=false;m.castShadow=true;m.receiveShadow=true;m.position.copy(body.position);m.quaternion.copy(body.quaternion);m.scale.copy(body.scale);body.parent.add(m);m.bind(body.skeleton,body.bindMatrix);
-  if(sel.color)applyLook(m,{kind:'tint',color:sel.color,amount:.9});root.userData.heroPieces.push(m);
+  if(p.gen)m.material.color.set(sel.color||m.material.color);else if(sel.color)applyLook(m,{kind:'tint',color:sel.color,amount:.9});root.userData.heroPieces.push(m);
+  if(p.under){const u=new THREE.SkinnedMesh(p.under.geom,new THREE.MeshStandardMaterial({color:p.under.color,roughness:.9,side:THREE.DoubleSide}));u.frustumCulled=false;u.position.copy(body.position);u.quaternion.copy(body.quaternion);u.scale.copy(body.scale);body.parent.add(u);u.bind(body.skeleton,body.bindMatrix);root.userData.heroPieces.push(u)}
   if(p.cap)for(const cgm of p.cap.geoms){const c=new THREE.SkinnedMesh(cgm,new THREE.MeshStandardMaterial({color:sel.color||p.cap.color,roughness:.8,side:THREE.DoubleSide}));c.frustumCulled=false;c.position.copy(body.position);c.quaternion.copy(body.quaternion);c.scale.copy(body.scale);body.parent.add(c);c.bind(body.skeleton,body.bindMatrix);root.userData.heroPieces.push(c)}}}
