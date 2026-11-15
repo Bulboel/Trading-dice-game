@@ -2,18 +2,19 @@
 import * as THREE from 'three';
 import { orientBoardModel } from './model-facing.js?v=20261103-v73';
 import { createEmberlands } from './ember-v239.js?v=20261208-v260';
-import { applyLook } from './variant-look.js?v=20261226-v300';
+import { attachHeroParts } from './hero-parts.js?v=20261226-v301';
+import { applyLook } from './variant-look.js?v=20261226-v301';
 import { createLake } from './lake-v241.js?v=20261122-v241';
 import { createSkyIsland } from './sky-v231.js?v=20261128-v247';
 import { createWindHighlands } from './wind-v232.js?v=20261123-v242';
 import { createWoodland } from './woodland-v238.js?v=20261119-v238';
 import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20261125-v244';
-import { createFrostRoad } from './frost-v240.js?v=20261226-v300';
+import { createFrostRoad } from './frost-v240.js?v=20261226-v301';
 import { createCity } from './city-v246.js?v=20261128-v247';
-import { createCave } from './cave-v246.js?v=20261226-v300';
+import { createCave } from './cave-v246.js?v=20261226-v301';
 import { createAutumn } from './autumn-v253.js?v=20261202-v253';
 import { createNoel } from './noel-v253.js?v=20261202-v253';
-import { createElementWheel } from './element-wheel-v252.js?v=20261226-v300';
+import { createElementWheel } from './element-wheel-v252.js?v=20261226-v301';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -476,7 +477,7 @@ async function attachCreatureModel(g,k){
  try{const info=k.hero?await game.heroModelInfo(k.hero):await game.modelInfo(mi);if(!info?.glb)return;if(info.parts?.length>1){await attachCompositeModel(g,k,info);return}const url='assets/'+info.glb+(mi===37?'?revision=kala-idle-dc1986a2':mi===36?'?revision=eberien-idle-14d7089a':'');
  if(!modelCache.has(url))modelCache.set(url,(async()=>{const exists=await fetch(url,{method:'HEAD'});if(!exists.ok)return null;const tools=await getModelTools();const gltf=await tools.loader.loadAsync(url);return{gltf,clone:tools.clone}})().catch(()=>null));
  const asset=await modelCache.get(url);if(!asset||!g.parent||g.userData.modelId!==mi)return;
- const root=asset.clone(asset.gltf.scene),holder=new THREE.Group();holder.userData.imported=true;if(k.hero)applyLook(root,game.heroLook(k.hero));else if(game.monsters[mi]?.variant)applyLook(root,game.monsters[mi].variant);g.userData.idleModelYaw=info.boardYaw??0;holder.rotation.y=g.userData.idleModelYaw;holder.add(root);root.updateMatrixWorld(true);const bounds=new THREE.Box3().setFromObject(root),size=bounds.getSize(new THREE.Vector3());if(!Number.isFinite(size.y)||size.y<=0)return;
+ const root=asset.clone(asset.gltf.scene),holder=new THREE.Group();holder.userData.imported=true;if(k.hero){applyLook(root,game.heroLook(k.hero));attachHeroParts(root,k.hero).catch(()=>null)}else if(game.monsters[mi]?.variant)applyLook(root,game.monsters[mi].variant);g.userData.idleModelYaw=info.boardYaw??0;holder.rotation.y=g.userData.idleModelYaw;holder.add(root);root.updateMatrixWorld(true);const bounds=new THREE.Box3().setFromObject(root),size=bounds.getSize(new THREE.Vector3());if(!Number.isFinite(size.y)||size.y<=0)return;
  const scale=.9*(info.boardHeight?info.boardHeight/size.y:Math.min(.95/size.y,.78/Math.max(size.x,.01),.78/Math.max(size.z,.01)))*(game.monsters[mi]?.boardScale||1);root.scale.setScalar(scale);/* v256 — boardScale : version plus grosse d'un même modèle */root.position.set(-(bounds.min.x+bounds.max.x)*scale/2,-bounds.min.y*scale+.1,-(bounds.min.z+bounds.max.z)*scale/2);if(mi===37){/* Le modèle est déjà centré dans root.position avant rotation. Ne pas le décaler une seconde fois. */holder.position.z=.42;}
  root.traverse(o=>{o.userData.imported=true;if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});g.children.forEach((o,i)=>{if(i>0)o.visible=false});if(info.gesture){const gest=new THREE.Group();gest.userData.imported=true;gest.add(holder);g.add(gest);g.userData.gest={node:gest,kind:info.gesture,phase:Math.random()*6}}else g.add(holder);g.userData.model=holder;
  g.userData.animationInfo=info;g.userData.modelRoot=root;if(game.monsters[mi]?.shiny)addCrackle(g);
