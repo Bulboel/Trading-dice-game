@@ -3,23 +3,65 @@
    copient les poids du sommet du corps le plus proche. La couleur se change avec la teinte du jeu (variant-look.js, kind « tint »). */
 import * as THREE from 'three';
 import {GLTFLoader} from './vendor/three/examples/jsm/loaders/GLTFLoader.js';
-import {applyLook} from './variant-look.js?v=20270102-v308';
+import {applyLook} from './variant-look.js?v=20270102-v309';
 export const PARTS={
- hair:{court:{label:'Courte',file:'hero-cheveux-court.glb',s:.9,xs:.88,zs:1,rx:-.32,x:0,y:1.525,z:-.03,cap:'#2f8f2f'},
+ hair:{court:{label:'Courte',file:'hero-cheveux-court.glb',s:.84,xs:.85,zs:.96,rx:-.32,x:0,y:1.52,z:-.03,cap:'#2f8f2f'},
        longs:{label:'Longue',file:'hero-cheveux-longs.glb',s:.4,xs:1.02,zs:1,rx:-.24,x:0,y:1.465,z:-.025,cap:'#5a3a22'}},
- outfit:{tenue1:{label:'Feuilles',under:'tunique',underColor:'#4f7a33',file:'hero-tenue1.glb',s:.47,xs:1.08,ys:1.1,zs:1.05,x:0,y:.69,z:.05},
-         tunique:{label:'Combinaison',gen:'tunique',color:'#3f6fc4'},
-         tee:{label:'Tee-shirt',gen:'tee',color:'#c4553f'}}};
-/* Vêtements générés : copie de la peau du corps (mêmes sommets, mêmes poids) légèrement gonflée, découpée par os. Rien à modéliser. */
-const NOT=/^(Head|HeadTop_End|LeftForeArm|RightForeArm|LeftLeg|RightLeg|LeftFoot|RightFoot|LeftToeBase|RightToeBase|Bone_\d+)$|Hand/;
-const GEN={
- tunique:{ok:(bone,x,y)=>!NOT.test(bone)&&y>.56&&y<1.13&&(!/^(Left|Right)Arm$/.test(bone)||Math.abs(x)<.27),off:.011},
- tee:{ok:(bone,x,y)=>!NOT.test(bone)&&y>.78&&y<1.13&&(!/^(Left|Right)Arm$/.test(bone)||Math.abs(x)<.27)&&!/UpLeg$/.test(bone),off:.011}};
-function generated(kind,body){const bg=body.geometry,pa=bg.attributes.position,na=bg.attributes.normal,bi=bg.attributes.skinIndex,bw=bg.attributes.skinWeight,bn=body.skeleton.bones,idx=bg.index.array,rule=GEN[kind],n=pa.count,keep=new Uint8Array(n);
- for(let v=0;v<n;v++){let bj=0,m=-1;for(let a=0;a<4;a++){const w=bw.getComponent(v,a);if(w>m){m=w;bj=bi.getComponent(v,a)}}keep[v]=rule.ok((bn[bj]?.name||'').replace(/^mixamorig:?/,''),pa.getX(v),pa.getY(v))?1:0}
- const out=[];for(let t=0;t<idx.length;t+=3){const a=idx[t],b=idx[t+1],c=idx[t+2];if(keep[a]&&keep[b]&&keep[c])out.push(a,b,c)}
- const g=new THREE.BufferGeometry(),pos=new Float32Array(n*3);for(let v=0;v<n;v++){pos[v*3]=pa.getX(v)+na.getX(v)*rule.off;pos[v*3+1]=pa.getY(v)+na.getY(v)*rule.off;pos[v*3+2]=pa.getZ(v)+na.getZ(v)*rule.off}
- g.setAttribute('position',new THREE.BufferAttribute(pos,3));g.setAttribute('normal',na.clone());g.setAttribute('skinIndex',bi.clone());g.setAttribute('skinWeight',bw.clone());g.setIndex(out);g.computeBoundingSphere();return g}
+ top:{rond:{label:'Tee-shirt col rond',gen:'tee',neck:'round',tex:'knit',color:'#c4553f'},
+      v:{label:'Tee-shirt col en V',gen:'tee',neck:'v',tex:'knit',color:'#3f8fc4'},
+      debardeur:{label:'Débardeur',gen:'tank',neck:'round',tex:'knit',color:'#e0b25c'}},
+ bottom:{jean:{label:'Short en jean',gen:'short',tex:'denim',color:'#3d5a8c'},
+         tissu:{label:'Short en tissu',gen:'short',tex:'cloth',color:'#6a7a3a'}},
+ suit:{uni:{label:'Combinaison unie',gen:'suit',tex:'knit',color:'#3f6fc4'},
+       rayures:{label:'Combinaison rayée',gen:'suit',tex:'stripes',color:'#c4553f'},
+       pois:{label:'Combinaison à pois',gen:'suit',tex:'dots',color:'#8a5cc8'},
+       carreaux:{label:'Combinaison à carreaux',gen:'suit',tex:'checks',color:'#2f9e6a'},
+       camo:{label:'Combinaison camouflage',gen:'suit',tex:'camo',color:'#6a7a3a'}}};
+/* ——— Vêtements générés ———
+   Peau du corps (mêmes sommets, mêmes poids) découpée en coupes nettes dans la pose de référence : chaque triangle est coupé
+   le long de la ligne exacte (interpolation), puis gonflé le long des normales. Cols, manches et ourlets sont des champs de distance. */
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),NECK_Y=1.118;
+function neckField(neck,x,y,z,wide){/* >0 : tissu ; <0 : ouverture du col (devant plus profond que derrière) */
+ const front=clamp((z+.03)/.1,0,1),rx=wide?.115:.088;
+ if(neck==='v'){const depth=.11*front+.012,lim=NECK_Y-depth*clamp(1-Math.abs(x)/.098,0,1);return Math.abs(x)<.098?lim-y:1}
+ const ry=(.02+.058*front)*(wide?1.25:1),g=(x/rx)**2+((y-NECK_Y)/ry)**2-1;return g*.05}
+const FIELDS={
+ tee:o=>(x,y,z)=>Math.min(NECK_Y-y,.27-Math.abs(x),y-.8,neckField(o.neck,x,y,z,false)),
+ tank:o=>(x,y,z)=>Math.min(NECK_Y-y,.172-Math.abs(x),y-.8,neckField('round',x,y,z,true)),
+ short:()=>(x,y,z)=>Math.min(.88-y,y-.53,.245-Math.abs(x)),
+ suit:()=>(x,y,z)=>Math.min(NECK_Y-y,.39-Math.abs(x),y-.14,neckField('round',x,y,z,false)+.02)};
+const OFFSET={tee:.013,tank:.013,short:.009,suit:.01};
+function genGeometry(def,body){const bg=body.geometry,pa=bg.attributes.position,na=bg.attributes.normal,bi=bg.attributes.skinIndex,bw=bg.attributes.skinWeight,idx=bg.index.array,n=pa.count,f=FIELDS[def.gen](def),off=OFFSET[def.gen],fv=new Float32Array(n);
+ /* le champ est évalué sur les sommets ; la jambe ne doit pas capter l'avant-bras : (suit) on reste dans |x|<.26 sous la taille */
+ for(let v=0;v<n;v++)fv[v]=f(pa.getX(v),pa.getY(v),pa.getZ(v));
+ const P=[],N=[],SI=[],SW=[],UV=[];
+ const push=(v,w=null)=>{/* sommet d'origine v, ou intersection (a,b,t) */};
+ const vert=(a,b,t)=>{const lerp=(A,B)=>A+(B-A)*t,hi=t<.5?a:b;let x,y,z,nx,ny,nz;
+  x=lerp(pa.getX(a),pa.getX(b));y=lerp(pa.getY(a),pa.getY(b));z=lerp(pa.getZ(a),pa.getZ(b));nx=lerp(na.getX(a),na.getX(b));ny=lerp(na.getY(a),na.getY(b));nz=lerp(na.getZ(a),na.getZ(b));
+  const L=Math.hypot(nx,ny,nz)||1;nx/=L;ny/=L;nz/=L;P.push(x+nx*off,y+ny*off,z+nz*off);N.push(nx,ny,nz);
+  const sgn=clamp(x/.05,-1,1),k=11,u=k*(x+.8*z*sgn),vv=k*y;UV.push(u,vv);
+  const src=fv[a]>=fv[b]?a:b;for(let q=0;q<4;q++){SI.push(bi.getComponent(src,q));SW.push(bw.getComponent(src,q))}};
+ for(let t=0;t<idx.length;t+=3){const ia=idx[t],ib=idx[t+1],ic=idx[t+2],tri=[ia,ib,ic],fs=[fv[ia],fv[ib],fv[ic]];
+  if(fs[0]<0&&fs[1]<0&&fs[2]<0)continue;
+  const poly=[];for(let k=0;k<3;k++){const a=tri[k],b=tri[(k+1)%3],fa=fs[k],fb=fs[(k+1)%3];
+   if(fa>=0)poly.push([a,a,0]);if((fa>=0)!==(fb>=0)){const tt=fa/(fa-fb);poly.push([a,b,tt])}}
+  for(let k=1;k+1<poly.length;k++)for(const q of [poly[0],poly[k],poly[k+1]])vert(q[0],q[1],q[2])}
+ const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(P,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(N,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(UV,2));
+ g.setAttribute('skinIndex',new THREE.Uint16BufferAttribute(SI,4));g.setAttribute('skinWeight',new THREE.Float32BufferAttribute(SW,4));g.computeBoundingSphere();return g}
+/* Textures procédurales (motif clair × couleur choisie) */
+const texCache=new Map();
+function fabricTexture(kind){if(texCache.has(kind))return texCache.get(kind);const S=128,c=document.createElement('canvas');c.width=c.height=S;const g=c.getContext('2d'),sh=v=>{const q=Math.round(clamp(v,0,1)*255);return `rgb(${q},${q},${q})`};
+ const noise=a=>{for(let i=0;i<S*S/5;i++){g.fillStyle=`rgba(0,0,0,${Math.random()*a})`;g.fillRect(Math.random()*S,Math.random()*S,1,1)}};
+ g.fillStyle=sh(.95);g.fillRect(0,0,S,S);
+ if(kind==='knit'||kind==='stripes'||kind==='dots'||kind==='checks'||kind==='camo'){for(let x=0;x<S;x+=3){g.fillStyle='rgba(0,0,0,.09)';g.fillRect(x,0,1,S)}for(let y=0;y<S;y+=3){g.fillStyle='rgba(255,255,255,.07)';g.fillRect(0,y,S,1)}}
+ if(kind==='stripes'){for(let y=0;y<S;y+=32){g.fillStyle=sh(.52);g.fillRect(0,y,S,16)}}
+ if(kind==='dots'){g.fillStyle=sh(.5);for(let y=0;y<4;y++)for(let x=0;x<4;x++){g.beginPath();g.arc(x*32+(y%2?16:0)+8,y*32+16,7,0,7);g.fill()}}
+ if(kind==='checks'){g.fillStyle='rgba(0,0,0,.4)';for(let k=0;k<S;k+=32){g.fillRect(k,0,14,S);g.fillRect(0,k,S,14)}}
+ if(kind==='camo'){const tones=[.6,.78,.45];for(let i=0;i<46;i++){g.fillStyle=sh(tones[i%3]);g.beginPath();g.ellipse(Math.random()*S,Math.random()*S,10+Math.random()*16,6+Math.random()*10,Math.random()*3,0,7);g.fill();g.ellipse}}
+ if(kind==='denim'){for(let y=0;y<S;y++)for(let x=0;x<S;x+=1){const v=.8+.14*Math.sin((x+y)*Math.PI/2)+.04*Math.sin(x*1.7);g.fillStyle=sh(v);g.fillRect(x,y,1,1)}noise(.22)}
+ if(kind==='cloth'){for(let y=0;y<S;y+=4){for(let x=0;x<S;x+=4){g.fillStyle=sh(((x+y)/4)%2?.82:.96);g.fillRect(x,y,4,4)}}noise(.12)}
+ noise(.07);const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=4;texCache.set(kind,t);return t}
+function fabricMaterial(def,color){const t=fabricTexture(def.tex);return new THREE.MeshStandardMaterial({color:color||def.color,map:t,bumpMap:t,bumpScale:def.tex==='denim'?2.2:1.2,roughness:def.tex==='denim'?.9:.82,metalness:0,side:THREE.DoubleSide})}
 const loader=new GLTFLoader(),prepared=new Map();
 function bodyMesh(root){let m=null;root.traverse(o=>{if(!m&&o.isSkinnedMesh)m=o});return m}
 function skin(geom,body,torso){const pos=geom.attributes.position,n=pos.count,bg=body.geometry,bp=bg.attributes.position,bi=bg.attributes.skinIndex,bw=bg.attributes.skinWeight,idx=new Uint16Array(n*4),wt=new Float32Array(n*4);
@@ -33,18 +75,18 @@ function skin(geom,body,torso){const pos=geom.attributes.position,n=pos.count,bg
   geom.setAttribute('skinIndex',new THREE.Uint16BufferAttribute(idx,4));geom.setAttribute('skinWeight',new THREE.Float32BufferAttribute(wt,4));
 }
 async function prepare(kind,id,body){const def=PARTS[kind]?.[id];if(!def)return null;const key=kind+'/'+id;if(prepared.has(key))return prepared.get(key);
- const job=(async()=>{if(def.gen)return{geom:generated(def.gen,body),mat:new THREE.MeshStandardMaterial({color:def.color,roughness:.85,side:THREE.DoubleSide}),gen:true};const gltf=await loader.loadAsync('assets/models-web/'+def.file);let mesh=null;gltf.scene.traverse(o=>{if(!mesh&&o.isMesh)mesh=o});if(!mesh)return null;
+ const job=(async()=>{if(def.gen)return{geom:genGeometry(def,body),def,gen:true};const gltf=await loader.loadAsync('assets/models-web/'+def.file);let mesh=null;gltf.scene.traverse(o=>{if(!mesh&&o.isMesh)mesh=o});if(!mesh)return null;
   mesh.updateWorldMatrix(true,false);const geom=mesh.geometry.clone();geom.applyMatrix4(mesh.matrixWorld);geom.scale(def.s*(def.xs||1),def.s*(def.ys||1),def.s*(def.zs||1));if(def.rx)geom.rotateX(def.rx);geom.translate(def.x,def.y,def.z);geom.computeBoundingSphere();geom.computeBoundingBox();
   skin(geom,body,def.torso);
   const mat=mesh.material;if(mat.map){mat.map.colorSpace=THREE.SRGBColorSpace}mat.side=THREE.DoubleSide;
   let cap=null;if(def.cap){const mk=(r,ps,pl,tl,ts=0)=>{const g=new THREE.SphereGeometry(r,28,16,ps,pl,ts,tl);g.translate(0,1.45,-.012);skin(g,body);return g};/* calotte : dessus du crâne + arrière du crâne, sans jamais toucher les oreilles (côtés) */cap={geoms:[mk(.254,0,Math.PI*2,Math.PI*.42),mk(.256,Math.PI*1.22,Math.PI*.56,Math.PI*.78,Math.PI*.3)],color:def.cap}}
-  const under=def.under?{geom:generated(def.under,body),color:def.underColor}:null;
+  const under=null;
   return{geom,mat,cap,under}})().catch(()=>null);prepared.set(key,job);return job}
 /* Habille `root` (clone du modèle neutre) avec la coiffure et la tenue de `hero` ({hair:{id,color},outfit:{id,color}}). Remplace les pièces précédentes. */
 export async function attachHeroParts(root,hero,isCurrent=()=>true){const body=bodyMesh(root);if(!body)return;
  (root.userData.heroPieces||[]).forEach(m=>{m.parent?.remove(m)});root.userData.heroPieces=[];
- for(const kind of['outfit','hair']){const sel=hero?.[kind];if(!sel?.id)continue;const p=await prepare(kind,sel.id,body);if(!p||!isCurrent())continue;
-  const m=new THREE.SkinnedMesh(p.geom,p.mat.clone());m.frustumCulled=false;m.castShadow=true;m.receiveShadow=true;m.position.copy(body.position);m.quaternion.copy(body.quaternion);m.scale.copy(body.scale);body.parent.add(m);m.bind(body.skeleton,body.bindMatrix);
-  if(p.gen)m.material.color.set(sel.color||m.material.color);else if(sel.color)applyLook(m,{kind:'tint',color:sel.color,amount:.9});root.userData.heroPieces.push(m);
+ for(const kind of['suit','top','bottom','hair']){const sel=hero?.[kind];if(!sel?.id)continue;if((kind==='top'||kind==='bottom')&&hero?.suit?.id)continue;const p=await prepare(kind,sel.id,body);if(!p||!isCurrent())continue;
+  const m=new THREE.SkinnedMesh(p.geom,p.gen?fabricMaterial(p.def,sel.color):p.mat.clone());m.frustumCulled=false;m.castShadow=true;m.receiveShadow=true;m.position.copy(body.position);m.quaternion.copy(body.quaternion);m.scale.copy(body.scale);body.parent.add(m);m.bind(body.skeleton,body.bindMatrix);
+  if(p.gen){}else if(sel.color)applyLook(m,{kind:'tint',color:sel.color,amount:.9});root.userData.heroPieces.push(m);
   if(p.under){const u=new THREE.SkinnedMesh(p.under.geom,new THREE.MeshStandardMaterial({color:p.under.color,roughness:.9,side:THREE.DoubleSide}));u.frustumCulled=false;u.position.copy(body.position);u.quaternion.copy(body.quaternion);u.scale.copy(body.scale);body.parent.add(u);u.bind(body.skeleton,body.bindMatrix);root.userData.heroPieces.push(u)}
   if(p.cap)for(const cgm of p.cap.geoms){const c=new THREE.SkinnedMesh(cgm,new THREE.MeshStandardMaterial({color:sel.color||p.cap.color,roughness:.8,side:THREE.DoubleSide}));c.frustumCulled=false;c.position.copy(body.position);c.quaternion.copy(body.quaternion);c.scale.copy(body.scale);body.parent.add(c);c.bind(body.skeleton,body.bindMatrix);root.userData.heroPieces.push(c)}}}
