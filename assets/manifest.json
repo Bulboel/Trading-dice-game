@@ -738,6 +738,17 @@
         "bebementaire-terre",
         "bebementaire-foudre"
       ]
+    },
+    "heros": {
+      "glb": "models-web/Modele neutre idle 1.glb",
+      "nom": "Héros",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "animations": {
+        "spell": "characters/hero-spell1.glb",
+        "victory": "characters/hero-victory1.glb",
+        "walk": "characters/hero-walk1.glb"
+      }
     }
   },
   "terrains": {
