@@ -3,7 +3,7 @@
    copient les poids du sommet du corps le plus proche. La couleur se change avec la teinte du jeu (variant-look.js, kind « tint »). */
 import * as THREE from 'three';
 import {GLTFLoader} from './vendor/three/examples/jsm/loaders/GLTFLoader.js';
-import {applyLook} from './variant-look.js?v=20261226-v301';
+import {applyLook} from './variant-look.js?v=20261227-v302';
 export const PARTS={
  hair:{court:{label:'Courte',file:'hero-cheveux-court.glb',s:.6,x:0,y:1.47,z:0,head:true},
        longs:{label:'Longue',file:'hero-cheveux-longs.glb',s:.55,x:0,y:1.3,z:0,head:true}},
