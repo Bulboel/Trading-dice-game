@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v298',title:'Le héros monte en niveau',items:['Votre héros est de niveau 1, puis passe niveau 2 dès le niveau 20 de joueur, 3 au niveau 30, 4 au niveau 40 et 5 au niveau 50 (maximum).']},
  {id:'v297',title:'Votre héros',items:['Nouveau : créez votre héros (nom, apparence, élément définitif). Il vous attend au début de chaque partie contre l’IA, dans votre zone à protéger, hors deck.','Sa dalle de départ est de force 0 et gagne +1 tous les 10 niveaux de joueur (6 au maximum). Il avance comme les autres créatures, grâce à vos dalles ; s’il est vaincu, il ne revient pas et compte comme une créature vaincue.']},
  {id:'v296',title:'Éclats élémentaires plus discrets',items:['Dans l’animation de découverte, le modèle des dés élémentaires de niveau 1 (Éclat) est réduit de moitié.']},
  {id:'v295',title:'Premiers pas visibles en entier',items:['Sur téléphone, tant que le guide « Premiers pas » est affiché, l’accueil défile et garde une grande marge en bas : la barre du système ne cache plus le bas du cadre.']},
