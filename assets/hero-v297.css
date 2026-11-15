@@ -21,3 +21,24 @@
 #hero-dialog .hero-actions .hero-go{background:linear-gradient(140deg,#e2c477,#a9853c);color:#1b1407;border-color:#f2dc9e}
 #hero-dialog button:focus-visible,#hero-dialog input:focus-visible{outline:2px solid #ffe6a6;outline-offset:2px}
 #portal .opt-hero-btn{margin-top:8px;padding:10px 16px;border-radius:10px;border:1px solid #f2dc9e;background:linear-gradient(140deg,#e2c477,#a9853c);color:#1b1407;font:700 14px system-ui;cursor:pointer}
+/* v300 — aperçu 3D, palette, animations */
+#hero-dialog .hero-stage{position:relative;height:min(36dvh,260px);margin:0 0 10px;border-radius:14px;border:1px solid #baa66e44;background:radial-gradient(ellipse at 50% 85%,#3a5a46 0,#17261d 60%,#0f1b15)}
+#hero-dialog .hero-stage canvas{position:absolute;inset:0;width:100%;height:100%;border-radius:14px}
+#hero-dialog .hero-loading{position:absolute;inset:0;display:grid;place-items:center;color:#c9b98a;font-size:13px}
+#hero-dialog .hero-colors{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+#hero-dialog .hero-sw{width:32px;height:32px;border-radius:50%;border:2px solid #0008;background:var(--c);cursor:pointer;box-shadow:0 0 0 1px #ffffff33}
+#hero-dialog .hero-sw[aria-pressed="true"]{box-shadow:0 0 0 2px #ffe6a6,0 0 10px #ffe6a699}
+#hero-dialog .hero-pick{position:relative;display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 10px 0 4px;border-radius:999px;border:1px solid #baa66e66;background:#17291f;color:#e9e0c6;font:600 12px system-ui;cursor:pointer}
+#hero-dialog .hero-pick input{width:24px;height:24px;padding:0;border:0;border-radius:50%;background:none;cursor:pointer}
+#hero-dialog .hero-anims{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#hero-dialog .hero-anims label{display:flex;flex-direction:column;gap:3px;font:600 12px system-ui;color:#f1e3b8}
+#hero-dialog .hero-anims select{padding:8px;border-radius:8px;border:1px solid #baa66e66;background:#0f1d18;color:#fff;font:14px system-ui}
+#hero-dialog .hero-el:disabled{opacity:.5;cursor:default}
+/* Avatar du héros dans la pastille de niveau */
+#portal .portal-level.has-avatar .pl-ring{position:relative;overflow:visible}
+#portal .portal-level .pl-avatar{position:absolute;inset:3px;width:calc(100% - 6px);height:calc(100% - 6px);border-radius:50%;object-fit:cover;object-position:center top;background:radial-gradient(circle at 50% 30%,#4a6a52,#17261d);z-index:0}
+#portal .portal-level.has-avatar .pl-ring b{position:absolute;right:-5px;bottom:-5px;z-index:2;display:grid;place-items:center;min-width:17px;height:17px;padding:0 3px;border-radius:9px;background:#1d2a24;border:1px solid #e7cd8a;color:#fbe9b3;font:700 10px/1 system-ui}
+body.portal-open[data-portal-view="home"] #portal .portal-head .portal-level.has-avatar .pl-ring{width:46px;height:46px}
+@media(max-width:700px){body.portal-open[data-portal-view="home"] #portal .portal-head .portal-level.has-avatar{width:52px;height:52px}body.portal-open[data-portal-view="home"] #portal .portal-head .portal-level.has-avatar .pl-ring{width:46px;height:46px}body.portal-open:not([data-portal-view="home"]) #portal .portal-head .portal-level.has-avatar .pl-ring{width:30px;height:30px}}
+#hero-dialog .hero-anims{grid-template-columns:repeat(2,minmax(0,1fr))}
+#hero-dialog .hero-anims select{width:100%;min-width:0;box-sizing:border-box}
