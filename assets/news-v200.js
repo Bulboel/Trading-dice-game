@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v305',title:'Héros : dernières retouches',items:['Coiffures : calotte de la couleur des cheveux à l’arrière du crâne, cheveux courts agrandis.','Tenues : Feuilles abaissée, Mage reculée, Aventurier avancée pour ne plus laisser voir le torse.']},
  {id:'v304',title:'Héros : réglages fins et avatar au choix',items:['Cheveux longs deux fois plus petits, cheveux courts remontés, tenues Feuilles (plus grande, bretelles sur les épaules), Aventurier (plus petite, plus basse) et Mage (centrée, sans déformation) réajustées.','Options › Joueur › Avatar du menu : affichez dans votre pastille de niveau votre héros ou n’importe quel dé de votre collection.']},
  {id:'v303',title:'Héros mieux habillé, nouvel éclair',items:['Coiffures et tenues du héros réajustées : tailles, positions et épaisseur (les cheveux épousent maintenant la tête).','Nouvelle icône d’éclair pour l’effet de dé bonus « Éclair ».']},
  {id:'v302',title:'Premiers pas du héros et de l’Histoire',items:['Un nouveau joueur commence par créer son avatar (création obligatoire) ; les autres peuvent toujours le faire ou le modifier depuis Options › Joueur.','Histoire : la victoire n’est pas obligatoire dans la première partie du chapitre 1 ; même en cas de défaite, on passe à la suite.','Histoire : avant chaque duel, le jeu propose de confirmer ou de changer le deck utilisé.']},
