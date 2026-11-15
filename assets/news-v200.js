@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v301',title:'Coiffures et tenues du héros',items:['Choisissez la coiffure (courte ou longue) et la tenue (feuilles, mage ou aventurier) de votre héros, et changez leur couleur avec la palette complète, ou gardez la couleur d’origine.','Les pièces suivent les animations du héros : aperçu 3D en direct dans la création, sur le plateau, dans sa fiche et dans le zoom.']},
  {id:'v300',title:'Héros : peau, yeux, animations et avatar',items:['Le héros utilise désormais le modèle neutre : couleur de peau et des yeux au choix (palette complète), animations d’attente, de marche, d’attaque et de victoire au choix, avec aperçu 3D en direct.','Modifiable depuis Options › Joueur › Modifier l’apparence (l’élément reste définitif).','Votre avatar apparaît dans la pastille de niveau du menu principal.']},
  {id:'v299',title:'Héros : accès depuis les Options, Velmarys corrigé',items:['Vous n’avez pas encore de héros ? Options › Joueur › « Votre héros » : bouton « Créer mon héros ». La fenêtre de création se propose aussi d’elle-même sur l’accueil.','Velmarys est bien un homme : sa fiche et une scène de l’Histoire sont corrigées.']},
  {id:'v298',title:'Le héros monte en niveau',items:['Votre héros est de niveau 1, puis passe niveau 2 dès le niveau 20 de joueur, 3 au niveau 30, 4 au niveau 40 et 5 au niveau 50 (maximum).']},

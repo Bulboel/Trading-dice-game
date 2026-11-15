@@ -20,7 +20,10 @@ QUALITY_BY_FILE = {'Shauntea idle.glb': 62}
 # Animation d'attente très longue (20 s, 78 os) : rééchantillonnage des images clés (aucune perte visible, tolérance 0,003).
 RESAMPLE = {'Shauntea idle.glb'}
 # Modèles hors manifeste (objets portés…) : nom du fichier source → nom publié dans assets/models-web/.
-EXTRA = {"La bague de l'apprentie équipement.glb": 'bague-chanceuse.glb'}
+EXTRA = {"La bague de l'apprentie équipement.glb": 'bague-chanceuse.glb',
+         # v301 — coiffures et tenues du héros (pièces séparées, habillées sur le squelette du modèle neutre au chargement)
+         "Tenue 1.glb": 'hero-tenue1.glb', "Tenue 2.glb": 'hero-tenue2.glb', "Tenue 4 haut seulement.glb": 'hero-tenue4.glb',
+         "coupe cheveux court.glb": 'hero-cheveux-court.glb', "Coupe cheveux chignon.glb": 'hero-cheveux-longs.glb'}
 
 def main():
     manifest_path = ASSETS / 'manifest.json'
