@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v308',title:'Héros : vêtements simples',items:['Tenue Aventurier retirée. Nouveaux vêtements simples créés directement sur le corps du héros : Combinaison et Tee-shirt, de la couleur de votre choix.','Tenue Feuilles : une sous-couche verte évite de voir la peau entre le haut et la jupe.','Coiffures : l’arrière de la ligne de cheveux est redescendu (courte et longue).']},
  {id:'v307',title:'Héros : coiffures et tenues retouchées',items:['Tenue Mage retirée. Tenue Aventurier mieux ajustée au torse, tenue Feuilles plus basse et plus avancée.','Cheveux courts redressés, et calotte de remplissage refaite : dessus et arrière du crâne, sans toucher les oreilles.']},
  {id:'v306',title:'Parcours de bienvenue et vrais dés',items:['Nouveau joueur : tutoriel (facultatif), création du héros, boutique avec ses 50 Bubulles, message « Tu as assez de dés pour jouer ! », puis menu Jouer avec le bouton « Deck optimal » mis en avant. La carte « Premiers pas » disparaît.','« Deck optimal » est maintenant juste sous le choix du deck dans le menu Jouer.','Nouveau son de dés qui roulent : de vrais claquements de dés en plastique à la sortie de la bourse et au lancer.']},
  {id:'v305',title:'Héros : dernières retouches',items:['Coiffures : calotte de la couleur des cheveux à l’arrière du crâne, cheveux courts agrandis.','Tenues : Feuilles abaissée, Mage reculée, Aventurier avancée pour ne plus laisser voir le torse.']},
