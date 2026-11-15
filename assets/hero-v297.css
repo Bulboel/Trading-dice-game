@@ -1,0 +1,22 @@
+#hero-dialog{width:min(560px,calc(100vw - 20px));max-height:calc(100dvh - 20px);overflow:auto;padding:18px 18px 14px;border:1px solid #e7cd8a99;border-radius:18px;background:linear-gradient(160deg,#21392d,#101e18);color:#efe7cf;font:14px/1.45 system-ui,sans-serif;box-shadow:0 14px 44px #000a}
+#hero-dialog::backdrop{background:#000b}
+#hero-dialog h2{margin:0 0 6px;font:700 22px/1.2 "Cinzel",Georgia,serif;color:#f6e2a3;text-align:center}
+#hero-dialog .hero-intro{margin:0 0 12px;color:#d8ceb0;font-size:13px}
+#hero-dialog .hero-name{display:block;margin:0 0 10px;font-weight:600;color:#f1e3b8}
+#hero-dialog .hero-name input{display:block;box-sizing:border-box;width:100%;margin-top:4px;padding:10px 12px;border-radius:10px;border:1px solid #baa66e88;background:#0f1d18;color:#fff;font:600 16px system-ui}
+#hero-dialog fieldset{margin:0 0 10px;padding:0;border:0}
+#hero-dialog legend{padding:0 0 6px;font-weight:700;color:#f1e3b8}
+#hero-dialog legend em{font-weight:400;color:#c9b98a}
+#hero-dialog .hero-looks{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+#hero-dialog .hero-look{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;border-radius:12px;border:2px solid #baa66e44;background:#17291f;color:#e9e0c6;cursor:pointer;font:600 11px/1.15 system-ui}
+#hero-dialog .hero-look span{display:block;width:100%;aspect-ratio:1;overflow:hidden;border-radius:50%}
+#hero-dialog .hero-look span *{width:100%!important;height:100%!important;object-fit:cover;border-radius:50%!important}
+#hero-dialog .hero-look[aria-pressed="true"]{border-color:#ffe6a6;box-shadow:0 0 14px #e2c47766;background:#223b2c}
+#hero-dialog .hero-els{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+#hero-dialog .hero-el{padding:9px 6px;border-radius:10px;border:2px solid color-mix(in srgb,var(--c) 40%,transparent);background:#17291f;color:#efe7cf;font:700 13px system-ui;cursor:pointer}
+#hero-dialog .hero-el b{color:var(--c)}
+#hero-dialog .hero-el[aria-pressed="true"]{border-color:var(--c);background:color-mix(in srgb,var(--c) 22%,#17291f);box-shadow:0 0 12px color-mix(in srgb,var(--c) 50%,transparent)}
+#hero-dialog .hero-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+#hero-dialog .hero-actions button{min-height:42px;padding:8px 16px;border-radius:10px;border:1px solid #baa66e66;background:#17291f;color:#e9e0c6;font:600 14px system-ui;cursor:pointer}
+#hero-dialog .hero-actions .hero-go{background:linear-gradient(140deg,#e2c477,#a9853c);color:#1b1407;border-color:#f2dc9e}
+#hero-dialog button:focus-visible,#hero-dialog input:focus-visible{outline:2px solid #ffe6a6;outline-offset:2px}
