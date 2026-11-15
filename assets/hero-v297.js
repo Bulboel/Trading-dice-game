@@ -10,7 +10,7 @@ const g=()=>window.hackeniaGame,P=()=>window.HackeniaPortal,esc=s=>String(s).rep
 let dlg=null,stage=null;
 const later=()=>{try{sessionStorage.setItem('hackenia-hero-later','1')}catch{}};
 const skipped=()=>{try{return sessionStorage.getItem('hackenia-hero-later')==='1'}catch{return false}};
-function open(edit){const prof=P()?.profile?.();if(dlg||!prof)return;const cur=prof.hero||null;edit=!!edit&&!!cur;if(!edit&&cur)return;const required=!edit&&!Object.keys(prof.inventory||{}).length&&!(prof.decks||[]).length&&!prof.onboardingDone;/* nouveau joueur : la création du héros est la première étape */
+function open(edit){const prof=P()?.profile?.();if(dlg||!prof)return;const cur=prof.hero||null;edit=!!edit&&!!cur;if(!edit&&cur)return;const required=!edit&&prof.onb==='hero';/* nouveau joueur : la création du héros est la première étape */
  const st={name:cur?.name||'',el:cur?.el||'terre',skin:cur?.skin||'#e8b08c',eye:cur?.eye||'#3a8fd0',anim:{idle:1,walk:1,spell:1,victory:1,...(cur?.anim||{})},hair:{id:cur?.hair?.id||'',color:cur?.hair?.color||''},outfit:{id:cur?.outfit?.id||'',color:cur?.outfit?.color||''}};
  dlg=document.createElement('dialog');dlg.id='hero-dialog';dlg.setAttribute('aria-labelledby','hero-title');
  dlg.innerHTML=`<h2 id="hero-title">${edit?'Votre héros':required?'Créez votre avatar':'Créez votre héros'}</h2>
@@ -37,12 +37,12 @@ ${['hair','outfit'].map(k=>`<fieldset><legend>${NAMES[k]}</legend><div class="he
   else if('go' in b.dataset){const name=(dlg.querySelector('#hero-name').value||'').trim()||'Héros',pr=structuredClone(P().profile());
    let avatar=pr.hero?.avatar||'';try{avatar=stage?.snapshot({bust:true,size:256})||avatar}catch{}
    pr.hero={...(pr.hero||{}),name:name.slice(0,18),el:st.el,skin:st.skin,eye:st.eye,anim:st.anim,hair:st.hair.id?st.hair:null,outfit:st.outfit.id?st.outfit:null,avatar,at:pr.hero?.at||Date.now()};delete pr.hero.mi;
-   if(P().commit(pr)){dlg.close();window.HackeniaPortalToast?.(edit?'Votre héros a été mis à jour.':'Votre héros « '+name+' » est prêt : il vous attend dans chaque partie contre l’IA !')}}});
+   const wasOnb=prof.onb==='hero';if(wasOnb)delete pr.onb;if(P().commit(pr)){dlg.close();if(wasOnb){P().onbNext('shop');return}window.HackeniaPortalToast?.(edit?'Votre héros a été mis à jour.':'Votre héros « '+name+' » est prêt : il vous attend dans chaque partie contre l’IA !')}}});
  dlg.addEventListener('input',e=>{const i=e.target;if(i.type==='color'){const w=i.closest('.hero-colors');if(w.dataset.dye){st[w.dataset.dye].color=i.value;sync();applyParts()}else{st[w.dataset.k]=i.value;sync();apply()}}});
  dlg.addEventListener('change',e=>{const s=e.target.closest('[data-anim]');if(s){st.anim[s.dataset.anim]=+s.value;play(s.dataset.anim)}});
  dlg.addEventListener('close',()=>{clearTimeout(t);stage?.dispose();stage=null;dlg.remove();dlg=null;refreshAvatar()});dlg.addEventListener('cancel',e=>{if(required){e.preventDefault();return}if(!edit)later()});
  dlg.showModal();
- (async()=>{try{const game=g();game.loadModelViewer?.();const info=await game.heroModelInfo({...st,anim:st.anim});if(!info||!dlg)return;const mod=await import('./character-stage.js?v=20261230-v305');const host=dlg.querySelector('.hero-stage');if(!dlg)return;const s=await mod.createCharacterStage(host,{...info,variant:look(),heroParts:{hair:st.hair,outfit:st.outfit}},()=>!!dlg&&dlg.open);if(!dlg){s.dispose();return}stage=s;host.querySelector('.hero-loading')?.remove();s.zoom('in');s.playClip('assets/characters/hero-idle'+st.anim.idle+'.glb').catch(()=>s.setPose('idle'))}catch(err){const h=dlg?.querySelector('.hero-loading');if(h)h.textContent='Aperçu 3D indisponible sur cet appareil.'}})()}
+ (async()=>{try{const game=g();game.loadModelViewer?.();const info=await game.heroModelInfo({...st,anim:st.anim});if(!info||!dlg)return;const mod=await import('./character-stage.js?v=20261231-v306');const host=dlg.querySelector('.hero-stage');if(!dlg)return;const s=await mod.createCharacterStage(host,{...info,variant:look(),heroParts:{hair:st.hair,outfit:st.outfit}},()=>!!dlg&&dlg.open);if(!dlg){s.dispose();return}stage=s;host.querySelector('.hero-loading')?.remove();s.zoom('in');s.playClip('assets/characters/hero-idle'+st.anim.idle+'.glb').catch(()=>s.setPose('idle'))}catch(err){const h=dlg?.querySelector('.hero-loading');if(h)h.textContent='Aperçu 3D indisponible sur cet appareil.'}})()}
 /* Avatar du héros dans la pastille de niveau (menu et en-têtes). */
 const srcOf=html=>{const m=String(html||'').match(/src=["']([^"']+)["']/);return m?m[1]:null};
 function avatarSrc(){const pr=P()?.profile?.();if(!pr)return null;const id=pr.avatarDie;if(Number.isInteger(id)&&(pr.inventory?.[id]||0)>0){try{const u=srcOf(g().portrait(id));if(u)return u}catch{}}return pr.hero?.avatar||null}
@@ -61,7 +61,7 @@ setInterval(()=>{refreshAvatar();if(dlg||skipped()||!document.body.classList.con
 window.addEventListener('hackenia-profile-saved',refreshAvatar);
 /* Fiche de créature (en partie) : même rendu 3D que le zoom, avec coiffure et tenue. */
 async function mount(stageEl,hero){try{const game=g(),info=await game.heroModelInfo(hero);if(!info||!stageEl.isConnected)return;const host=document.createElement('div');host.className='hero-card-3d';host.style.cssText='position:absolute;inset:0;z-index:2';stageEl.append(host);
- const mod=await import('./character-stage.js?v=20261230-v305');const s=await mod.createCharacterStage(host,{...info,variant:game.heroLook(hero),heroParts:{hair:hero.hair,outfit:hero.outfit}},()=>host.isConnected);const fb=stageEl.querySelector('.sc,.hv-emoji,.hv-portrait');if(fb)fb.style.visibility='hidden';s.zoom('in');s.playClip('assets/characters/hero-idle'+(hero.anim?.idle||1)+'.glb').catch(()=>s.setPose('idle'));
+ const mod=await import('./character-stage.js?v=20261231-v306');const s=await mod.createCharacterStage(host,{...info,variant:game.heroLook(hero),heroParts:{hair:hero.hair,outfit:hero.outfit}},()=>host.isConnected);const fb=stageEl.querySelector('.sc,.hv-emoji,.hv-portrait');if(fb)fb.style.visibility='hidden';s.zoom('in');s.playClip('assets/characters/hero-idle'+(hero.anim?.idle||1)+'.glb').catch(()=>s.setPose('idle'));
  const mo=new MutationObserver(()=>{if(!host.isConnected){s.dispose();mo.disconnect()}});mo.observe(document.body,{childList:true,subtree:true})}catch{}}
 window.HackeniaHeroView={mount};window.HackeniaHero={pickAvatar,open,edit:()=>open(true),refreshAvatar,mount};
 })();
