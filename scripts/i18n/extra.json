@@ -131,5 +131,11 @@
 "Miniatures nettoyées et sons personnalisés": "Cleaner thumbnails and custom sounds",
 "Les miniatures des bébémentaires n’affichent plus d’arc doré en haut du médaillon.": "Babyelemental thumbnails no longer show a golden arc at the top of the medallion.",
 "Le jeu accepte désormais des bruitages personnalisés au format MP3 (dossier assets/sfx) : ils remplacent les sons d’origine.": "The game now accepts custom sound effects in MP3 format (assets/sfx folder): they replace the original sounds.",
-"Toutes les miniatures rondes sont recentrées sur le cercle de leur fiche : plus d’arc doré ou argenté coupé en haut.": "All round thumbnails are recentered on their card's circle: no more golden or silver arc cut at the top."
+"Toutes les miniatures rondes sont recentrées sur le cercle de leur fiche : plus d’arc doré ou argenté coupé en haut.": "All round thumbnails are recentered on their card's circle: no more golden or silver arc cut at the top.",
+"DIVIN": "DIVINE",
+"LÉGENDAIRE": "LEGENDARY",
+"Une légende s’éveille…": "A legend awakens…",
+"Cérémonie légendaire et transitions": "Legendary ceremony and transitions",
+"Ouverture d’un dé légendaire : nouvelle cérémonie or et ambre. Pendant la découverte, le dé tourne sur lui-même en se dépliant et s’arrête de trois quarts quand le personnage apparaît.": "Opening a legendary die: new gold and amber ceremony. During the discovery, the die spins as it unfolds and stops at three-quarter view when the character appears.",
+"Fondu à chaque changement de menu ; toucher un dé de la boutique plonge dans le dé avant d’ouvrir sa fiche. La roue des options quitte la boutique, et les filtres de la collection sont harmonisés.": "Fade on every menu change; tapping a shop die dives into the die before opening its card. The options wheel leaves the shop, and the collection filters are harmonized."
 }
