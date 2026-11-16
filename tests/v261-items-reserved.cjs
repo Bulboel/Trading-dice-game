@@ -18,7 +18,7 @@ const E=require(path.join(__dirname,'../assets/equipment-v198.js'));const ids=E.
 for(const id of['feuille-d-or','lanterne-du-mineur','echarpe-de-kayla','sac-sans-fond'])assert.ok(ids.includes(id),id);
 for(const it of E.items)assert.ok(fs.existsSync(path.join(__dirname,'..',it.art)),it.art);
 global.window=undefined;const C=require(path.join(__dirname,'../assets/challenges-v180.js'));
-for(const it of E.items)assert.ok(C.definitions.some(d=>d.id===it.challenge),it.id+' : défi de déblocage '+it.challenge);
+for(const it of E.items.filter(i=>!i.premium))assert.ok(C.definitions.some(d=>d.id===it.challenge),it.id+' : défi de déblocage '+it.challenge);
 // Sac sans fond : un dé rare de plus dans la main
 win.HackeniaEquipment={equipped:()=>({name:'Le sac sans fond',extraRare:1})};win.HackeniaPortal={profile:()=>({})};
 run("render=()=>{};window.hackeniaGame.start(null,'ville','play','facile')");assert.equal(run('pl[0].h.length'),6,'6 dés en main avec le Sac sans fond');assert.equal(run('(M[pl[0].h[5]].rarity??M[pl[0].h[5]].lv)'),3,'le dé supplémentaire est rare');
