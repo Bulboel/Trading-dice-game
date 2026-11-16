@@ -128,3 +128,23 @@ html body #portal .deck-tray-head strong{white-space:nowrap;font-size:12px}
  html body #portal .deck-actions>button{min-height:36px!important}
  html body #portal .deck-add-title{font-size:17px!important;margin:16px 0 0!important}
 }
+
+/* v338 — limites de rareté du deck, au design des raretés (losanges ◆ et nom dans la couleur de la rareté, comme sur les fiches) */
+html body #portal .deck-tray-head{flex-wrap:wrap!important;row-gap:5px}
+html body #portal .deck-limits.dl3{order:3;flex:1 1 100%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:0}
+html body #portal .deck-limits.dl3 .dl{display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:4px;padding:3px 7px;border-radius:8px;border:1px solid color-mix(in srgb,var(--rim) 35%,transparent);background:#0d1420cc;min-width:0}
+html body #portal .deck-limits.dl3 .dl i{grid-column:1/-1;font-style:normal;font-size:8px;letter-spacing:1px;color:var(--rim);text-shadow:0 0 6px var(--rim);line-height:1}
+html body #portal .deck-limits.dl3 .dl b{font:700 11px/1.2 system-ui,sans-serif;color:var(--rim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body #portal .deck-limits.dl3 .dl em{font:700 11px/1 system-ui,sans-serif;font-style:normal;color:#e9eaf2}
+html body #portal .deck-limits.dl3 .dl.full{border-color:var(--rim);background:color-mix(in srgb,var(--rim) 16%,#0d1420)}
+html body #portal .deck-limits.dl3 .dl.over{border-color:#ff6b6b;background:#4a1620}
+html body #portal .deck-limits.dl3 .dl.over em{color:#ff9a9a}
+/* Mes decks : en-tête toujours aligné à gauche (titre, puis deux boutons pleine largeur, puis les decks sauvegardés) */
+@media(max-width:600px){
+ html body #portal .portal-section:has(.deck-layout) .portal-title{display:grid!important;grid-template-columns:1fr;gap:8px!important}
+ html body #portal .portal-section:has(.deck-layout) .portal-title>div{flex:none!important}
+ html body #portal .deck-head-actions{display:grid!important;grid-template-columns:1fr 1fr;gap:8px;margin:0!important;width:100%}
+ html body #portal .deck-head-actions button{width:100%;min-width:0;white-space:nowrap}
+ html body #portal .deck-limits.dl3 .dl{padding:3px 5px}
+ html body #portal .deck-limits.dl3 .dl b{font-size:10px}
+}
