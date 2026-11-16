@@ -114,5 +114,13 @@
 "Partie privée (avec code)": "Private game (with code)",
 "Créer une salle d’échange": "Create a trade room",
 "Actualiser les tables ouvertes": "Refresh open tables",
-"Table privée (avec code)": "Private table (with code)"
+"Table privée (avec code)": "Private table (with code)",
+"Possédés": "Owned",
+"Créez votre héros : nom, élément définitif, couleur de peau et des yeux, animations et avatar. Il vous attend dans votre zone à protéger au début de chaque partie contre l’IA et monte en niveau avec vous (niveau 4 maximum).": "Create your hero: name, permanent element, skin and eye color, animations and avatar. It awaits you in your zone to protect at the start of every game against the AI and levels up with you (level 4 maximum).",
+"; elle gagne +1 tous les 10 niveaux de joueur (4 au maximum).": "; it gains +1 every 10 player levels (4 maximum).",
+"Collection plus compacte": "More compact collection",
+"Sur téléphone, les filtres de la Collection et de Mes decks prennent beaucoup moins de place : recherche, élément, rareté et tri tiennent sur trois lignes. Le cœur des favoris se range discrètement dans l’en-tête de la carte.": "On phone, the Collection and My Decks filters take much less room: search, element, rarity and sorting fit on three lines. The favorites heart now sits discreetly in the card header.",
+"La dalle de votre héros s’arrête à la force 4 (atteinte au niveau de joueur 40).": "Your hero's tile stops at strength 4 (reached at player level 40).",
+"♻ Recycler": "♻ Recycle",
+"Recycler": "Recycle"
 }
