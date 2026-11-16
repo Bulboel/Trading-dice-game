@@ -32,8 +32,14 @@ function draw(host){const list=rows.filter(r=>!q||(r.user_id+JSON.stringify(r.su
  <div class="sb-admin-list">${list.map(r=>{const s=r.summary||{};return `<article class="sb-card" data-id="${esc(r.user_id)}"><div><b>${esc(String(r.user_id).slice(0,8))}</b> · niveau ${s.level||1} · ${s.kinds||0} dés différents · ${s.gold||0} Bubulles<br><small>Dernière sauvegarde : ${r.updated_at?new Date(r.updated_at).toLocaleString('fr-FR'):'—'}${r.sage?' · Pack Sage actif ('+esc(r.source||'admin')+')':''}</small></div><button type="button" data-a="grant" data-on="${r.sage?0:1}">${r.sage?'Retirer le Pack Sage':'Attribuer le Pack Sage'}</button></article>`}).join('')||'<p class="sb-hint">Aucun joueur.</p>'}</div>`;
  host.querySelector('[data-a=back]').onclick=()=>root.HackeniaSubmit.renderAdmin(host);
  const qi=host.querySelector('#pl-q');qi.oninput=()=>{q=qi.value;const pos=qi.selectionStart;draw(host);const n=host.querySelector('#pl-q');n.focus();n.setSelectionRange(pos,pos)};
- host.querySelectorAll('[data-a=grant]').forEach(b=>b.onclick=async()=>{const id=b.closest('[data-id]').dataset.id,on=b.dataset.on==='1';if(!confirm((on?'Attribuer':'Retirer')+' le Pack Sage à ce joueur ?'))return;b.disabled=true;
-  const {error}=await root.HackeniaSubmit.adminClient().rpc('admin_set_premium',{p_user:id,p_on:on});if(error){alert('Erreur : '+error.message);b.disabled=false;return}
-  const r=rows.find(x=>x.user_id===id);if(r){r.sage=on;r.source=on?'admin':null}draw(host)})}
+ /* v339 — confirmation en deux temps dans la page (confirm() peut être bloqué dans l'application Android) et résultat toujours affiché */
+ host.querySelectorAll('[data-a=grant]').forEach(b=>b.onclick=async()=>{const card=b.closest('[data-id]'),id=card.dataset.id,on=b.dataset.on==='1';
+  let msg=card.querySelector('.pl-status');if(!msg){msg=document.createElement('p');msg.className='pl-status sb-hint';card.append(msg)}
+  if(b.dataset.armed!=='1'){b.dataset.armed='1';b.textContent=on?'Confirmer l’attribution ?':'Confirmer le retrait ?';msg.textContent='Touchez à nouveau pour confirmer.';setTimeout(()=>{if(b.isConnected&&b.dataset.armed==='1'){b.dataset.armed='';b.textContent=on?'Attribuer le Pack Sage':'Retirer le Pack Sage';msg.textContent=''}},6000);return}
+  b.dataset.armed='';b.disabled=true;msg.textContent='Envoi au serveur…';
+  try{const {error}=await root.HackeniaSubmit.adminClient().rpc('admin_set_premium',{p_user:id,p_on:on});if(error)throw error}
+  catch(e){b.disabled=false;b.textContent=on?'Attribuer le Pack Sage':'Retirer le Pack Sage';msg.textContent='Erreur : '+(e?.message||e)+(String(e?.message||e).includes('function')?' — le fichier online/sql/07-premium.sql a-t-il été exécuté ?':'');return}
+  const r=rows.find(x=>x.user_id===id);if(r){r.sage=on;r.source=on?'admin':null}draw(host);
+  const card2=host.querySelector(`[data-id="${CSS.escape(id)}"]`);if(card2){const m=document.createElement('p');m.className='pl-status sb-hint';m.textContent=on?'✓ Pack Sage attribué. Il s’activera chez le joueur à sa prochaine connexion.':'✓ Pack Sage retiré.';card2.append(m)}})}
 api.renderPlayers=renderPlayers;
 })(typeof window==='undefined'?globalThis:window);

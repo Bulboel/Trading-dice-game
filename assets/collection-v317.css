@@ -148,3 +148,16 @@ html body #portal .deck-limits.dl3 .dl.over em{color:#ff9a9a}
  html body #portal .deck-limits.dl3 .dl{padding:3px 5px}
  html body #portal .deck-limits.dl3 .dl b{font-size:10px}
 }
+/* v339 — historique des ouvertures de bourses */
+dialog.pouch-history .ph-list{list-style:none;margin:0;padding:0 2px;max-height:min(62vh,560px);overflow:auto;display:grid;gap:6px}
+dialog.pouch-history .ph-day{margin:8px 0 0;font:700 12px system-ui;letter-spacing:.06em;text-transform:uppercase;color:#cdb98a}
+dialog.pouch-history .ph-row{display:grid;grid-template-columns:44px minmax(0,1fr);align-items:center;gap:6px;padding:6px;border-radius:10px;background:#0d1420aa;border:1px solid #ffffff12}
+dialog.pouch-history .ph-row time{font:600 11px system-ui;color:#9aa3b8}
+dialog.pouch-history .ph-dice{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+dialog.pouch-history .ph-die{position:relative;display:grid;justify-items:center;gap:1px;padding:4px 2px!important;min-height:0!important;border-radius:9px!important;border:1px solid color-mix(in srgb,var(--rim) 55%,transparent)!important;background:color-mix(in srgb,var(--rim) 10%,#101826)!important;cursor:pointer}
+dialog.pouch-history .ph-die .qo-art{width:40px;height:40px;display:grid;place-items:center}
+dialog.pouch-history .ph-die .qo-art img{width:40px;height:40px;object-fit:contain}
+dialog.pouch-history .ph-name{font:600 10.5px/1.15 system-ui;color:#eef0f6;text-align:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+dialog.pouch-history .ph-die small{font:700 9.5px system-ui;color:var(--rim)}
+dialog.pouch-history .ph-die em{position:absolute;top:-6px;right:-4px;padding:1px 5px;border-radius:6px;background:#2fd17a;color:#062010;font:800 9px system-ui;font-style:normal}
+dialog.pouch-history .ph-pity{grid-column:2;font:600 10.5px system-ui;color:#e6c25a}
