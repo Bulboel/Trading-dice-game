@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v333',title:'Collection plus compacte',items:['Sur téléphone, les filtres de la Collection tiennent sur deux lignes : recherche, réinitialiser, Possédés et Favoris, puis élément, rareté et tri.','Histoire : le duel contre les larves se joue dans la grotte souterraine.']},
  {id:'v332',title:'Adversaires fidèles à l’Histoire',items:['Chaque adversaire de l’Histoire joue un deck complet à son image, sans dé pris au hasard : l’araignée géante ne joue que des araignées.','Les illustrations qui surgissent en plein duel ne montrent plus que le dessin, sans cadre ni chiffres.']},
  {id:'v331',title:'Histoire illustrée',items:['En plein duel d’Histoire, l’adversaire surgit avec l’illustration de sa carte dès qu’il pose sa première créature.','Nouveaux décors pour la porte nord de Dassom, le village de Berdésa et le chemin de la grotte des jumeaux.']},
  {id:'v330',title:'Place aux adversaires',items:['Le jeu ne parle plus d’« IA » : vous affrontez désormais des adversaires (et, en 2 contre 2, vous jouez avec un allié).','Le mode de jeu ne peut plus être changé en cours de partie.']},

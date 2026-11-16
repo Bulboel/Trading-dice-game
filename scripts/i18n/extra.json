@@ -118,7 +118,7 @@
  "Possédés": "Owned",
  "Créez votre héros : nom, élément définitif, couleur de peau et des yeux, animations et avatar. Il vous attend dans votre zone à protéger au début de chaque partie contre l’IA et monte en niveau avec vous (niveau 4 maximum).": "Create your hero: name, permanent element, skin and eye color, animations and avatar. It awaits you in your zone to protect at the start of every game against the AI and levels up with you (level 4 maximum).",
  "; elle gagne +1 tous les 10 niveaux de joueur (4 au maximum).": "; it gains +1 every 10 player levels (4 maximum).",
- "Collection plus compacte": "More compact collection",
+ "Collection plus compacte": "More compact Collection",
  "Sur téléphone, les filtres de la Collection et de Mes decks prennent beaucoup moins de place : recherche, élément, rareté et tri tiennent sur trois lignes. Le cœur des favoris se range discrètement dans l’en-tête de la carte.": "On phone, the Collection and My Decks filters take much less room: search, element, rarity and sorting fit on three lines. The favorites heart now sits discreetly in the card header.",
  "La dalle de votre héros s’arrête à la force 4 (atteinte au niveau de joueur 40).": "Your hero's tile stops at strength 4 (reached at player level 40).",
  "♻ Recycler": "♻ Recycle",
@@ -307,5 +307,9 @@
  "Nouveaux décors pour la porte nord de Dassom, le village de Berdésa et le chemin de la grotte des jumeaux.": "New backdrops for Dassom's north gate, the village of Berdésa and the path to the twins' cave.",
  "Adversaires fidèles à l’Histoire": "Opponents true to the Story",
  "Chaque adversaire de l’Histoire joue un deck complet à son image, sans dé pris au hasard : l’araignée géante ne joue que des araignées.": "Every Story opponent plays a full deck that suits it, with no random dice: the giant spider only plays spiders.",
- "Les illustrations qui surgissent en plein duel ne montrent plus que le dessin, sans cadre ni chiffres.": "The illustrations that pop up mid-duel now show only the artwork, with no frame or numbers."
+ "Les illustrations qui surgissent en plein duel ne montrent plus que le dessin, sans cadre ni chiffres.": "The illustrations that pop up mid-duel now show only the artwork, with no frame or numbers.",
+ "Éléments": "Elements",
+ "Raretés": "Rarities",
+ "Sur téléphone, les filtres de la Collection tiennent sur deux lignes : recherche, réinitialiser, Possédés et Favoris, puis élément, rareté et tri.": "On phones, the Collection filters fit on two rows: search, reset, Owned and Favorites, then element, rarity and sort.",
+ "Histoire : le duel contre les larves se joue dans la grotte souterraine.": "Story: the duel against the larvae takes place in the underground cave."
 }
