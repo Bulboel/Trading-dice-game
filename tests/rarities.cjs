@@ -5,7 +5,7 @@ const ctx=vm.createContext({window:{},document:{getElementById(id){if(!els.has(i
 const r=JSON.parse(vm.runInContext('JSON.stringify(M.map(rarityOf))',ctx)),lv=JSON.parse(vm.runInContext('JSON.stringify(M.map(d=>d.lv))',ctx));
 assert.ok(!r.includes(4),'No die is Épique anymore');assert.deepEqual([...new Set(r)].sort(),[1,2,3,5,6,7,8],'Commun, Peu commun, Rare, Légendaire, Divin, Énergie, Crépitant');
 for(let i=18;i<24;i++){assert.equal(lv[i],4);assert.equal(r[i],5,'Level IV dice are legendary')}
-// Bourse : Commun 30 %, Peu commun 25 %, Rare 20 %, Légendaire 6 %, Divin 1,5 %, Énergie 10,5 %.
+// Boubourse : Commun 30 %, Peu commun 25 %, Rare 20 %, Légendaire 6 %, Divin 1,5 %, Énergie 10,5 %.
 const monsters=JSON.parse(vm.runInContext('JSON.stringify(M)',ctx)),p=vm.createContext({window:{hackeniaGame:{monsters}},structuredClone,Math,RangeError});vm.runInContext(fs.readFileSync(path.join(__dirname,'../assets/purchases.js'),'utf8'),p);
 const tally={1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0},N=6000;let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
 for(let k=0;k<N/3;k++)p.window.HackeniaPurchases.plan({gold:10,inventory:{},boosters:0},1,rnd).pouchQueue[0].dice.forEach(i=>tally[r[i]]++);

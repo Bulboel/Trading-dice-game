@@ -1,7 +1,7 @@
 /* v220 — Recycler les doublons en Bubulles.
    On garde toujours assez d'exemplaires pour un deck complet (limites de deck) et pour chaque deck enregistré ;
-   seuls les exemplaires en trop peuvent être recyclés. Une bourse (10 Bubulles) recyclée en entier rapporte
-   environ 6 Bubulles en moyenne : recycler aide à compléter sa collection sans rendre les bourses gratuites. */
+   seuls les exemplaires en trop peuvent être recyclés. Une boubourse (10 Bubulles) recyclée en entier rapporte
+   environ 6 Bubulles en moyenne : recycler aide à compléter sa collection sans rendre les boubourses gratuites. */
 (function(root){'use strict';
 // Valeur d'un exemplaire recyclé, par rareté (1 commun, 2 peu commun, 3 rare, 5 légendaire, 6 divin, 7 Énergie).
 // v342 : barème revu à la baisse pour les raretés hautes (1 commun, 1 peu commun, 2 rare, 3 légendaire, 5 divin, 2 Énergie, 100 Crépitant).

@@ -10,7 +10,7 @@ assert.equal(p.total,1*1+2*2+1*3+1*5+3*2);assert.equal(p.count,1+2+1+1+3);
 const all=R.apply(profile,defs,rar);assert.equal(all.profile.gold,10+p.total);assert.equal(all.profile.inventory[3],2);assert.equal(all.profile.inventory[5],2);assert.equal(all.profile.recycled,p.count);assert.equal(profile.inventory[3],3,'Input untouched');
 const some=R.apply(profile,defs,rar,[4]);assert.equal(some.gold,5);assert.equal(some.profile.inventory[2],6,'Unchosen dice untouched');
 assert.equal(R.plan(all.profile,defs,rar).count,0,'Nothing left after recycling all');
-// Une bourse entièrement recyclée rapporte nettement moins que son prix (10 Bubulles).
+// Une boubourse entièrement recyclée rapporte nettement moins que son prix (10 Bubulles).
 const odds={1:.30,2:.25,3:.20,5:.12,6:.01,7:.12},perDie=Object.entries(odds).reduce((s,[r,o])=>s+o*R.VALUE[r],0);assert.ok(perDie*3<7,'Recycling never makes pouches free ('+(perDie*3).toFixed(2)+' / 10)');
 // v342 — réglages : nombre fixe gardé et recyclage automatique (activé par défaut avec le Pack Sage)
 assert.equal(R.plan({...profile,recycleCfg:{keep:1}},defs,rar).items.find(i=>i.id===1).extra,3,'Keep 1 copy');assert.equal(R.plan({...profile,recycleCfg:{keep:1}},defs,rar).items.find(i=>i.id===0).keep,6,'Saved decks still protected');assert.equal(R.cfg({}).auto,false);assert.equal(R.cfg({recycleCfg:{auto:true}}).auto,false,'Automatic recycling stays a Sage Pack perk');assert.equal(R.cfg({premium:{sage:true}}).auto,true);assert.equal(R.cfg({premium:{sage:true},recycleCfg:{auto:false}}).auto,false);

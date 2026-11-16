@@ -1,4 +1,4 @@
-// v217 — Ouverture rapide : 10 bourses achetées et ouvertes d'un coup (sans animation), ou les bourses restantes d'un lot.
+// v217 — Ouverture rapide : 10 boubourses achetées et ouvertes d'un coup (sans animation), ou les boubourses restantes d'un lot.
 const fs=require('fs'),path=require('path'),assert=require('assert');
 const src=fs.readFileSync(path.join(__dirname,'../assets/portal-v159.js'),'utf8'),css=fs.readFileSync(path.join(__dirname,'../assets/cards-v203.css'),'utf8');
 assert.ok(/function openAllPouches\(\)\{[^}]*next\.pouchQueue\.splice\(0\)/.test(src),'Every remaining pouch is emptied in one commit');

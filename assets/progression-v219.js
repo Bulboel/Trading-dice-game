@@ -24,7 +24,7 @@ const DAILY=[
  {id:'combat3',text:'Remportez 3 combats',kind:'combat',target:3},
  {id:'pass2',text:'Faites passer 2 créatures dans le camp adverse',kind:'pass',target:2},
  {id:'legend',text:'Remportez un combat avec une créature légendaire ou divine',kind:'combat',minRarity:5,target:1},
- {id:'pouch2',text:'Ouvrez 2 bourses',kind:'pouch',target:2},
+ {id:'pouch2',text:'Ouvrez 2 boubourses',kind:'pouch',target:2},
  ...Object.keys(EL_NAME).map(el=>({id:'summon-'+el,text:'Invoquez 4 créatures '+({eau:'d’',}[el]||'de ')+EL_NAME[el].toLowerCase(),kind:'summon',el,target:4}))];
 const WEEKLY=[
  {id:'w-win10',text:'Gagnez 10 parties',kind:'win',target:10},
