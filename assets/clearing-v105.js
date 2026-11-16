@@ -2,20 +2,20 @@
 import * as THREE from 'three';
 import { orientBoardModel } from './model-facing.js?v=20261103-v73';
 import { createEmberlands } from './ember-v239.js?v=20261208-v260';
-import { attachHeroParts } from './hero-parts.js?v=20270102-v344';
-import { applyLook } from './variant-look.js?v=20270102-v344';
+import { attachHeroParts } from './hero-parts.js?v=20270102-v345';
+import { applyLook } from './variant-look.js?v=20270102-v345';
 import { createLake } from './lake-v241.js?v=20261122-v241';
 import { createSkyIsland } from './sky-v231.js?v=20261128-v247';
 import { createWindHighlands } from './wind-v232.js?v=20261123-v242';
 import { createWoodland } from './woodland-v238.js?v=20261119-v238';
 import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20261125-v244';
-import { createFrostRoad } from './frost-v240.js?v=20270102-v344';
+import { createFrostRoad } from './frost-v240.js?v=20270102-v345';
 import { createCity } from './city-v246.js?v=20261128-v247';
-import { createCave } from './cave-v246.js?v=20270102-v344';
+import { createCave } from './cave-v246.js?v=20270102-v345';
 import { createAutumn } from './autumn-v253.js?v=20261202-v253';
-import { createFairyMists } from './fairy-v335.js?v=20270102-v344';
+import { createFairyMists } from './fairy-v335.js?v=20270102-v345';
 import { createNoel } from './noel-v253.js?v=20261202-v253';
-import { createElementWheel } from './element-wheel-v252.js?v=20270102-v344';
+import { createElementWheel } from './element-wheel-v252.js?v=20270102-v345';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
