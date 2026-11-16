@@ -2,20 +2,20 @@
 import * as THREE from 'three';
 import { orientBoardModel } from './model-facing.js?v=20261103-v73';
 import { createEmberlands } from './ember-v239.js?v=20261208-v260';
-import { attachHeroParts } from './hero-parts.js?v=20270102-v335';
-import { applyLook } from './variant-look.js?v=20270102-v335';
+import { attachHeroParts } from './hero-parts.js?v=20270102-v336';
+import { applyLook } from './variant-look.js?v=20270102-v336';
 import { createLake } from './lake-v241.js?v=20261122-v241';
 import { createSkyIsland } from './sky-v231.js?v=20261128-v247';
 import { createWindHighlands } from './wind-v232.js?v=20261123-v242';
 import { createWoodland } from './woodland-v238.js?v=20261119-v238';
 import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20261125-v244';
-import { createFrostRoad } from './frost-v240.js?v=20270102-v335';
+import { createFrostRoad } from './frost-v240.js?v=20270102-v336';
 import { createCity } from './city-v246.js?v=20261128-v247';
-import { createCave } from './cave-v246.js?v=20270102-v335';
+import { createCave } from './cave-v246.js?v=20270102-v336';
 import { createAutumn } from './autumn-v253.js?v=20261202-v253';
-import { createFairyMists } from './fairy-v335.js?v=20270102-v335';
+import { createFairyMists } from './fairy-v335.js?v=20270102-v336';
 import { createNoel } from './noel-v253.js?v=20261202-v253';
-import { createElementWheel } from './element-wheel-v252.js?v=20270102-v335';
+import { createElementWheel } from './element-wheel-v252.js?v=20270102-v336';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -659,8 +659,8 @@ function setActive(value,terrainOverride=null){
  if(fire&&value&&!crater){crater=createEmberlands(decor,game.fireVents,!!renderer.isSoftware,BH);crater.root.scale.z=1/ZS}/* v239 — Terres embrasées repensées */if(crater)crater.root.visible=value&&fire;
  if(sceneryKey!==type){
   sceneryKey=type;
-  const themes={terre:[0x172c25,0x304d3d,0xe9f0d5,0x3c5034,0xffe1a0,3.1,'LE BOIS TENDRE','La rivière murmure. Le duel commence.'],feu:[0x221b20,0x392328,0xf1c6ab,0x3e2023,0xffb16a,2.5,'LES TERRES EMBRASÉES','La roche respire. Les évents sont impraticables.'],glace:[0x1b2b40,0x3a5870,0xd6e9f8,0x3d5568,0xd2e6ff,1.9,'LA ROUTE VERS FORFALLA','La neige tombe. La glace entraîne les créatures.'],eau:[0x1d3340,0x5d8796,0xf3f8ff,0x6b6a5c,0xfff0d8,2.7,'LE LAC ROSE','Sous l’eau limpide, les galets roses colorent tout le lac.'],vent:[0x2f5a4c,0x4d7f69,0xeaf8e6,0x35503a,0xfff0cc,2.9,'LES VENTS DE HACKO','Sur le haut plateau, le vent chante entre les pierres levées.'],foudre:[0x2c2640,0x2c2640,0xd9c8ff,0x1e1a2c,0xe6dcff,2.2,'L’ÎLE CÉLESTE','Au-dessus des nuages, l’orage gronde sous le sanctuaire.'],ville:[0x2b2a33,0x6b5f58,0xfff1dc,0x5a4c40,0xffd9a8,2.6,'LA VILLE DE DASSOM','Sur la grand-place, les marchands se taisent : un duel commence.'],grotte:[0x0f0d0c,0x221c19,0xb4c2e2,0x3a2f27,0xffc58a,1.7,'LA GROTTE SOUTERRAINE','Les torches vacillent, les cristaux veillent dans l’obscurité.'],automne:[0x3a2416,0x6e4326,0xffe2b8,0x5a3418,0xffb867,2.9,'LA FORÊT D’AUTOMNE','Les érables flamboient, les feuilles tombent en tourbillonnant.'],noel:[0x0a1230,0x1a2650,0x8fa6d8,0x2a3150,0xb8c8ff,1.15,'LA NUIT DES LUMIÈRES','Sous l’aurore, le grand sapin s’illumine. Joyeuses fêtes !'],brumes:[0x2a2440,0x6f5a8a,0xfff0fb,0x8a7a9a,0xffe2f0,2.6,'LE QUARTIER DES BRUMES FÉERIQUES','La brume change de couleur : l’élément favorisé avec elle.']};
-  const t=themes[type]||themes.terre;renderer.setClearColor(t[0],1);scene.fog.color.set(t[1]);sky.color.set(t[2]);sky.groundColor.set(t[3]);sky.intensity=ice?1.45:type==='eau'?1.7:type==='foudre'?1.45:type==='vent'?2.1:type==='noel'?1.05:type==='automne'?2.1:type==='brumes'?1.85:cityOn?2.2:caveOn?1.75:2.3;sun.color.set(t[4]);sun.intensity=t[5];
+  const themes={terre:[0x172c25,0x304d3d,0xe9f0d5,0x3c5034,0xffe1a0,3.1,'LE BOIS TENDRE','La rivière murmure. Le duel commence.'],feu:[0x221b20,0x392328,0xf1c6ab,0x3e2023,0xffb16a,2.5,'LES TERRES EMBRASÉES','La roche respire. Les évents sont impraticables.'],glace:[0x1b2b40,0x3a5870,0xd6e9f8,0x3d5568,0xd2e6ff,1.9,'LA ROUTE VERS FORFALLA','La neige tombe. La glace entraîne les créatures.'],eau:[0x1d3340,0x5d8796,0xf3f8ff,0x6b6a5c,0xfff0d8,2.7,'LE LAC ROSE','Sous l’eau limpide, les galets roses colorent tout le lac.'],vent:[0x2f5a4c,0x4d7f69,0xeaf8e6,0x35503a,0xfff0cc,2.9,'LES VENTS DE HACKO','Sur le haut plateau, le vent chante entre les pierres levées.'],foudre:[0x2c2640,0x2c2640,0xd9c8ff,0x1e1a2c,0xe6dcff,2.2,'L’ÎLE CÉLESTE','Au-dessus des nuages, l’orage gronde sous le sanctuaire.'],ville:[0x2b2a33,0x6b5f58,0xfff1dc,0x5a4c40,0xffd9a8,2.6,'LA VILLE DE DASSOM','Sur la grand-place, les marchands se taisent : un duel commence.'],grotte:[0x0f0d0c,0x221c19,0xb4c2e2,0x3a2f27,0xffc58a,1.7,'LA GROTTE SOUTERRAINE','Les torches vacillent, les cristaux veillent dans l’obscurité.'],automne:[0x3a2416,0x6e4326,0xffe2b8,0x5a3418,0xffb867,2.9,'LA FORÊT D’AUTOMNE','Les érables flamboient, les feuilles tombent en tourbillonnant.'],noel:[0x0a1230,0x1a2650,0x8fa6d8,0x2a3150,0xb8c8ff,1.15,'LA NUIT DES LUMIÈRES','Sous l’aurore, le grand sapin s’illumine. Joyeuses fêtes !'],brumes:[0x070a1c,0x15123a,0x9a8cff,0x2a2050,0xb8c4ff,1.9,'LE QUARTIER DES BRUMES FÉERIQUES','La nuit des fées : les pixies se baladent, la brume change de couleur.']};
+  const t=themes[type]||themes.terre;renderer.setClearColor(t[0],1);scene.fog.color.set(t[1]);sky.color.set(t[2]);sky.groundColor.set(t[3]);sky.intensity=ice?1.45:type==='eau'?1.7:type==='foudre'?1.45:type==='vent'?2.1:type==='noel'?1.05:type==='automne'?2.1:type==='brumes'?1.6:cityOn?2.2:caveOn?1.75:2.3;sun.color.set(t[4]);sun.intensity=t[5];
   const caption=document.getElementById('land-caption');caption.querySelector('span').textContent=t[6];caption.querySelector('small').textContent=t[7];canvas.setAttribute('aria-label','Plateau 3D '+t[6].toLowerCase()+', huit colonnes et '+BH+' lignes')
  }
  document.getElementById('terrain-status').textContent=({terre:'Terre +1 · Le Bois tendre',feu:'Feu +1 · 6 évents fumants impraticables',glace:'Glace +1 · sol glissant · arrêt au contact',eau:'Eau +1 · Le lac rose · un nénuphar sacré donne +1 à chaque tour',vent:'Vent +1 · Les vents de Hacko · une tornade déplace une créature à chaque tour',foudre:'Foudre +1 · Île céleste · la foudre frappe 2 cases à chaque tour',ville:'Terrain neutre · La ville de Dassom',grotte:'Terrain neutre · La grotte souterraine',automne:'Terre +1 · Vent +1 · La forêt d’automne',noel:'Foudre, Glace et Feu +1 · Événement de Noël · un cadeau donne +1 à chaque tour',brumes:mistStatus()})[type];

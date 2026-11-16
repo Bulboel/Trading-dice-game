@@ -69,7 +69,9 @@ html body #portal .deck-actions>button{flex:1 1 0;min-width:0;white-space:nowrap
 @media(max-width:600px){
  html body #portal .deck-layout{gap:10px!important}
  html body #portal .deck-saved{display:flex!important;gap:6px;overflow-x:auto;padding-bottom:4px}
- html body #portal .deck-saved>button{flex:0 0 auto;min-height:0!important;padding:6px 10px!important;font-size:13px!important}
+ html body #portal .deck-saved>button{flex:0 0 auto;min-height:0!important;padding:5px 10px!important;font-size:13px!important;margin:0!important}
+ html body #portal .deck-saved{padding:0!important;align-items:flex-start;scrollbar-width:none}
+ html body #portal .deck-layout{row-gap:6px!important}
  html body #portal .deck-slots:has(.ds2){grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:5px!important}
  html body #portal .deck-slot.ds2{display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:3px!important;padding:6px 2px 5px!important;text-align:center;position:relative;min-height:62px!important}
  html body #portal .deck-slot.ds2 .ds-copy small{display:none}
@@ -88,4 +90,41 @@ html body #portal .deck-actions>button{flex:1 1 0;min-width:0;white-space:nowrap
  #portal .deck-tray-slot{min-height:44px!important;height:44px!important}
  #portal .deck-tray-detail>b{display:none!important}
  #portal-content:has(.deck-tray){padding-bottom:96px}
+}
+
+/* v336 — rappel des limites de rareté : pastilles colorées par rareté (icône, compte/max), une seule ligne */
+html body #portal .deck-limits.dl2{display:flex;flex-wrap:nowrap;gap:4px;margin:0;font:600 11px/1 system-ui,sans-serif}
+html body #portal .deck-limits.dl2 .dl{display:inline-flex;align-items:center;gap:3px;padding:3px 7px 3px 5px;border-radius:999px;border:1px solid color-mix(in srgb,var(--dl) 45%,transparent);background:color-mix(in srgb,var(--dl) 12%,#0d1420);color:#d9dbe6;white-space:nowrap}
+html body #portal .deck-limits.dl2 .dl i{font-style:normal;color:var(--dl);font-size:10px;filter:drop-shadow(0 0 3px color-mix(in srgb,var(--dl) 60%,transparent))}
+html body #portal .deck-limits.dl2 .dl b{color:#fff;font-weight:700}
+html body #portal .deck-limits.dl2 .dl em{font-style:normal;font-weight:500;color:#a9b0c4;margin-left:2px}
+html body #portal .deck-limits.dl2 .dl.full{border-color:var(--dl);background:color-mix(in srgb,var(--dl) 24%,#0d1420)}
+html body #portal .deck-limits.dl2 .dl.over{border-color:#ff6b6b;background:#4a1620}
+html body #portal .deck-tray-head{flex-wrap:nowrap!important}
+html body #portal .deck-tray-head strong{white-space:nowrap;font-size:12px}
+/* Mes decks : ligne de filtres identique à la Collection (retour à la ligne forcé avant les trois menus) */
+@media(max-width:600px){
+ html body #portal .portal-tools::before{content:'';order:4;flex:0 0 100%;height:0;margin-top:-6px}
+ html body #portal .deck-limits.dl2 .dl em{display:none}
+ html body #portal .deck-limits.dl2{gap:3px;font-size:10.5px}
+ html body #portal .deck-limits.dl2 .dl{padding:3px 6px 3px 4px}
+ html body #portal .deck-tray-head>button{min-height:26px!important;height:26px!important;padding:0 9px!important;font-size:11px!important}
+ /* haut de page resserré */
+ html body #portal .portal-section:has(.deck-layout) .portal-title{gap:6px!important;margin-bottom:6px}
+ html body #portal .portal-section:has(.deck-layout) .portal-title>div{flex:0 1 auto!important}
+ html body #portal .portal-section:has(.deck-layout) .portal-title h2{font-size:24px!important;margin:0!important}
+ html body #portal .deck-head-actions{display:flex;gap:6px;margin-left:auto}
+ html body #portal .deck-head-actions button{min-height:32px!important;padding:4px 10px!important;font-size:12px!important;border-radius:10px!important}
+ html body #portal .deck-layout aside>.portal-muted{display:none}
+ html body #portal .deck-layout aside{margin:0!important}
+ html body #portal .deck-saved{margin:0!important}
+ html body #portal .deck-editor-header{display:flex!important;flex-wrap:nowrap!important;align-items:center;gap:8px;margin:6px 0!important}
+ html body #portal .deck-editor-header .deck-name{flex:1 1 auto;min-width:0;width:auto!important;max-width:none!important;height:38px!important;min-height:38px!important;font-size:14px!important;padding:0 12px!important;margin:0!important}
+ html body #portal .deck-editor-header strong{flex:0 0 auto;font-size:13px;white-space:nowrap}
+ html body #portal .deck-slot.ds2.empty{min-height:44px!important;padding:4px!important}
+ html body #portal .deck-slot.ds2 .ds-art.ds-empty{width:26px!important;height:26px!important;font-size:11px!important}
+ html body #portal .deck-balance{font-size:10.5px!important;line-height:1.35;margin:6px 0!important;color:#9aa6bb}
+ html body #portal .deck-actions{margin:4px 0 0!important}
+ html body #portal .deck-actions>button{min-height:36px!important}
+ html body #portal .deck-add-title{font-size:17px!important;margin:16px 0 0!important}
 }
