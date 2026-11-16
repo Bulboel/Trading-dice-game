@@ -420,5 +420,9 @@
  "Larve capricieuse": "Capricious larva",
  "Guerrier fantomatique": "Ghostly warrior",
  "Carte de la région du Bois tendre": "Map of the Tender Wood region",
- "Plan de la ville de Dassom": "Map of the city of Dassom"
+ "Plan de la ville de Dassom": "Map of the city of Dassom",
+ "Correctifs": "Fixes",
+ "Le recyclage automatique redevient un avantage du Pack Sage ; le nombre d’exemplaires gardés reste réglable par tous.": "Automatic recycling is a Sage Pack perk again; everyone can still choose how many copies to keep.",
+ "Plateau 3D : si l’affichage rencontre une erreur, un message l’indique désormais sous le plateau au lieu de le laisser vide.": "3D board: if rendering hits an error, a message now appears under the board instead of leaving it empty.",
+ "💍 Recyclage automatique : réservé au Pack Sage.": "💍 Automatic recycling: Sage Pack only."
 }
