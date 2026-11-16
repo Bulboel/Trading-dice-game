@@ -1,0 +1,267 @@
+470	: elemental die placed without rolling,
+472	cannot be placed
+473	🧊 Ice wall raised!
+474	🪤 Trap set (invisible to the opponent)!
+475	Die placed:
+476	, no creature.
+477	You can still move a creature, or press "End turn".
+478	Start of the turn of
+479	Your turn: slide a die onto the board, or advance a creature.
+480	AI turn…
+481	Your ally's turn…
+482	Opponent's turn…
+483	Your AI ally's turn…
+484	AI's turn…
+485	: slide a die onto the board, or advance a creature.
+486	Heal
+487	takes back the tile
+488	from the opponent.
+489	takes back a lost tile!
+490	finds no tile to take back.
+491	spots the opponent: its hand is visible for 2 turns.
+492	An ice wall melts.
+493	Gift
+494	A gift falls from the sky at
+495	gains +1 strength.
+496	🎁 A gift falls from the sky at
+497	gains +1 strength
+498	: +1 strength for the creature that will be there
+499	Lotus
+500	A sacred lily opens at
+501	🪷 A sacred lily opens at
+502	a creature
+503	Lightning strikes
+504	disappears
+505	⚡ Lightning strikes
+506	struck by lightning
+507	Kayla's Scarf:
+508	resists the tornado and stays at
+509	🧣 Kayla's scarf holds
+510	: the tornado passes without carrying it off.
+511	A small tornado passes through
+512	without carrying anything off.
+513	🌪️ A small tornado passes through
+514	A small tornado spins at
+515	🌪️ A small tornado spins at
+516	A tornado carries off
+517	and its tile
+518	a tile
+519	all the way to
+520	🌪️ A tornado carries off
+521	AI move refused by the server:
+522	The AI cannot place any die.
+523	The AI places its die
+524	Its attack follows the tile it moves onto.
+525	Enlarge
+526	Camp
+527	Original die
+528	(legendary)
+529	with 2 dice
+530	Current tile
+531	colored tile
+532	(tile without number)
+533	Strong against
+534	Weak against
+535	)">Prepare the attack
+536	Close
+537	elemental ·
+538	Type
+539	Card die · effect on the board
+540	Pure elemental die · no creature
+541	Placement
+542	No roll, guaranteed success
+543	Element
+544	Status
+545	In your hand · not yet summoned
+546	· result
+547	: +1 attack together on the board
+548	ice wall
+549	trap
+550	None
+551	Energy ·
+552	Elemental ·
+553	Empty tile
+554	Colored tile ·
+555	Permanent: everyone can cross it.
+556	Tile of
+557	· die
+558	Number
+559	· tile attack:
+560	+1 tile of
+561	Creature of
+562	Tap a tile with a yellow dot to advance.
+563	Tile already occupied.
+564	Tile colored forever.
+565	Creature chosen: tap a glowing tile or drag the figurine, then confirm. Unlimited distance on connected tiles; stops on contact with an enemy.
+566	This creature cannot advance: it only walks on connected deployed tiles.
+567	On ice, it slides to the end of the free path; an opponent stops its run and triggers a fight.
+568	Choose a creature.
+569	Smoking vent: summoning and moving are impossible on this tile.
+570	Creature deselected. Tap a creature to move it, or a tile to inspect it.
+571	Slide stopped on contact: the fight will be triggered on this tile. Confirm or choose another tile.
+572	Fight prepared against
+573	: confirm the attack or choose another tile.
+574	On ice, the creature will slide to
+575	Move prepared. Confirm or choose another tile.
+576	<svg class="drag-die-svg" viewBox="0 0 96 106" width="84" height="92" xmlns="http://www.w3.org/2000/svg" aria-label="Die
+577	The die is placed, closed. Tap "Roll" (or move it first).
+578	Drop the die on the board.
+579	bonus in reserve: tap "Bonus die" to
+580	add to your roll.
+581	Smoking vent · impassable tile
+582	Zone to protect
+583	Zone to invade
+584	bonus die available">
+585	crossings out of
+586	<span class="score-metric" title="Fights won" aria-label="
+587	fights out of
+588	End of game
+589	Turn of
+590	In progress
+591	Draw
+592	Game over
+593	⚑ One more crossing and it's won!
+594	⚔ Only one more opponent to defeat!
+595	only needs one more crossing: block its path!
+596	Warning: one more creature lost and
+597	wins the game
+598	End turn
+599	Opponent's hand revealed by the scout
+600	creature
+601	of lower level will be crushed
+602	if the roll succeeds.
+603	occupied
+604	by a creature of equal or higher level: these tiles stay intact.
+605	already placed
+606	reaches the enemy camp!
+607	Crossing successful
+608	Fight in progress:
+609	Replay
+610	Summoning ritual
+611	or identical faces
+612	" role="group" aria-label="Bonus dice to add">
+613	Bonus dice ·
+614	in reserve
+615	How many to add to this roll?
+616	None
+617	Die
+618	to this roll
+619	· tap to change
+620	Tap to add
+621	Place the elemental die
+622	Roll the dice
+623	Cancel
+624	Hand of
+625	: slide a die onto the board
+626	Start the fight
+627	Your path
+628	Destination
+629	· awaiting your approval
+630	Confirm the attack
+631	Confirm the move
+632	Dice rolling…
+633	Action refused by the server:
+634	Move refused by the server:
+635	Golden Star
+636	The classic star that streaks toward your counter.
+637	Water Drop
+638	A drop falls, splashes, then melts toward your counter like a homing missile.
+639	Lightning
+640	A lightning bolt streaks across the board to your counter.
+641	Autumn Leaf
+642	A leaf swirls, then a gust of wind carries it toward your counter.
+643	Unlocked at level
+644	Win a match in the Tender Wood.
+645	Green roll dice
+646	Win a match in the Scorched Lands.
+647	Red roll dice
+648	Win a match on the Road to Forfalla.
+649	Sky-blue roll dice
+650	First Conquests
+651	New pouch skin
+652	Seasoned Adventurer
+653	Legend of Hackenia
+654	A Great Sweep
+655	Defeat five monsters with Sir Broom.
+656	Sir Broom pouch and silk fabric
+657	The Twins of Dassom
+658	Bubbles and the story continues in chapter 2
+659	The Secret of the Cave
+660	Lucky Ring (equipped item): one bonus roll die at the start of every duel
+661	Win a match in the Winds of Hacko.
+662	Jade roll dice
+663	Win a match at the Pink Lake.
+664	Pink roll dice
+665	The Sky Island
+666	Win a match on the Sky Island.
+667	Amethyst roll dice
+668	Golden Leaves
+669	Win three matches in the autumn forest.
+670	Amber roll dice and 100 Bubbles
+671	Citizen of Dassom
+672	Win three matches in the city of Dassom.
+673	Deep Miner
+674	Win three matches in the underground cave.
+675	Defy the Gods
+676	Defeat the Divine AI in "Play".
+677	True to One's Element
+678	Win a duel on divine difficulty on each basic elemental terrain: water, fire, earth, wind, lightning and ice (event, multi-element or neutral terrains excluded).
+679	Sacred Tèbre Glass Vial (equipped item): one extra roll die if your deck has only one element
+680	Collector
+681	Own 50 different dice.
+682	The Bottomless Bag (equipped item): one extra rare die at the start of every duel
+683	Hero of Hackenia
+684	First Snowflake
+685	Win a match on the Night of Lights.
+686	Candy-cane roll dice and 100 Bubbles
+687	The Spirit of Lights
+688	Win five matches on the Night of Lights.
+689	Snow Bell (equipped item): one automatic reroll per duel
+690	Winter Guardian
+691	Win twelve matches on the Night of Lights.
+694	Character
+695	Loading character…
+696	Drag to rotate · pinch or use + and − to zoom.
+697	Static model · drag to rotate, pinch to zoom.
+698	Illustrated preview · 3D model unavailable on this device.
+699	the creature
+700	3D model of {0}
+701	3D clearing unavailable, fallback display kept.
+702	Fallback display · earth +1
+703	3D board of the Tender Wood, eight columns and twelve rows
+704	Placement magnifier
+705	Valid placement
+706	Invalid placement
+707	Board view
+708	Elemental die effect ignored.
+709	Temporary figurine kept for this model.
+710	THE TENDER WOOD
+711	THE SCORCHED LANDS
+712	The rock breathes. The vents are impassable.
+713	THE ROAD TO FORFALLA
+714	Snow is falling. The ice carries creatures along.
+715	THE PINK LAKE
+716	Under the clear water, pink pebbles color the whole lake.
+717	THE WINDS OF HACKO
+718	On the high plateau, the wind sings between the standing stones.
+719	THE SKY ISLAND
+720	Above the clouds, the storm rumbles beneath the sanctuary.
+721	THE CITY OF DASSOM
+722	On the main square, the merchants fall silent: a duel begins.
+723	THE UNDERGROUND CAVE
+724	The torches flicker, the crystals keep watch in the darkness.
+725	THE AUTUMN FOREST
+726	The maples blaze, the leaves fall swirling.
+727	THE NIGHT OF LIGHTS
+728	Under the aurora, the great fir tree lights up. Happy holidays!
+729	, eight columns and
+730	Earth +1 · The Tender Wood
+731	Fire +1 · 6 impassable smoking vents
+732	Ice +1 · slippery ground · stops on contact
+733	Water +1 · The Pink Lake · a sacred lily gives +1 each turn
+734	Wind +1 · The Winds of Hacko · a tornado moves a creature each turn
+735	Lightning +1 · Sky Island · lightning strikes 2 tiles each turn
+736	Neutral terrain · The City of Dassom
+737	Neutral terrain · The Underground Cave
+738	Earth +1 · Wind +1 · The Autumn Forest
+739	Lightning, Ice and Fire +1 · Christmas event · a gift gives +1 each turn

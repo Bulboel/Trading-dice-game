@@ -1,0 +1,250 @@
+1000	Everything is downloaded
+1001	Download the whole game
+1002	Downloading… {0} / {1}
+1003	Done, {0} file(s) could not be downloaded: try again later.
+1004	Offline · PVP and online saving will resume when the network returns
+1005	Epic
+1006	My first deck
+1007	Invalid save
+1008	Invalid inventory
+1009	Invalid deck
+1010	Invalid pouches
+1011	Invalid experience
+1012	Invalid recycling
+1013	Invalid creator
+1014	Invalid screenwriter
+1015	Saving failed: no changes were applied. Check the browser storage.
+1016	The draft cannot be saved in this browser.
+1017	Learn to play: open the tutorial lessons
+1018	Learn to play
+1019	Die card
+1020	Play
+1021	Quick game
+1022	Online PVP
+1023	Shop
+1024	Story
+1025	Collection
+1026	My decks
+1027	Challenges
+1028	Options
+1029	The Pantheon
+1030	To win, chart your path with your dice to reach the enemy camp
+1031	You can also win by defeating 4 enemy creatures in duels
+1032	If you fail a dice roll, a bonus die is offered for the next one. You can keep two and roll them together!
+1033	A deck has 10 dice. Each copy can only appear once in it; however, you can reuse it in your other decks.
+1034	A win in Quick game mode with classic rules earns you 30 Bubbles!
+1035	A defeat in Quick game or Play mode earns you 5 Bubbles.
+1036	Your creature appears on the tile marked with a golden edge on its die's diagram.
+1037	You can tap the current tip to move on to the next one!
+1038	Click or tap a creature in play to see its attack power and element. This can be useful…
+1039	A higher-level die placed on an enemy creature crushes it!
+1040	Every day, the Daily die gives you 30 Bubbles, and even 100 on the 7th day!
+1041	A deck can contain at most 1 divine die, 2 legendary, 2 Energy dice and 4 rare.
+1042	Elemental dice are placed without rolling: perfect for extending a path toward the enemy camp.
+1043	Dice of the terrain's element gain +1 attack: choose your terrain carefully! (Autumn: Earth and Wind; Christmas: Lightning, Ice and Fire.)
+1044	Complete chapter 3 of the Story to earn the Lucky Ring: a bonus die at the start of every duel against the AI. Other equipped items are earned through challenges (Options › Equipped item).
+1045	Note your recovery code (Options › Save) to restore your progress on another phone.
+1046	The Announcements die shows you the game's latest news.
+1047	Tap your level, top right, to see your daily and weekly quests.
+1048	Each level earns Bubbles, and levels 5 and 10 unlock new bonus die effects.
+1049	Multi-element creatures count for all summoning quests, whatever the requested element.
+1050	Too many copies of the same die? Recycle your duplicates into Bubbles from the Collection.
+1051	Synergies: certain linked characters gain +1 attack when together on the board. Check your creatures' cards!
+1052	At the Pink Lake, watch for the sacred lily: the creature placed on it gains +1 strength until the next turn.
+1053	On the Sky Island, lightning strikes two random tiles each turn: don't bet everything on a single creature!
+1054	In the Winds of Hacko, a small tornado can carry a creature and its tile elsewhere: don't bet everything on a single route!
+1055	No network? The game launches offline. To keep everything on your device: Options › Save › Download the whole game.
+1056	A creature's strength is that of the tile where it stops: before attacking, end your move on your best tile.
+1057	When a creature enters the enemy camp, its whole path disappears with it, and the creatures placed on it too. Keep a backup route!
+1058	Neighbor bonus: a tile gains +1 if a neighboring tile carries the element it dominates. Place your dice accordingly.
+1059	If all your dice show the same face, the summon always succeeds, even below the required result! The required result is shown on each die: 2+ common, 3+ uncommon, 4+ rare, 4+ legendary (2 dice) and 5+ divine (2 dice).
+1060	Tie in a fight? Both creatures disappear and each camp counts one defeated enemy.
+1061	On the Road to Forfalla, your creatures slide to the end of the free tiles: an enemy on the road stops them… and triggers the fight.
+1062	In the Scorched Lands, the magma vents are impassable: they cut roads and block placements.
+1063	In a hurry? The ⏩ button at the top of the game (or Options › Game) enables fast turns: the AI, rolls and fights go faster.
+1064	On computer, press Space to roll the die you just placed, or to confirm a move.
+1065	The History button, at the top of the game, retraces every roll and every fight with each camp's strengths.
+1066	The Pouch button, during the game, shows the dice you still have to draw: useful to prepare your next turns.
+1067	In Collection, tap a die to open its card: unfolded shape, synergies and 3D character.
+1068	Options › Dice & pouch: choose the style of your roll dice and the color, texture and cord of your pouch.
+1069	Sudden death! Three 6s with three dice, or four 6s with four dice, and the game is won on the spot.
+1070	Selected a creature by mistake? Tap it again, or tap another tile, to deselect it.
+1071	Online PVP: open a table so any player can join you, no code to exchange. Choose Duel (1 vs 1) or 2 vs 2 at the top of the page.
+1072	Beginner? Choose the city of Dassom (neutral terrain) and tap "✨ Optimal deck for this terrain" in Play: the game builds your deck for you.
+1073	Play mode: choose the board shape (Narrow, Pillars, Hourglass, Two fords) to vary your games.
+1074	The city of Dassom and the underground cave are neutral terrains: no element is favored there.
+1075	A creature that has just appeared can only move from your next turn.
+1076	In My decks, prepare several decks (one per terrain, for example) and choose one before each game.
+1077	From level 5, propose your own die from the Collection: if approved, it joins the game with your name!
+1078	Challenges › Tavern Tales: write a role-playing scene, it may be played and told in the podcast!
+1079	Beginner? "Learn to play" offers 4 one-minute lessons: placing a die, crossing the terrain, fights, affinities. You can replay each lesson whenever you want.
+1080	Double click (computer) or double tap (smartphone) on a creature on the board: its card opens right away.
+1081	2 vs 2: two teams of two play in turn. Victory: 3 crossings or 6 fights for the team. Offline as well as online, AIs can complete the team.
+1082	A multi-element die (Lathandre, Shauntéa, Jordan, the Great White Spider…) always receives the terrain bonus, but never the neighbor bonus.
+1083	Jordan, Bolduc's steed, gains +1 AP per allied Bolduc on the board (2 at most). Remember to put it in the same deck!
+1084	Effect dice: one tile less, but a power (+1 AP depending on the situation). Read the die's card to learn its effect.
+1085	Card dice: placed without rolling, they leave an ice wall (blocks 3 turns) or a trap invisible to the opponent in place of a creature.
+1086	Class dice: the healer takes back a lost tile, the scout reveals the opponent's hand for 2 turns.
+1087	Equipped items (Options › Equipped item): only one at a time. Lucky Ring, Snow Bell, Golden Leaf, Miner's Lantern, Kayla's Scarf or Bottomless Bag, earned through challenges.
+1088	Shop: 0.8% chance of getting a divine die per die drawn. A guarantee gives you a divine every 80 pouches without a divine, and a legendary every 50 pouches without a legendary.
+1089	The element wheel is to the right of the board: move the view to see it. Water dominates fire, fire ice, ice earth, earth wind, wind lightning, lightning water.
+1090	Crackling dice are extremely rare: will you manage to complete their collection?
+1091	A Max, Orcus, Eberien… die exists in several versions (legendary, silver, gold): check the Collection to find them all, grouped by character.
+1092	Main menu. Drag to rotate the dice.
+1093	Tips
+1094	Defeat · +5 Bubbles for this game.
+1095	Game over.
+1096	challenge
+1097	✔ Quest
+1098	of the week
+1099	Sir Broom challenge completed! Pouch and silk unlocked.
+1100	Draw: both camps reached four defeated creatures.
+1101	XP. View quests
+1102	Local save unavailable: purchases and changes disabled.
+1103	✦ Challenges completed: +
+1104	Resume your progress
+1105	No saved game on this device
+1106	New game
+1107	50 Bubbles to start your adventure
+1108	Load game
+1109	Discover the rules and your first steps
+1110	Your adventure is saved on this device.
+1111	The new game could not be saved. Your progress is kept.
+1112	Start over with your starting collection and 50 Bubbles? A copy of your current progress will remain restorable in the options.
+1113	Keep my game
+1114	Start
+1115	This save cannot be loaded.
+1116	Your first Bubbles
+1117	You just received
+1118	! Go spend them quickly to get your first dice!
+1119	Go to the shop
+1120	That's it!
+1121	You have enough dice to play! Let's go!
+1122	Let's go
+1123	Welcome! Start by opening pouches in the Shop: each pouch contains 3 dice.
+1124	You have enough dice: build your first 10-dice deck in "My decks".
+1125	Your deck is ready! Start your first duel with "Play".
+1126	Pouches
+1127	Open your first pouches
+1128	Each pouch contains 3 dice. You have
+1129	to build a deck.
+1130	Deck
+1131	Build your deck
+1132	Choose
+1133	10 dice
+1134	in "My decks", then save.
+1135	Duel
+1136	Start your first duel
+1137	Choose a terrain and face the AI in "Play".
+1138	First steps
+1139	Step {0} / 3
+1140	Need the rules?
+1141	Follow the tutorial
+1142	Resume the game
+1143	The Great Trials of Hackenia
+1144	Duels against the great figures of Hackenia, with progression from opponent to opponent, in the spirit of the Triad Pantheon.
+1145	The first trials are being prepared
+1146	The opponents, their rules and their rewards will be revealed here.
+1147	Back to menu
+1148	💬 Join the community
+1149	✦ Creator
+1150	🎭 Screenwriter
+1151	📜 Tavern Tales
+1152	role-playing scene contest
+1153	XP: victory 40 (up to 60 against a hard AI), defeat 15, Story 50, PVP 80. Each level earns Bubbles, and every 5 levels a +100 bonus.
+1154	Daily quests
+1155	new quests in {11} h {12}
+1156	Weekly quest
+1157	renewed every Monday
+1158	Hackenia Challenges
+1159	challenges completed
+1160	Customize my rewards
+1161	Challenges progress in Play, Quick game, PVP and Story. Rewards unlock automatically in the Options. Progress counted from this update.
+1162	❄ Event
+1163	" aria-label="Challenge progress
+1164	Reward
+1165	Unlocked in the Options
+1166	You are offline. PVP requires an Internet connection: reconnect then come back here. Meanwhile, all other games (Play, Quick game, Story) work offline.
+1167	Online mode is unavailable.
+1168	The city of Dassom · neutral, ideal for beginners
+1169	The underground cave · neutral
+1170	The autumn forest · Earth and Wind
+1171	The Night of Lights · Christmas event
+1172	A wooded clearing crossed by a river, ferns and butterflies.
+1173	Earth dice gain +1 attack.
+1174	A basalt arena surrounded by lava and smoking volcanoes.
+1175	Fire dice gain +1. Six magma vents are impassable.
+1176	An ice road toward the gate of Forfalla, under the aurora borealis.
+1177	Ice dice gain +1. Creatures slide to the end of the free tiles; an opponent stops their run and triggers a fight.
+1178	A green high plateau, windmills, sheep and kites.
+1179	Wind dice gain +1. Each turn, a small tornado carries a creature and its tile elsewhere.
+1180	A clear mountain lake on a bed of pink pebbles.
+1181	Water dice gain +1. Each turn, a sacred lily gives +1 strength for two turns.
+1182	A floating sanctuary above a sea of stormy clouds.
+1183	Lightning dice gain +1. Each turn, lightning strikes two random tiles.
+1184	The cobbled main square of Dassom, between half-timbered houses and market stalls.
+1185	Neutral terrain: no element is favored, only dice and strategy count.
+1186	An underground hall lit by torches, crystals and glowing mushrooms.
+1187	A golden clearing under the maples, pumpkins and falling leaves.
+1188	Seasonal terrain: Earth and Wind dice gain +1.
+1189	The great fir lights up under the aurora, among snowy chalets and fireworks.
+1190	Christmas event: Lightning, Ice and Fire dice gain +1. Each turn, a gift falls from the sky and gives +1 strength for two turns. Exclusive challenges and rewards!
+1191	· 10 dice
+1192	· open from December 1 to January 6
+1193	Dassom
+1194	Cave
+1195	Tender Wood
+1196	Scorched Lands
+1197	Forfalla
+1198	Winds of Hacko
+1199	Pink Lake
+1200	Autumn Forest
+1201	Night of Lights
+1202	Neutral
+1203	From Dec. 1
+1204	Event
+1205	Choose your deck and the terrain; its preview shows the real board before launch.
+1206	Your deck
+1207	No playable deck
+1208	Terrain preview
+1209	A wooded clearing crossed by a river.
+1210	Board shape
+1211	Narrow · impassable edges
+1212	Pillars · eight rocks to go around
+1213	Hourglass · a bottleneck in the center
+1214	Two fords · two walls to cross
+1215	An AI ally plays with you against two opponents. Victory: 3 crossings or 6 fights.
+1216	AI difficulty
+1217	Easy
+1218	Medium
+1219	Hard
+1220	Divine
+1221	Defeat: +5 Bubbles whatever the difficulty. The AI's rolls follow the same luck as yours; the stronger it is, the better it thinks. The Divine AI also plays with a more powerful deck.
+1222	" exceeds the limits (
+1223	: edit it in "My decks".
+1224	✨ Optimal deck for this terrain
+1225	Build a deck
+1226	No valid saved deck. Create and save a 10-dice deck in "My decks".
+1227	Click here
+1228	to get a quick deck and play right away! If you want to do it yourself, feel free to go to the "My decks" menu. Then click on
+1229	Start the duel
+1230	. Have fun!
+1231	Real board:
+1232	Resume the current game
+1233	10 dice per team · AI opponent
+1234	Random dice, random terrain and AI opponent.
+1235	Victory: 30 Bubbles · Defeat: 5 Bubbles.
+1236	Start a random game ↗
+1237	Unknown die
+1238	To discover
+1239	Not yet discovered
+1240	Add
+1241	Examine
+1242	Remove from favorites
+1243	Add to favorites
+1244	· Elemental
+1245	Not owned
+1246	Collection order
+1247	Level descending
+1248	Level ascending
+1249	Quantity owned

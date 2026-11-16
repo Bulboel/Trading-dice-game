@@ -1,0 +1,206 @@
+0	Trading Dice Game: a collectible dice game.
+2	The Tender Wood
+3	Change mode
+4	Change game mode
+5	Change terrain
+6	Change the terrain
+7	Fast turns
+8	View my dice pouch
+9	Pouch
+10	Game history
+11	History
+12	THE VERDANT SANCTUARY
+13	The river murmurs. The duel begins.
+14	Rotate left
+15	Recenter
+16	Rotate right
+17	Clearing · earth +1
+18	DICE ROLL
+19	Roll result
+20	Choose your action
+21	My pouch
+22	Close the pouch
+23	Game log
+24	Close the history
+25	Show
+26	Game actions
+27	Fights
+28	Moves
+29	Rolls and summons
+30	Crossings and victory
+31	Victory: 2 crossings into the enemy camp OR 4 fights won. In a fight, attack decides; a higher-level die crushes the enemy creature it covers; at equal or lower level, its tile stays intact. The stats shown are those of the action.
+32	Game events
+33	Green
+34	Orange
+35	Player
+36	Opponent
+37	Marauder
+38	+1 AP on an enemy tile
+39	Bulwark
+40	+1 AP on a tile in its own camp
+41	Scout
+42	+1 AP when no ally is adjacent
+43	Duelist
+44	+1 AP when an enemy is adjacent
+45	Pack
+46	+1 AP per adjacent ally (2 at most)
+47	Steed
+48	+1 AP per allied Bolduc on the board (2 at most)
+49	Valor
+50	+1 AP on a tile of 3 or less
+51	The Scorched Lands
+52	The Road to Forfalla
+53	The Winds of Hacko
+54	The Pink Lake
+55	Sky Island
+56	The City of Dassom
+57	The Underground Cave
+58	The Autumn Forest
+59	The Night of Lights
+60	: neutral terrain, no favored element
+61	: +1 to
+62	Lightning
+63	Wind
+64	Earth
+65	Ice
+66	Water
+67	Fire
+68	Spark Bee
+69	Tiny but lively, she buzzes with discharges. A single pass is enough to wake a sleeping pylon.
+70	A light breath that seems to have sprouted feathers. It rarely lands, but never misses a gust.
+71	She carries pebbles a hundred times heavier than herself. Patience is her greatest strength.
+72	It leaves crystal footprints in the snow. Its long ears catch the slightest crackle.
+73	Born from a single drop of dew, it swims in the humid morning air.
+74	Still brooded by the flames, it chirps sparks. It dreams of becoming a phoenix.
+75	Voltaic Salamander
+76	Born from a storm atop a copper tower, she crosses the board crackling. Each of her steps leaves a trail of sparks.
+77	Peak Duck
+78	This prankster duck rides the air currents. They say it can announce a storm with a single quack.
+79	Root Turtle
+80	Its shell shelters a miniature forest. Slow but unshakable, it advances remembering every stone.
+81	Frost Penguin
+82	It slides across the tiles as if on an ice floe. Its belly keeps the cold of the very first snows.
+83	Tide Octopus
+84	Its eight arms draw invisible currents. It likes damp tiles, where it moves without a sound.
+85	Its flaming tail lights the board's nights. Cunning, it burns the paths it leaves behind.
+86	Each roar cracks a lightning bolt. The elders say it slept in the very first storm cloud.
+87	Storm Swan
+88	It glides through the heart of hurricanes without ruffling a feather. Where it passes, the sky makes way.
+89	Granite Rhinoceros
+90	Its horn is a cliff and its step shakes the board. You don't go around it: you step aside.
+91	Glacier Elephant
+92	Its tusks are millennia-old ice. It advances unhurried, and winter follows it.
+93	It haunts the darkest tiles like the depths. It sniffs out an opponent leagues away.
+94	His mane is a little sun. When he roars, the shadows of the board retreat.
+95	Lightning Dragon
+96	It is the storm itself. A single wingbeat lights up the whole board.
+97	Wind Dragon
+98	Its breath carved the canyons of the world. It does not walk: it crosses.
+99	Mountain Dragon
+100	Its back bears mountain ranges. Its patience outlasts empires.
+101	Ice Dragon
+102	Its breath freezes time. Every snowflake it leaves is an oath.
+103	Abyss Dragon
+104	It sleeps beneath the ocean and dreams in tides. When it wakes, everything overflows.
+105	Fire Dragon
+106	The world's first flame. It burns without ever being consumed.
+108	Divine power of storms: each of her spells tears the sky of Hackenia. Lightning affinity.
+109	The Fairy Pachié
+110	Divine fairy of springs and tides, she makes rain fall with a mere gesture. Water affinity.
+112	Legendary mage of crackling arcana, always one flash away from victory. Lightning affinity.
+113	Legendary Kayla
+114	Legendary heroine of Hackenia, as elusive as the breeze. Wind affinity.
+116	Legendary force of the ancient lands, solid as rock and quick to strike. Earth affinity.
+117	Legendary Eberien
+118	Eberien at the height of his art: the high-elf wizard now commands the entire winter. Ice affinity.
+119	Legendary Bolduc
+120	Shauntéa's faithful follower, now a legend, has learned to tame the waves. Water affinity.
+122	Legendary bow of the Blaze: his arrows set the board ablaze. Fire affinity.
+124	Little soul of bubbles and brooks, always in a good mood. Water affinity.
+126	Craftsman of Hackenia with goldsmith's hands: he forges lightning the way others forge iron. Lightning affinity.
+128	Wolf-headed fighter of the arid lands, fast and tenacious in melee. Earth affinity.
+130	Gruff mountaineer of the hills, patient as stone. After a victory, he sometimes dozes off on the spot. Earth affinity.
+132	High-elf wizard of Hackenia, Ice affinity.
+134	Wood elf, archer and bard of Hackenia, Earth affinity.
+136	Half-orc warrior of Hackenia, Water affinity.
+138	Knight of Heaum, Wind affinity.
+140	Adventurer of Hackenia and follower of Shauntéa, Fire affinity.
+141	Lake Guardian
+142	Guardian of the lake's scarlet waters.
+143	Faithful servant, wrapped in violet magic mist.
+144	of lightning
+145	of wind
+146	of earth
+147	of ice
+148	of fire
+149	Shard
+150	Path
+151	Pure elemental die: one tile of strength 2, placed without rolling. No creature appears.
+152	Pure elemental die: two tiles of strength 3 and 2, placed without rolling. No creature appears.
+154	Big-hearted young brawler, always the first to charge into the fray. No element.
+156	Master of disguise: he passed himself off as an old farmer to observe the adventurers. Wind affinity.
+158	Mischievous and precise, her needles graze their target before you see them leave. Water affinity.
+160	Fiery-tempered mage, harsh at first but loyal to his own. Fire affinity.
+162	Kala's old comrade, a seasoned warrior who holds the ground like a rampart. Earth affinity.
+164	Warm adventurer who greets everyone with a friendly wave, as lively as the wind. Wind affinity.
+165	When Alastor takes over, Max's eyes blaze with red lightning. A staircase shape climbing toward the opponent. Lightning affinity.
+167	Dream demon who sows doubt in the minds of his prey. His compact block of four tiles crushes everything in its path. Lightning affinity.
+169	Ice mage with his chin always held high. He spreads his frost in a T over four weaker tiles, ideal for covering ground. Ice affinity.
+170	Ray
+171	Elemental die charged with energy: three tiles in a straight line of strength 3, 4 and 4, placed without rolling. No creature appears. Two per deck at most.
+172	Frost Orven
+173	Orven's cousin from the tundras: his fur has whitened with frost and his fangs bite like the cold. Ice affinity.
+174	Ven's twin brother chose the blaze over the ice. Same raised chin, but a much hotter temper. Fire affinity.
+175	Mist Max
+176	Lost in the mist of the peaks, Max came back light as a gust... and just as quarrelsome. Wind affinity.
+177	Tide Velmarys
+178	Velmarys stood guard on the docks for so long that the foam has tinted his armor. Water affinity.
+179	When the storm rumbles, Bulbalina's bubbles fill with sparks and burst into tiny lightning bolts. Lightning affinity.
+180	Statue of Gliska
+181	A statue of Gliska, carved in a temple of the winds. The air currents passing through it have awakened it. Wind affinity.
+182	Frosted Statue of Pennedra
+183	Caught in a blizzard, Pennedra's statue became covered in frost. She still waves, but with an icy gesture. Ice affinity.
+184	Ember Frolgor
+185	Frolgor dozed off too close to a campfire: ever since, his leaves glow like embers. Fire affinity.
+186	Silver Jhimm
+187	Silver automaton forged by Maebril in the image of the knight Jhimm. Electric arcs run across its armor. Lightning affinity.
+188	Silver Kala
+189	Silver automaton in the image of Kala. Its metal arrows whistle in the wind. Wind affinity.
+190	Silver Grimgors
+191	Silver automaton in the image of Grimgors, heavy as a boulder and just as stubborn. Earth affinity.
+192	Silver Guardian
+193	Silver automaton in the image of the Lake Guardian, keeper of the frozen springs. Ice affinity.
+194	Silver Eberien
+195	Silver automaton in the image of Eberien: its gears turn to the rhythm of the tides. Water affinity.
+196	Silver Bolduc
+197	Silver automaton in the image of Bolduc, heated red-hot by its inner forge. Fire affinity.
+198	A golden idol of Orcus buried beneath the mountain. They say the dream demon still whispers through it. Earth affinity.
+199	Golden Maebril
+200	Maebril's masterpiece: a golden automaton in his own image, cooled in eternal ice. Ice affinity.
+201	Golden Sameron
+202	The master of disguise passed himself off as a golden statue... and no one noticed a thing. Fire affinity.
+203	Celestial Kayla
+204	Kayla raised to divine rank: a veil of pure wind surrounds her and carries her above the board. Wind affinity.
+205	Hilam, Jade Titan
+206	Hilam carved from the jade of the origins. Where he sets foot, the earth remembers. Earth affinity.
+207	Eternal Eberien
+208	Eberien has crossed the threshold of eternity: his body has become frost crystal. Ice affinity.
+209	Soryan, Phoenix
+210	A phoenix rose from Soryan's ashes: the divine flame now burns in the heart of this mage. Fire affinity.
+212	Small crystal creature born from the lake's waters. It takes the color of every land it treads: multi-element, it always receives the terrain bonus, but never the neighbors'.
+213	Myconide
+214	Mushroom healer of Dassom. Patient and rooted, he spreads his cap in a T to hold the ground. Earth affinity.
+216	Explosive-tempered fighter who draws on all the elements at once. Multi-element: always the terrain bonus, never the neighbors', with slightly weaker tiles.
+217	A Hydrelithe whose crystal has been charged with a single element. It loses its multi-element nature, but benefits from terrain and neighbor bonuses like other creatures. Affinity
+218	A young archer trained by Bosco, whose arrows bear the mark of another element. Less powerful than his master, he remains fearsome from afar. Affinity
+219	A Dassom myconide whose spores have been infused with another element. Like his healer cousins, he holds the ground with patience. Affinity
+220	Zackarie dove into the abyss and came back changed: her needles now stitch the currents themselves. Water affinity.
+221	By dint of faithful service, Sir Broom was covered in gold by his masters. He still sweeps... but with panache. No element.
+222	Golden Caleizis
+223	A golden idol of Caleizis, struck by lightning atop a tower: a fragment of her power remained in it. Lightning affinity.
+224	Golden Pachié
+225	A golden statue of the fairy Pachié, in the heart of a sacred fountain. On rainy days, she comes alive to watch over the springs. Water affinity.
+226	Greater Earth Hydrelithe
+227	The eldest of the Hydrelithes: a colossus of bark and stone whose eyes shine like emeralds. Where she walks, islands float and waterfalls freeze. Earth affinity.
+228	Miner
+229	A miner from Berdésa, pickaxe on his shoulder and lamp on his brow. He knows every gallery... and every spider hiding in them. Earth affinity.

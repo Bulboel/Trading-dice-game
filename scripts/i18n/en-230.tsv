@@ -1,0 +1,235 @@
+230	A miner who dug too close to an elemental vein: his pickaxe bears its mark. Affinity
+231	Spider
+232	A cave spider, black and fast. Alone, it frightens; in numbers, it makes miners flee. No element.
+233	A cave spider whose carapace has been charged with an element. Affinity
+234	White Spider
+235	A snow-furred spider, curious and surprisingly affectionate. It charges headfirst. No element.
+236	Great White Spider
+237	The eldest of the white spiders, big as a pony. Its fur catches the light of every element at once: multi-element, it always receives the terrain bonus, never the neighbors'.
+238	Grimgors the Marauder
+239	Jhimm the Scout
+240	Bolduc the Duelist
+241	Eberien the Bulwark
+242	Kala, Pack Leader
+243	The Valiant Guardian
+244	Sacred terrain: the terrain bonus is +2 instead of +1.
+245	Caleizis, Sacred Storm
+246	The Fairy Pachié, Sacred Tide
+247	Hydrelithe, Sacred Quake
+248	Kayla, Sacred Breath
+249	Ice Wall
+250	Card die: two ice tiles placed without rolling. Its second tile is covered by an ice wall that blocks everyone (creatures and summons) for 3 turns.
+251	Ember Trap
+252	Card die: two fire tiles placed without rolling. A trap invisible to the opponent hides on the second one: the first enemy creature that stops there disappears and counts as a defeated enemy for you.
+253	Myconide the Healer
+254	on summon, takes back the opponent's strongest neighboring tile
+255	Max the Scout
+256	on summon, sees the opponent's hand for 2 turns
+257	Lathandre
+258	Lord of the dawn: his light contains all the elements at once. Multi-element: always the terrain bonus, never the neighbors'.
+259	A water babyelemental: it laughs, splashes everything it meets and bounces from tile to tile.
+260	A fire babyelemental, always in a good mood: its mane of flames warms its neighbors.
+261	An earth babyelemental, solid as a little flowered rock: nothing makes it back down.
+262	A lightning babyelemental: sparks fly from its hair whenever it gets carried away.
+263	An ice babyelemental, all crystals: it chimes with every step.
+264	A wind babyelemental, light as a breeze: it dashes off before anyone can see it.
+265	Babyelemental
+266	Affinity
+268	Goddess of the flowering waterfalls: water, earth and wind obey her all at once. Multi-element: always the terrain bonus, never the neighbors'.
+270	Bolduc's faithful steed, proud as a knight. Effect —
+271	. Multi-element: always the terrain bonus, never the neighbors'.
+272	Affinities:
+273	Steam Duo
+274	A water babyelemental and a fire babyelemental, inseparable: they bicker in a cloud of steam.
+275	Permafrost Duo
+276	An ice babyelemental and an earth babyelemental, huddled together: frozen ground holds no secrets for them.
+277	Storm Duo
+278	A wind babyelemental and a lightning babyelemental: one blows, the other sparkles, and the storm breaks.
+279	Eclipse Twins
+280	A fire babyelemental and an ice babyelemental, side by side: heat and cold share the same tile.
+281	Dune Twins
+282	An earth babyelemental and a wind babyelemental: they stir up whirls of sand as they dance.
+283	Thunderstorm Twins
+284	A lightning babyelemental and a water babyelemental: an electrifying duo, don't touch with wet feet.
+285	Mist Trio
+286	Three babyelementals, water, ice and wind, huddled on the same tile: a frosty mist wraps around them.
+287	Blaze Trio
+288	Three babyelementals, fire, earth and lightning, together on the same tile: a blaze of sparks and hot ashes.
+289	Dream demon who sows doubt in the minds of his prey. His compact block of six tiles crushes everything in its path. Lightning affinity.
+290	Ice mage with his chin always held high. His frost spreads over three tiles, the strongest at the end. Ice affinity.
+291	Crackling
+292	Crackling version: its body is a piece of the Milky Way, and sparks crackle around it.
+293	magic dice!
+294	Missing or invalid dice result
+295	Classic
+296	Narrow
+297	Pillars
+298	Hourglass
+299	Two fords
+300	Creature
+301	no element
+302	Golden Leaf
+303	Victory
+304	Draw
+305	End of game: animation skipped.
+306	Turn
+307	Tiles
+308	Fight
+309	Crush
+310	Disappearance
+311	Roll
+312	Deployment
+313	Bonus
+314	Point
+315	Die placed
+316	Summon
+317	Level
+318	Attack
+319	With
+320	+1 neighboring element
+321	No action in this category.
+322	proximity
+323	Fight between neighboring creatures:
+324	is defeated.
+325	fights won.
+326	Equal attacks: both creatures disappear. Each camp counts one defeated enemy.
+327	Attacker
+328	Defender
+330	the other Hydrelithes
+331	Multi-element
+332	No element
+333	die
+334	Pouch of
+335	in hand ·
+336	in the pouch
+337	In hand
+338	No die in hand.
+339	In the pouch
+340	You draw a die whenever your hand has fewer than 5. A placed die returns to the bottom of the pouch.
+341	The pouch is empty.
+342	in its pouch.
+343	Equipped item
+344	: your deck has a single element, each roll counts one extra die.
+345	: an extra rare die joins your hand —
+346	: you start the game with
+347	all your bonus dice (
+348	bonus dice
+349	one bonus roll die
+350	Game
+351	: +1 attack for
+352	Win with
+353	creatures that entered the enemy camp or
+354	Smoking vents block summons and moves.
+355	After each full turn, a sacred lily opens: the creature on its tile gains +1 strength, and it stays for two turns.
+356	After each full turn, lightning strikes two random tiles and destroys tile and creature.
+357	Each full turn, a small tornado carries a creature and its tile elsewhere on the board (never near the zone to invade).
+358	The frozen terrain is slippery: creatures keep going to the end of the free tiles, unless an opponent triggers a fight.
+359	: neutral terrain, no element is favored.
+360	After each full turn, a sacred lily gives +1 strength to the creature on its tile.
+361	After each full turn, lightning strikes two random tiles.
+362	Each full turn, a small tornado carries a creature and its tile elsewhere (never near the zone to invade).
+363	Slippery terrain: your creatures keep running to the end of the free tiles; an opponent stops them and triggers a fight.
+364	2 vs 2: your AI ally plays after you.
+365	monsters crossed into the enemy zone, or
+366	enemies defeated in duels. Slide a die from your hand onto the board, then roll it.
+367	the tile where you place the die must be on the board.
+368	an ice wall blocks this tile.
+369	this smoking vent is impassable: no summons here.
+370	one of your creatures occupies this tile.
+371	an elemental die cannot crush a creature.
+372	this creature is of equal or higher level than your die: it protects its tile.
+373	the die must touch the edges of your zone or one of your dice already placed.
+374	Your hero. It advances thanks to your tiles; its starting tile grows stronger with your player level.
+375	Hero tile
+376	Hero
+377	Common
+378	Uncommon
+379	Rare
+380	Legendary
+381	Divine
+382	Energy
+383	Triple element
+384	Double element
+385	No roll
+386	, result
+387	Elemental
+388	<svg class="hand-net" role="img" aria-label="Unfolded shape of
+389	tiles. Base values and terrain bonus; neighbors are computed on placement." style="--nw:
+390	A creature
+391	enters the enemy camp.
+392	crossings. Its path disappears.
+393	the board with this path; no fight is counted.
+394	Point for
+395	) ! A monster crossed into the enemy zone, its path disappears.
+396	creatures entered the enemy camp!
+397	wins the game!
+398	Draw: both camps defeated
+399	creatures.
+400	⚖ Draw! Both camps reach
+401	creatures defeated.
+402	wins with
+403	enemies defeated in duels!
+404	: the enemy creature disappears.
+405	: your creature disappears.
+406	: both creatures disappear; each camp counts one defeated enemy.
+407	Tile occupied by your own creature.
+408	Impossible: no deployed route reaches this tile.
+409	move
+410	Successful attack!
+411	. The enemy creature disappears.
+412	Failed attack:
+413	. The attacking creature disappears.
+414	Equal attacks
+415	The ice carries the creature as far as
+416	Creature advanced.
+417	slides to
+418	Move
+419	Its attack goes from
+420	🪤 Trap!
+421	is destroyed.
+422	Trap
+423	steps on a trap at
+424	and disappears.
+425	counts one defeated enemy.
+426	No possible spot for this die.
+427	The die is placed, closed. Drag it where you want, then tap "Roll".
+428	Choose a die or advance a creature.
+429	⏩ Fast turns on: the AI, rolls and fights go faster.
+430	Fast turns off.
+433	Creature deselected.
+434	You already placed a die this turn: move a creature or end your turn.
+435	Bell
+436	failed, new roll!
+437	rings: the failed roll (
+438	) is rerolled.
+439	Roll of die
+440	… you need
+441	or more
+442	with one of the
+443	dice, or all dice identical
+444	on the roll,
+445	All the dice are identical.
+446	Summon successful
+447	with a bonus die.
+448	): the creature disappears and its tile changes camp.
+449	gains +1 strength for the whole game.
+450	enters play: level
+451	tiles deployed
+452	tiles cannot be placed (edge, vent or protected creature)
+453	✔ The die lands, then unfolds!
+454	wins by sudden death:
+455	Super sudden death
+456	Sudden death
+457	wins the game!
+458	✔ The die unfolded, a creature appears!
+459	are crushed
+460	is crushed
+461	by a higher-level die.
+462	+ required. Failure: the die returns to your hand.
+463	✘ The die returns to your hand…
+464	gains a bonus die (
+465	in reserve).
+466	✘ The die returns to your hand.
+467	✨ You gain a bonus die for your next roll.
+468	raises an ice wall at
+469	: a trap is set at
