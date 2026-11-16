@@ -17,7 +17,7 @@ const definitions=[
  {id:'autumn',title:'Feuilles d’or',goal:'Gagnez trois matchs dans la forêt d’automne.',kind:'terrain',terrain:'automne',target:3,reward:'Dés à lancer ambre et 100 Bubulles',roll:'amber',gold:100},
  {id:'dassom',title:'Citoyen de Dassom',goal:'Gagnez trois matchs dans la ville de Dassom.',kind:'terrain',terrain:'ville',target:3,reward:'150 Bubulles',gold:150},
  {id:'deep',title:'Mineur de fond',goal:'Gagnez trois matchs dans la grotte souterraine.',kind:'terrain',terrain:'grotte',target:3,reward:'150 Bubulles',gold:150},
- {id:'divine',title:'Défier les dieux',goal:'Battez l’IA Divine dans « Jouer ».',kind:'divine',target:1,reward:'300 Bubulles',gold:300},
+ {id:'divine',title:'Défier les dieux',goal:'Battez l’adversaire Divin dans « Jouer ».',kind:'divine',target:1,reward:'300 Bubulles',gold:300},
  {id:'pure',title:'Fidèle à son élément',goal:'Gagnez un duel en difficulté divine sur chaque terrain élémentaire de base : eau, feu, terre, vent, foudre et glace (terrains d’événement, multi-éléments ou neutres exclus).',kind:'divineTerrain',target:6,reward:'Fiole de verre tèbre sacrée (objet porté) : un dé de jet supplémentaire si votre deck ne compte qu’un seul élément',item:'fiole-de-verre-tebre'},
  {id:'collector',title:'Collectionneur',goal:'Possédez 50 dés différents.',kind:'collect',target:50,reward:'Le sac sans fond (objet porté) : un dé rare supplémentaire au début de chaque duel',item:'sac-sans-fond'},
  {id:'hundred',title:'Héros d’Hackénia',goal:'Gagnez cent matchs.',kind:'wins',target:100,reward:'1 000 Bubulles',gold:1000},

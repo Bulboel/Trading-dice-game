@@ -104,7 +104,7 @@ const LESSONS=[
   success:()=>`<p>✗ <b>Kala a perdu</b> et disparaît : l’adversaire marque un duel.</p><p><b>Compare toujours les attaques avant d’avancer.</b> À égalité, les deux créatures disparaissent.</p>`},
  {title:'Leçon 3 réussie !',kind:'final',lessonEnd:true,suggestPlay:true,
   setup(){reset()},
-  text:()=>`<p>🏆 Tu sais <b>poser, avancer et combattre</b> : tu peux déjà tenter une <b>partie contre l’IA facile</b> !</p><p>Prochaine leçon (au choix) : <b>les affinités</b>, pour gagner encore plus de duels.</p>`}]},
+  text:()=>`<p>🏆 Tu sais <b>poser, avancer et combattre</b> : tu peux déjà tenter une <b>partie contre un adversaire facile</b> !</p><p>Prochaine leçon (au choix) : <b>les affinités</b>, pour gagner encore plus de duels.</p>`}]},
 {id:'affinity',terrain:'terre',title:'Les affinités',goal:'Utiliser les bonus de terrain et d’élément pour gagner un duel.',steps:[
  {title:'Le bonus de terrain',kind:'action',
   setup(){duelBoard({v:3,el:'vent'},{v:3,el:'terre'},3)},
