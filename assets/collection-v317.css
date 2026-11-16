@@ -1,0 +1,22 @@
+/* v317 — Collection : barre d'outils compacte (téléphone), cœur des favoris discret, boutons du titre sur une ligne */
+html body #portal .cc-fav{position:static!important;order:2;margin-left:auto;width:26px!important;height:26px!important;min-width:0!important;min-height:0!important;padding:0!important;border:0!important;border-radius:50%!important;background:transparent!important;box-shadow:none!important;color:#ffffff99;font:700 17px/1 system-ui,sans-serif;display:inline-grid;place-items:center;cursor:pointer}
+html body #portal .cc-fav.on{color:#ff4f7d;text-shadow:0 0 8px #ff4f7d99}
+html body #portal .cc2 .cc-top{display:flex;align-items:center;gap:6px}
+html body #portal .cc2 .cc-top .cc-gems{order:3;margin-left:4px}
+@media(max-width:600px){
+ html body #portal .portal-title{display:flex!important;flex-wrap:wrap;align-items:center;gap:8px}
+ html body #portal .portal-title>div{flex:1 1 100%}
+ html body #portal .portal-title .portal-muted{flex:1 1 100%;margin:0}
+ html body #portal .portal-title>button{flex:1 1 40%;min-height:38px!important;padding:6px 12px!important;font-size:13px!important;white-space:nowrap}
+ html body #portal .portal-tools{display:grid!important;grid-template-columns:repeat(12,1fr);gap:8px!important;padding:10px 0!important;align-items:stretch!important}
+ html body #portal .portal-tools>label{margin:0}
+ html body #portal .portal-tools>label .tl{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+ html body #portal .portal-tools>label.search{grid-column:1/11}
+ html body #portal .portal-tools>.f-reset{grid-column:11/13;grid-row:1;min-height:44px!important;width:100%;padding:0!important;font-size:20px!important;border-radius:12px}
+ html body #portal .portal-tools>label.f-el,html body #portal .portal-tools>label.f-ra{grid-column:span 6}
+ html body #portal .portal-tools>label.f-so{grid-column:span 6}
+ html body #portal .portal-tools select,html body #portal .portal-tools input[type=search]{height:44px!important;min-height:44px!important;font-size:13px!important;padding:0 28px 0 12px!important;text-overflow:ellipsis}
+ html body #portal .portal-tools>label.check{grid-column:span 3;display:inline-flex!important;align-items:center;justify-content:center;height:40px!important;min-height:40px!important;padding:0 6px;border:1px solid #b79e6b66;border-radius:999px;background:#ffffff0d;font-size:12px!important;gap:4px!important;cursor:pointer;width:auto;white-space:nowrap}
+ html body #portal .portal-tools>label.check input[type=checkbox]{position:absolute;opacity:0;width:1px!important;min-width:1px!important;height:1px!important;min-height:1px!important}
+ html body #portal .portal-tools>label.check:has(input:checked){background:#b79e6b33;border-color:#e3c987;color:#fff}
+}
