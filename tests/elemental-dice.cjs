@@ -20,7 +20,7 @@ assert.equal(run("gameEvents.some(e=>e.type==='Lancer')"),false,'No roll happens
 while(timers.length)timers.shift()();assert.equal(run('cur'),1,'Placing an elemental die ends the turn');assert.deepEqual(JSON.parse(run('JSON.stringify(pl[0].q)')),[1,53],'The die returns to the bottom of the pouch like any other');
 // L'IA : un dé élémentaire est sûr de réussir et ne crée pas de créature dans sa simulation.
 assert.equal(run('aiRollChance(43,0)'),1);run("cur=1;pl[1].h=[44];mode='i'");const choice=JSON.parse(run('JSON.stringify(aiChoosePlacement(1))'));assert.ok(choice);assert.equal(run('cr.length'),0);
-// Bourses : les dés élémentaires font partie des tirages communs et peu communs.
+// Boubourses : les dés élémentaires font partie des tirages communs et peu communs.
 const pctx=vm.createContext({window:{hackeniaGame:{monsters:JSON.parse(run('JSON.stringify(M)'))}},structuredClone,Math,RangeError});vm.runInContext(fs.readFileSync(path.join(__dirname,'../assets/purchases.js'),'utf8'),pctx);
 let seen=new Set();for(let k=0;k<4000;k++){const r=pctx.window.HackeniaPurchases.plan({gold:10,inventory:{},boosters:0},1);r.pouchQueue[0].dice.forEach(i=>seen.add(i))}
 for(let i=43;i<55;i++)assert.ok(seen.has(i),'Elemental die '+i+' can be drawn from a pouch');for(let i=58;i<64;i++)assert.ok(seen.has(i),'Énergie die '+i+' can be drawn from a pouch');

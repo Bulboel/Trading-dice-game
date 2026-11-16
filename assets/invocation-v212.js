@@ -2,7 +2,7 @@
 // or ardent / arc-en-ciel, finition du dé, cercles au sol, poussière, faisceau et éclat d'apparition.
 import * as THREE from 'three';
 import {invocationPalette} from './invocation-colors.js?v=166';
-import {applyLook} from './variant-look.js?v=20270102-v347';
+import {applyLook} from './variant-look.js?v=20270102-v348';
 import {invocationNormalization,invocationFrame} from './invocation-layout.js?v=20261103-v72';
 import {GLTFLoader} from './vendor/three/examples/jsm/loaders/GLTFLoader.js';
 import {OrbitControls} from './vendor/three/examples/jsm/controls/OrbitControls.js';
@@ -29,7 +29,7 @@ const cube=new THREE.Group();scene.add(cube);cube.position.y=.7;
 const blue=new THREE.MeshStandardMaterial({color:theme.body,metalness:T.metalness,roughness:T.rough,side:THREE.DoubleSide,emissive:theme.glow,emissiveIntensity:T.emissive});
 const gold=new THREE.MeshStandardMaterial({color:T.metal,metalness:.85,roughness:.22,emissive:T.metal,emissiveIntensity:tierName==='commun'?0:.12});
 const frameMat=new (T.foil||T.rainbow?THREE.MeshPhysicalMaterial:THREE.MeshStandardMaterial)({...(T.foil||T.rainbow?{iridescence:T.foil?.85:1,iridescenceIOR:1.7,iridescenceThicknessRange:[180,720],clearcoat:.6}:{}),color:T.metal,metalness:.9,roughness:.25,emissive:T.metal,emissiveIntensity:tierName==='legend'||tierName==='divin'||tierName==='energie'?.35:.08});
-/* v283 : faces gravées — même esprit que les dés de la bourse (cadre biseauté, filet, rivets, symbole de l'élément, foil irisé pour le Légendaire). */
+/* v283 : faces gravées — même esprit que les dés de la boubourse (cadre biseauté, filet, rivets, symbole de l'élément, foil irisé pour le Légendaire). */
 function faceTexture(value,wantPortrait){const N=512,c=document.createElement('canvas');c.width=c.height=N;const g=c.getContext('2d'),hex=n=>'#'+n.toString(16).padStart(6,'0'),mix=(n,k)=>{const r=(n>>16&255),gg=(n>>8&255),b=(n&255);return `rgb(${r*k|0},${gg*k|0},${b*k|0})`};
  let img=null;const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=4;
  function draw(){g.clearRect(0,0,N,N);
