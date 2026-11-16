@@ -1,0 +1,250 @@
+740	Fallback display · reload the page to get 3D back
+741	Canvas unavailable
+742	3D board of the Whispering Clearing, eight columns and ten rows
+743	THE LIPS OF THE BLAZE
+744	3D board at the crater's edge, six impassable smoking vents
+745	Clearing · light rendering · earth +1
+746	Terrain
+747	· +1 element
+748	Online save:
+749	Online save unreadable
+750	Save unreadable
+751	Online configuration missing
+752	Online service unreachable
+753	just now
+754	ago
+755	{0}{1} Bubbles · {2} dice ({3} different) · {4} deck{5}{6}
+756	Starting…
+757	Connecting to the online service…
+758	☁️ Progress saved online
+759	☁️ Saving…
+760	📴 Offline: progress will be sent as soon as the network returns.
+761	Online saving is not yet enabled on the server.
+762	The server denies access to the save: table access rights are missing (see online/sql/02-cloud-save.sql).
+763	⚠️ Another progress exists online: choose which one to keep.
+764	Detail: {0}
+765	Retry
+766	On this device
+767	Keep this one
+768	Online
+769	Resume this one
+770	Copy the code
+771	Generate a new code
+772	A new code replaces the old one, which will no longer work.
+773	Create my recovery code
+774	Operation impossible for now: check your connection and try again.
+775	Code created. Keep it safe.
+776	Code copied.
+777	Online progress restored.
+778	Online saving enabled!
+779	This device's progress kept and sent online.
+780	Unknown code. Check the characters (no 0, O, 1 or I).
+781	This code already matches this device's progress.
+782	Replace this device's progress with this one?
+783	This device's current progress will be lost.
+784	Progress recovered! Welcome back to Hackenia.
+785	Progress recovered!
+787	+ 1 neighboring element
+788	Preparation
+789	The two creatures clash.
+790	Arrival
+791	The path fades
+792	Impact
+793	Equal attacks: both creatures disappear. +1 defeated creature for each camp.
+794	{0} wins the fight. {1} is defeated.
+795	Result
+796	1 die, 2+
+797	1 die, 3+
+798	2 dice, 4+
+799	2 dice, 5+
+800	Choose a rarity.
+801	{0} tiles for a {1} die ({2} placed{3})
+802	— multi-element: 2 less
+803	Total strength: {0} (currently {1}){2}
+804	Each tile is worth {0} to {1}
+805	All tiles touch each other by a side
+806	Length of {0} tiles at most (currently {1})
+807	The creature (✦, on the strongest tile) appears at most 2 tiles from the edges
+808	The creature appears on the strongest tile
+809	Legendary: values close to 3, 3, 5, 5, 6, 6 (one point apart at most)
+810	Shape already used by {0}
+811	Brand-new legendary shape
+812	A higher presence awakens…
+819	Lucky Ring
+820	You start every duel against the AI with a bonus roll die.
+821	Inspired by the apprentice's ring: its thousand-glint gem draws luck to the first roll.
+822	Snow Bell
+823	Once per duel against the AI, your first failed summon roll is rerolled automatically.
+824	It jingles on the necks of the reindeer of the Night of Lights: when luck slips away, its chime calls it back.
+825	Your first placed creature gains +1 strength for the whole game.
+826	Fallen from the oldest maple of the autumn forest, it never wilts and brings luck to whoever dares strike first.
+827	Miner's Lantern
+828	On an event terrain (lightning, wind, lake, Night of Lights), you see in advance the tile targeted by the next event.
+829	The miners of Berdésa inherited it from their elders: its flame flickers before the sky rumbles.
+830	Kayla's Scarf
+831	The first of your creatures caught by a tornado resists and does not move.
+832	Woven by Kayla in a breath of the winds of Hacko: the wind recognizes its own handiwork and leaves it in peace.
+833	Sacred Tèbre Glass Vial
+834	If your deck contains only one type of element (no multi-element or elementless dice), all your dice rolls are made with one extra die.
+835	Blown from tèbre glass, which only the most patient can work, it rewards those who stay faithful to a single element.
+836	Sage's Ring
+837	Sage Pack: all your bonus dice from the start of every duel against the AI.
+838	Forged for the sages who support the game: its violet gem keeps every roll in reserve.
+839	The Bottomless Bag
+840	You start the duel with an extra rare die, drawn at random, in your hand.
+841	You slip a hand in for a coin and pull out a treasure. No one has ever touched the bottom.
+842	from December 1 to January 6
+843	Short
+844	Long
+845	Crew-neck T-shirt
+846	V-neck T-shirt
+847	Tank top
+848	Denim shorts
+849	Fabric shorts
+850	Plain jumpsuit
+851	Striped jumpsuit
+852	Polka-dot jumpsuit
+853	Checkered jumpsuit
+854	Camouflage jumpsuit
+855	Happy sway
+856	Relaxed posture
+857	Walk
+858	Confident stride
+859	Run
+860	Uppercut
+861	Spartan kick
+862	Mage spell
+863	Charged spell
+864	Hip-hop dance
+865	Magic genie
+866	Silly dance
+867	Runway walk
+868	Hairstyle
+869	Top
+870	Bottom
+871	Idle
+872	Your hero
+873	Create your avatar
+874	Create your hero
+875	Palette
+876	(permanent)
+877	(permanent, choose carefully)
+878	Later
+879	Save
+880	Create my hero
+881	Your hero has been updated.
+882	Your hero "
+883	" is ready: it awaits you in every game against the AI!
+884	3D preview unavailable on this device.
+885	My hero
+886	Menu avatar
+887	Choose the image shown in your level badge.
+888	Welcome to Dice of Hackenia
+889	Skip
+890	Welcome to Hackenia...
+893	Made by Bulboel
+895	Oh no… We'll get them next time.
+896	Defeat
+897	The two camps part without a winner.
+898	Well done {0}! The duel is yours.
+899	The opponent
+900	turn{5}
+901	Bubbles
+902	unlocked
+903	⬆ Level up!
+904	✔ Challenge completed
+905	Rematch
+906	View the board
+907	Menu
+908	Sage Pack and favorites
+909	New Sage Pack, to acquire in the shop with Bubbles: Sage's Ring (all your bonus dice from the start of duels), pouch opening by 100, automatic recycling of duplicates (three copies kept at minimum), 1,000 Bubbles returned and ad-free play.
+910	Favorites ♥: tap the heart on a collection die to protect it from recycling (manual and automatic); "Favorites" filter in the collection.
+911	Divine ceremony and Tèbre Glass Vial
+912	Opening a Divine or Crackling die: new full-screen ceremony with pillar of light, runic halo, rainbow rays, shockwaves and golden title (tap to skip).
+913	New equipped item: the Sacred Tèbre Glass Vial. If your deck contains only one element, all your rolls count one extra die. Reward for the "True to One's Element" challenge: win a duel on divine difficulty on each basic elemental terrain (water, fire, earth, wind, lightning, ice).
+914	AI camera and Crackling dice in hand
+915	During the AI's turn, the camera stays on its action until the end of the turn (move, die placement, roll), instead of leaving too early.
+916	Hand cards also show the rarity of Crackling dice (e.g. "Crackling rare").
+917	Crackling: visible rarity
+918	On the Collection and My Decks thumbnails, a Crackling die shows the rarity of its base die (e.g. "Crackling uncommon"), without opening the card.
+919	Condensed announcements
+920	Announcements have been grouped: one entry per major topic, without repetition.
+921	Your hero, fully customizable
+922	Create your hero: name, permanent element, skin and eye color, animations and avatar. It awaits you in your zone to protect at the start of every game against the AI and levels up with you (level 5 maximum).
+923	Hairstyles (short, long) and clothes of your choice, with the full palette: crew-neck or V-neck T-shirt, tank top, denim or fabric shorts, or a jumpsuit in 5 textures.
+924	Find it in Options › Player.
+925	Welcome path
+926	A new player follows a guided path: tutorial (optional), hero creation, shop with their 50 Bubbles, then the Play menu with the "Optimal deck" button highlighted.
+927	Play comfort
+928	In a camp's zone, only your own camp's tiles let you advance.
+929	On phone, a long press on a creature opens its card; the camera follows the AI during its turn.
+930	⏩ "Fast turns" button (also in Options › Game), Space to confirm on computer, "One more crossing!" banner when victory is near, and Sir Broom reacts at the end of the game.
+931	Prettier pouch and discoveries
+932	Pouch dice have a metal frame in the color of their rarity, with engraved faces, character medallion and a discovery animation specific to each rarity.
+933	Shop: on phone, the pouch fills almost the whole screen; buy 10 pouches and open them all at once, with a summary.
+934	Duos and trios of multi-element dice are shown side by side in 3D.
+935	Menu and tutorial
+936	The "Learn to play" button stays at hand: 4 small lessons, each a mini-game with a goal, on a neutral terrain.
+937	The menu banner is cut out, the Announcements and Daily dice are aligned, and a little babyelemental sometimes peeks in.
+938	Crackling rarity and deck limits
+939	Every base die exists in a Crackling version (52 dice): a Milky Way character, with galaxy texture, on the board as well as on the card and enlarged. It counts as its base die in deck limits.
+940	The AI follows the same deck limits as you (1 divine, 2 legendary, 2 Energy dice, 4 rare at most).
+941	Babyelementals and multi-element dice
+942	The six babyelementals arrive, each with its die, along with new characters and multi-element dice: rare and legendary duos, divine trios.
+943	On the ice terrain, babyelementals fight in place of the elementals.
+944	2 vs 2 and online PVP
+945	Play 2 vs 2: against the AI with an AI ally, or online with tables open to all or private (code).
+946	The PVP menu chooses the mode, Duel or 2 vs 2.
+947	Shop and balance
+948	Guarantees: a missing legendary every 50 pouches without a legendary, a divine every 80 pouches (divines at 0.8%).
+949	Each rarity has its number of tiles: 3, 4, 5, then 6 for legendary and divine; placing a rare die requires a 4 or more; legendaries roll two dice.
+950	More compact die shapes, birth tile marked with a golden edge, and games checked over hundreds of simulations.
+951	Effect dice, items and classes
+952	Rare dice with combat effects, card dice (Ice Wall, Ember Trap), class dice (healer, scout) and reserved dice.
+953	New equipped items to earn through challenges: Golden Leaf, Miner's Lantern, Scarf, Bottomless Bag.
+954	New dice and characters
+955	The White Spider and its great version, the Miner and its elemental variants, the Greater Hydrelithe, and many new 3D animated characters: crystals, stone statues, silver automatons and golden idols.
+956	Divines are surrounded by a glowing aura, and legendary dice shine in your hand.
+957	Seasonal terrains
+958	Autumn forest (Earth and Wind +1) and Christmas event terrain, the Night of Lights, from December 1 to January 6.
+959	Neutral terrains: the city of Dassom and the underground cave. In Play mode, also choose the board shape (Narrow, Pillars, Hourglass, Two fords).
+960	Board rules
+961	Sudden death: three 6s with three dice, four 6s with four dice (+10 Bubbles).
+962	Higher-level die placed on an enemy creature: it disappears and its tile changes color.
+963	A creature that has just appeared only moves on the next turn. Tap a creature again to deselect it.
+964	Element cycle: Water › Fire › Ice › Earth › Wind › Lightning › Water, with a 3D wheel to the right of the board.
+965	Spectacular fights
+966	Mages cast a ball of their element, archers an elemental arrow, warriors strike with a luminous slash.
+967	AP are shown in the element's color, without a frame, and the redesigned tiles are easier to read.
+968	Living terrains
+969	Six terrains, six 3D settings: Tender Wood, Scorched Lands, Road to Forfalla, Pink Lake, Sky Island and Winds of Hacko, with their fauna, flora and characters strolling around.
+970	Sky Island: lightning strikes two tiles per turn. Winds of Hacko: a gust pushes creatures three tiles, and tornadoes carry a creature off with its tile. Pink Lake: a sacred lily gives +1 strength.
+971	Synergies: certain linked characters gain +1 attack when together.
+972	Create, tell
+973	From level 5: propose your own die. Once approved, it joins the collection with your name, and you receive the Creator badge and 200 Bubbles.
+974	Tavern Tales: a role-playing scene contest, with 300 Bubbles and the Screenwriter badge for the winner.
+975	Android, offline and saving
+976	The game is getting ready to become an Android app, and launches without a connection once opened (Options › Save: "Download the whole game").
+977	Automatic online saving, no account, and a recovery code to switch phones.
+978	Collection, levels and quests
+979	The Collection shows all dice, missing ones in silhouette, with their official number and tile shape. Recycle your duplicates into Bubbles.
+980	Earn experience and level up: Bubbles at each level, three daily quests, a weekly quest and new bonus die effects to unlock.
+981	A lighter game
+982	3D characters and dice are 8 times lighter: faster loading, especially on phone.
+983	Customize your bonus die effect in Options › Dice & pouch.
+984	The beginnings
+985	The Announcements die, Bubbles in the dice circle, victory by defeating 4 enemies, daily reward of 30 Bubbles (100 on the 7th day).
+986	Energy rarity, equipped items, end-of-game animations, 8-column by 12-row board.
+987	Story mode: the first chapters, with dialogues, illustrations and dice duels.
+988	Announcements: news to discover
+989	Announcements
+990	New
+991	The latest news from Hackenia, in a few words.
+992	✔ App: the whole game is already on your device.
+993	Offline mode is not available in this browser.
+994	Checking…
+995	You are offline.
+996	Connect to the Internet to download the content.
+997	Downloading…
+998	✔ The whole game is available offline.
+999	{0} / {1} heavy files already on the device. The game launches offline; missing items will download on first use.
