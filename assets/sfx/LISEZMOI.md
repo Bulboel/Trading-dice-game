@@ -21,5 +21,6 @@ Déposez ici vos bruitages : s'ils existent, ils remplacent automatiquement les 
 | `ouverture.mp3` | ouverture de la bourse |
 | `rarete.mp3` | dé rare, légendaire ou énergie à l'ouverture |
 | `divin.mp3` | dé divin ou crépitant (cérémonie) |
+| `plongee.mp3` | plongée dans un dé du menu principal (souffle de vent) |
 
 Musiques : remplacez `assets/audio/musique-en-duel.mp3` (duels) et `assets/Musique menu jeu.mp3` (menus), en MP3 stéréo 128 kbit/s, bouclables (début et fin raccordés).
