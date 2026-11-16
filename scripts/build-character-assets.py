@@ -66,6 +66,8 @@ for c in COMBOS: PORTRAITS['bebe-'+c]=None
 CLIPS['lathandre']={'spell':('Lathandre attaque.glb',None),'victory':('Lathandre victoire.glb',None),'walk':('Lathandre marche.glb',None)}
 CLIPS['shauntea']={'spell':('Shauntéa attaque.glb',None),'victory':('Shauntea victoire.glb',None),'walk':('Shauntéa marche.glb',None)}
 for el in ELEMENTS: CLIPS['bebementaire-'+el]={'spell':(f'Bébémentaire {el} attaque.glb',None),'victory':(f'Bébémentaire {el} victoire.glb',None),'walk':(f'Bébémentaire {el} marche.glb',None)}
+# v350 — Canours (rare, quatre animations). Le Canourson et le Ver géant n'ont pas d'animation (gestuelle procédurale).
+CLIPS['canours']={'spell':('Canours attaque.glb',None),'victory':('Canours victoire.glb',None),'walk':('Canours marche.glb',None)}
 def find(name):
     # tolère les différences de casse et de forme Unicode (NFC/NFD) dans les noms de fichiers livrés
     exact=SOURCE/name

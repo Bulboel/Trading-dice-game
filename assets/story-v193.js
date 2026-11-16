@@ -48,7 +48,7 @@ function start(id){const part=PARTS.find(p=>p.id===id);if(!part||!unlocked(id))r
  const afterIntro=()=>part.duel?chooseDeck(()=>duel(part)):complete(part.id)||P()?.open('story');
  play(part.intro,afterIntro,go=>{if(go==='duel')chooseDeck(()=>duel(part));else play(part.silence||[],()=>{complete(part.id);P()?.open('story')})});}
 function duel(part){const d=part.duel,deck=P()?.preferredDeck();pending={id:part.id};document.body.classList.remove('portal-open');location.hash='partie';
- game.start(deck?deck.dice:LOAN,d.terrain,'story',d.level,{name:d.foe,dice:d.dice});window.dispatchEvent(new Event('resize'));
+ game.start(deck?deck.dice:LOAN,d.terrain,'story',d.level,{name:d.foe,dice:d.dice,boss:d.boss});window.dispatchEvent(new Event('resize'));
  if(!deck)setTimeout(()=>P()?.toast('Aucun deck valide : Kayla vous prête un deck de départ pour ce duel.'),600)}
 function after(won){if(!pending)return;const part=PARTS.find(p=>p.id===pending.id);pending=null;if(!part)return;
  setTimeout(()=>{game.pause?.();if(won||part.id==='c1p1')play(part.victory||[],()=>{complete(part.id);P()?.open('story')});else play(part.lose&&part.lose.length?part.lose:[{s:'Voix off',t:'Ce duel est perdu… Reprenez votre souffle et retentez votre chance depuis le menu Histoire.',l:part.title,c:[],cast:[],next:'Retour au menu'}],()=>P()?.open('story'))},2600)}
@@ -57,7 +57,7 @@ window.addEventListener('hackenia-player-defeat',e=>{if(e.gameMode==='story')aft
 window.addEventListener('hackenia-player-draw',e=>{if(e.gameMode==='story')after(false)});
 /* v331 — En plein duel : quand l'adversaire pose sa première créature, l'illustration de sa carte (reprise de la Triade) surgit
    quelques secondes, comme une carte jouée. La partie continue dessous ; toucher l'image la referme. */
-const REVEAL={c1p1:'p28',c1p2:'p12',c1p4:'p38',c1p5:'p02',c1p6:'p16',c1p6bis:'p42',c1p7:'p37',c1p8:'p05',c1p9:'p11',c1p10:'p69',c2p1:'p67',c2p2:'p84',c2p4:'../dassom-golem-incident',c2p5:'p76',c2p6:'p65'};
+const REVEAL={c1p1:'p28',c1p2:'p12',c1p4:'p38',c1p5:'p02',c1p6:'p16',c1p6bis:'p42',c1p7:'p37',c1p8:'p05',c1p9:'p11',c1p10:'p69',c2p1:'p67',c2p2:'p84',c2p4:'../dassom-golem-incident',c2p5:'p76',c2p6:'p65',c2p7:'p65'};
 window.addEventListener('hackenia:foe-reveal',e=>{if(!pending)return;const k=REVEAL[pending.id],part=PARTS.find(p=>p.id===pending.id);if(!k||!part)return;
  document.getElementById('story-reveal')?.remove();const el=document.createElement('div');el.id='story-reveal';el.setAttribute('role','status');
  el.innerHTML=`<figure><img src="assets/story/cards/${k}.webp?v=349" alt="${esc(part.duel.foe)}"><figcaption>${esc(part.duel.foe)} entre dans le duel !</figcaption></figure>`;

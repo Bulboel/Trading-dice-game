@@ -4,7 +4,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter
 import numpy as np
 ROOT=Path(__file__).resolve().parents[1]/'assets'/'characters'
-FOES={'loup':(120,140,170),'larve':(190,120,70),'guerrier-fantome':(60,190,170)}
+FOES={'loup':(120,140,170),'larve':(190,120,70),'guerrier-fantome':(60,190,170),'canourson':(170,130,90),'canours':(140,100,70),'ver-geant':(120,150,90)}
 N=1024
 def lerp(a,b,t):return tuple(int(a[i]*(1-t)+b[i]*t) for i in range(3))
 def medallion(key,c):
@@ -23,4 +23,7 @@ def medallion(key,c):
         g.ellipse([cx-rad,cy-rad,cx+rad,cy+rad],outline=col+(255,),width=int(N*.011))
     big=out.resize((512,512),Image.Resampling.LANCZOS);big.save(ROOT/f'{key}-512.webp',quality=88,method=6)
     big.resize((128,128),Image.Resampling.LANCZOS).save(ROOT/f'{key}-128.webp',quality=88,method=6)
-for k,c in FOES.items():medallion(k,c);print('médaillon',k)
+import sys
+for k,c in FOES.items():
+    if len(sys.argv)>1 and k not in sys.argv[1:]:continue
+    medallion(k,c);print('médaillon',k)
