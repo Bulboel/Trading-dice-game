@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Fiole de verre tèbre sacrée">
+<defs><radialGradient id="a" cx="50%" cy="55%" r="50%"><stop offset="0" stop-color="#fff6c8" stop-opacity=".6"/><stop offset=".55" stop-color="#9fe8ff" stop-opacity=".22"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+<linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4fdff" stop-opacity=".95"/><stop offset=".5" stop-color="#a9e6f5" stop-opacity=".55"/><stop offset="1" stop-color="#5fb4d4" stop-opacity=".7"/></linearGradient>
+<linearGradient id="l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2a8"/><stop offset=".5" stop-color="#ffc94d"/><stop offset="1" stop-color="#e08a1e"/></linearGradient></defs>
+<circle cx="100" cy="106" r="96" fill="url(#a)"/>
+<g fill="none" stroke="#fff4b8" stroke-width="3" stroke-linecap="round" opacity=".8"><path d="M26 60 l8 0M30 56 l0 8"/><path d="M164 78 l8 0M168 74 l0 8"/><path d="M150 36 l6 0M153 33 l0 6"/><path d="M40 138 l6 0M43 135 l0 6"/></g>
+<path d="M82 34 h36 v10 h-6 v20 q40 18 40 62 q0 32 -52 32 q-52 0 -52 -32 q0 -44 40 -62 v-20 h-6z" fill="url(#g)" stroke="#2a7a98" stroke-width="3.5" stroke-linejoin="round"/>
+<path d="M60 126 q0 -16 12 -24 q28 -10 56 0 q12 8 12 24 q0 30 -40 30 q-40 0 -40 -30z" fill="url(#l)" opacity=".92"/>
+<path d="M66 112 q34 -12 68 0" fill="none" stroke="#fff8d6" stroke-width="3" opacity=".85"/>
+<rect x="86" y="24" width="28" height="14" rx="4" fill="#c9954a" stroke="#6a4310" stroke-width="3"/>
+<path d="M72 92 q-4 18 2 34" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".7"/>
+<path d="M100 118 l4 9 l9 1 l-7 6 l2 9 l-8 -5 l-8 5 l2 -9 l-7 -6 l9 -1z" fill="#fffbe6" stroke="#b97a18" stroke-width="2"/>
+</svg>

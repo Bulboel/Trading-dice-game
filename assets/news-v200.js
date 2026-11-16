@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v314',title:'Cérémonie divine et Fiole de verre tèbre',items:['Ouverture d’un dé Divin ou Crépitant : nouvelle cérémonie plein écran avec pilier de lumière, halo runique, rayons arc-en-ciel, ondes de choc et titre doré (un toucher pour passer).','Nouvel objet porté : la Fiole de verre tèbre sacrée. Si votre deck ne contient qu’un seul élément, tous vos jets comptent un dé supplémentaire. Récompense du défi « Fidèle à son élément » : gagnez un duel en difficulté divine sur chaque terrain élémentaire de base (eau, feu, terre, vent, foudre, glace).']},
  {id:'v313',title:'Caméra de l’IA et Crépitants en main',items:['Pendant le tour de l’IA, la caméra reste sur son action jusqu’à la fin du tour (déplacement, pose du dé, lancer), au lieu de repartir trop tôt.','Les cartes de la main indiquent aussi la rareté des Crépitants (ex. « Crépitant rare »).']},
  {id:'v312',title:'Crépitants : rareté visible',items:['Sur les vignettes de la Collection et de Mes decks, un dé Crépitant indique la rareté de son dé de base (ex. « Crépitant peu commun »), sans ouvrir la fiche.']},
  {id:'v311',title:'Annonces condensées',items:['Les annonces ont été regroupées : une seule entrée par grand sujet, sans répétitions.']},
