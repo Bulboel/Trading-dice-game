@@ -1,9 +1,9 @@
-/* v315 — Pack Sage (5 €) : bague de sage, ouverture des bourses par 100, recyclage automatique des doublons (favoris protégés),
+/* v315 — Pack Sage : bague de sage, ouverture des bourses par 100, recyclage automatique des doublons (favoris protégés),
    1 000 Bubulles, jeu sans publicité. L'état est dans le profil (profile.premium) ; l'attribution peut aussi venir de l'administrateur
    (table premium_grants, voir online/sql/07-premium.sql). Le paiement réel passe par un fournisseur branchable (HackeniaPremium.billing). */
 (function(root){'use strict';
-const PRICE='5 €',GOLD=1000,RING='bague-de-sage';
-const BENEFITS=['Bague de sage (objet porté) : tous vos dés bonus dès le début de chaque duel contre l’IA','Ouverture des bourses par 100 (900 Bubulles)','Recyclage automatique des doublons : trois exemplaires gardés au minimum, favoris ♥ épargnés','1 000 Bubulles offertes','Jeu sans publicité'];
+const GOLD=1000,PRICE_GOLD=7500,RING='bague-de-sage';/* prix en Bubulles (1 000 sont rendues à l’activation) ; l’achat en argent réel n’apparaît que si un fournisseur de paiement est branché (billing) */
+const BENEFITS=['Bague de sage (objet porté) : tous vos dés bonus dès le début de chaque duel contre l’IA','Ouverture des bourses par 100 (900 Bubulles)','Recyclage automatique des doublons : trois exemplaires gardés au minimum, favoris ♥ épargnés','1 000 Bubulles rendues dès l’activation','Jeu sans publicité'];
 const active=p=>!!p?.premium?.sage,adsFree=p=>!!p?.premium?.noAds||active(p);
 /* Active le pack sur un profil (renvoie un nouveau profil). Les 1 000 Bubulles ne sont versées qu'une fois. */
 function activate(profile,source='purchase'){const next=structuredClone(profile),prem=next.premium||{};const first=!prem.goldPaid;
@@ -12,7 +12,7 @@ function activate(profile,source='purchase'){const next=structuredClone(profile)
  if(!next.equipped)next.equipped=RING;return next}
 const toggleFavorite=(profile,id)=>{const next=structuredClone(profile);next.favorites={...(next.favorites||{})};if(next.favorites[id])delete next.favorites[id];else next.favorites[id]=1;return next};
 const isFavorite=(profile,id)=>!!profile?.favorites?.[id];
-const api={PRICE,GOLD,RING,BENEFITS,active,adsFree,activate,toggleFavorite,isFavorite,billing:null};root.HackeniaPremium=api;if(typeof module!=='undefined')module.exports=api;
+const api={PRICE_GOLD,GOLD,RING,BENEFITS,active,adsFree,activate,toggleFavorite,isFavorite,billing:null};root.HackeniaPremium=api;if(typeof module!=='undefined')module.exports=api;
 /* ——— Espace administrateur : liste des joueurs et attribution du pack ——— */
 if(typeof document==='undefined')return;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
