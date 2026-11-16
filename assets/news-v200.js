@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v347',title:'Cérémonies : personnages de face',items:['Le modèle 3D des dés divins et crépitants reste maintenant face à vous, plus grand et centré, avec un léger balancement.']},
  {id:'v346',title:'Cérémonies en 3D',items:['Ouverture d’une bourse : lors de l’apparition d’un dé divin ou crépitant, son modèle 3D surgit maintenant juste devant sa vignette, avec sa texture galaxie pour les Crépitants.']},
  {id:'v345',title:'Trois nouveaux dés',items:['Le Loup (commun, Feu), la Larve (commune, Eau) et le Guerrier fantôme (peu commun, Glace) rejoignent la collection, avec leurs versions Crépitantes violette et émeraude.']},
  {id:'v344',title:'Taux des bourses revus',items:['Les dés divins deviennent plus rares : 0,4 % par dé tiré. La garantie d’un divin toutes les 80 bourses sans divin est conservée.','Crépitants : 0,2 % pour la version violette et 0,1 % pour la version émeraude, désormais la plus rare de toutes.']},

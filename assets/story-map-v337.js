@@ -7,6 +7,7 @@
 (()=>{'use strict';
 // v342 — une carte par chapitre : la région du Bois tendre (chapitre I) et la ville de Dassom (chapitre II).
 const MAPS={1:{src:'assets/story/region-bois-tendre.webp',w:1536,h:1024,alt:'Carte de la région du Bois tendre'},2:{src:'assets/story/dassom-ville.webp',w:1500,h:1000,alt:'Plan de la ville de Dassom'}};
+MAPS[3]=MAPS[2];/* v347 — le chapitre III se déroule aussi à Dassom */
 let MAP=MAPS[1];
 // positions en % de la carte de leur chapitre (x, y) — v342 : premières positions sur les nouvelles cartes, à affiner avec l’outil d’administration
 const BASE={c1p1:[46.5,84],c1p2:[45.5,64],c1p3:[50.5,43],c1p4:[77.5,43],c1p5:[86.5,37.5],c1p6:[68,56],c1p6bis:[58.5,51],c1p6bonus:[63.5,64],c1p7:[39,40.5],c1p8:[47,25],c1p9:[59,13],c1p10:[45,12],
