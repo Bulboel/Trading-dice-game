@@ -23,7 +23,7 @@ for(const [i,d] of shiny){const b=M[d.shinyOf];assert.equal(g.rarity(d),8,d.cn+'
 assert.ok(shiny.some(([,d])=>d.els),'les duos et trios de bébémentaires ont aussi leur version Crépitante');
 // Boutique : trois fois plus rare qu'un divin
 const P=vm.createContext({window:{hackeniaGame:{monsters:JSON.parse(JSON.stringify(M))}},structuredClone,Math,RangeError});vm.runInContext(fs.readFileSync(path.join(root,'assets/purchases.js'),'utf8'),P);
-const W=P.window.HackeniaPurchases.WEIGHTS;assert.ok(Math.abs(W[7]*3-W[5])<.02,'Crépitant = divin / 3 ('+W[7]+' contre '+W[5]+')');
+const W=P.window.HackeniaPurchases.WEIGHTS;assert.equal(W[5],0.4,'v344 : divin 0,4 %');assert.equal(W[7],0.3,'v344 : Crépitant 0,3 % au total');assert.equal(Math.round(W.reduce((a,b)=>a+b,0)*100)/100,100,'total 100 %');
 // Un lot tire bien des Crépitants (poids maximal) et ne les met pas dans la garantie divine
 const lot=P.window.HackeniaPurchases.plan({gold:10,inventory:{},boosters:0},1,()=>.9999);assert.ok(lot.pouchQueue[0].dice.every(i=>M[i].shiny),'tirage au sommet de la table : Crépitants');
 // Shaders et effets
