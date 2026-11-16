@@ -5,7 +5,9 @@ const el=()=>({style:{setProperty(){}},classList:{add(){},remove(){},toggle(){}}
 const c=vm.createContext({window:{dispatchEvent(){}},Event,document:{getElementById(i){if(!els.has(i))els.set(i,el());return els.get(i)}},fetch:()=>Promise.resolve({ok:false}),setTimeout:()=>0,clearTimeout(){},setInterval:()=>0,clearInterval(){},Date,Math,console});
 vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,''),c);
 const g=c.window.hackeniaGame,M=g.monsters,manifest=JSON.parse(fs.readFileSync(path.join(root,'assets/manifest.json'),'utf8'));
-const shiny=M.map((d,i)=>[i,d]).filter(([,d])=>d.shiny);
+const shiny=M.map((d,i)=>[i,d]).filter(([,d])=>d.shiny&&d.shinyKind!==2),emerald=M.map((d,i)=>[i,d]).filter(([,d])=>d.shinyKind===2);
+// v338 : seconde version « émeraude », même rareté, ajoutée après les Crépitants (identifiants 180 à 231)
+assert.equal(emerald.length,52);assert.ok(emerald.every(([i,d])=>i>=180&&d.rarity===8&&d.variant.kind==='galaxy2'&&d.portrait.endsWith('-crep2')));
 // Sélection : dés de base uniquement (ni variantes, ni dés à effet, sacrés, de carte ou de classe, ni dés mis de côté)
 const isBase=d=>!d.shiny&&!d.pure&&!d.variant&&!d.fx&&!d.terrain2&&!d.cls&&!d.reserved&&!d.card;
 const base=M.map((d,i)=>[i,d]).filter(([,d])=>isBase(d));
@@ -34,5 +36,5 @@ const portal=fs.readFileSync(path.join(root,'assets/portal-v159.js'),'utf8');ass
 const R=require(path.join(root,'assets/recycle-v220.js'));const legendShiny=shiny.find(([,d])=>g.rarity(M[d.shinyOf])===5),prof={inventory:{[legendShiny[0]]:3},decks:[]};const plan=R.plan(prof,M,d=>g.rarity(d));assert.equal(plan.items[0].keep,2,'recyclage : un Crépitant légendaire garde le minimum d’un légendaire (2)');assert.equal(plan.items[0].extra,1);assert.equal(plan.items[0].value,60,'valeur de recyclage Crépitant');
 const order=require(path.join(root,'assets/collection-order-v223.js'));const o=order.order(M);assert.equal(o.length,M.length);const pos=id=>o.indexOf(id),f0=shiny[0];assert.ok(pos(f0[0])>pos(f0[1].shinyOf),'le Crépitant suit son dé de base dans la collection');
 // v270 — les médias déjà vus sont servis tels quels par le service worker : toute miniature ou manifeste modifié doit changer d'adresse (?v=…)
-assert.ok(/assets\/manifest\.json\?v=20\d{6}-v\d{3}/.test(html)&&!html.includes('?v=224')&&html.includes('-128.webp?v=327'),'clés de cache du manifeste et des miniatures renouvelées');
+assert.ok(/assets\/manifest\.json\?v=20\d{6}-v\d{3}/.test(html)&&!html.includes('?v=224')&&html.includes('-128.webp?v=338'),'clés de cache du manifeste et des miniatures renouvelées');
 console.log('PASS: 52 dés Crépitants (rareté 8, galaxie, étincelles), 3 fois plus rares qu’un divin, mêmes dalles et même personnage, mêmes limites de deck que leur dé de base, recyclables, rangés après leur dé de base.');

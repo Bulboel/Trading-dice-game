@@ -15,7 +15,7 @@ function markup(o){
  <i class="dv-wave"></i><i class="dv-wave w2"></i><i class="dv-wave w3"></i><div class="dv-feathers">${feathers}</div><div class="dv-flash"></div>
  ${o.portrait?`<div class="dv-hero"><i class="dv-hero-glow"></i><img src="${esc(o.portrait)}" alt="" decoding="async"></div>`:''}<div class="dv-title" style="--accent:${o.accent}"><small>${esc(o.kicker)}</small><h2 aria-label="${esc(o.title)}">${letters}</h2><p>${esc(o.name)}</p></div><button class="dv-skip" type="button" aria-label="Passer la cérémonie">Passer ›</button>`}
 function play(o){const T=window.HackeniaI18n?.t||(x=>x);o={...o};for(const k of['title','kicker'])if(o[k])o[k]=T(o[k]);return new Promise(resolve=>{const set=window.HackeniaSettings,reduced=!set?.get?.().motion||matchMedia('(prefers-reduced-motion:reduce)').matches;
- const dlg=document.createElement('dialog');dlg.className='dv-dialog'+(o.theme==='legend'?' dv-legend':'')+(o.portrait?' dv-has-hero':'')+(reduced?' dv-reduced':'');dlg.setAttribute('aria-label',o.title);
+ const dlg=document.createElement('dialog');dlg.className='dv-dialog'+(o.theme==='legend'?' dv-legend':'')+(o.variant?' dv-'+o.variant:'')+(o.portrait?' dv-has-hero':'')+(reduced?' dv-reduced':'');dlg.setAttribute('aria-label',o.title);
  dlg.innerHTML=markup({title:'DIVIN',kicker:'Une présence supérieure s’éveille…',accent:'#ffd36b',name:'',...o});document.body.append(dlg);
  let over=false;const timers=[],finish=()=>{if(over)return;over=true;timers.forEach(clearTimeout);dlg.classList.add('dv-out');setTimeout(()=>{try{dlg.close()}catch{}dlg.remove();resolve()},reduced?120:520)};
  dlg.addEventListener('cancel',e=>{e.preventDefault();finish()});dlg.addEventListener('click',finish);
