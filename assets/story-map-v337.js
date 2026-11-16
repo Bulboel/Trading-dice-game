@@ -5,11 +5,14 @@
    Mode placement (Admin › 🗺 Placer les points de l’Histoire) : on glisse les points, puis « Copier les positions »
    donne un JSON à transmettre ; les positions sont aussi gardées sur l’appareil (localStorage) pour vérifier tout de suite. */
 (()=>{'use strict';
-const MAP={src:'assets/story/hackenia-map.webp',w:1617,h:1079};
-// positions en % de la carte (x, y) — v341 : placées avec l’outil d’administration (chapitres 1 et 2)
-const BASE={c1p1:[49.3,48.86],c1p2:[50.21,42.18],c1p3:[55.15,38.76],c1p4:[61.75,36.7],c1p5:[60.28,35.05],c1p6:[56.6,36.17],c1p6bis:[54.8,35.96],c1p6bonus:[53.07,36.84],c1p7:[50.93,36.48],c1p8:[53.63,31.61],c1p9:[57.5,29.18],c1p10:[57.5,26.28],c2p1:[45.4,48.9],c2p2:[48.13,47.06],c2p3:[51.04,47.64],c2p4:[53.21,50.93],c2p5:[52.03,54.22],c2p6:[49.45,55.97]};
-const VIEW={1:{x:.555,y:.375,s:2.2},2:{x:.493,y:.515,s:3}};// cadrage de chaque chapitre
-const SEEN='hackenia-story-map-seen',POSKEY='hackenia-story-map-pos',EDITKEY='hackenia-story-map-edit',TABKEY='hackenia-story-map-tab';
+// v342 — une carte par chapitre : la région du Bois tendre (chapitre I) et la ville de Dassom (chapitre II).
+const MAPS={1:{src:'assets/story/region-bois-tendre.webp',w:1536,h:1024,alt:'Carte de la région du Bois tendre'},2:{src:'assets/story/dassom-ville.webp',w:1500,h:1000,alt:'Plan de la ville de Dassom'}};
+let MAP=MAPS[1];
+// positions en % de la carte de leur chapitre (x, y) — v342 : premières positions sur les nouvelles cartes, à affiner avec l’outil d’administration
+const BASE={c1p1:[46.5,84],c1p2:[45.5,64],c1p3:[50.5,43],c1p4:[77.5,43],c1p5:[86.5,37.5],c1p6:[68,56],c1p6bis:[58.5,51],c1p6bonus:[63.5,64],c1p7:[39,40.5],c1p8:[47,25],c1p9:[59,13],c1p10:[45,12],
+ c2p1:[52,21],c2p2:[75,23],c2p3:[49,66],c2p4:[22,57],c2p5:[20,23],c2p6:[84,71]};
+const VIEW={1:{x:.6,y:.5,s:1.4},2:{x:.5,y:.48,s:1.3}};// cadrage de chaque chapitre
+const SEEN='hackenia-story-map-seen',POSKEY='hackenia-story-map-pos-v342',EDITKEY='hackenia-story-map-edit',TABKEY='hackenia-story-map-tab';
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const POS=()=>({...BASE,...store.get(POSKEY,{})});
@@ -21,7 +24,7 @@ function curve(pts){if(pts.length<2)return '';let d=`M${pts[0][0]},${pts[0][1]}`
 const px=p=>[p[0]/100*MAP.w,p[1]/100*MAP.h];
 function minScale(){const r=vp.getBoundingClientRect();return Math.max(r.width/MAP.w,r.height/MAP.h)}
 function clamp(){const r=vp.getBoundingClientRect(),s=cam.s*minScale(),hw=r.width/2/s/MAP.w,hh=r.height/2/s/MAP.h;cam.x=Math.min(1-hw,Math.max(hw,cam.x));cam.y=Math.min(1-hh,Math.max(hh,cam.y))}
-function apply(ms=0){if(!vp||!vp.isConnected)return;cam.s=Math.min(6,Math.max(1,cam.s));clamp();const r=vp.getBoundingClientRect(),s=cam.s*minScale();lastS=s;tx=r.width/2-cam.x*MAP.w*s;ty=r.height/2-cam.y*MAP.h*s;
+function apply(ms=0){if(!vp||!vp.isConnected)return;cam.s=Math.min(3.5,Math.max(1,cam.s));clamp();const r=vp.getBoundingClientRect(),s=cam.s*minScale();lastS=s;tx=r.width/2-cam.x*MAP.w*s;ty=r.height/2-cam.y*MAP.h*s;
  world.style.transition=ms?`transform ${ms}ms cubic-bezier(.45,0,.2,1)`:'none';world.style.transform=`translate(${tx}px,${ty}px) scale(${s})`;
  world.style.setProperty('--inv',(1/s).toFixed(4));world.querySelectorAll('.sm-path').forEach(p=>p.style.strokeWidth=(p.dataset.w/s).toFixed(2))}
 function fly(to,ms){cam={...cam,...to};apply(ms)}
@@ -30,7 +33,7 @@ function render(box,A){const d=A.prog(),parts=A.parts,pos=POS();
  const mainAll=parts.filter(p=>!p.optional),nextAll=mainAll.find(p=>!d.done[p.id]),doneCount=mainAll.filter(p=>d.done[p.id]).length;
  const chOpen=ch=>parts.some(p=>chOf(p)===ch&&A.unlocked(p.id));
  let tab=store.get(TABKEY,null);if(!chapters.includes(tab)||(!chOpen(tab)&&!editing))tab=nextAll?chOf(nextAll):chapters[chapters.length-1];
- const list=parts.filter(p=>chOf(p)===tab);
+ MAP=MAPS[tab]||MAPS[1];const list=parts.filter(p=>chOf(p)===tab);
  const all=list.map(p=>({p,xy:px(pos[p.id]||[50,50]),done:!!d.done[p.id],open:A.unlocked(p.id)}));
  const main=all.filter(n=>!n.p.optional),reached=main.filter(n=>n.done).length,cur=main.find(n=>!n.done)||main[main.length-1];
  const donePts=main.slice(0,Math.min(main.length,reached+(reached<main.length?1:0))).map(n=>n.xy),todoPts=main.slice(Math.max(0,reached)).map(n=>n.xy);
@@ -40,7 +43,7 @@ function render(box,A){const d=A.prog(),parts=A.parts,pos=POS();
  <div class="sm-tabs" role="tablist">${chapters.map(ch=>{const o=chOpen(ch)||editing,dn=parts.filter(p=>chOf(p)===ch&&!p.optional&&d.done[p.id]).length,tot=parts.filter(p=>chOf(p)===ch&&!p.optional).length;return `<button type="button" role="tab" class="sm-tab${ch===tab?' on':''}" data-tab="${ch}" aria-selected="${ch===tab}" ${o?'':'disabled'}><small>Chapitre ${CHN[ch]||ch}</small><b>${esc(CHT[ch]?.t||'')}</b><span>${o?dn+' / '+tot:'🔒'}</span></button>`}).join('')}</div>
  ${editing?`<div class="sm-edit-bar"><b>Mode placement</b><span>Glissez les points à leur place, puis copiez les positions.</span><div><button type="button" data-ed="copy" class="portal-primary">📋 Copier les positions</button><button type="button" data-ed="reset">↺ Réinitialiser</button><button type="button" data-ed="quit">✓ Terminer</button></div><textarea class="sm-json" hidden readonly></textarea></div>`:''}
  <div class="sm-wrap"><div class="sm-viewport${editing?' editing':''}" tabindex="0" aria-label="Carte d’Hackénia : glissez pour vous déplacer, pincez pour zoomer"><div class="sm-world" style="width:${MAP.w}px;height:${MAP.h}px">
- <img class="sm-map" src="${MAP.src}" alt="Carte du continent d’Hackénia" draggable="false" width="${MAP.w}" height="${MAP.h}">
+ <img class="sm-map" src="${MAP.src}" alt="${MAP.alt}" draggable="false" width="${MAP.w}" height="${MAP.h}">
  <svg class="sm-svg" viewBox="0 0 ${MAP.w} ${MAP.h}" aria-hidden="true"><path class="sm-path todo" data-w="2.6" d="${curve(todoPts)}"/>${all.filter(n=>n.p.optional).map(n=>{const i=list.indexOf(n.p),prev=all[i-1];return prev?`<path class="sm-path branch" data-w="2" d="M${prev.xy[0]},${prev.xy[1]} L${n.xy[0]},${n.xy[1]}"/>`:''}).join('')}<path class="sm-path done-glow" data-w="7" d="${curve(donePts)}"/><path class="sm-path done" data-w="3.2" d="${curve(donePts)}"/></svg>
  ${all.map(n=>{const [lab]=A.splitTitle(n.p.title),state=n.done?'done':n===cur&&!n.done?'current':n.open?'open':'locked',icon=n.done?'✓':!n.open?'🔒':n.p.optional?'★':n.p.duel?'⚔':'📖',num=(lab.match(/\d+\s*bis|\d+/)?.[0]||'').replace(/\s*bis/,'b');
   return `<button type="button" class="sm-node ${state}${n.p.optional?' bonus':''}" data-node="${n.p.id}" style="left:${n.xy[0]}px;top:${n.xy[1]}px" aria-label="${esc(n.p.title)}${n.done?' (terminée)':!n.open?' (verrouillée)':''}"><span class="sm-medal"><i>${icon}</i></span><span class="sm-tag">${editing?esc(n.p.id):esc(num||'★')}</span></button>`}).join('')}
@@ -72,7 +75,7 @@ function render(box,A){const d=A.prog(),parts=A.parts,pos=POS();
   if(moved>6){cam.x-=dx/lastS/MAP.w;cam.y-=dy/lastS/MAP.h;apply()}});
  const end=e=>{const wasTap=moved<8&&pts.size===1;pts.delete(e.pointerId);if(pts.size<2)pinch=0;try{if(vp.hasPointerCapture(e.pointerId))vp.releasePointerCapture(e.pointerId)}catch{}
   if(drag){const id=drag.dataset.node,l=parseFloat(drag.style.left),t=parseFloat(drag.style.top);const saved=store.get(POSKEY,{});saved[id]=[+(l/MAP.w*100).toFixed(2),+(t/MAP.h*100).toFixed(2)];store.set(POSKEY,saved);drag=null;return}
-  if(wasTap&&e.type==='pointerup'&&!editing){const node=document.elementsFromPoint(e.clientX,e.clientY).find(el=>el.classList?.contains('sm-node'));if(node)open(node.dataset.node)}};
+  if(wasTap&&e.type==='pointerup'&&!editing&&!e.target.closest?.('.sm-ctrl,.sm-sheet')){/* v342 : un bouton de zoom ou la fiche posés sur un point n’ouvrent pas ce point */const node=document.elementsFromPoint(e.clientX,e.clientY).find(el=>el.classList?.contains('sm-node'));if(node)open(node.dataset.node)}};
  vp.addEventListener('pointerup',end);vp.addEventListener('pointercancel',end);
  vp.addEventListener('wheel',e=>{e.preventDefault();cam.s*=e.deltaY<0?1.15:1/1.15;apply(120)},{passive:false});
  vp.addEventListener('dblclick',()=>fly({s:cam.s*1.6},350));

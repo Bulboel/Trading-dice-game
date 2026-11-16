@@ -2,20 +2,20 @@
 import * as THREE from 'three';
 import { orientBoardModel } from './model-facing.js?v=20261103-v73';
 import { createEmberlands } from './ember-v239.js?v=20261208-v260';
-import { attachHeroParts } from './hero-parts.js?v=20270102-v341';
-import { applyLook } from './variant-look.js?v=20270102-v341';
+import { attachHeroParts } from './hero-parts.js?v=20270102-v342';
+import { applyLook } from './variant-look.js?v=20270102-v342';
 import { createLake } from './lake-v241.js?v=20261122-v241';
 import { createSkyIsland } from './sky-v231.js?v=20261128-v247';
 import { createWindHighlands } from './wind-v232.js?v=20261123-v242';
 import { createWoodland } from './woodland-v238.js?v=20261119-v238';
 import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20261125-v244';
-import { createFrostRoad } from './frost-v240.js?v=20270102-v341';
+import { createFrostRoad } from './frost-v240.js?v=20270102-v342';
 import { createCity } from './city-v246.js?v=20261128-v247';
-import { createCave } from './cave-v246.js?v=20270102-v341';
+import { createCave } from './cave-v246.js?v=20270102-v342';
 import { createAutumn } from './autumn-v253.js?v=20261202-v253';
-import { createFairyMists } from './fairy-v335.js?v=20270102-v341';
+import { createFairyMists } from './fairy-v335.js?v=20270102-v342';
 import { createNoel } from './noel-v253.js?v=20261202-v253';
-import { createElementWheel } from './element-wheel-v252.js?v=20270102-v341';
+import { createElementWheel } from './element-wheel-v252.js?v=20270102-v342';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -491,6 +491,9 @@ async function attachCreatureModel(g,k){
 /* v256 — Gestuelle procédurale des créatures sans clip (araignées) : respiration au repos, coup de tête en avant
    quand elle attaque, cabrage de joie quand elle gagne un combat ou la partie. */
 function animateGesture(g,k,f,combat,t){const G=g.userData.gest,n=G.node,T=moving?t:0;let z=0,rx=.07*Math.sin(T*1.9+G.phase),y=.02*Math.abs(Math.sin(T*2.6+G.phase)),rz=.09*Math.sin(T*1.3+G.phase),sy=1+.07*Math.sin(T*2.6+G.phase),sxz=1-.035*Math.sin(T*2.6+G.phase);/* v262 — respiration et balancement plus marqués : l'araignée blanche n'a pas de clip d'animation */
+ if(G.kind==='larva'&&moving){/* v342 — larve : se tortille (écrasement et torsion plus marqués) */const w=Math.sin(T*3.4+G.phase);sy=1+.13*w;sxz=1-.07*w;rz=.16*Math.sin(T*2.2+G.phase);rx=.05*Math.sin(T*1.6+G.phase)}
+ if(G.kind==='ghost'&&moving){/* v342 — guerrier fantomatique : flotte lentement, sans respiration */y=.12+.07*Math.sin(T*1.2+G.phase);sy=1;sxz=1;rx=.03*Math.sin(T*.9+G.phase);rz=.04*Math.sin(T*.7+G.phase)}
+ if(G.kind==='beast'&&moving){/* v342 — loup : respiration et petits coups de tête */const t6=Math.pow(Math.max(0,Math.sin(T*1.1+G.phase)),8);rx+=.1*t6;sy=1+.035*Math.sin(T*2.6+G.phase);sxz=1-.018*Math.sin(T*2.6+G.phase)}
  if(G.kind==='horse'&&moving){/* v267 — Jordan n'a pas de clip : il piaffe (coup de sabot) et secoue la crinière */const t6=Math.pow(Math.max(0,Math.sin(T*1.7+G.phase)),6);rx-=.16*t6;y+=.05*t6;rz+=.05*Math.sin(T*5+G.phase)*t6}
  if(f&&combat&&!combat.reduced){const p=combat.progress,att=k.id===combat.fighters[0].id;
   if(att&&p>.16&&p<.3){const s=Math.sin(Math.PI*(p-.16)/.14);rx=-.22*s;z=-.06*s}
