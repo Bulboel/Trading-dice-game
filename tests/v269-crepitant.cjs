@@ -7,11 +7,11 @@ vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);
 const g=c.window.hackeniaGame,M=g.monsters,manifest=JSON.parse(fs.readFileSync(path.join(root,'assets/manifest.json'),'utf8'));
 const shiny=M.map((d,i)=>[i,d]).filter(([,d])=>d.shiny&&d.shinyKind!==2),emerald=M.map((d,i)=>[i,d]).filter(([,d])=>d.shinyKind===2);
 // v338 : seconde version « émeraude », même rareté, ajoutée après les Crépitants (identifiants 180 à 231)
-assert.equal(emerald.length,55);assert.ok(emerald.every(([i,d])=>i>=180&&d.rarity===8&&d.variant.kind==='galaxy2'&&d.portrait.endsWith('-crep2')));
+assert.equal(emerald.length,58);assert.ok(emerald.every(([i,d])=>i>=180&&d.rarity===8&&d.variant.kind==='galaxy2'&&d.portrait.endsWith('-crep2')));
 // Sélection : dés de base uniquement (ni variantes, ni dés à effet, sacrés, de carte ou de classe, ni dés mis de côté)
 const isBase=d=>!d.shiny&&!d.pure&&!d.variant&&!d.fx&&!d.terrain2&&!d.cls&&!d.reserved&&!d.card;
 const base=M.map((d,i)=>[i,d]).filter(([,d])=>isBase(d));
-assert.equal(shiny.length,base.length,'une version Crépitante par dé de base');assert.equal(shiny.length,55);/* v345 : +3 (Loup, Larve, Guerrier fantôme) */
+assert.equal(shiny.length,base.length,'une version Crépitante par dé de base');assert.equal(shiny.length,58);/* v345 : +3 (Loup, Larve, Guerrier fantôme) */
 assert.ok(shiny.every(([,d])=>d.shinyOf!==undefined&&isBase(M[d.shinyOf])),'chaque Crépitant renvoie à un dé de base');
 assert.ok(M.slice(0,128).every(d=>!d.shiny),'les 128 premiers numéros restent intacts : les Crépitants sont ajoutés à la fin');
 const names=new Set();
@@ -37,4 +37,4 @@ const R=require(path.join(root,'assets/recycle-v220.js'));const legendShiny=shin
 const order=require(path.join(root,'assets/collection-order-v223.js'));const o=order.order(M);assert.equal(o.length,M.length);const pos=id=>o.indexOf(id),f0=shiny[0];assert.ok(pos(f0[0])>pos(f0[1].shinyOf),'le Crépitant suit son dé de base dans la collection');
 // v270 — les médias déjà vus sont servis tels quels par le service worker : toute miniature ou manifeste modifié doit changer d'adresse (?v=…)
 assert.ok(/assets\/manifest\.json\?v=20\d{6}-v\d{3}/.test(html)&&!html.includes('?v=224')&&html.includes('-128.webp?v=340'),'clés de cache du manifeste et des miniatures renouvelées');
-console.log('PASS: 55 dés Crépitants (rareté 8, galaxie, étincelles), plus rares qu’un divin, mêmes dalles et même personnage, mêmes limites de deck que leur dé de base, recyclables, rangés après leur dé de base.');
+console.log('PASS: 58 dés Crépitants (rareté 8, galaxie, étincelles), plus rares qu’un divin, mêmes dalles et même personnage, mêmes limites de deck que leur dé de base, recyclables, rangés après leur dé de base.');
