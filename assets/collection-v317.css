@@ -24,7 +24,10 @@ html body #portal .cc2 .cc-top .cc-gems{order:3;margin-left:4px}
 /* v321 — transitions : fondu entre menus, plongée dans un dé de la boutique */
 #portal-content.view-in{animation:view-in .3s cubic-bezier(.2,.8,.2,1) both}
 @keyframes view-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.die-zoom-flash{position:fixed;inset:0;z-index:1999;pointer-events:none;opacity:0;background:radial-gradient(circle at var(--fx,50%) var(--fy,50%),#fffbe8 0,#f3dfa6 18%,#6f5a2c 55%,#0b0d14 100%)}
+.dive-iris{position:fixed;z-index:2000;pointer-events:none;border-radius:50%;will-change:transform,opacity;background:radial-gradient(circle,#fff6d6 0,#e9c86f 7%,#7a5c2a 16%,#26203a 34%,#0b0d18 56%,#070810 72%);transform:scale(.6);opacity:0}
+.dive-iris.hold::after{content:'';position:absolute;inset:28%;border-radius:50%;background:radial-gradient(circle,#fff3c8aa 0,transparent 70%);animation:dive-breathe 1.2s ease-in-out infinite}
+@keyframes dive-breathe{0%,100%{opacity:.4;transform:scale(.85)}50%{opacity:1;transform:scale(1.1)}}
+.dive-glow{position:fixed;z-index:2001;pointer-events:none;border-radius:50%;will-change:transform,opacity;background:radial-gradient(circle,#fffbe8cc 0,#f3dfa666 35%,transparent 70%);opacity:0}
 @media(prefers-reduced-motion:reduce){#portal-content.view-in{animation:none}}
 .no-motion #portal-content.view-in{animation:none}
 /* v322 — portraits à cadre peint : leur cadre fait office de médaillon (pas de second cercle, ornements visibles) */
