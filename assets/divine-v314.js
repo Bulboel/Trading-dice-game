@@ -1,4 +1,4 @@
-/* v314 — Cérémonie divine : séquence plein écran (~4 s) jouée à l'ouverture d'une bourse contenant un dé Divin ou Crépitant.
+/* v314 — Cérémonie divine : séquence plein écran (~4 s) jouée à l'ouverture d'une boubourse contenant un dé Divin ou Crépitant.
    Pilier de lumière, double halo runique, rayons arc-en-ciel, ondes de choc, plumes de lumière, éclair blanc puis titre doré.
    Un toucher passe la séquence. Mouvement réduit : simple fondu lumineux avec le titre. */
 (()=>{'use strict';

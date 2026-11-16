@@ -1,4 +1,4 @@
-// v254 — cycle des éléments (Eau › Feu › Glace › Terre › Vent › Foudre), mini-roue sur smartphone, gestes à deux doigts, étiquettes de bourse.
+// v254 — cycle des éléments (Eau › Feu › Glace › Terre › Vent › Foudre), mini-roue sur smartphone, gestes à deux doigts, étiquettes de boubourse.
 const fs=require('fs'),path=require('path'),assert=require('assert');const root=path.join(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const html=read('index.html'),cl=read('assets/clearing-v105.js'),wheel=read('assets/element-wheel-v252.js'),tuto=read('assets/tutorial-v178.js'),pouch=read('assets/pouch-opening-v122.js');
 const BT=eval('('+html.match(/const BT=(\{[^}]+\})/)[1]+')');

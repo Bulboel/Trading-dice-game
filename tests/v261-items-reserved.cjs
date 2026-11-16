@@ -12,7 +12,7 @@ const lath=M[33];assert.equal(lath.cn,'Lathandre');assert.ok(lath.multi&&lath.el
 const P=vm.createContext({window:{hackeniaGame:{monsters:JSON.parse(JSON.stringify(M))}},structuredClone,Math,RangeError});vm.runInContext(fs.readFileSync(path.join(__dirname,'../assets/purchases.js'),'utf8'),P);
 let seed=3;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;const drawn=new Set();
 for(let i=0;i<400;i++)P.window.HackeniaPurchases.plan({gold:10,inventory:{},boosters:0,pity:{leg:49,div:99}},1,rnd).pouchQueue[0].dice.forEach(d=>drawn.add(d));
-assert.ok(![...drawn].some(i=>M[i].reserved),'aucun dé mis de côté dans les bourses, garanties comprises');
+assert.ok(![...drawn].some(i=>M[i].reserved),'aucun dé mis de côté dans les boubourses, garanties comprises');
 // --- objets
 const E=require(path.join(__dirname,'../assets/equipment-v198.js'));const ids=E.items.map(i=>i.id);
 for(const id of['feuille-d-or','lanterne-du-mineur','echarpe-de-kayla','sac-sans-fond'])assert.ok(ids.includes(id),id);

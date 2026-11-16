@@ -50,13 +50,13 @@ function dropFx(a,b,done){const {c,g}=canvasLayer(),parts=[],trail=[],rings=[];
 // Éclair : un trait brisé part du dé et zèbre l'écran jusqu'au compteur, avec deux petites branches et un flash.
 function bolt(a,b){const pts=[a],n=9;for(let i=1;i<n;i++){const t=i/n,x=a.x+(b.x-a.x)*t,y=a.y+(b.y-a.y)*t,len=Math.hypot(b.x-a.x,b.y-a.y),nx=-(b.y-a.y)/len,ny=(b.x-a.x)/len,off=(Math.random()-.5)*Math.min(70,len*.18)*(1-Math.abs(.5-t));pts.push({x:x+nx*off,y:y+ny*off})}pts.push(b);return pts}
 function sparkFx(a,b,done){const {c,g}=canvasLayer(),o={x:a.left+a.width/2,y:a.top+a.height/2},t={x:b.left+b.width/2,y:b.top+b.height/2},start=performance.now(),T=1100;let main=bolt(o,t),branches=[],hit=false;
- const draw=(pts,k,w,alpha)=>{const m=Math.max(2,Math.ceil(pts.length*k));g.beginPath();g.moveTo(pts[0].x,pts[0].y);for(let i=1;i<m;i++)g.lineTo(pts[i].x,pts[i].y);g.lineWidth=w;g.strokeStyle=`rgba(190,170,255,${alpha*.5})`;g.shadowColor='#b79cff';g.shadowBlur=18;g.stroke();g.lineWidth=w*.4;g.strokeStyle=`rgba(255,255,255,${alpha})`;g.shadowBlur=6;g.stroke()};
+ const draw=(pts,k,w,alpha)=>{const m=Math.max(2,Math.ceil(pts.length*k));g.beginPath();g.moveTo(pts[0].x,pts[0].y);for(let i=1;i<m;i++)g.lineTo(pts[i].x,pts[i].y);g.lineWidth=w;g.strokeStyle=`rgba(150,80,255,${alpha*.8})`;g.shadowColor='#9b5cff';g.shadowBlur=22;g.stroke();g.lineWidth=w*.42;g.strokeStyle=`rgba(232,212,255,${alpha})`;g.shadowColor='#c49bff';g.shadowBlur=8;g.stroke()};/* v348 — éclair violacé, couleur de l’élément foudre */
  const frame=now=>{const e=now-start;g.clearRect(0,0,c.width,c.height);const grow=Math.min(1,e/260);
   if(e>90&&Math.random()<.35)main=bolt(o,t);// scintillement
   if(!branches.length&&e>140)for(let i=0;i<2;i++){const s=main[3+i*2],end={x:s.x+(Math.random()-.5)*120,y:s.y+(Math.random()-.5)*120};branches.push(bolt(s,end).slice(0,6))}
   const alpha=e<T*.6?1:Math.max(0,1-(e-T*.6)/(T*.4));draw(main,grow,7,alpha);for(const br of branches)draw(br,grow,3,alpha*.7);
   if(grow>=1&&!hit){hit=true;done()}
-  if(hit){const k=Math.min(1,(e-260)/500),r=8+50*k;g.shadowBlur=0;g.fillStyle=`rgba(235,225,255,${(1-k)*.8})`;g.beginPath();g.arc(t.x,t.y,r,0,Math.PI*2);g.fill()}
+  if(hit){const k=Math.min(1,(e-260)/500),r=8+50*k;g.shadowBlur=0;g.fillStyle=`rgba(178,120,255,${(1-k)*.75})`;g.beginPath();g.arc(t.x,t.y,r,0,Math.PI*2);g.fill()}
   if(e<T)requestAnimationFrame(frame);else c.remove()};requestAnimationFrame(frame)}
 // Feuille d'automne : elle tombe en se balançant, puis un coup de vent l'emporte en spirale vers le compteur.
 function drawLeaf(g,x,y,r,angle,alpha=1){g.save();g.translate(x,y);g.rotate(angle);g.globalAlpha=alpha;const grad=g.createLinearGradient(-r,0,r,0);grad.addColorStop(0,'#c2410c');grad.addColorStop(.5,'#f59e0b');grad.addColorStop(1,'#facc15');g.fillStyle=grad;g.shadowColor='#f59e0b88';g.shadowBlur=8;

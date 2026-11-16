@@ -9,9 +9,8 @@
 const MAPS={1:{src:'assets/story/region-bois-tendre.webp',w:1536,h:1024,alt:'Carte de la région du Bois tendre'},2:{src:'assets/story/dassom-ville.webp',w:1500,h:1000,alt:'Plan de la ville de Dassom'}};
 MAPS[3]=MAPS[2];/* v347 — le chapitre III se déroule aussi à Dassom */
 let MAP=MAPS[1];
-// positions en % de la carte de leur chapitre (x, y) — v342 : premières positions sur les nouvelles cartes, à affiner avec l’outil d’administration
-const BASE={c1p1:[46.5,84],c1p2:[45.5,64],c1p3:[50.5,43],c1p4:[77.5,43],c1p5:[86.5,37.5],c1p6:[68,56],c1p6bis:[58.5,51],c1p6bonus:[63.5,64],c1p7:[39,40.5],c1p8:[47,25],c1p9:[59,13],c1p10:[45,12],
- c2p1:[52,21],c2p2:[75,23],c2p3:[49,66],c2p4:[22,57],c2p5:[20,23],c2p6:[84,71]};
+// positions en % de la carte de leur chapitre (x, y) — v348 : placées avec l’outil d’administration sur les nouvelles cartes
+const BASE={c1p1:[46.68,76.9],c1p2:[44.73,63.44],c1p3:[52.27,45.51],c1p4:[72.82,45],c1p5:[88.19,39.84],c1p6:[41.07,53.13],c1p6bis:[38.32,49.22],c1p6bonus:[49.93,39.12],c1p7:[39.56,41.6],c1p8:[49.13,23.01],c1p9:[65.01,21.71],c1p10:[59.94,16.68],c2p1:[48.56,24.63],c2p2:[48.56,14.96],c2p3:[40.1,20.73],c2p4:[22,57],c2p5:[20,23],c2p6:[82.31,70.93]};
 const VIEW={1:{x:.6,y:.5,s:1.4},2:{x:.5,y:.48,s:1.3}};// cadrage de chaque chapitre
 const SEEN='hackenia-story-map-seen',POSKEY='hackenia-story-map-pos-v342',EDITKEY='hackenia-story-map-edit',TABKEY='hackenia-story-map-tab';
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
