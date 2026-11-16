@@ -338,5 +338,13 @@
  "Nouveau terrain : le quartier des brumes féeriques": "New terrain: the Fairy Mists District",
  "Un terrain multi-élément : la brume féerique change de couleur à chaque tour complet, et l’élément favorisé (+1) change avec elle. Glycines, lanternes dorées, pixies et cascade sous le pont en arche.": "A multi-element terrain: the fairy mist changes color every full turn, and the favored element (+1) changes with it. Wisteria, golden lanterns, pixies and a waterfall under the arched bridge.",
  "Nouveau défi « Danse des brumes » : gagnez trois matchs dans le quartier.": "New challenge “Dance of the Mists”: win three matches in the district.",
- "Collection et Mes decks : le champ de recherche est aligné avec ses boutons.": "Collection and My decks: the search field is aligned with its buttons."
+ "Collection et Mes decks : le champ de recherche est aligné avec ses boutons.": "Collection and My decks: the search field is aligned with its buttons.",
+ "Deck": "Deck",
+ "Limites de rareté du deck": "Deck rarity limits",
+ "{0} : {1} sur {2} au maximum": "{0}: {1} of {2} maximum",
+ "La nuit des fées : les pixies se baladent, la brume change de couleur.": "Fairy night: pixies wander, the mist changes color.",
+ "La nuit des fées": "Fairy night",
+ "Le quartier des brumes féeriques passe à la nuit : pixies multicolores qui se baladent, champignons lumineux, cristaux, tour de mage et maisons-champignons. Le liseré du damier prend la couleur de l’élément favorisé.": "The Fairy Mists District turns to night: multicolored pixies wander, glowing mushrooms, crystals, a wizard tower and mushroom houses. The board's border takes the color of the favored element.",
+ "Mes decks plus compact : nom du deck et compteur sur une ligne, emplacements resserrés, filtres alignés comme dans la Collection.": "More compact My decks: deck name and counter on one line, tighter slots, filters aligned like in the Collection.",
+ "Limites de rareté du deck en pastilles colorées (✦ divin, ◆ légendaire, ⚡ Énergie, ● rare).": "Deck rarity limits as colored pips (✦ divine, ◆ legendary, ⚡ Energy, ● rare)."
 }
