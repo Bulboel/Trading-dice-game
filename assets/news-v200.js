@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v312',title:'Crépitants : rareté visible',items:['Sur les vignettes de la Collection et de Mes decks, un dé Crépitant indique la rareté de son dé de base (ex. « Crépitant peu commun »), sans ouvrir la fiche.']},
  {id:'v311',title:'Annonces condensées',items:['Les annonces ont été regroupées : une seule entrée par grand sujet, sans répétitions.']},
  {id:'v310',title:'Votre héros, tout en personnalisation',items:['Créez votre héros : nom, élément définitif, couleur de peau et des yeux, animations et avatar. Il vous attend dans votre zone à protéger au début de chaque partie contre l’IA et monte en niveau avec vous (niveau 5 maximum).','Coiffures (courte, longue) et vêtements au choix, avec la palette complète : tee-shirt col rond ou en V, débardeur, short en jean ou en tissu, ou combinaison en 5 textures.','À retrouver dans Options › Joueur.']},
  {id:'v306',title:'Parcours de bienvenue',items:['Un nouveau joueur suit un parcours guidé : tutoriel (facultatif), création du héros, boutique avec ses 50 Bubulles, puis le menu Jouer avec le bouton « Deck optimal » mis en avant.']},
