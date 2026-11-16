@@ -2,20 +2,20 @@
 import * as THREE from 'three';
 import { orientBoardModel } from './model-facing.js?v=20261103-v73';
 import { createEmberlands } from './ember-v239.js?v=20261208-v260';
-import { attachHeroParts } from './hero-parts.js?v=20270102-v342';
-import { applyLook } from './variant-look.js?v=20270102-v342';
+import { attachHeroParts } from './hero-parts.js?v=20270102-v343';
+import { applyLook } from './variant-look.js?v=20270102-v343';
 import { createLake } from './lake-v241.js?v=20261122-v241';
 import { createSkyIsland } from './sky-v231.js?v=20261128-v247';
 import { createWindHighlands } from './wind-v232.js?v=20261123-v242';
 import { createWoodland } from './woodland-v238.js?v=20261119-v238';
 import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20261125-v244';
-import { createFrostRoad } from './frost-v240.js?v=20270102-v342';
+import { createFrostRoad } from './frost-v240.js?v=20270102-v343';
 import { createCity } from './city-v246.js?v=20261128-v247';
-import { createCave } from './cave-v246.js?v=20270102-v342';
+import { createCave } from './cave-v246.js?v=20270102-v343';
 import { createAutumn } from './autumn-v253.js?v=20261202-v253';
-import { createFairyMists } from './fairy-v335.js?v=20270102-v342';
+import { createFairyMists } from './fairy-v335.js?v=20270102-v343';
 import { createNoel } from './noel-v253.js?v=20261202-v253';
-import { createElementWheel } from './element-wheel-v252.js?v=20270102-v342';
+import { createElementWheel } from './element-wheel-v252.js?v=20270102-v343';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -704,7 +704,9 @@ function renderElementWheel(t){if(previewMode||!renderer.isWebGLRenderer)return;
  elementWheel.place(camera,wheelAnchor,1.5*Math.max(1,ZS*.9))}elementWheel.update(t,moving);
  const ac=renderer.autoClear;renderer.autoClear=false;renderer.clearDepth();renderer.render(elementWheel.scene,camera);renderer.autoClear=ac}
 window.HackeniaElementWheel={get:()=>elementWheel,anchor:()=>wheelAnchor.clone()};
-function frame(now){requestAnimationFrame(frame);if(paused||(!game.isPlaying()&&!previewMode)||!active||now-lastFrame<(renderer.isSoftware?100:light?32:16))return;const dt=Math.min((now-lastFrame)/1000,.06);lastFrame=now;if(pureFx.length)updatePureFx(now);if(weatherFx.length)updateWeather(now);animateLotus();animateGifts();animateFxBoard();animateForecast();if(auras.size)updateAuras(now);updateCrackles(now);if(moving)for(const g of creatures.values()){const h=g.userData.hop,m=g.userData.model;if(!h||!m)continue;const u=((now/1000+h.phase)%3.2)/.55;if(u<1){const lift=Math.sin(Math.PI*u);m.position.y=h.base+.24*lift;m.scale.set(1-.05*lift,1+.08*lift,1-.05*lift)}else if(u<1.25){const s=Math.sin(Math.PI*(u-1)/.25);m.position.y=h.base;m.scale.set(1+.07*s,1-.1*s,1+.07*s)}else{m.position.y=h.base;m.scale.set(1,1,1)}}updateZoneGlow(now);const t=moving?now/1000:0;
+// v343 — une erreur dans une image ne doit plus laisser le plateau vide sans explication : elle est affichée sous le plateau.
+let frameErr=0;function frame(now){requestAnimationFrame(frame);try{frameStep(now)}catch(err){if(!frameErr++){console.error(err);window.__hk3dError?.(err)}}}
+function frameStep(now){if(paused||(!game.isPlaying()&&!previewMode)||!active||now-lastFrame<(renderer.isSoftware?100:light?32:16))return;const dt=Math.min((now-lastFrame)/1000,.06);lastFrame=now;if(pureFx.length)updatePureFx(now);if(weatherFx.length)updateWeather(now);animateLotus();animateGifts();animateFxBoard();animateForecast();if(auras.size)updateAuras(now);updateCrackles(now);if(moving)for(const g of creatures.values()){const h=g.userData.hop,m=g.userData.model;if(!h||!m)continue;const u=((now/1000+h.phase)%3.2)/.55;if(u<1){const lift=Math.sin(Math.PI*u);m.position.y=h.base+.24*lift;m.scale.set(1-.05*lift,1+.08*lift,1-.05*lift)}else if(u<1.25){const s=Math.sin(Math.PI*(u-1)/.25);m.position.y=h.base;m.scale.set(1+.07*s,1-.1*s,1+.07*s)}else{m.position.y=h.base;m.scale.set(1,1,1)}}updateZoneGlow(now);const t=moving?now/1000:0;
  if(frostRoad?.root.visible)frostRoad.update(t,light,moving);if(cityScene?.root.visible)cityScene.update(t,light,moving);if(caveScene?.root.visible)caveScene.update(t,light,moving);if(autumnScene?.root.visible)autumnScene.update(t,light,moving);if(fairyScene?.root.visible)fairyScene.update(t,light,moving);if(noelScene?.root.visible)noelScene.update(t,light,moving);
  if(forest.visible){wind.value=t;waterNormals.offset.set(-t*.032,t*.013);
  for(let i=0;i<wp.count;i++){const x=waterOrig[i*3],z=waterOrig[i*3+2];wp.setY(i,waterHeight(x,z,t))}wp.needsUpdate=true;if(!renderer.isSoftware)wg.computeVertexNormals();

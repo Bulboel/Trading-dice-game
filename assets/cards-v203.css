@@ -127,3 +127,4 @@ dialog.recycle-dialog .rc-auto small,dialog.recycle-dialog .rc-rates{font-size:1
 dialog.recycle-dialog .rc-keep{display:flex;align-items:center;justify-content:space-between;gap:10px;font:600 13px system-ui;color:#f1e7cf}
 dialog.recycle-dialog .rc-keep select{min-height:34px;padding:4px 8px;border-radius:9px;background:#13211d;color:#f1e7cf;border:1px solid #7ad39b66}
 dialog.recycle-dialog .rc-empty{margin:8px 14px;color:#aebfb4;font-size:13px;text-align:center}
+dialog.recycle-dialog .rc-sage{margin:0;font-size:12px;color:#d9c48a}
