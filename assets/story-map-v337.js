@@ -6,10 +6,9 @@
    donne un JSON à transmettre ; les positions sont aussi gardées sur l’appareil (localStorage) pour vérifier tout de suite. */
 (()=>{'use strict';
 const MAP={src:'assets/story/hackenia-map.webp',w:1617,h:1079};
-// positions en % de la carte (x, y) — à remplacer par celles du mode placement
-const BASE={c1p1:[50.8,45.4],c1p2:[46.5,43.5],c1p3:[52.8,41.0],c1p4:[60.2,37.6],c1p5:[63.8,33.6],c1p6:[58.6,40.8],c1p6bis:[55.6,44.5],c1p6bonus:[51.0,38.2],c1p7:[50.6,34.2],c1p8:[52.2,28.6],c1p9:[57.0,27.6],c1p10:[54.4,24.6],
- c2p1:[45.4,48.9],c2p2:[48.3,47.4],c2p3:[52.0,48.9],c2p4:[52.6,53.0],c2p5:[49.2,55.4],c2p6:[45.2,53.8]};
-const VIEW={1:{x:.53,y:.36,s:2},2:{x:.49,y:.51,s:3.2}};// cadrage de chaque chapitre
+// positions en % de la carte (x, y) — v341 : placées avec l’outil d’administration (chapitres 1 et 2)
+const BASE={c1p1:[49.3,48.86],c1p2:[50.21,42.18],c1p3:[55.15,38.76],c1p4:[61.75,36.7],c1p5:[60.28,35.05],c1p6:[56.6,36.17],c1p6bis:[54.8,35.96],c1p6bonus:[53.07,36.84],c1p7:[50.93,36.48],c1p8:[53.63,31.61],c1p9:[57.5,29.18],c1p10:[57.5,26.28],c2p1:[45.4,48.9],c2p2:[48.13,47.06],c2p3:[51.04,47.64],c2p4:[53.21,50.93],c2p5:[52.03,54.22],c2p6:[49.45,55.97]};
+const VIEW={1:{x:.555,y:.375,s:2.2},2:{x:.493,y:.515,s:3}};// cadrage de chaque chapitre
 const SEEN='hackenia-story-map-seen',POSKEY='hackenia-story-map-pos',EDITKEY='hackenia-story-map-edit',TABKEY='hackenia-story-map-tab';
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
