@@ -8,8 +8,9 @@
 const VALUE={1:1,2:1,3:2,5:3,6:5,7:2,8:100};
 // Exemplaires gardés au minimum : ce qu'un deck peut contenir (4 rares, 2 légendaires, 1 divin, 2 Énergie), 4 pour les autres.
 const KEEP={1:4,2:4,3:4,5:2,6:1,7:2};/* un Crépitant (8) garde le minimum de son dé de base (voir plan) */
-// v342 — réglages du joueur : profile.recycleCfg={auto:bool, keep:0 (assez pour un deck) | 1…10 (nombre fixe gardé par dé)}.
-const cfg=profile=>{const c=profile?.recycleCfg||{};return{auto:typeof c.auto==='boolean'?c.auto:!!profile?.premium?.sage,keep:Number.isInteger(c.keep)&&c.keep>=1&&c.keep<=10?c.keep:0}};
+// v342 — réglages du joueur : profile.recycleCfg={auto:bool (Pack Sage seulement), keep:0 (assez pour un deck) | 1…10 (nombre fixe gardé par dé)}.
+// Le recyclage automatique reste réservé au Pack Sage (activé par défaut, désactivable).
+const cfg=profile=>{const c=profile?.recycleCfg||{};return{auto:!!profile?.premium?.sage&&c.auto!==false,keep:Number.isInteger(c.keep)&&c.keep>=1&&c.keep<=10?c.keep:0}};
 function keepFor(profile,id,rarity){const k=cfg(profile).keep;let keep=k||(profile.premium?.sage?3:(KEEP[rarity]??4));/* Pack Sage : trois exemplaires gardés au minimum */for(const d of profile.decks||[]){const n=(d.dice||[]).filter(x=>x===id).length;if(n>keep)keep=n}return keep}
 // Liste des doublons recyclables : [{id, owned, keep, extra, value}], et le total.
 function plan(profile,defs,rarityOf){const items=[];for(const [k,owned] of Object.entries(profile.inventory||{})){const id=Number(k),d=defs[id];if(!d||!Number.isSafeInteger(owned)||profile.favorites?.[id])continue;/* les favoris ne sont jamais recyclés */const r=rarityOf(d),keep=keepFor(profile,id,d.shinyOf!=null&&defs[d.shinyOf]?rarityOf(defs[d.shinyOf]):r),extra=owned-keep;if(extra>0)items.push({id,owned,keep,extra,value:extra*(VALUE[r]??1)})}
