@@ -14,6 +14,6 @@ for(const f of firsts){const idx=fam.map((x,k)=>x===f?k:-1).filter(k=>k>=0);asse
 assert.deepEqual(order.filter(i=>!defs[i].reserved).slice(-18,-15).map(i=>defs[i].pure),[1,2,3],'Each element: Éclat, Sentier, Rayon');
 assert.equal(names[names.indexOf('Max')+1],'Max & Alastor','Max & Alastor belongs to the Max family');
 const n=O.numbers(defs);assert.equal(n[40],1,'Bolduc is N° 001');
-const portal=fs.readFileSync(path.join(__dirname,'../assets/portal-v159.js'),'utf8');assert.ok(portal.includes("function mysteryCard(i)")&&portal.includes("filter={q:'',el:'',lv:'',owned:false,sort:'collection'}"),'Missing dice shown as mystery cards by default');
+const portal=fs.readFileSync(path.join(__dirname,'../assets/portal-v159.js'),'utf8');assert.ok(portal.includes("function mysteryCard(i)")&&portal.includes("filter={q:'',el:'',lv:'',owned:false,fav:false,sort:'collection'}"),'Missing dice shown as mystery cards by default');
 assert.ok(!/function mysteryCard[^\n]*d\.cn/.test(portal),'Mystery cards never reveal the name');
 console.log(`PASS: ${order.length} dice in the official order (Bolduc, Eberien, Grimgors, Jhimm, Kala, then alphabetical families, elemental dice last), numbered from N° 001; missing dice shown without their name.`);
