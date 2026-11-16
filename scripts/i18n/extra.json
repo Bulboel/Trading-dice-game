@@ -127,5 +127,8 @@
 "Packs": "Packs",
 "Des offres pour jouer plus confortablement.": "Offers to play more comfortably.",
 "← Boutique": "← Shop",
-"Un bouton « Packs spéciaux » dans la boutique mène à une page dédiée : le Pack Sage s’y acquiert avec des Bubulles. La bourse reste seule au centre de la boutique.": "A “Special packs” button in the shop leads to a dedicated page: the Sage Pack is acquired there with Bubbles. The pouch stays alone at the center of the shop."
+"Un bouton « Packs spéciaux » dans la boutique mène à une page dédiée : le Pack Sage s’y acquiert avec des Bubulles. La bourse reste seule au centre de la boutique.": "A “Special packs” button in the shop leads to a dedicated page: the Sage Pack is acquired there with Bubbles. The pouch stays alone at the center of the shop.",
+"Miniatures nettoyées et sons personnalisés": "Cleaner thumbnails and custom sounds",
+"Les miniatures des bébémentaires n’affichent plus d’arc doré en haut du médaillon.": "Babyelemental thumbnails no longer show a golden arc at the top of the medallion.",
+"Le jeu accepte désormais des bruitages personnalisés au format MP3 (dossier assets/sfx) : ils remplacent les sons d’origine.": "The game now accepts custom sound effects in MP3 format (assets/sfx folder): they replace the original sounds."
 }
