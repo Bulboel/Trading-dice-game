@@ -172,3 +172,9 @@ html body #portal .collect-card.crep.crep2{--rim:#e6c25a!important}
 .collect-card.crep.crep2{background:radial-gradient(circle at 18% 12%,#00c45a 0,transparent 48%),radial-gradient(circle at 85% 88%,#1fff8a 0,transparent 40%),radial-gradient(circle at 60% 40%,#ffd04a33 0,transparent 30%),linear-gradient(160deg,#000d05,#003d1c 60%,#00592a)!important}
 #app #hand .dc.hc.rar-8:not(.pure){background:radial-gradient(60% 80% at 15% 20%,#7a2cffcc 0,transparent 70%),radial-gradient(55% 75% at 90% 90%,#a64dffaa 0,transparent 70%),radial-gradient(40% 50% at 55% 50%,#ffffff1f 0,transparent 75%),linear-gradient(160deg,#07021a,#1a0848 55%,#2a0a66);background-size:180% 180%,180% 180%,160% 160%,100% 100%}
 #app #hand .dc.hc.rar-8.crep2:not(.pure){background:radial-gradient(60% 80% at 15% 20%,#00c45acc 0,transparent 70%),radial-gradient(55% 75% at 90% 90%,#1fff8aaa 0,transparent 70%),radial-gradient(30% 40% at 60% 45%,#ffd04a33 0,transparent 75%),linear-gradient(160deg,#000d05,#003d1c 55%,#00592a);background-size:180% 180%,180% 180%,160% 160%,100% 100%}
+/* v342 — loups, larves et guerriers fantomatiques (sans clip d'animation) dans les fiches */
+model-viewer.gesture-beast{animation:spider-idle 3.2s ease-in-out infinite;transform-origin:50% 90%}
+model-viewer.gesture-larva{animation:spider-idle 1.8s ease-in-out infinite;transform-origin:50% 95%}
+@keyframes ghost-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+model-viewer.gesture-ghost{animation:ghost-float 3.4s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){model-viewer.gesture-beast,model-viewer.gesture-larva,model-viewer.gesture-ghost{animation:none}}
