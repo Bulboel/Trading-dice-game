@@ -60,7 +60,7 @@ window.addEventListener('hackenia-player-draw',e=>{if(e.gameMode==='story')after
 const REVEAL={c1p1:'p28',c1p2:'p12',c1p4:'p38',c1p5:'p02',c1p6:'p16',c1p6bis:'p42',c1p7:'p37',c1p8:'p05',c1p9:'p11',c1p10:'p69',c2p1:'p67',c2p2:'p84',c2p4:'../dassom-golem-incident',c2p5:'p76',c2p6:'p65'};
 window.addEventListener('hackenia:foe-reveal',e=>{if(!pending)return;const k=REVEAL[pending.id],part=PARTS.find(p=>p.id===pending.id);if(!k||!part)return;
  document.getElementById('story-reveal')?.remove();const el=document.createElement('div');el.id='story-reveal';el.setAttribute('role','status');
- el.innerHTML=`<figure><img src="assets/story/cards/${k}.webp" alt="${esc(part.duel.foe)}"><figcaption>${esc(part.duel.foe)} entre dans le duel !</figcaption></figure>`;
+ el.innerHTML=`<figure><img src="assets/story/cards/${k}.webp?v=349" alt="${esc(part.duel.foe)}"><figcaption>${esc(part.duel.foe)} entre dans le duel !</figcaption></figure>`;
  let done=false;const close=()=>{if(done)return;done=true;el.classList.add('out');setTimeout(()=>el.remove(),450)};el.addEventListener('click',close);
  document.body.append(el);setTimeout(close,2900)});
 
