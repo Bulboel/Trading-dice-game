@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v326',title:'Plongée plus douce',items:['En entrant dans un menu, la lumière du tunnel s’ouvre progressivement sur le nouveau menu, accompagnée d’un souffle de vent.']},
  {id:'v322',title:'Cérémonies et menus vivants',items:['Dés légendaires, divins et crépitants : une cérémonie plein écran (or et ambre pour les légendaires) révèle maintenant le personnage lui-même, sans seconde animation. Pour les autres dés, le dé tourne sur lui-même en se dépliant.','Menu principal : toucher un dé ouvre, dans un souffle de vent, un tunnel lumineux à la couleur du dé (rayons, étincelles) qui plonge dedans avant d’afficher le menu ; fondu à chaque changement de menu. Miniatures à cadre peint affichées sans second cercle ; la roue des options quitte la boutique et les filtres de la collection sont harmonisés.']},
  {id:'v319',title:'Miniatures nettoyées et sons personnalisés',items:['Toutes les miniatures rondes sont recentrées sur le cercle de leur fiche : plus d’arc doré ou argenté coupé en haut.','Le jeu accepte désormais des bruitages personnalisés au format MP3 (dossier assets/sfx) : ils remplacent les sons d’origine.']},
  {id:'v318',title:'Packs spéciaux',items:['Un bouton « Packs spéciaux » dans la boutique mène à une page dédiée : le Pack Sage s’y acquiert avec des Bubulles. La bourse reste seule au centre de la boutique.']},
