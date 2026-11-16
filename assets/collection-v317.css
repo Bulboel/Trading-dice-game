@@ -63,8 +63,8 @@ html body #portal .ds2 .ds-art{appearance:none;border:0!important;padding:0!impo
 html body #portal .cc-actions>button[data-action="add"]{font-size:13px!important;padding:6px 8px!important;white-space:nowrap;line-height:1.1}
 html body #portal .cc-actions>button[data-action="add"] small{font-size:10px;opacity:.75;margin-left:3px}
 html body #portal .deck-add-title{font:21px Georgia,serif;margin:22px 0 4px}
-html body #portal .deck-actions{display:flex!important;flex-wrap:wrap;gap:6px}
-html body #portal .deck-actions>button{flex:1 1 0;min-width:0;white-space:nowrap}
+html body #portal .deck-actions:not(.shop-actions){display:flex!important;flex-wrap:wrap;gap:6px}
+html body #portal .deck-actions:not(.shop-actions)>button{flex:1 1 0;min-width:0;white-space:nowrap}
 #portal-content:has(.deck-tray){padding-bottom:110px}
 @media(max-width:600px){
  html body #portal .deck-layout{gap:10px!important}
@@ -81,7 +81,7 @@ html body #portal .deck-actions>button{flex:1 1 0;min-width:0;white-space:nowrap
  html body #portal .cc-actions>button[data-action="add"] small{display:none}
  html body #portal .deck-balance{font-size:11px}
  html body #portal .deck-layout>div>.portal-muted{display:none}
- html body #portal .deck-actions>button{min-height:38px!important;padding:6px 8px!important;font-size:13px!important}
+ html body #portal .deck-actions:not(.shop-actions)>button{min-height:38px!important;padding:6px 8px!important;font-size:13px!important}
  #portal .deck-tray{padding:6px!important;bottom:6px!important}
  #portal .deck-tray-head{padding:0 2px 4px!important;gap:6px!important}
  #portal .deck-tray-head .deck-limits{display:flex;gap:3px;flex-wrap:nowrap;overflow:hidden}
@@ -124,8 +124,8 @@ html body #portal .deck-tray-head strong{white-space:nowrap;font-size:12px}
  html body #portal .deck-slot.ds2.empty{min-height:44px!important;padding:4px!important}
  html body #portal .deck-slot.ds2 .ds-art.ds-empty{width:26px!important;height:26px!important;font-size:11px!important}
  html body #portal .deck-balance{font-size:10.5px!important;line-height:1.35;margin:6px 0!important;color:#9aa6bb}
- html body #portal .deck-actions{margin:4px 0 0!important}
- html body #portal .deck-actions>button{min-height:36px!important}
+ html body #portal .deck-actions:not(.shop-actions){margin:4px 0 0!important}
+ html body #portal .deck-actions:not(.shop-actions)>button{min-height:36px!important}
  html body #portal .deck-add-title{font-size:17px!important;margin:16px 0 0!important}
 }
 

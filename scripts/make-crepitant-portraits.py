@@ -15,8 +15,9 @@ def field(rng,h,w,scale):
     return ndi.zoom(g,(h/(g.shape[0]-2),w/(g.shape[1]-2)),order=3)[:h,:w]
 A=lambda *v:np.array(v,np.float32)
 # v338 : v1 = noir / violet / blanc (moins de rose) ; v2 « émeraude » = noir / vert, éclats dorés. Mêmes palettes que assets/variant-look.js.
-PALETTES={'v1':dict(deep=A(.004,.002,.016),mid=A(.20,.05,.40),acc=A(.42,.22,.78),hi=A(.85,.82,1.),band=A(.30,.22,.52),s1=A(1,1,1),s2=A(.82,.78,1.),ht=.7,hw=.35,lit=A(.62,.56,.86)),
-          'v2':dict(deep=A(.002,.012,.006),mid=A(.02,.26,.11),acc=A(.06,.62,.30),hi=A(1.,.78,.26),band=A(.10,.38,.20),s1=A(1.,.93,.62),s2=A(.85,1.,.88),ht=.72,hw=.38,lit=A(.46,.72,.52))}
+# v340 : teintes vives (la galaxie prime sur les détails), v1 noir / violet vif / blanc, v2 noir / émeraude vif / or
+PALETTES={'v1':dict(deep=A(.02,.0,.07),mid=A(.40,.08,.92),acc=A(.66,.36,1.),hi=A(.96,.93,1.),band=A(.55,.40,1.),s1=A(1,1,1),s2=A(.86,.80,1.),ht=.68,hw=.45,lit=A(.70,.62,1.)),
+          'v2':dict(deep=A(.0,.035,.012),mid=A(.0,.62,.24),acc=A(.12,.95,.46),hi=A(1.,.80,.22),band=A(.10,.80,.38),s1=A(1.,.93,.62),s2=A(.88,1.,.90),ht=.66,hw=.55,lit=A(.55,.95,.62))}
 def galaxy(key,size=512,pal='v1'):
     im=Image.open(CH/f'{key}-512.webp').convert('RGBA').resize((size,size),Image.Resampling.LANCZOS);a=np.asarray(im).astype(np.float32)/255;rgb=a[...,:3];alpha=a[...,3]
     h=w=size;rng=np.random.default_rng(zlib.crc32(key.encode()))
@@ -30,21 +31,24 @@ def galaxy(key,size=512,pal='v1'):
     gal=mix(P['deep'],P['mid'],smooth(.42,.8,n1));gal=mix(gal,P['acc'],smooth(.62,.9,n2)*.55);gal=mix(gal,P['hi'],smooth(P['ht'],.95,n1*n2*2)*P['hw'])
     gal=gal+band*P['band']*(.2+.8*n2[...,None])
     Lb=np.clip((L-.04)/.9,0,1)**.78
-    out=gal*(.25+2.2*Lb[...,None])+gal*.1+(Lb**1.15)[...,None]*P['lit']*.62   # v338 : la lumière du personnage reste lisible
-    # v338 : étoiles fines (points d'un pixel), quelques-unes plus grosses avec une petite croix
-    stars=np.zeros((h,w,3),np.float32);n=int(h*w/520)
-    xs=rng.integers(0,w,n);ys=rng.integers(0,h,n);b=rng.random(n)**2.6;col=np.where(rng.random((n,1))<.5,P['s1'],P['s2'])
+    out=gal*(.5+1.1*Lb[...,None])+(Lb**1.3)[...,None]*P['lit']*.32   # v340 : la galaxie domine, le personnage reste devinable
+    # v340 : une multitude de tailles d'étoiles (poussière fine, petites, moyennes, et de rares grosses étoiles à croix)
+    n=int(h*w/380);xs=rng.integers(0,w,n);ys=rng.integers(0,h,n);b=rng.random(n);col=np.where(rng.random((n,1))<.5,P['s1'],P['s2'])
+    layers={.5:np.zeros((h,w,3),np.float32),.9:np.zeros((h,w,3),np.float32),1.5:np.zeros((h,w,3),np.float32),2.4:np.zeros((h,w,3),np.float32)}
+    cross=np.zeros((h,w,3),np.float32)
     for x,y,bb,c in zip(xs,ys,b,col):
         if alpha[y,x]<.5:continue
-        stars[y,x]+=c*(.35+bb*1.4)
-        if bb>.82:
-            r=int(2+bb*3)
+        sig=.5 if bb<.55 else .9 if bb<.82 else 1.5 if bb<.95 else 2.4
+        layers[sig][y,x]+=c*(1.+bb)
+        if bb>.975:
+            r=int(4+bb*4)
             for d in range(1,r+1):
-                f=(1-d/(r+1))*bb
+                f=(1-d/(r+1))
                 for dx,dy in((d,0),(-d,0),(0,d),(0,-d)):
                     X,Y=x+dx,y+dy
-                    if 0<=X<w and 0<=Y<h:stars[Y,X]+=c*f*1.1
-    glow=ndi.gaussian_filter(stars,(1.0,1.0,0))*1.1+ndi.gaussian_filter(stars,(3,3,0))*.9
+                    if 0<=X<w and 0<=Y<h:cross[Y,X]+=c*f*.9
+    stars=sum(ndi.gaussian_filter(L_,(sg,sg,0))*(2*3.14159*sg*sg)*(.8 if sg<1 else 1.) for sg,L_ in layers.items())
+    glow=ndi.gaussian_filter(stars,(3,3,0))*.7+ndi.gaussian_filter(cross,(.7,.7,0))*1.4
     out=out+stars+glow
     out=np.clip(out/(1+out*.12),0,1)  # douce compression des hautes lumières
     res=np.dstack([out,alpha]);return Image.fromarray((res*255).astype(np.uint8),'RGBA')
