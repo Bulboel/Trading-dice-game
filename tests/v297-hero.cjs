@@ -1,4 +1,4 @@
-// v297 — Héros du joueur : posé dans la zone à protéger, dalle de force min(6, niveau/10), élément choisi, jamais en ligne ni au tutoriel.
+// v297 — Héros du joueur : posé dans la zone à protéger, dalle de force min(4, niveau/10), élément choisi, jamais en ligne ni au tutoriel.
 const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
 const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8');
 const el=()=>new Proxy(function(){},{get:(t,k)=>k==='style'||k==='dataset'?new Proxy({},{get:()=>'',set:()=>true}):k==='classList'?{add(){},remove(){},toggle(){},contains:()=>false}:k==='children'||k==='childNodes'?[]:k==='firstElementChild'?{style:{}}:k===Symbol.toPrimitive?()=>'':(()=>el()),set:()=>true,apply:()=>el()}),els=new Map();
@@ -8,7 +8,7 @@ vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);
 const heroes=()=>run('cr.filter(k=>k.hero).map(k=>({x:k.x,y:k.y,o:k.o,mn:k.mn,v:b[k.y][k.x].v,el:b[k.y][k.x].el,lv:k.lv}))');
 run('ai=true;ONLINE=null;TEAM2=false;rewardMode="quick"');fresh();
 let h=heroes();assert.equal(h.length,1,'un héros posé');assert.deepEqual([h[0].o,h[0].y,h[0].v,h[0].el,h[0].mn,h[0].lv],[0,11,0,'feu','Aria',1],'zone à protéger, dalle 0, élément feu');
-for(const [level,v,lv] of [[9,0,1],[10,1,1],[19,1,1],[20,2,2],[39,3,3],[40,4,4],[50,5,5],[60,6,5],[99,6,5]]){prof.xp=(level-1)*100;fresh();assert.equal(heroes()[0].v,v,`niveau ${level} → dalle ${v}`);assert.equal(heroes()[0].lv,lv,`niveau ${level} → dé de niveau ${lv}`)}
+for(const [level,v,lv] of [[9,0,1],[10,1,1],[19,1,1],[20,2,2],[39,3,3],[40,4,4],[50,4,4],[60,4,4],[99,4,4]]){prof.xp=(level-1)*100;fresh();assert.equal(heroes()[0].v,v,`niveau ${level} → dalle ${v}`);assert.equal(heroes()[0].lv,lv,`niveau ${level} → dé de niveau ${lv}`)}
 run('ai=false');fresh();assert.equal(heroes().length,0,'pas de héros hors partie contre l’IA');
 run('ai=true;rewardMode="tutorial"');fresh();assert.equal(heroes().length,0,'pas de héros au tutoriel');
 run('rewardMode="quick";TEAM2=true');fresh();assert.equal(heroes().length,0,'pas de héros en 2 contre 2');

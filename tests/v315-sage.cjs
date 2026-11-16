@@ -3,7 +3,7 @@ const assert=require('assert');require('../assets/challenges-v180.js');const P=r
 const defs=Array.from({length:4},(_,i)=>({cn:'D'+i,rarity:i===3?6:1,lv:1}));const rarity=d=>d.rarity;
 let p={version:1,gold:50,inventory:{0:7,1:2,2:9,3:5},decks:[]};
 assert.equal(P.active(p),false);
-const a=P.activate(p);assert.equal(P.active(a),true);assert.equal(a.gold,1050);assert.equal(a.equipped,'bague-de-sage');assert.equal(P.adsFree(a),true);
+const a=P.activate(p,'bubulles');assert.equal(P.active(a),true);assert.equal(a.gold,1050);assert.equal(a.equipped,'bague-de-sage');assert.equal(P.adsFree(a),true);
 assert.equal(P.activate(a).gold,1050,'Les 1 000 Bubulles ne sont versées qu’une fois');assert.equal(P.active(p),false,'Le profil d’origine n’est pas modifié');
 assert.equal(E.owned(a).some(i=>i.id==='bague-de-sage'),true);assert.equal(E.owned(p).some(i=>i.id==='bague-de-sage'),false);
 const ring=E.items.find(i=>i.id==='bague-de-sage');assert.ok(ring.startBonus>=6);
@@ -14,4 +14,8 @@ const fav=P.toggleFavorite(a,2);assert.equal(P.isFavorite(fav,2),true);assert.ok
 assert.equal(P.isFavorite(P.toggleFavorite(fav,2),2),false);
 const res=R.apply(fav,defs,rarity);assert.equal(res.profile.inventory[2],9);assert.equal(res.profile.inventory[0],3);assert.equal(res.profile.inventory[1],2,'Moins de trois exemplaires : rien n’est recyclé');
 const deck={...a,decks:[{id:'d',name:'x',dice:[0,0,0,0,0]}]};assert.equal(R.keepFor(deck,0,1),5,'Un deck enregistré garde ses exemplaires');
+// Sécurité : un pack « serveur » (attribué ou acheté) exige une confirmation récente du serveur ; un fichier modifié ne suffit pas
+const forged=P.activate(p,'purchase');assert.equal(P.active(forged),false,'Sans confirmation du serveur, le pack importé est inactif');assert.equal(P.adsFree(forged),false);
+P.confirm();assert.equal(P.active(forged),true,'Après confirmation du serveur');P.confirm(Date.now()-15*864e5);assert.equal(P.active(forged),false,'Confirmation périmée (14 jours)');P.unconfirm();assert.equal(P.active(forged),false);
+assert.equal(P.active(a),true,'Le pack acquis en Bubulles ne dépend pas du serveur');
 console.log('PASS: Pack Sage.');
