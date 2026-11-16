@@ -405,5 +405,20 @@
  "Boutique sur ordinateur : les boutons ne débordent plus, leur texte passe à la ligne proprement.": "Shop on desktop: buttons no longer overflow, their text wraps cleanly.",
  "Crépitants éclatants en 3D": "Crackling dice shine in 3D",
  "Les modèles 3D des Crépitants retrouvent les couleurs de leurs miniatures : violet profond ou émeraude intense, galaxie bien visible et étoiles plus grandes.": "Crackling 3D models now match their portraits: deep violet or intense emerald, a clearly visible galaxy and bigger stars.",
- "Carte de l’Histoire : les étapes des chapitres I et II sont à leur vraie place sur la carte.": "Story map: chapter I and II steps now sit in their true place on the map."
+ "Carte de l’Histoire : les étapes des chapitres I et II sont à leur vraie place sur la carte.": "Story map: chapter I and II steps now sit in their true place on the map.",
+ "Nouvelles cartes et nouvelles créatures": "New maps and new creatures",
+ "L’Histoire a ses propres cartes, bien plus détaillées : la région du Bois tendre pour le chapitre I et la ville de Dassom pour le chapitre II.": "The Story has its own, far more detailed maps: the Tender Wood region for chapter I and the city of Dassom for chapter II.",
+ "Nouvelles créatures en 3D dans les duels de l’Histoire : loups affamés, larves capricieuses et guerriers fantomatiques.": "New 3D creatures in Story duels: hungry wolves, capricious larvae and ghostly warriors.",
+ "Recyclage : nouveau barème (commun et peu commun 1 Bubulle, rare 2, légendaire 3, divin 5, Énergie 2, Crépitant 100).": "Recycling: new rates (common and uncommon 1 Bubble, rare 2, legendary 3, divine 5, Energy 2, Crackling 100).",
+ "Recyclage : vous choisissez s’il est automatique et combien d’exemplaires de chaque dé vous gardez.": "Recycling: choose whether it is automatic and how many copies of each die you keep.",
+ "Recyclage automatique": "Automatic recycling",
+ "Les doublons sont recyclés tout seuls après l’ouverture des bourses.": "Duplicates are recycled automatically after opening pouches.",
+ "Exemplaires gardés par dé": "Copies kept per die",
+ "Assez pour un deck": "Enough for a deck",
+ "Aucun doublon à recycler pour l’instant.": "No duplicates to recycle for now.",
+ "Loup affamé": "Hungry wolf",
+ "Larve capricieuse": "Capricious larva",
+ "Guerrier fantomatique": "Ghostly warrior",
+ "Carte de la région du Bois tendre": "Map of the Tender Wood region",
+ "Plan de la ville de Dassom": "Map of the city of Dassom"
 }
