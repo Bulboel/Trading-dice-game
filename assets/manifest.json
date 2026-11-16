@@ -749,6 +749,27 @@
         "victory": "characters/hero-victory1.glb",
         "walk": "characters/hero-walk1.glb"
       }
+    },
+    "loup": {
+      "glb": "models-web/Loup idle.glb",
+      "nom": "Loup affamé",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 1.3,
+      "gesture": "beast"
+    },
+    "larve": {
+      "glb": "models-web/Larve idle.glb",
+      "nom": "Larve capricieuse",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 0.9,
+      "gesture": "larva"
+    },
+    "guerrier-fantome": {
+      "glb": "models-web/Guerrier fantomatique idle.glb",
+      "nom": "Guerrier fantomatique",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.05,
+      "gesture": "ghost"
     }
   },
   "terrains": {
