@@ -23,7 +23,7 @@ for dp,_,fs in os.walk('assets/vendor'):
     shell+=sorted(os.path.join(dp,f).replace(os.sep,'/') for f in fs if not f.endswith(('.md','.txt','LICENSE')))
 shell=list(dict.fromkeys(shell))
 full=[]
-for d,pat in [('assets/models-web',r'\.glb$'),('assets/characters',r'\.glb$'),('assets/story',r'\.(webp|png|jpg)$'),('assets/pantheon',r'\.webp$'),('assets/models',r'\.glb$')]:
+for d,pat in [('assets/models-web',r'\.glb$'),('assets/characters',r'\.glb$'),('assets/story',r'\.(webp|png|jpg)$'),('assets/pantheon',r'\.webp$'),('assets/story/cards',r'\.webp$'),('assets/models',r'\.glb$')]:
     if os.path.isdir(d):full+=sorted(f'{d}/{f}' for f in os.listdir(d) if re.search(pat,f))
 full=[f for f in full if f not in shell]
 h=hashlib.sha1()
