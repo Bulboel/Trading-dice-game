@@ -130,3 +130,13 @@
 #story-deck .sd-actions,#pantheon-deck .sd-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
 #story-deck button,#pantheon-deck button{min-height:40px;padding:8px 16px;border-radius:11px;border:1.5px solid #8a6420;background:#f4e3b5;color:#3b260f;font:700 14px system-ui;cursor:pointer}
 #story-deck .sd-go,#pantheon-deck .sd-go{background:linear-gradient(140deg,#4a2f14,#2a1a0d);color:#ffe3a3;border-color:#d6ab5a}
+
+/* v331 — carte de l'adversaire qui surgit en plein duel */
+#story-reveal{position:fixed;inset:0;z-index:250;display:grid;place-items:center;background:radial-gradient(circle,#0008,#000a 70%);cursor:pointer;animation:sr-fade .3s ease-out}
+#story-reveal figure{margin:0;display:grid;justify-items:center;gap:10px;animation:sr-pop .55s cubic-bezier(.2,.9,.3,1.15)}
+#story-reveal img{display:block;max-height:min(66dvh,560px);max-width:86vw;border-radius:14px;box-shadow:0 0 0 2px #e6c77899,0 18px 50px #000c,0 0 60px #f0c46a55}
+#story-reveal figcaption{padding:7px 16px;border:1px solid #e6c77888;border-radius:30px;background:#1a120bd9;color:#fbe5b1;font:700 15px/1.2 Georgia,serif;text-align:center}
+#story-reveal.out{opacity:0;transition:opacity .4s}
+@keyframes sr-fade{from{opacity:0}}
+@keyframes sr-pop{0%{opacity:0;transform:perspective(800px) rotateY(-70deg) scale(.6)}60%{opacity:1}100%{transform:none}}
+@media (prefers-reduced-motion:reduce){#story-reveal,#story-reveal figure{animation:none}}

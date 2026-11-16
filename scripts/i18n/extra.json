@@ -300,5 +300,9 @@
  "+ {0} virtuels": "+ {0} virtual",
  "Place aux adversaires": "Make way for opponents",
  "Le jeu ne parle plus d’« IA » : vous affrontez désormais des adversaires (et, en 2 contre 2, vous jouez avec un allié).": "The game no longer talks about “AI”: you now face opponents (and, in 2 vs 2, you play with an ally).",
- "Le mode de jeu ne peut plus être changé en cours de partie.": "The game mode can no longer be changed during a match."
+ "Le mode de jeu ne peut plus être changé en cours de partie.": "The game mode can no longer be changed during a match.",
+ "{0} entre dans le duel !": "{0} enters the duel!",
+ "Histoire illustrée": "Illustrated Story",
+ "En plein duel d’Histoire, l’adversaire surgit avec l’illustration de sa carte dès qu’il pose sa première créature.": "During a Story duel, the opponent bursts in with its card illustration as soon as it places its first creature.",
+ "Nouveaux décors pour la porte nord de Dassom, le village de Berdésa et le chemin de la grotte des jumeaux.": "New backdrops for Dassom's north gate, the village of Berdésa and the path to the twins' cave."
 }

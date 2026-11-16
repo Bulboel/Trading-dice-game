@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v331',title:'Histoire illustrée',items:['En plein duel d’Histoire, l’adversaire surgit avec l’illustration de sa carte dès qu’il pose sa première créature.','Nouveaux décors pour la porte nord de Dassom, le village de Berdésa et le chemin de la grotte des jumeaux.']},
  {id:'v330',title:'Place aux adversaires',items:['Le jeu ne parle plus d’« IA » : vous affrontez désormais des adversaires (et, en 2 contre 2, vous jouez avec un allié).','Le mode de jeu ne peut plus être changé en cours de partie.']},
  {id:'v329',title:'Corrections et confort',items:['Les bruitages sont nettement plus audibles, au même niveau que la musique.','L’entrée dans les menus est plus douce pour les yeux : la lumière reste teintée et moins éblouissante.','Vaincre une créature postée dans le camp à envahir ne fait plus entrer dans ce camp : votre créature reste au bord et devra y entrer au déplacement suivant.','Le terrain ne peut plus être changé en cours de partie.']},
  {id:'v328',title:'Le Panthéon ouvre ses portes',items:['Dix épreuves de plus en plus difficiles contre les grandes figures d’Hackénia, avec leurs illustrations : chaque victoire ouvre la suivante et rapporte des Bubulles. Certains adversaires ont un pouvoir bien à eux… À vos decks : 2 dés légendaires ou divins au maximum.','Mode Histoire : les duels ont désormais des adversaires à leur image (les araignées de la mine ont enfin des araignées dans leurs dés).']},
