@@ -5,8 +5,8 @@ const src=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8').match(/<s
 const els=new Map(),el=()=>({style:{setProperty(){}},classList:{add(){},remove(){},toggle(){}},firstElementChild:{style:{}},setPointerCapture(){}});
 const c=vm.createContext({window:{dispatchEvent(){}},Event,document:{getElementById(i){if(!els.has(i))els.set(i,el());return els.get(i)}},fetch:()=>Promise.resolve({ok:false}),setTimeout:()=>0,clearTimeout(){},setInterval:()=>0,clearInterval(){},Date,Math,console});vm.runInContext(src,c);
 const run=s=>vm.runInContext(s,c);
-assert.ok(src.includes("boss=storyFoe?.boss==='ver'?{x:Math.floor(W/2)-1,y:Math.floor(H/2)-2,w:2,h:4,hp:25,max:25}:null"),'init : ver géant créé au centre pour un duel d’Histoire avec boss');
-run(`boss={x:Math.floor(W/2)-1,y:Math.floor(H/2)-2,w:2,h:4,hp:25,max:25};b=[...Array(H)].map(()=>Array(W).fill(null));finishTurn=()=>{};`);
+assert.ok(src.includes("boss=storyFoe?.boss==='ver'?{x:Math.floor(W/2)-1,y:Z,w:2,h:4,hp:25,max:25}:null"),'init : ver géant créé au centre pour un duel d’Histoire avec boss');
+run(`boss={x:Math.floor(W/2)-1,y:Z,w:2,h:4,hp:25,max:25};b=[...Array(H)].map(()=>Array(W).fill(null));finishTurn=()=>{};`);
 const B=run('boss');assert.ok(B&&B.hp===25&&B.w===2&&B.h===4,'ver géant présent dès le début : 2 × 4 cases, 25 PV');
 assert.ok(run(`blocked(${B.x},${B.y})&&blocked(${B.x+1},${B.y+3})&&!blocked(${B.x-1},${B.y})`),'ses cases sont bloquées (ni dalle, ni passage)');
 const story=fs.readFileSync(path.join(__dirname,'../assets/story-data-v193.js'),'utf8');assert.ok(story.includes('"id":"c2p7"')&&story.includes('"boss":"ver"'),'partie 7 du chapitre II avec le ver géant');
