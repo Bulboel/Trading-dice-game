@@ -2,19 +2,19 @@
 import * as THREE from 'three';
 import { orientBoardModel } from './model-facing.js?v=20261103-v73';
 import { createEmberlands } from './ember-v239.js?v=20261208-v260';
-import { attachHeroParts } from './hero-parts.js?v=20270102-v312';
-import { applyLook } from './variant-look.js?v=20270102-v312';
+import { attachHeroParts } from './hero-parts.js?v=20270102-v313';
+import { applyLook } from './variant-look.js?v=20270102-v313';
 import { createLake } from './lake-v241.js?v=20261122-v241';
 import { createSkyIsland } from './sky-v231.js?v=20261128-v247';
 import { createWindHighlands } from './wind-v232.js?v=20261123-v242';
 import { createWoodland } from './woodland-v238.js?v=20261119-v238';
 import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20261125-v244';
-import { createFrostRoad } from './frost-v240.js?v=20270102-v312';
+import { createFrostRoad } from './frost-v240.js?v=20270102-v313';
 import { createCity } from './city-v246.js?v=20261128-v247';
-import { createCave } from './cave-v246.js?v=20270102-v312';
+import { createCave } from './cave-v246.js?v=20270102-v313';
 import { createAutumn } from './autumn-v253.js?v=20261202-v253';
 import { createNoel } from './noel-v253.js?v=20261202-v253';
-import { createElementWheel } from './element-wheel-v252.js?v=20270102-v312';
+import { createElementWheel } from './element-wheel-v252.js?v=20270102-v313';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -58,7 +58,7 @@ host.append(navigation);
 const panStyle=document.createElement('style');panStyle.textContent='#board-navigation #orbit-view[aria-pressed=true]{background:#5b7251;color:#fff2bf;box-shadow:0 0 0 1px #e1c781}canvas.orbiting{cursor:grab}canvas.orbiting:active{cursor:grabbing}#board-navigation{display:flex;align-items:center;gap:5px;flex-wrap:wrap;max-width:min(96%,540px)}#board-navigation .board-pan-pad{display:grid;grid-template-columns:repeat(3,25px);grid-template-rows:repeat(3,23px);gap:1px;margin-left:5px;border-left:1px solid #c6b68a55;padding-left:9px}#board-navigation .board-pan-pad button{font-size:15px;line-height:1;min-width:25px;width:25px;height:23px;padding:0;border:1px solid #bba97955;border-radius:5px;background:#17362ce8;color:#eadab1;cursor:pointer}#board-navigation .board-pan-pad button:hover{background:#3e624b}#board-navigation .board-pan-pad [data-pan=up]{grid-column:2;grid-row:1}#board-navigation .board-pan-pad [data-pan=left]{grid-column:1;grid-row:2}#board-navigation .board-pan-pad [data-pan=down]{grid-column:2;grid-row:3}#board-navigation .board-pan-pad [data-pan=right]{grid-column:3;grid-row:2}@media(max-width:600px){#board-navigation{max-width:100%;gap:3px}#board-navigation .board-pan-pad{margin-left:0;padding-left:4px}}';document.head.append(panStyle);
 
 
-let combatFocus=0;const combatCenter=new THREE.Vector3();let aiFocusW=0,aiFocusUntil=0,aiFocusFrom=0;const aiFocusPt=new THREE.Vector3();window.HackeniaCamFocus=(x,y,ms=2200)=>{if(!active||document.body.classList.contains('tutorial-mode'))return;aiFocusPt.copy(world.localToWorld(new THREE.Vector3(x-3.5,.3,y-HZ)));aiFocusFrom=performance.now()+700;aiFocusUntil=aiFocusFrom+ms};
+let combatFocus=0;const combatCenter=new THREE.Vector3();let aiFocusW=0,aiFocusUntil=0,aiFocusFrom=0;const aiFocusPt=new THREE.Vector3();window.HackeniaCamRelease=(ms=1200)=>{const u=aiFocusUntil;setTimeout(()=>{if(aiFocusUntil===u)aiFocusUntil=0},ms)};window.HackeniaCamFocus=(x,y,ms=2200,delay=700)=>{if(!active||document.body.classList.contains('tutorial-mode'))return;aiFocusPt.copy(world.localToWorld(new THREE.Vector3(x-3.5,.3,y-HZ)));aiFocusFrom=performance.now()+delay;aiFocusUntil=aiFocusFrom+ms};
 let zoom=1.1,panX=0,panY=0,panEnabled=false,panDrag=null,viewSpan=9,viewAspect=1,orbitYaw=Math.atan2(8,16),orbitPitch=Math.atan2(15,Math.hypot(8,16));
 
 const scene=new THREE.Scene(),world=new THREE.Group();scene.add(world);scene.fog=new THREE.Fog(0x304d3d,25,58);
