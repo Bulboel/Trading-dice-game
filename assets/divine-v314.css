@@ -1,0 +1,43 @@
+/* v314 — Cérémonie divine (voir divine-v314.js) */
+.dv-dialog{position:fixed;inset:0;width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;overflow:hidden;background:#05030d;color:#fff;cursor:pointer;opacity:0;transition:opacity .5s ease}
+.dv-dialog[open]{opacity:1}.dv-dialog.dv-out{opacity:0;transition-duration:.5s}.dv-dialog::backdrop{background:#000}
+.dv-dialog>*{position:absolute;pointer-events:none}.dv-dialog>.dv-skip{pointer-events:auto}
+.dv-bg{inset:0;background:radial-gradient(ellipse at 50% 55%,#2b1a5a 0,#120a2e 45%,#05030d 100%);animation:dv-bgpulse 4.2s ease-in-out both}
+.dv-stars{inset:0}.dv-stars i{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 6px #fff;opacity:0;animation:dv-tw var(--t) var(--o) infinite ease-in-out}
+.dv-beam{left:50%;top:0;width:min(34vw,220px);height:78%;transform:translateX(-50%) scaleY(0);transform-origin:top;background:linear-gradient(180deg,#fff 0,#fff3b0cc 30%,#ffd36b55 70%,transparent);filter:blur(10px);clip-path:polygon(40% 0,60% 0,100% 100%,0 100%);opacity:0}
+.dv-go .dv-beam{animation:dv-beam 1.3s .25s cubic-bezier(.2,.8,.2,1) forwards}
+.dv-rays{left:50%;top:56%;width:230vmax;height:230vmax;transform:translate(-50%,-50%) scale(.2);opacity:0;background:repeating-conic-gradient(from 0deg,#ff6b8b55 0 4deg,transparent 4deg 10deg,#ffd36b66 10deg 14deg,transparent 14deg 20deg,#7af0b555 20deg 24deg,transparent 24deg 30deg,#6fc8ff55 30deg 34deg,transparent 34deg 40deg,#c89cff55 40deg 44deg,transparent 44deg 50deg);-webkit-mask:radial-gradient(circle,#000 0,transparent 36%);mask:radial-gradient(circle,#000 0,transparent 36%)}
+.dv-go .dv-rays{animation:dv-rays 4.2s .9s linear forwards}
+.dv-glow{left:50%;top:56%;width:min(90vw,520px);aspect-ratio:1;transform:translate(-50%,-50%) scale(0);border-radius:50%;background:radial-gradient(circle,#fffbe0 0,#ffe9a0aa 22%,#ffb6f088 45%,transparent 70%);filter:blur(6px)}
+.dv-go .dv-glow{animation:dv-glow 3.4s .8s ease-out forwards}
+.dv-halo{left:50%;top:56%;width:min(96vw,640px);aspect-ratio:1;transform:translate(-50%,-50%);filter:drop-shadow(0 0 10px #ffd36b) drop-shadow(0 0 22px #ff9ad866);overflow:visible}
+.dv-ring{opacity:0;transform-box:fill-box;transform-origin:center}
+.dv-go .dv-ring.r1{animation:dv-ring1 3.8s .75s cubic-bezier(.2,.8,.2,1) forwards}.dv-go .dv-ring.r2{animation:dv-ring2 3.8s 1.05s cubic-bezier(.2,.8,.2,1) forwards}
+.dv-wave{left:50%;top:56%;width:20vmin;aspect-ratio:1;margin:-10vmin 0 0 -10vmin;border-radius:50%;border:4px solid #fff;box-shadow:0 0 30px #fff,0 0 60px #9fe8ff,inset 0 0 30px #ffb6f0;opacity:0}
+.dv-go .dv-wave{animation:dv-wave 1.5s 2.1s ease-out forwards}.dv-go .dv-wave.w2{animation-delay:2.35s;border-color:#ffe98a}.dv-go .dv-wave.w3{animation-delay:2.6s;border-color:#a9f0ff}
+.dv-feathers{inset:0;overflow:hidden}.dv-feathers i{position:absolute;left:var(--x);bottom:-8%;font-style:normal;font-size:var(--s);color:#fff6c8;text-shadow:0 0 10px #ffd36b,0 0 20px #ff9ad8;opacity:0}
+.dv-go .dv-feathers i{animation:dv-feather var(--d) var(--dl) ease-in infinite}
+.dv-flash{inset:0;background:#fff;opacity:0}.dv-go .dv-flash{animation:dv-flash 1.1s 2.3s ease-out forwards}
+.dv-title{left:0;right:0;top:56%;transform:translateY(-50%);text-align:center;padding:0 16px;opacity:0}
+.dv-go .dv-title{animation:dv-title 2s 2.4s ease-out forwards}
+.dv-title small{display:block;font:600 clamp(11px,3vw,15px)/1.4 system-ui,sans-serif;letter-spacing:.28em;text-transform:uppercase;color:#ffe9a0;text-shadow:0 0 12px #ffd36b;margin-bottom:10px}
+.dv-title h2{margin:0;font:700 clamp(40px,14vw,92px)/1 Georgia,'Times New Roman',serif;letter-spacing:.14em;white-space:nowrap;filter:drop-shadow(0 0 18px #ffd36b) drop-shadow(0 0 40px var(--accent,#ffd36b))}
+.dv-title h2 span{display:inline-block;background:linear-gradient(180deg,#fffbe0 0,#ffd36b 45%,#ff9ad8 100%);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0;transform:translateY(24px) scale(1.6);animation:dv-letter .6s calc(2.5s + var(--i)*.12s) cubic-bezier(.2,.9,.3,1.2) forwards}
+.dv-title p{margin:14px 0 0;font:600 clamp(16px,4.6vw,26px)/1.3 Georgia,serif;color:#fff;text-shadow:0 0 14px #fff6c8,0 2px 6px #0008}
+.dv-skip{right:14px;bottom:calc(14px + env(safe-area-inset-bottom));padding:8px 14px;border:1px solid #ffffff55;border-radius:999px;background:#0007;color:#fff;font:600 13px system-ui,sans-serif;cursor:pointer;opacity:.75}
+.dv-shake{animation:dv-shake .5s ease-in-out 2}
+@keyframes dv-bgpulse{0%{opacity:0}20%{opacity:1}55%{filter:brightness(1)}70%{filter:brightness(1.6)}100%{filter:brightness(1.1)}}
+@keyframes dv-tw{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:1;transform:scale(1.2)}}
+@keyframes dv-beam{0%{opacity:0;transform:translateX(-50%) scaleY(0)}30%{opacity:1}100%{opacity:.9;transform:translateX(-50%) scaleY(1)}}
+@keyframes dv-rays{0%{opacity:0;transform:translate(-50%,-50%) scale(.2) rotate(0)}15%{opacity:.9}100%{opacity:.85;transform:translate(-50%,-50%) scale(1) rotate(80deg)}}
+@keyframes dv-glow{0%{transform:translate(-50%,-50%) scale(0);opacity:0}40%{opacity:1}100%{transform:translate(-50%,-50%) scale(1.5);opacity:.5}}
+@keyframes dv-ring1{0%{opacity:0;transform:scale(.2) rotate(-120deg)}25%{opacity:1}100%{opacity:.95;transform:scale(1) rotate(60deg)}}
+@keyframes dv-ring2{0%{opacity:0;transform:scale(1.6) rotate(140deg)}25%{opacity:1}100%{opacity:.95;transform:scale(1) rotate(-70deg)}}
+@keyframes dv-wave{0%{opacity:.95;transform:scale(.3)}100%{opacity:0;transform:scale(9)}}
+@keyframes dv-feather{0%{opacity:0;transform:translate(0,0) rotate(0)}12%{opacity:1}100%{opacity:0;transform:translate(var(--sw),-115vh) rotate(260deg)}}
+@keyframes dv-flash{0%{opacity:0}18%{opacity:1}100%{opacity:0}}
+@keyframes dv-title{0%{opacity:0;transform:translateY(-50%) scale(.85)}25%{opacity:1}100%{opacity:1;transform:translateY(-50%) scale(1)}}
+@keyframes dv-letter{0%{opacity:0;transform:translateY(24px) scale(1.6)}100%{opacity:1;transform:none}}
+@keyframes dv-shake{0%,100%{transform:translate(0)}20%{transform:translate(-5px,3px)}40%{transform:translate(5px,-4px)}60%{transform:translate(-4px,-3px)}80%{transform:translate(4px,4px)}}
+.dv-reduced .dv-bg,.dv-reduced .dv-title,.dv-reduced .dv-title h2 span{animation:none!important;opacity:1;transform:none}.dv-reduced .dv-title{transform:translateY(-50%)}.dv-reduced>:not(.dv-bg):not(.dv-title):not(.dv-skip){display:none}
+.no-motion .dv-dialog>*{animation-duration:.01s!important}
