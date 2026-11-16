@@ -2,7 +2,7 @@
 // or ardent / arc-en-ciel, finition du dé, cercles au sol, poussière, faisceau et éclat d'apparition.
 import * as THREE from 'three';
 import {invocationPalette} from './invocation-colors.js?v=166';
-import {applyLook} from './variant-look.js?v=20270102-v320';
+import {applyLook} from './variant-look.js?v=20270102-v321';
 import {invocationNormalization,invocationFrame} from './invocation-layout.js?v=20261103-v72';
 import {GLTFLoader} from './vendor/three/examples/jsm/loaders/GLTFLoader.js';
 import {OrbitControls} from './vendor/three/examples/jsm/controls/OrbitControls.js';
@@ -89,6 +89,7 @@ function ease(t){return t*t*(3-2*t)}
 function epicPose(t){sigils.rotation.y=reduced?0:t*2;const charge=Math.sin(Math.PI*Math.max(0,Math.min(1,(t-.25)/.7)));beam.material.opacity=reduced?0:charge*T.beam;
  if(T.flash&&!reduced){const f=Math.max(0,1-Math.abs(t-.8)/.08);flash.material.opacity=f*.55*T.flash;flash.scale.setScalar(.6+2.4*Math.min(1,Math.max(0,(t-.72)/.16)))}
  if(T.rainbow){const hue=(performance.now()/2600)%1;frameMat.color.setHSL(hue,.85,.62);frameMat.emissive.setHSL(hue,.9,.45);gold.color.setHSL((hue+.33)%1,.8,.62);gold.emissive.setHSL((hue+.33)%1,.9,.4);sigils.children.forEach((g,i)=>g.material.color.setHSL((hue+i*.17)%1,.9,.65));beam.material.color.setHSL((hue+.5)%1,.8,.6)}ring.scale.setScalar(1+charge*.3);if(t>=.77&&!revealed){revealed=true;onReveal?.()}}
+let spinBase=null;
 function pose(t){const unfold=ease(Math.max(0,Math.min(1,(t-.08)/.62)));for(const p of panels){if(p===magicLid){p.hinge.rotation.x=0;continue;}if(p.axis==='bottom')p.hinge.rotation.x=0;else if(p.axis==='x')p.hinge.rotation.z=-p.side*unfold*Math.PI*.5;else p.hinge.rotation.x=p.side*unfold*Math.PI*.5;}
 const lift=ease(Math.max(0,Math.min(1,(t-.08)/.35)));
 const dissolve=Math.max(0,Math.min(1,(t-.40)/.36));
@@ -99,7 +100,9 @@ magicLid.hinge.scale.setScalar(1);
 dust.visible=dissolve>0&&dissolve<1;
 dustMaterial.opacity=dissolve<.8?Math.min(1,dissolve*8):Math.max(0,(1-dissolve)/.2);
 if(dust.visible){for(let i=0;i<dustCount;i++){const j=i*3;dustPositions[j]=dustOrigins[j]+dustDrifts[j]*dissolve;dustPositions[j+1]=dustOrigins[j+1]+dustDrifts[j+1]*dissolve;dustPositions[j+2]=dustOrigins[j+2]+dustDrifts[j+2]*dissolve;}dustGeometry.attributes.position.needsUpdate=true;}
-const appear=ease(Math.max(0,Math.min(1,(t-.77)/.20)));character.visible=appear>.005;character.position.y=-1.8+appear*1.8;character.scale.setScalar(.45+.55*appear);cube.visible=true;light.intensity=6*Math.sin(Math.PI*Math.max(0,Math.min(1,(t-.22)/.68)));glow.material.opacity=.26*Math.sin(Math.PI*Math.max(0,Math.min(1,(t-.2)/.7)));glow.scale.setScalar(1+appear*1.5);if(!model&&portrait){portrait.style.opacity=String(appear);portrait.style.transform='translateY('+((1-appear)*35)+'px) scale('+(.45+.55*appear)+')'}}
+const appear=ease(Math.max(0,Math.min(1,(t-.77)/.20)));character.visible=appear>.005;character.position.y=-1.8+appear*1.8;character.scale.setScalar(.45+.55*appear);cube.visible=true;light.intensity=6*Math.sin(Math.PI*Math.max(0,Math.min(1,(t-.22)/.68)));glow.material.opacity=.26*Math.sin(Math.PI*Math.max(0,Math.min(1,(t-.2)/.7)));glow.scale.setScalar(1+appear*1.5);if(!model&&portrait){portrait.style.opacity=String(appear);portrait.style.transform='translateY('+((1-appear)*35)+'px) scale('+(.45+.55*appear)+')'}
+/* v321 — le dé tourne sur lui-même (deux tours, de plus en plus lentement) pendant qu'il se déplie, et s'arrête de 3/4 quand le personnage est entièrement apparu */
+if(spinBase===null)spinBase={c:cube.rotation.y,p:character.rotation.y};const sp=reduced?0:(1-ease(Math.max(0,Math.min(1,(t-.04)/.93))))*Math.PI*4,face=reduced?0:-.42*ease(Math.max(0,Math.min(1,(t-.6)/.37)));cube.rotation.y=spinBase.c+sp+face;character.rotation.y=spinBase.p+sp+face}
 function resize(){const w=stage.clientWidth||1,h=stage.clientHeight||1,fit=invocationFrame(w/h);camera.aspect=w/h;camera.updateProjectionMatrix();camera.position.set(fit.x,fit.y,fit.z);orbit.target.set(0,fit.targetY,0);orbit.maxDistance=fit.distance*2;orbit.update();renderer.setSize(w,h,false)}observer=new ResizeObserver(resize);observer.observe(stage);resize();
 const clock=new THREE.Clock();function render(){if(dead)return;frame=requestAnimationFrame(render);if(document.hidden)return;const dt=Math.min(clock.getDelta(),.1);if(playing){progress=Math.min(1,progress+dt/2.6);if(progress>=1)playing=false}pose(progress);epicPose(progress);if(!reduced){mixer?.update(dt);for(const x of extraMixers)x.update(dt)}orbit.update();renderer.render(scene,camera);if(!prepared){prepared=true;onReady?.()}if(progress>=1&&!finished){finished=true;onComplete?.()}}
 render();return{dispose};}catch(error){dispose();throw error}
