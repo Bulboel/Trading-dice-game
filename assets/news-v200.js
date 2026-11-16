@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v350',title:'L’immondice géant',items:['Histoire, chapitre II : nouvelle partie 7, « L’immondice géant ». Un ver géant immobile occupe le centre du plateau : chaque créature qui l’attaque lui retire sa valeur d’attaque puis se fait engloutir. Abattez ses 25 points de vie pour gagner un duel.','Trois nouveaux dés sans élément : le Canourson (peu commun), le Canours et le Ver géant (rares), avec leurs versions Crépitantes.','La cabane du vieux fermier a enfin son décor.']},
  {id:'v349',title:'Illustrations de l’Histoire entières',items:['Mode Histoire : les illustrations des adversaires qui surgissent en plein duel montrent maintenant toute la scène, sans personnages coupés.','Cérémonies : les créatures animées (araignées, loups, larves…) restent bien centrées devant leur vignette.']},
  {id:'v348',title:'Les boubourses',items:['Les bourses s’appellent désormais les boubourses, partout dans le jeu.','Le menu principal : l’entrée dans un dé est plus rapide.','L’éclair du dé bonus traverse maintenant le terrain en violet, la couleur de la foudre.','Carte de l’Histoire : les étapes des chapitres I et II sont à leur place définitive.']},
  {id:'v347',title:'Cérémonies : personnages de face',items:['Le modèle 3D des dés divins et crépitants reste maintenant face à vous, plus grand et centré, avec un léger balancement.']},

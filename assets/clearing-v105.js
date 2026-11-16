@@ -2,20 +2,20 @@
 import * as THREE from 'three';
 import { orientBoardModel } from './model-facing.js?v=20261103-v73';
 import { createEmberlands } from './ember-v239.js?v=20261208-v260';
-import { attachHeroParts } from './hero-parts.js?v=20270102-v349';
-import { applyLook } from './variant-look.js?v=20270102-v349';
+import { attachHeroParts } from './hero-parts.js?v=20270102-v350';
+import { applyLook } from './variant-look.js?v=20270102-v350';
 import { createLake } from './lake-v241.js?v=20261122-v241';
 import { createSkyIsland } from './sky-v231.js?v=20261128-v247';
 import { createWindHighlands } from './wind-v232.js?v=20261123-v242';
 import { createWoodland } from './woodland-v238.js?v=20261119-v238';
 import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20261125-v244';
-import { createFrostRoad } from './frost-v240.js?v=20270102-v349';
+import { createFrostRoad } from './frost-v240.js?v=20270102-v350';
 import { createCity } from './city-v246.js?v=20261128-v247';
-import { createCave } from './cave-v246.js?v=20270102-v349';
+import { createCave } from './cave-v246.js?v=20270102-v350';
 import { createAutumn } from './autumn-v253.js?v=20261202-v253';
-import { createFairyMists } from './fairy-v335.js?v=20270102-v349';
+import { createFairyMists } from './fairy-v335.js?v=20270102-v350';
 import { createNoel } from './noel-v253.js?v=20261202-v253';
-import { createElementWheel } from './element-wheel-v252.js?v=20270102-v349';
+import { createElementWheel } from './element-wheel-v252.js?v=20270102-v350';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -381,11 +381,17 @@ const forecastPool=[],FORECAST_COL={foudre:0xc78dff,vent:0x5dff86,eau:0xff9ad0,n
 function makeForecast(){const g=new THREE.Group(),ring=new THREE.Mesh(new THREE.TorusGeometry(.42,.035,8,32),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.95,depthTest:false})),beam=new THREE.Mesh(new THREE.CylinderGeometry(.34,.34,1.4,20,1,true),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.22,depthWrite:false,side:THREE.DoubleSide,blending:THREE.AdditiveBlending}));ring.rotation.x=Math.PI/2;ring.position.y=.08;ring.renderOrder=30;beam.position.y=.7;g.add(ring,beam);g.visible=false;world.add(g);return{g,ring,beam}}
 function updateForecast(){const f=state.forecast,cells=f?.cells||[];while(forecastPool.length<cells.length)forecastPool.push(makeForecast());forecastPool.forEach((o,i)=>{const c=cells[i];if(!c){o.g.visible=false;return}const col=FORECAST_COL[f.t]||0xffffff;o.ring.material.color.setHex(col);o.beam.material.color.setHex(col);const cell=state.b[c[1]]?.[c[0]];o.g.position.set(c[0]-3.5,.22+(cell&&!cell.f?.28:0),c[1]-HZ);o.g.visible=true})}
 function animateForecast(){const now=performance.now();for(const o of forecastPool){if(!o.g.visible)continue;const k=.5+.5*Math.sin(now/260);o.ring.scale.setScalar(.9+.18*k);o.beam.material.opacity=.14+.16*k}}
-function updateFxBoard(){updateForecast();const W=state.walls||[],T=state.traps||[];while(wallPool.length<W.length)wallPool.push(makeWall());while(trapPool.length<T.length)trapPool.push(makeTrap());
+// v350 — Ver géant (Histoire) : il surgit d'une mare au centre du plateau, sur ses 2 × 4 cases, et disparaît quand il tombe à zéro.
+let bossObj=null,bossLoading=false,bossPool=null;
+function makeBossPool(){const g=new THREE.Group(),m=new THREE.Mesh(new THREE.CircleGeometry(1,40),new THREE.MeshStandardMaterial({color:0x1f3a22,roughness:.25,metalness:.1,emissive:0x0c2a10,emissiveIntensity:.5,transparent:true,opacity:.92}));m.rotation.x=-Math.PI/2;m.scale.set(1.15,2.15,1);m.position.y=.24;g.add(m);g.visible=false;world.add(g);return g}
+function updateBoss(){const B=state.boss;if(B&&!bossPool)bossPool=makeBossPool();if(bossPool){bossPool.visible=!!B;if(B)bossPool.position.set(B.x+B.w/2-.5-3.5,0,B.y+B.h/2-.5-HZ)}
+ if(B&&!bossObj&&!bossLoading){bossLoading=true;spawnWalker('ver-geant',3.1,null).then(o=>{bossLoading=false;if(!o)return;bossObj=o;o.group.traverse(c=>{c.userData.imported=true});world.add(o.group)})}
+ if(bossObj){bossObj.group.visible=!!B;if(B)bossObj.group.position.set(B.x+B.w/2-.5-3.5,.22,B.y+B.h/2-.5-HZ)}}
+function updateFxBoard(){updateForecast();updateBoss();const W=state.walls||[],T=state.traps||[];while(wallPool.length<W.length)wallPool.push(makeWall());while(trapPool.length<T.length)trapPool.push(makeTrap());
  const top=(x,y)=>{const c=state.b[y]?.[x];return .22+(c&&!c.f?.28:0)};
  wallPool.forEach((o,i)=>{const w=W[i];if(!w){o.g.visible=false;o.key='';return}const key=w.x+','+w.y;if(key!==o.key){o.key=key;o.born=performance.now()}o.g.position.set(w.x-3.5,top(w.x,w.y),w.y-HZ);o.g.visible=true});
  trapPool.forEach((o,i)=>{const t=T[i];if(!t){o.g.visible=false;o.key='';return}o.g.position.set(t.x-3.5,top(t.x,t.y),t.y-HZ);o.g.visible=true})}
-function animateFxBoard(){const now=performance.now();for(const o of wallPool){if(!o.g.visible)continue;const k=Math.min(1,(now-(o.born||0))/600),e=1-Math.pow(1-k,3);o.g.scale.set(1,.2+.8*e,1);o.glow.material.opacity=.4+(moving?.15*Math.sin(now/400):0)}for(const o of trapPool){if(!o.g.visible)continue;o.ring.material.color.setHex(Math.floor(now/450)%2?0xff5a2a:0xaa2a10)}}
+function animateFxBoard(){const now=performance.now();if(bossObj?.group.visible){const k=Math.sin(now/700);bossObj.group.rotation.y=.25*Math.sin(now/1300);bossObj.group.scale.set(1-.03*k,1+.05*k,1-.03*k)}for(const o of wallPool){if(!o.g.visible)continue;const k=Math.min(1,(now-(o.born||0))/600),e=1-Math.pow(1-k,3);o.g.scale.set(1,.2+.8*e,1);o.glow.material.opacity=.4+(moving?.15*Math.sin(now/400):0)}for(const o of trapPool){if(!o.g.visible)continue;o.ring.material.color.setHex(Math.floor(now/450)%2?0xff5a2a:0xaa2a10)}}
 // v253 — Cadeau de Noël (Nuit des Lumières) : un paquet qui tombe du ciel et scintille sur la case qui donne +1.
 const giftPool=[],GIFT_COLS=[0xd6202c,0x2e6fe0,0x1f8a4c,0x8a2be2];
 function makeGift(i){const g=new THREE.Group(),col=GIFT_COLS[i%4],box=new THREE.Mesh(new THREE.BoxGeometry(.34,.28,.34),new THREE.MeshStandardMaterial({color:col,roughness:.45,emissive:col,emissiveIntensity:.15})),rib=new THREE.MeshStandardMaterial({color:0xf2c75a,metalness:.7,roughness:.3,emissive:0x5a3a00,emissiveIntensity:.4});box.position.y=.14;g.add(box);
