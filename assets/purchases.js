@@ -1,6 +1,6 @@
 /* Plan a complete purchase before the single durable profile write. No partial debit.
-   v257 — taux revus (Légendaire 6 %, Divin 1,5 %) et garanties : un légendaire que vous ne possédez pas toutes les 50 bourses
-   sans légendaire, un divin toutes les 100 bourses sans divin (compteurs profile.pity = {leg, div}, remis à zéro dès qu'il en sort un). */
+   v257 — taux revus (Légendaire 6 %, Divin 1,5 %) et garanties : un légendaire que vous ne possédez pas toutes les 50 boubourses
+   sans légendaire, un divin toutes les 100 boubourses sans divin (compteurs profile.pity = {leg, div}, remis à zéro dès qu'il en sort un). */
 (()=>{'use strict';
 // v344 — % par dé (total 100) : Commun 33,8, Peu commun 27, Rare 22, Légendaire 6, Divin 0,4, Énergie 10,5, Crépitant 0,3
 // (dont Crépitant v1 0,2 et Crépitant émeraude v2 0,1 : voir CREP_SPLIT).
@@ -14,7 +14,7 @@ function plan(profile,count,random=Math.random){if(count!==1&&count!==10&&count!
   for(let j=0;j<3;j++){let r=random()*WEIGHTS.reduce((x,y)=>x+y,0),l=0;while(l<WEIGHTS.length-1&&r>=WEIGHTS[l])r-=WEIGHTS[l++];const ids=l+1===8?pool(8,random()*(CREP_SPLIT[1]+CREP_SPLIT[2])<CREP_SPLIT[1]?1:2):pool(l+1);pack.dice.push(ids[Math.min(ids.length-1,Math.floor(random()*ids.length))])}
   pity.leg++;pity.div++;
   const has=r=>pack.dice.some(id=>rarityOf(id)===r),inv=id=>(next.inventory[id]||0);
-  // garantie : on remplace le dé le plus ordinaire de la bourse, de préférence par un dé que le joueur ne possède pas encore
+  // garantie : on remplace le dé le plus ordinaire de la boubourse, de préférence par un dé que le joueur ne possède pas encore
   const force=(rar,keepIdx=-1)=>{const ids=pool(rar);if(!ids.length)return;const fresh=ids.filter(i=>!inv(i)&&!pack.dice.includes(i)),from=fresh.length?fresh:ids;const id=from[Math.min(from.length-1,Math.floor(random()*from.length))];
    let slot=-1,low=99;pack.dice.forEach((d,k)=>{const q=rarityOf(d);if(k!==keepIdx&&q<low&&q!==6&&q!==8){low=q;slot=k}});if(slot<0)slot=0;pack.dice[slot]=id;return slot};
   let kept=-1;

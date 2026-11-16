@@ -1,9 +1,9 @@
-/* v315 — Pack Sage : bague de sage, ouverture des bourses par 100, recyclage automatique des doublons (favoris protégés),
+/* v315 — Pack Sage : bague de sage, ouverture des boubourses par 100, recyclage automatique des doublons (favoris protégés),
    1 000 Bubulles, jeu sans publicité. L'état est dans le profil (profile.premium) ; l'attribution peut aussi venir de l'administrateur
    (table premium_grants, voir online/sql/07-premium.sql). Le paiement réel passe par un fournisseur branchable (HackeniaPremium.billing). */
 (function(root){'use strict';
 const GOLD=1000,PRICE_GOLD=7500,RING='bague-de-sage';/* prix en Bubulles (1 000 sont rendues à l’activation) ; l’achat en argent réel n’apparaît que si un fournisseur de paiement est branché (billing) */
-const BENEFITS=['Bague de sage (objet porté) : tous vos dés bonus dès le début de chaque duel contre un adversaire du jeu','Ouverture des bourses par 100 (900 Bubulles)','Recyclage automatique des doublons : trois exemplaires gardés au minimum, favoris ♥ épargnés','1 000 Bubulles rendues dès l’activation','Jeu sans publicité'];
+const BENEFITS=['Bague de sage (objet porté) : tous vos dés bonus dès le début de chaque duel contre un adversaire du jeu','Ouverture des boubourses par 100 (900 Bubulles)','Recyclage automatique des doublons : trois exemplaires gardés au minimum, favoris ♥ épargnés','1 000 Bubulles rendues dès l’activation','Jeu sans publicité'];
 /* Un pack venu du serveur (attribution ou achat) n'est actif que si le serveur l'a confirmé récemment : modifier ou importer un fichier de sauvegarde ne suffit donc pas.
    Seul le pack acquis avec des Bubulles dans le jeu est valable sans serveur (il ne coûte que des Bubulles, déjà modifiables localement). */
 const OK_KEY='hackenia-premium-ok',GRACE=14*864e5;let okMem=0;
