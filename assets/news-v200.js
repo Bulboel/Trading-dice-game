@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v334',title:'Mes decks repensé',items:['Le bandeau du deck en cours vous suit de nouveau pendant que vous parcourez vos dés, sur une seule ligne.','Bouton « Fiche » sur chaque dé de Mes decks, et un appui sur un dé de votre deck ouvre aussi sa fiche détaillée.','Haut de page plus compact sur téléphone : les 10 emplacements tiennent en deux rangées et les boutons sur une ligne.','Ouverture rapide des bourses : les nouveaux dés légendaires, divins et crépitants ont toujours leur cérémonie, même en passant les découvertes.']},
  {id:'v333',title:'Collection plus compacte',items:['Sur téléphone, les filtres de la Collection tiennent sur deux lignes : recherche, réinitialiser, Possédés et Favoris, puis élément, rareté et tri.','Histoire : le duel contre les larves se joue dans la grotte souterraine.']},
  {id:'v332',title:'Adversaires fidèles à l’Histoire',items:['Chaque adversaire de l’Histoire joue un deck complet à son image, sans dé pris au hasard : l’araignée géante ne joue que des araignées.','Les illustrations qui surgissent en plein duel ne montrent plus que le dessin, sans cadre ni chiffres.']},
  {id:'v331',title:'Histoire illustrée',items:['En plein duel d’Histoire, l’adversaire surgit avec l’illustration de sa carte dès qu’il pose sa première créature.','Nouveaux décors pour la porte nord de Dassom, le village de Berdésa et le chemin de la grotte des jumeaux.']},
