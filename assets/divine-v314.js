@@ -20,9 +20,15 @@ function play(o){const T=window.HackeniaI18n?.t||(x=>x);o={...o};for(const k of[
  let over=false;const timers=[],finish=()=>{if(over)return;over=true;timers.forEach(clearTimeout);dlg.classList.add('dv-out');setTimeout(()=>{try{dlg.close()}catch{}dlg.remove();resolve()},reduced?120:520)};
  dlg.addEventListener('cancel',e=>{e.preventDefault();finish()});dlg.addEventListener('click',finish);
  try{dlg.showModal()}catch{dlg.setAttribute('open','')}
+ // v346 — le modèle 3D du dé apparaît juste devant sa vignette (même texture galaxie pour les Crépitants)
+ if(o.id!=null&&o.portrait)addModel(dlg,o.id,reduced);
  const at=(ms,fn)=>timers.push(setTimeout(fn,ms));
  try{set?.play?.('Invocation')}catch{}
- if(reduced){dlg.classList.add('dv-go');at(900,()=>set?.play?.('Divin'));at(o.portrait?3200:2100,finish);return}
- dlg.classList.add('dv-go');at(2350,()=>{try{set?.play?.('Divin')}catch{}dlg.classList.add('dv-shake')});at(o.portrait?5600:4300,finish)})}
+ if(reduced){dlg.classList.add('dv-go');at(900,()=>set?.play?.('Divin'));at(o.portrait?(o.id!=null?4200:3200):2100,finish);return}
+ dlg.classList.add('dv-go');at(2350,()=>{try{set?.play?.('Divin')}catch{}dlg.classList.add('dv-shake')});at(o.portrait?(o.id!=null?6400:5600):4300,finish)})}
+async function addModel(dlg,id,reduced){const game=window.hackeniaGame;try{const info=await game?.modelInfo?.(id);if(!info?.glb||info.parts||!dlg.isConnected)return;
+ game.loadModelViewer?.();const d=game.monsters?.[id]||{},mv=document.createElement('model-viewer');mv.className='dv-model';mv.setAttribute('src','assets/'+info.glb);mv.setAttribute('camera-orbit','0deg 80deg 105%');mv.setAttribute('interaction-prompt','none');mv.setAttribute('disable-zoom','');mv.setAttribute('shadow-intensity','0.6');mv.setAttribute('exposure','1.1');mv.setAttribute('alt','');
+ if(!reduced){mv.setAttribute('autoplay','');mv.setAttribute('auto-rotate','');mv.setAttribute('auto-rotate-delay','0');mv.setAttribute('rotation-per-second','18deg')}if(info.gesture)mv.classList.add('gesture-'+info.gesture);if(d.variant)window.HackeniaVariantMV?.apply(mv,d.variant);
+ mv.addEventListener('load',()=>mv.classList.add('ready'));dlg.querySelector('.dv-hero')?.append(mv)}catch(e){console.warn('dv-model',e)}}
 window.HackeniaDivine={play};
 })();
