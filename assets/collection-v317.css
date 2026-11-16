@@ -161,3 +161,9 @@ dialog.pouch-history .ph-name{font:600 10.5px/1.15 system-ui;color:#eef0f6;text-
 dialog.pouch-history .ph-die small{font:700 9.5px system-ui;color:var(--rim)}
 dialog.pouch-history .ph-die em{position:absolute;top:-6px;right:-4px;padding:1px 5px;border-radius:6px;background:#2fd17a;color:#062010;font:800 9px system-ui;font-style:normal}
 dialog.pouch-history .ph-pity{grid-column:2;font:600 10.5px system-ui;color:#e6c25a}
+/* v351 — cœur des favoris doré (DA or et ambre) et plus grand, sur PC comme sur smartphone */
+html body #portal .cc-fav{width:32px!important;height:32px!important;font:700 23px/1 system-ui,sans-serif!important;color:#e6c77899!important;transition:transform .15s ease,color .15s}
+html body #portal .cc-fav:hover{transform:scale(1.12);color:#f3d98b!important}
+html body #portal .cc-fav.on{color:#f6c945!important;text-shadow:0 0 8px #f6c94599,0 1px 0 #7a5410!important}
+@media(max-width:600px){html body #portal .cc-fav{width:34px!important;height:34px!important;font-size:26px!important}}
+html body #portal .fav-ico{font-style:normal;font-size:1.25em;line-height:1;color:#f6c945;text-shadow:0 0 6px #f6c94566;vertical-align:-1px}
