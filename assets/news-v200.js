@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v318',title:'Packs spéciaux',items:['Un bouton « Packs spéciaux » dans la boutique mène à une page dédiée : le Pack Sage s’y acquiert avec des Bubulles. La bourse reste seule au centre de la boutique.']},
  {id:'v317',title:'Collection plus compacte',items:['Sur téléphone, les filtres de la Collection et de Mes decks prennent beaucoup moins de place : recherche, élément, rareté et tri tiennent sur trois lignes. Le cœur des favoris se range discrètement dans l’en-tête de la carte.','La dalle de votre héros s’arrête à la force 4 (atteinte au niveau de joueur 40).']},
  {id:'v316',title:'Version anglaise',items:['Le jeu est disponible en anglais. Il suit la langue de votre appareil, et vous pouvez changer à tout moment depuis le menu de démarrage ou dans Options › Joueur.','Introduction signée « Créé par Bulboel ». Le Pack Sage peut désormais s’acquérir avec des Bubulles dans la boutique.']},
  {id:'v315',title:'Pack Sage et favoris',items:['Nouveau Pack Sage, à acquérir dans la boutique avec des Bubulles : bague de sage (tous vos dés bonus dès le début des duels), ouverture des bourses par 100, recyclage automatique des doublons (trois exemplaires gardés minimum), 1 000 Bubulles rendues et jeu sans publicité.','Favoris ♥ : touchez le cœur d’un dé de la collection pour le protéger du recyclage (manuel comme automatique) ; filtre « Favoris » dans la collection.']},
