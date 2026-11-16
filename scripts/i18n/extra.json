@@ -398,5 +398,9 @@
  "Carte de l’Histoire par chapitre": "Story map by chapter",
  "La carte de l’Histoire a un onglet par chapitre : chacun n’affiche que ses propres étapes, plus lisibles.": "The Story map has one tab per chapter: each shows only its own steps, easier to read.",
  "Correction : le bouton Commencer de la fiche d’une étape lance bien la partie.": "Fix: the Start button on a step's card now starts the part.",
- "Boutique : nouvel onglet Historique, qui retrace vos dernières ouvertures de bourses (nouveaux dés, garanties).": "Shop: new History tab listing your latest pouch openings (new dice, guarantees)."
+ "Boutique : nouvel onglet Historique, qui retrace vos dernières ouvertures de bourses (nouveaux dés, garanties).": "Shop: new History tab listing your latest pouch openings (new dice, guarantees).",
+ "Crépitants plus éclatants": "Crackling dice burn brighter",
+ "Les Crépitants violets et émeraude ont des teintes bien plus vives : la galaxie se voit nettement sur les modèles 3D, les miniatures et les fiches.": "Violet and emerald Crackling dice have much more vivid colours: the galaxy now clearly shows on 3D models, portraits and cards.",
+ "Les étoiles ont maintenant toutes les tailles, de la fine poussière aux grosses étoiles scintillantes.": "Stars now come in every size, from fine dust to big twinkling stars.",
+ "Boutique sur ordinateur : les boutons ne débordent plus, leur texte passe à la ligne proprement.": "Shop on desktop: buttons no longer overflow, their text wraps cleanly."
 }
