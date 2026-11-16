@@ -45,3 +45,23 @@
 @media(max-width:600px){.sm-viewport{height:62vh}.sm-sheet{grid-template-columns:auto minmax(0,1fr);}.sm-sheet [data-go]{grid-column:1/-1}.sm-foot span{display:none}.sm-foot{justify-content:flex-end}}
 @media(prefers-reduced-motion:reduce){.sm-node.current .sm-medal{animation:none}}
 .story-list-tools{display:flex;justify-content:flex-end;margin:6px 0}
+/* v339 — onglets de chapitres, points plus petits, mode placement */
+.sm-tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:8px;margin:12px 0 0}
+.sm-tab{display:grid!important;gap:2px;justify-items:start;text-align:left;padding:8px 12px!important;min-height:0!important;border-radius:12px!important;border:1px solid #d6b77c44!important;background:linear-gradient(145deg,#1a2236,#111a2a)!important;color:#cfd3e2!important}
+.sm-tab small{font:600 10px system-ui;letter-spacing:.08em;text-transform:uppercase;color:#cdb98a}
+.sm-tab b{font:700 13px/1.2 Georgia,serif;color:#f1e4c3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.sm-tab span{font:600 11px system-ui;color:#9aa3b8}
+.sm-tab.on{border-color:#e6c778!important;background:linear-gradient(145deg,#3a2f17,#1d1a12)!important;box-shadow:0 0 0 1px #e6c77855,0 6px 16px #0006}
+.sm-tab:disabled{opacity:.5}
+.sm-medal{width:34px;height:34px;font-size:14px;border-width:2px}
+.sm-node.current .sm-medal{width:42px;height:42px;font-size:17px}
+.sm-node.bonus .sm-medal{width:28px;height:28px;font-size:12px}
+.sm-node.locked .sm-medal{width:28px;height:28px;font-size:11px}
+.sm-tag{font-size:10px;padding:1px 6px;border-width:1.5px}
+.sm-node.current .sm-tag{font-size:11px}
+.sm-edit-bar{display:grid;gap:6px;margin:10px 0 0;padding:10px 12px;border-radius:12px;border:1px dashed #e6c778;background:#2a2412cc;color:#f1e4c3;font-size:13px}
+.sm-edit-bar>div{display:flex;flex-wrap:wrap;gap:6px}
+.sm-edit-bar button{min-height:34px!important;padding:5px 10px!important;font-size:13px!important}
+.sm-json{width:100%;min-height:70px;font:12px ui-monospace,monospace;background:#0d1420;color:#e8e2c8;border:1px solid #d6b77c66;border-radius:8px;padding:6px;box-sizing:border-box}
+.sm-viewport.editing .sm-node{cursor:move;touch-action:none}
+.sm-viewport.editing .sm-tag{background:linear-gradient(#7a2a2a,#4a1414)}
