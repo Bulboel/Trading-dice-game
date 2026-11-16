@@ -770,6 +770,31 @@
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.05,
       "gesture": "ghost"
+    },
+    "canourson": {
+      "glb": "models-web/Canourson.glb",
+      "nom": "Canourson",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 1.15,
+      "gesture": "beast"
+    },
+    "canours": {
+      "glb": "models-web/Canours idle.glb",
+      "nom": "Canours",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.0,
+      "animations": {
+        "spell": "characters/canours-spell.glb",
+        "victory": "characters/canours-victory.glb",
+        "walk": "characters/canours-walk.glb"
+      }
+    },
+    "ver-geant": {
+      "glb": "models-web/ver géant.glb",
+      "nom": "Ver géant",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 1.5,
+      "gesture": "larva"
     }
   },
   "terrains": {
