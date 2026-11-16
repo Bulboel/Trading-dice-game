@@ -436,5 +436,7 @@
  "Larve": "Larva",
  "Guerrier fantôme": "Ghost Warrior",
  "Cérémonies en 3D": "3D ceremonies",
- "Ouverture d’une bourse : lors de l’apparition d’un dé divin ou crépitant, son modèle 3D surgit maintenant juste devant sa vignette, avec sa texture galaxie pour les Crépitants.": "Opening a pouch: when a divine or crackling die appears, its 3D model now rises right in front of its portrait, with its galaxy texture for Crackling dice."
+ "Ouverture d’une bourse : lors de l’apparition d’un dé divin ou crépitant, son modèle 3D surgit maintenant juste devant sa vignette, avec sa texture galaxie pour les Crépitants.": "Opening a pouch: when a divine or crackling die appears, its 3D model now rises right in front of its portrait, with its galaxy texture for Crackling dice.",
+ "Cérémonies : personnages de face": "Ceremonies: characters face you",
+ "Le modèle 3D des dés divins et crépitants reste maintenant face à vous, plus grand et centré, avec un léger balancement.": "The 3D model of divine and crackling dice now faces you, larger and centred, with a gentle sway."
 }
