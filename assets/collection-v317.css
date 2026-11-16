@@ -46,3 +46,5 @@ html body #portal .cc2 .cc-art img.framed{transform:scale(1.14);filter:drop-shad
 html body .hc-art img.framed,html body .rc-art img.framed{border-radius:0!important;clip-path:none!important;object-fit:contain!important;filter:drop-shadow(0 2px 4px #0009)}
 /* v322 — le menu de démarrage n'affiche ni le bouton « Apprendre à jouer » flottant ni les Bubulles (il a déjà ses propres choix) */
 html body.start-menu-open #home-learn,html body.start-menu-open .wallet.wallet-home,html body.start-menu-open[class][class] #portal>.wallet.wallet-home[class]{display:none!important}
+/* v327 — miniatures rondes découpées exactement au cercle de la fiche (bord au pixel près) */
+html body #portal .cc2 .collect-art.cc-art img.character-portrait:not(.framed){border-radius:50%;clip-path:circle(50% at 50% 50%)}
