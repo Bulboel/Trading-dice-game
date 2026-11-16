@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v321',title:'Cérémonie légendaire et transitions',items:['Ouverture d’un dé légendaire : nouvelle cérémonie or et ambre. Pendant la découverte, le dé tourne sur lui-même en se dépliant et s’arrête de trois quarts quand le personnage apparaît.','Fondu à chaque changement de menu ; toucher un dé de la boutique plonge dans le dé avant d’ouvrir sa fiche. La roue des options quitte la boutique, et les filtres de la collection sont harmonisés.']},
  {id:'v319',title:'Miniatures nettoyées et sons personnalisés',items:['Toutes les miniatures rondes sont recentrées sur le cercle de leur fiche : plus d’arc doré ou argenté coupé en haut.','Le jeu accepte désormais des bruitages personnalisés au format MP3 (dossier assets/sfx) : ils remplacent les sons d’origine.']},
  {id:'v318',title:'Packs spéciaux',items:['Un bouton « Packs spéciaux » dans la boutique mène à une page dédiée : le Pack Sage s’y acquiert avec des Bubulles. La bourse reste seule au centre de la boutique.']},
  {id:'v317',title:'Collection plus compacte',items:['Sur téléphone, les filtres de la Collection et de Mes decks prennent beaucoup moins de place : recherche, élément, rareté et tri tiennent sur trois lignes. Le cœur des favoris se range discrètement dans l’en-tête de la carte.','La dalle de votre héros s’arrête à la force 4 (atteinte au niveau de joueur 40).']},
