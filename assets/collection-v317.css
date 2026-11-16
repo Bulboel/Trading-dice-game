@@ -24,8 +24,12 @@ html body #portal .cc2 .cc-top .cc-gems{order:3;margin-left:4px}
 /* v321 — transitions : fondu entre menus, plongée dans un dé de la boutique */
 #portal-content.view-in{animation:view-in .3s cubic-bezier(.2,.8,.2,1) both}
 @keyframes view-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.die-zoom{position:fixed;z-index:2000;pointer-events:none;transform-origin:50% 50%}
-.die-zoom>.draw-die{transform:translate(-50%,-50%)!important;margin:0!important}
-.die-zoom-flash{position:fixed;inset:0;z-index:1999;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 50%,#fff 0,var(--tint,#e9d39a) 35%,color-mix(in srgb,var(--tint,#e9d39a) 40%,#05030d) 100%)}
+.die-zoom-flash{position:fixed;inset:0;z-index:1999;pointer-events:none;opacity:0;background:radial-gradient(circle at var(--fx,50%) var(--fy,50%),#fffbe8 0,#f3dfa6 18%,#6f5a2c 55%,#0b0d14 100%)}
 @media(prefers-reduced-motion:reduce){#portal-content.view-in{animation:none}}
 .no-motion #portal-content.view-in{animation:none}
+/* v322 — portraits à cadre peint : leur cadre fait office de médaillon (pas de second cercle, ornements visibles) */
+html body #portal .cc2 .collect-art.cc-art:has(img.framed),html body .hc-art:has(img.framed),html body .rc-art:has(img.framed){background:none!important;box-shadow:none!important;border:0!important;overflow:visible!important}
+html body #portal .cc2 .cc-art img.framed{transform:scale(1.14);filter:drop-shadow(0 3px 6px #000a)}
+html body .hc-art img.framed,html body .rc-art img.framed{border-radius:0!important;clip-path:none!important;object-fit:contain!important;filter:drop-shadow(0 2px 4px #0009)}
+/* v322 — le menu de démarrage n'affiche ni le bouton « Apprendre à jouer » flottant ni les Bubulles (il a déjà ses propres choix) */
+html body.start-menu-open #home-learn,html body.start-menu-open .wallet.wallet-home,html body.start-menu-open[class][class] #portal>.wallet.wallet-home[class]{display:none!important}
