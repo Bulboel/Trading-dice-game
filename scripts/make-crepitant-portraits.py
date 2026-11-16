@@ -1,7 +1,7 @@
 """v269 — Miniatures des dés Crépitants : la miniature d'origine devient un morceau de voie lactée (nébuleuses violettes, roses et cyan,
 bande lumineuse, étoiles scintillantes), détails du personnage conservés par la luminosité. Sortie : assets/characters/<clé>-crep-128|512.webp
 (même découpe et même transparence que l'originale). Même palette que le shader des modèles 3D (assets/variant-look.js).
-Usage : python3 scripts/make-crepitant-portraits.py (v338 : génère aussi les versions émeraude <clé>-crep2-128|512.webp)"""
+Usage : python3 scripts/make-crepitant-portraits.py [clés…] (v338 : génère aussi les versions émeraude <clé>-crep2-128|512.webp)"""
 import json, subprocess, zlib
 from pathlib import Path
 from PIL import Image
@@ -54,6 +54,8 @@ def galaxy(key,size=512,pal='v1'):
     res=np.dstack([out,alpha]);return Image.fromarray((res*255).astype(np.uint8),'RGBA')
 if __name__=='__main__':
     keys=json.loads(subprocess.check_output(['node',str(ROOT/'scripts/list-shiny-portraits.cjs')]))
+    import sys
+    if len(sys.argv)>1:keys=[k for k in keys if k in sys.argv[1:]]  # v345 : seulement les clés données (ex. loup larve guerrier-fantome)
     n=0
     for k in keys:
         if not (CH/f'{k}-512.webp').exists():print('absent',k);continue
