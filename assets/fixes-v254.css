@@ -179,8 +179,10 @@ model-viewer.gesture-larva{animation:spider-idle 1.8s ease-in-out infinite;trans
 model-viewer.gesture-ghost{animation:ghost-float 3.4s ease-in-out infinite}
 @media (prefers-reduced-motion:reduce){model-viewer.gesture-beast,model-viewer.gesture-larva,model-viewer.gesture-ghost{animation:none}}
 /* v350 — jauge de vie du ver géant (Histoire, chapitre II, partie 7) */
-#boss-hp{position:absolute;right:10px;top:54px;z-index:6;display:grid;grid-template-columns:auto minmax(60px,120px) auto;align-items:center;gap:7px;padding:5px 10px;border-radius:12px;background:#14201ae6;border:1px solid #9fd36a88;box-shadow:0 6px 18px #0008;color:#eef6dd;font:600 12px system-ui;pointer-events:none;white-space:nowrap}
+#boss-hp{position:absolute;right:10px;top:54px;max-width:46%;z-index:6;display:grid;grid-template-columns:auto minmax(50px,90px) auto;align-items:center;gap:7px;padding:5px 10px;border-radius:12px;background:#14201ae6;border:1px solid #9fd36a88;box-shadow:0 6px 18px #0008;color:#eef6dd;font:600 12px system-ui;pointer-events:none;white-space:nowrap}
 #boss-hp[hidden]{display:none}
 #boss-hp b{font:700 13px Georgia,serif;color:#d8f0a8}
 #boss-hp i{height:9px;border-radius:6px;background:#2a1d14;overflow:hidden;box-shadow:inset 0 0 0 1px #0008}
 #boss-hp em{display:block;height:100%;background:linear-gradient(90deg,#c0392b,#e2a23b,#8fd14f);transition:width .5s ease}
+#boss-hp b{font-size:15px}
+#boss-hp span{font:700 13px system-ui;color:#eef6dd}#boss-hp small{font-size:10px;opacity:.75;margin-left:1px}
