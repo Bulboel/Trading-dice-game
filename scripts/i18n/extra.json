@@ -480,5 +480,9 @@
  "Toucher pour passer": "Tap to skip",
  "Vous": "You",
  "20 naturel ! +1 dé bonus": "Natural 20! +1 bonus die",
- "Vous commencez !": "You go first!"
+ "Vous commencez !": "You go first!",
+ "D20 pour tous": "D20 for everyone",
+ "Le lancer d’initiative au D20 s’applique aussi en 2 contre 2 et en ligne (même résultat pour tous les joueurs).": "The D20 initiative roll now also applies in 2 vs 2 and online (same result for every player).",
+ "Sur PC, la touche Espace donne directement le résultat du D20.": "On PC, the Space key shows the D20 result immediately.",
+ "Espace ou clic : résultat immédiat": "Space or click: instant result"
 }
