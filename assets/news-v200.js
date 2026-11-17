@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v357',title:'Qui commence ? Lancer d’initiative',items:['Avant chaque partie contre un adversaire du jeu, chaque camp lance un D20 : le plus haut lancer commence (égalité : on relance). Un 20 naturel rapporte un dé bonus. Le D20 prend l’apparence de vos dés de jet.','L’immondice géant : la vraie carte du ver géant surgit dès le début du duel.']},
  {id:'v356',title:'Le ver géant : combat animé et victoire',items:['L’immondice géant : chaque frappe contre le ver géant joue une vraie animation de combat, et l’abattre fait gagner la partie.','Nouveau défi « L’immondice terrassée » : vainquez le ver géant en réduisant ses points de vie à zéro pour débloquer la boubourse en peau de ver géant.','La boubourse Messire Balai affiche sa tête en grand, et son sceau est un petit Messire Balai doré ou argenté selon la cordelette.']},
  {id:'v355',title:'Cérémonies des boubourses sur smartphone',items:['Les cérémonies des dés divins et crépitants se jouent maintenant aussi quand le téléphone réduit les animations (économie d’énergie), quand l’ouverture est lente, et en ouverture rapide, même pour un dé déjà possédé.']},
  {id:'v354',title:'Le ver géant attaqué au contact',items:['L’immondice géant : une créature qui apparaît ou s’arrête à côté du ver géant le frappe d’elle-même, puis se fait engloutir. Inutile de toucher le ver.']},
