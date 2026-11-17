@@ -1,23 +1,23 @@
 /* Presentation adapter. Game legality, turns, decks and combat stay in index.html. */
 import * as THREE from 'three';
 import { orientBoardModel } from './model-facing.js?v=20261103-v73';
-import { createEmberlands } from './ember-v239.js?v=20270102-v380';
-import { attachHeroParts } from './hero-parts.js?v=20270102-v380';
-import { applyLook } from './variant-look.js?v=20270102-v380';
-import { createLake } from './lake-v241.js?v=20270102-v380';
+import { createEmberlands } from './ember-v239.js?v=20270102-v381';
+import { attachHeroParts } from './hero-parts.js?v=20270102-v381';
+import { applyLook } from './variant-look.js?v=20270102-v381';
+import { createLake } from './lake-v241.js?v=20270102-v381';
 import { createSkyIsland } from './sky-v231.js?v=20261128-v247';
 import { createWindHighlands } from './wind-v232.js?v=20261123-v242';
 import { createWoodland } from './woodland-v238.js?v=20261119-v238';
 import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20261125-v244';
-import { createFrostRoad } from './frost-v240.js?v=20270102-v380';
-import { createCity } from './city-v246.js?v=20270102-v380';
-import { createColosseum } from './colosseum-v364.js?v=20270102-v380';
-import { createTavern } from './tavern-v369.js?v=20270102-v380';
-import { createCave } from './cave-v246.js?v=20270102-v380';
+import { createFrostRoad } from './frost-v240.js?v=20270102-v381';
+import { createCity } from './city-v246.js?v=20270102-v381';
+import { createColosseum } from './colosseum-v364.js?v=20270102-v381';
+import { createTavern } from './tavern-v369.js?v=20270102-v381';
+import { createCave } from './cave-v246.js?v=20270102-v381';
 import { createAutumn } from './autumn-v253.js?v=20261202-v253';
-import { createFairyMists } from './fairy-v335.js?v=20270102-v380';
+import { createFairyMists } from './fairy-v335.js?v=20270102-v381';
 import { createNoel } from './noel-v253.js?v=20261202-v253';
-import { createElementWheel } from './element-wheel-v252.js?v=20270102-v380';
+import { createElementWheel } from './element-wheel-v252.js?v=20270102-v381';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
