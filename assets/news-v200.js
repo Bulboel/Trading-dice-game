@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v355',title:'Cérémonies des boubourses sur smartphone',items:['Les cérémonies des dés divins et crépitants se jouent maintenant aussi quand le téléphone réduit les animations (économie d’énergie), quand l’ouverture est lente, et en ouverture rapide, même pour un dé déjà possédé.']},
  {id:'v354',title:'Le ver géant attaqué au contact',items:['L’immondice géant : une créature qui apparaît ou s’arrête à côté du ver géant le frappe d’elle-même, puis se fait engloutir. Inutile de toucher le ver.']},
  {id:'v353',title:'Combat du ver géant corrigé',items:['L’immondice géant : le ver occupe maintenant 6 cases (2 de large, 3 de long) collées au camp adverse, et son modèle 3D est affiché exactement dessus. Les dalles se posent jusqu’à son contact et vos créatures peuvent l’attaquer.']},
  {id:'v351',title:'Ver géant retouché, favoris dorés',items:['L’immondice géant : le ver garde sa posture d’origine et tourne sa gueule vers le camp qui l’attaque ; il est collé au camp qu’il protège, sans mare sous lui ; sa jauge de vie est plus compacte.','Collection : le cœur des favoris est doré et plus grand.']},
