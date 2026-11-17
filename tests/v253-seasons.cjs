@@ -3,14 +3,14 @@
 const fs=require('fs'),path=require('path'),assert=require('assert');const root=path.join(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const html=read('index.html'),clearing=read('assets/clearing-v105.js'),portal=read('assets/portal-v159.js'),sw=read('sw.js');
 // Moteur : terrains et éléments favorisés
-assert.ok(html.includes("TL=['terre','feu','glace','vent','eau','foudre','ville','grotte','automne','noel','brumes','colisee']"));
+assert.ok(html.includes("TL=['terre','feu','glace','vent','eau','foudre','ville','grotte','automne','noel','brumes','colisee','taverne']"));
 const boost=eval('('+html.match(/const TERRAIN_BOOST=(\{[^}]+\})/)[1]+')');
 assert.deepStrictEqual(boost,{automne:['terre','vent'],noel:['foudre','glace','feu']});
 assert.ok(html.includes('const terrainBonus=els.some(boosted)?(c.t2?2:1):0')&&!/el===TL\[TER\]/.test(html),'le bonus de terrain passe partout par boosted()');
 assert.ok(html.includes("if(t==='noel'){")&&html.includes("lotus.push({x,y,until:turnNumber+4,gift:1})"),'un cadeau (+1, 2 tours) par tour sur la nuit des Lumières');
 assert.ok(html.includes("const open=TL.filter(t=>window.HackeniaEvents?.terrainOpen?.(t)??t!=='noel')"),'Noël hors tirage aléatoire en dehors de l’événement');
 // Grelot des neiges : une relance par duel, joueur local, hors ligne
-assert.ok(html.includes("if(!outcome.success&&k===0&&rerollLeft>0&&!ONLINE){rerollLeft--;"));
+assert.ok(html.includes("if(!dagFree&&!outcome.success&&k===0&&rerollLeft>0&&!ONLINE){rerollLeft--;"));
 assert.ok(html.includes('gearItem=startItem;rerollLeft=startItem?.reroll||0;'));
 // Scènes 3D
 for(const [f,fn] of [['assets/autumn-v253.js','createAutumn'],['assets/noel-v253.js','createNoel']]){const src=read(f);assert.ok(src.includes('export function '+fn+'(world,software=false,rows=10,helpers={})')&&src.includes('return{root,update(t,light,moving)'),f);assert.ok(clearing.includes("import { "+fn+" } from './"+f.slice(7)),fn+' importé')}
