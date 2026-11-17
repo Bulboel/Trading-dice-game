@@ -487,5 +487,8 @@
  "Espace ou clic : résultat immédiat": "Space or click: instant result",
  "Un vrai D20 en 3D": "A real 3D D20",
  "Le lancer d’initiative utilise désormais un vrai D20 en 3D : il est lancé, roule, rebondit et s’immobilise sur la face tirée, aux couleurs de vos dés de jet.": "The initiative roll now uses a real 3D D20: thrown, rolling, bouncing and coming to rest on the rolled face, in your roll dice colours.",
- "L’immondice géant : la bonne illustration du ver géant surgit au début du duel.": "The giant filth: the right giant worm illustration appears at the start of the duel."
+ "L’immondice géant : la bonne illustration du ver géant surgit au début du duel.": "The giant filth: the right giant worm illustration appears at the start of the duel.",
+ "Recyclage revu": "Recycling revised",
+ "Nouveau barème de recyclage : 10 communs, 5 peu communs, 2 rares ou 1 légendaire donnent 1 Bubulle ; un divin 50 Bubulles et un Crépitant 100. Les fractions sont gardées et s’ajoutent au recyclage suivant.": "New recycling rates: 10 commons, 5 uncommons, 2 rares or 1 legendary give 1 Bubble; a divine gives 50 Bubbles and a Crackling 100. Fractions are kept and added to your next recycling.",
+ "Barème : 10 communs = 1 🫧 · 5 peu communs = 1 · 2 rares = 1 · 1 légendaire = 1 · 1 divin = 50 · 1 Crépitant = 100 (2 Énergie = 1). Les fractions sont gardées pour le prochain recyclage.": "Rates: 10 commons = 1 🫧 · 5 uncommons = 1 · 2 rares = 1 · 1 legendary = 1 · 1 divine = 50 · 1 Crackling = 100 (2 Energy = 1). Fractions are kept for your next recycling."
 }
