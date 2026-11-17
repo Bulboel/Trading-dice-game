@@ -577,5 +577,15 @@
  "Avant ou après": "Before or after",
  "Nouvelle règle officielle : pendant votre tour, vous pouvez déplacer une créature avant ou après avoir posé votre dé (hors PVP en ligne).": "New official rule: during your turn, you can move a creature before or after placing your die (except in online PVP).",
  "Les araignées sont plus petites sur le plateau et ne débordent plus sur les dalles voisines.": "Spiders are smaller on the board and no longer spill over neighbouring tiles.",
- "Histoire : nouvelle illustration pour une certaine baffe bien méritée…": "Story: a new illustration for a certain well-deserved slap…"
+ "Histoire : nouvelle illustration pour une certaine baffe bien méritée…": "Story: a new illustration for a certain well-deserved slap…",
+ "Face ✦ sur une créature": "✦ face on a creature",
+ "Écrasement à niveau égal": "Crushing at equal level",
+ "Un dé de niveau égal ou supérieur posé sur une créature adverse l’écrase désormais : même les divins peuvent être écrasés.": "A die of equal or higher level placed on an enemy creature now crushes it: even divine creatures can be crushed.",
+ "Quand la face qui fait apparaître la créature tombe sur un personnage qu’on ne peut pas écraser, sa case s’affiche en rouge vif.": "When the face that summons the creature lands on a character that cannot be crushed, its tile turns bright red.",
+ "Un dé de niveau égal ou supérieur posé sur une créature adverse l’écrase !": "A die of equal or higher level placed on an enemy creature crushes it!",
+ "par un dé de niveau égal ou supérieur.": "by a die of equal or higher level.",
+ " par un dé de niveau égal ou supérieur.": " by a die of equal or higher level.",
+ "cette créature est de niveau supérieur à ton dé : elle protège sa dalle.": "this creature is of a higher level than your die: it protects its tile.",
+ "niveau égal ou supérieur": "equal or higher level",
+ "Victoire : 2 passages dans le camp adverse OU 4 combats remportés. En combat, l’attaque décide ; un dé de niveau égal ou supérieur écrase la créature adverse qu’il recouvre ; face à une créature de niveau supérieur, sa case reste intacte. Les statistiques affichées sont celles de l’action.": "Victory: 2 passages into the enemy camp OR 4 fights won. In a fight, attack decides; a die of equal or higher level crushes the enemy creature it covers; against a higher-level creature, its tile stays intact. The stats shown are those of the action."
 }
