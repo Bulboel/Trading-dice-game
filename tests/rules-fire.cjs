@@ -5,7 +5,7 @@ const c=vm.createContext({window:{},document:{getElementById(id){if(!elements.ha
 vm.runInContext(`render=()=>{};landCube=()=>{};showRollDice=()=>{};b=Array.from({length:H},()=>Array(W).fill(null));cr=[];pl=[{s:0,h:[36],q:[]},{s:0,h:[0],q:[]}];bonus=[0,0];kills=[0,0];over=0;TER=0;cur=0;hi=0;die=0;anim=null;ai=false;mode='i';
 // v242 — Every level pairing: an enemy creature is crushed only by a STRICTLY higher-level summoning die; own creatures never.
 for(let attackLevel=1;attackLevel<=6;attackLevel++)for(let defendLevel=1;defendLevel<=6;defendLevel++){
- const target={x:3,y:4,o:1,mi:(defendLevel-1)*6,lv:defendLevel};cr=[target];const a=[3,4,6],result=split([a],attackLevel);if(result.put.includes(a)!==(attackLevel>defendLevel)||(result.crushed.length===1)!==(attackLevel>defendLevel))throw Error('Level crush rule failed '+attackLevel+' vs '+defendLevel);
+ const target={x:3,y:4,o:1,mi:(defendLevel-1)*6,lv:defendLevel};cr=[target];const a=[3,4,6],result=split([a],attackLevel);if(result.put.includes(a)!==(attackLevel>=defendLevel)||(result.crushed.length===1)!==(attackLevel>=defendLevel))throw Error('Level crush rule failed '+attackLevel+' vs '+defendLevel);
  target.o=0;if(split([a],attackLevel).put.includes(a))throw Error('Own creature must stay protected');
 }
 // A level III CAN win against level IV by attack; this is a combat, never crushing.
@@ -17,4 +17,4 @@ b=Array.from({length:H},()=>Array(W).fill(null));const mover={o:0,x:1,y:4,id:3,m
 b=Array.from({length:H},()=>Array(W).fill(null));cr=[];pl=[{s:0,h:[36],q:[]},{s:0,h:[0],q:[]}];kills=[0,0];bonus=[0,0];over=0;TER=1;cur=0;hi=0;die=36;rot=0;pc={x:3,y:H-3};mode='p';lancer();
 `,c);
 assert.equal(intervals.length,1);for(let i=0;i<14;i++)intervals[0]();timers.sort((a,b)=>a.ms-b.ms);while(timers.length)timers.shift().f();vm.runInContext(`if(b[H-3][2]!==null)throw Error('Vent was covered by a die');if(cr.some(c=>blocked(c.x,c.y)))throw Error('Creature spawned on a vent');if(FIRE_VENTS.some(([x,y])=>b[y][x]))throw Error('Blocked terrain contains a tile');drawHistory();`,c);const html=elements.get('history-events').innerHTML;assert(!/Case [A-H]\d|Dalles recouvertes|Nouvelle dalle/.test(html));assert(html.includes('Attaque'));assert(!html.includes('<details'));
-console.log('PASS: all 36 level pairs (crush only when strictly higher, own creatures protected), level III combat victory vs IV, frozen combat stats and victory progress, symmetric vents, blocked invocation and movement, real invocation over a vent, concise coordinate-free history.');
+console.log('PASS: all 36 level pairs (crush at equal or higher level since v385, own creatures protected), level III combat victory vs IV, frozen combat stats and victory progress, symmetric vents, blocked invocation and movement, real invocation over a vent, concise coordinate-free history.');

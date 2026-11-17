@@ -209,3 +209,5 @@ model-viewer.gesture-ghost{animation:ghost-float 3.4s ease-in-out infinite}
 #hd .camp-score>.camp-name.long .camp-label{font-size:.86em;letter-spacing:-.1px}
 #hd .camp-score>.camp-name.xlong .camp-label{font-size:.78em}
 #hd .camp-score>.score-metric,#hd .camp-score>.bonus-counter{flex:0 0 auto}
+/* v385 — face ✦ d'un dé posée sur une créature qu'on ne peut pas écraser (plateau 2D de secours) */
+.c.anchor-blocked{box-shadow:inset 0 0 0 3px #ff2a2a!important;background-color:#ff2a2a55!important}
