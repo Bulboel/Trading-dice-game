@@ -28,16 +28,21 @@ async function roll(die,value,from,fast){const svg=die.querySelector('.ini-d20')
  // le chiffre défile de plus en plus lentement, puis s'arrête sur le résultat tiré par le moteur
  let gap=45;while(performance.now()-start<dur-180&&!box?.dataset.skip){setNum(die,1+Math.floor(Math.random()*20));die.classList.toggle('flip');await wait(gap);gap*=1.12}
  die.classList.remove('flip');setNum(die,value);sfx('Impact');die.classList.add('landed');setTimeout(()=>die.classList.remove('landed'),500)}
-async function show({rolls,winner,crit,names,id}){box?.remove();const fast=reduced();const camps=window.HackeniaSettings?.campColors?.(0)||[{ui:'#3fae74'},{ui:'#d0453f'}];
+async function show({rolls,winner,crit,names,id,me=0,online=false}){box?.remove();const fast=reduced();const camps=window.HackeniaSettings?.campColors?.(me)||[{ui:'#3fae74'},{ui:'#d0453f'}];
+ /* le joueur est toujours à gauche (en ligne, il peut être le second camp) : on réordonne tout depuis son point de vue */
+ const O=[me,1-me];rolls=rolls.map(r=>[r[me],r[1-me]]);winner=winner===me?0:1;crit=[crit[me],crit[1-me]];const foe=names[1-me]||'Adversaire';
  box=document.createElement('div');box.id='initiative';box.className='ini'+(fast?' ini-still':'');box.setAttribute('role','dialog');box.setAttribute('aria-label','Lancer d’initiative');
  box.innerHTML=`<div class="ini-panel"><small class="ini-kicker">Qui commence ?</small><h2>Lancer d’initiative</h2>
- <div class="ini-duel">${[0,1].map(o=>`<div class="ini-player p${o}" style="--camp:${camps[o]?.ui||'#ccc'}"><b>${esc(o===0?'Vous':names[1])}</b><div class="ini-die">${d20()}</div><span class="ini-crit" hidden>20 naturel ! +1 dé bonus</span></div>${o===0?'<span class="ini-vs" aria-hidden="true">⚔</span>':''}`).join('')}</div>
- <p class="ini-result" role="status">Les dés roulent…</p><span class="ini-hint">Toucher pour passer</span></div>`;
+ <div class="ini-duel">${[0,1].map(o=>`<div class="ini-player p${o}" style="--camp:${camps[O[o]]?.ui||'#ccc'}"><b>${esc(o===0?'Vous':foe)}</b><div class="ini-die">${d20()}</div><span class="ini-crit" hidden>20 naturel ! +1 dé bonus</span></div>${o===0?'<span class="ini-vs" aria-hidden="true">⚔</span>':''}`).join('')}</div>
+ <p class="ini-result" role="status">Les dés roulent…</p><span class="ini-hint">${matchMedia('(hover:hover)').matches?'Espace ou clic : résultat immédiat':'Toucher pour passer'}</span></div>`;
  document.body.append(box);paint();const dice=[...box.querySelectorAll('.ini-die')],result=box.querySelector('.ini-result');
- let done=false;const finish=()=>{if(done)return;done=true;box.classList.add('out');setTimeout(()=>{box?.remove();box=null},380);window.hackeniaGame?.initiativeDone?.(id)};
- box.addEventListener('click',()=>{if(box.dataset.skip){finish();return}box.dataset.skip='1'});
+ let done=false;const finish=()=>{if(done)return;done=true;removeEventListener('keydown',onKey,true);box.classList.add('out');setTimeout(()=>{box?.remove();box=null},380);if(!online)window.hackeniaGame?.initiativeDone?.(id)};
+ /* passer : les dés se posent aussitôt sur leur résultat (Espace sur PC, ou un toucher) ; un second appui ferme */
+ const skipNow=()=>{if(box.dataset.skip){finish();return}box.dataset.skip='1';box.getAnimations({subtree:true}).forEach(a=>{try{a.finish()}catch{}})};
+ const onKey=e=>{if(e.code==='Space'||e.key===' '||e.key==='Enter'||e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();skipNow()}};addEventListener('keydown',onKey,true);
+ box.addEventListener('click',skipNow);
  requestAnimationFrame(()=>box.classList.add('in'));await wait(fast?100:450);
- for(let k=0;k<rolls.length&&!done;k++){const [a,b]=rolls[k],quick=fast||!!box.dataset.skip;box.querySelectorAll('.ini-player').forEach(p=>p.classList.remove('win','lose'));
+ for(let k=0;k<rolls.length&&!done;k++){const [a,b]=rolls[k],quick=fast||!!box.dataset.skip;box.getAnimations({subtree:true}).forEach(x=>{try{x.finish()}catch{}});box.querySelectorAll('.ini-player').forEach(p=>p.classList.remove('win','lose'));
   result.textContent=k?'Égalité ! On relance…':'Les dés roulent…';await Promise.all([roll(dice[0],a,-170,quick),wait(quick?0:140).then(()=>roll(dice[1],b,170,quick))]);
   if(k<rolls.length-1){result.textContent=`Égalité : ${a} partout ! On relance…`;await wait(quick?250:1000)}}
  if(done)return;const last=rolls[rolls.length-1],P=box.querySelectorAll('.ini-player');P[winner].classList.add('win');P[1-winner].classList.add('lose');
