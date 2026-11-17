@@ -140,3 +140,8 @@
 @keyframes sr-fade{from{opacity:0}}
 @keyframes sr-pop{0%{opacity:0;transform:perspective(800px) rotateY(-70deg) scale(.6)}60%{opacity:1}100%{transform:none}}
 @media (prefers-reduced-motion:reduce){#story-reveal,#story-reveal figure{animation:none}}
+/* v379 — passer directement au duel (duel déjà tenté) / rejouer après une défaite */
+#story-scene .ss-skip{position:absolute;top:-17px;right:18px;padding:6px 14px;border:2px solid #d6ab5a;border-radius:999px;background:linear-gradient(180deg,#7a2a1c,#4a170f);color:#ffe3a3;font:700 13px/1.1 system-ui,sans-serif;cursor:pointer;box-shadow:0 4px 12px #0008}
+#story-scene .ss-skip:hover,#story-scene .ss-skip:focus-visible{filter:brightness(1.15);outline:2px solid #ffe3a3;outline-offset:2px}
+#story-scene .ss-skip[hidden]{display:none}
+@media (max-width:700px){#story-scene .ss-skip{top:-15px;right:10px;padding:5px 11px;font-size:12px}}
