@@ -26,7 +26,7 @@ function render(target,values,rolling=false,won=null){
  paint();target.className='roll-dice-tray roll-volume-tray'+(rolling?' rolling':won===true?' win':won===false?' lose':'');
  if(rolling){if(spinning)return;spinning=true;window.HackeniaSettings?.play?.('Roulement');
   dice.forEach((d,i)=>{const value=Number(values[i]);if(!turns[value])return;d.spin?.cancel();d.finished=false;d.ready=false;d.rollValue=value;d.result.textContent='';d.wrap.setAttribute('aria-label','Dé '+(i+1)+' en rotation');d.cube.style.transform=pose(1);
-   if(!reduced()&&d.cube.animate){d.spin=d.cube.animate([{transform:pose(1)},{transform:landing(value,i)}],{duration:2520,easing:'cubic-bezier(.16,.65,.28,1)',fill:'forwards'});d.spin.onfinish=()=>{d.finished=true;if(d.ready)reveal(d,d.rollValue,i)}}
+   if(!reduced()&&d.cube.animate){d.spin=d.cube.animate([{transform:pose(1)},{transform:landing(value,i)}],{duration:1830,easing:'cubic-bezier(.16,.65,.28,1)',fill:'forwards'});d.spin.onfinish=()=>{d.finished=true;if(d.ready)reveal(d,d.rollValue,i)}}
   });return;
  }
  spinning=false;dice.forEach((d,i)=>{const value=Number(values[i]);if(!turns[value])return;d.ready=true;
