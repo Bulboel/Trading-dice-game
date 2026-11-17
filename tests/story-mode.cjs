@@ -1,7 +1,7 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');const root=path.join(__dirname,'..');
 const w={};vm.runInContext(fs.readFileSync(path.join(root,'assets/story-data-v193.js'),'utf8'),vm.createContext({window:w}));const P=w.HACKENIA_STORY;
-assert.equal(P.length,24,'Chapters 1 (12 parts + bonus, v370) and 2 (11 parts)');assert.deepEqual(P.filter(p=>p.chapter===1&&!p.optional).map(p=>+p.title.match(/Partie (\d+)/)[1]),[1,2,3,4,5,6,7,8,9,10,11,12],'chapitre I numéroté de 1 à 12');
-assert.deepEqual(P.filter(p=>p.chapter===2).map(p=>p.title.split(' : ')[1]),['Le procès','Sameron, Soryan et Zackarie','Une nuit mouvementée','Visite de Dassom','Maebril et le quartier des brumes féeriques','Compagnons perdus','L’immondice géant','Le retour au Griffon Doré','Une soirée au palais','Les confidences du matin','La reine des fées']);
+assert.equal(P.length,25,'Chapters 1 (12 parts + bonus, v370) and 2 (11 parts)');assert.deepEqual(P.filter(p=>p.chapter===1&&!p.optional).map(p=>+p.title.match(/Partie (\d+)/)[1]),[1,2,3,4,5,6,7,8,9,10,11,12],'chapitre I numéroté de 1 à 12');
+assert.deepEqual(P.filter(p=>p.chapter===2).map(p=>p.title.split(' : ')[1]),['Le procès','Sameron, Soryan et Zackarie','Une nuit mouvementée','Une matinée à Dassom','Le golem du marché','Maebril et le quartier des brumes féeriques','Compagnons perdus','L’immondice géant','Le retour au Griffon Doré','Une soirée au palais','Les confidences du matin','La reine des fées']);
 let beats=0;const files=new Set();
 for(const p of P)for(const k of ['intro','victory','lose','silence'])for(const b of p[k]||[]){beats++;assert.ok(b.s&&b.t,'Every beat has a speaker and text');assert.ok(!/Triade|cartes|Addition|Identique/.test(b.t),'No card-game rule left: '+b.t.slice(0,60));
  for(const s of [b.bg,b.bgb,...(b.cast||[]).map(c=>c.img||c.art)].filter(Boolean))for(const m of String(s).matchAll(/assets\/story\/[^")]+/g))files.add(m[0])}

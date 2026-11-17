@@ -7,7 +7,7 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 let pending=null;// duel d'histoire en cours : {id}
 
 // ——— Progression ———
-function prog(){const s=P()?.profile()?.story,done={...(s?.done||{})};/* v370 — partie 10 du chapitre I ajoutée en cours de route : déjà vécue par qui a fini la partie suivante */if(done.c1p9&&!done.c1p8bis)done.c1p8bis=true;return{done,rewarded:{...(s?.rewarded||{})}}}
+function prog(){const s=P()?.profile()?.story,done={...(s?.done||{})};/* v370 — partie 10 du chapitre I ajoutée en cours de route : déjà vécue par qui a fini la partie suivante */if(done.c1p9&&!done.c1p8bis)done.c1p8bis=true;if(done.c2p5&&!done.c2p4bis)done.c2p4bis=true;/* v373 — idem pour la partie 5 du chapitre II */return{done,rewarded:{...(s?.rewarded||{})}}}
 function mainline(){return PARTS.filter(p=>!p.optional)}
 function unlocked(id){const part=PARTS.find(p=>p.id===id),d=prog().done;if(!part)return false;if(part.optional){const i=PARTS.indexOf(part);return !!d[PARTS[i-1]?.id]}const line=mainline(),i=line.indexOf(part);return line.slice(0,i).every(p=>d[p.id])}
 function complete(id){const portal=P();if(!portal)return;const pr=portal.profile(),first=!pr.story?.rewarded?.[id];let next=structuredClone(pr);next.story={done:{...(pr.story?.done||{}),[id]:true},rewarded:{...(pr.story?.rewarded||{}),[id]:true}};
@@ -57,7 +57,7 @@ window.addEventListener('hackenia-player-defeat',e=>{if(e.gameMode==='story')aft
 window.addEventListener('hackenia-player-draw',e=>{if(e.gameMode==='story')after(false)});
 /* v331 — En plein duel : quand l'adversaire pose sa première créature, l'illustration de sa carte (reprise de la Triade) surgit
    quelques secondes, comme une carte jouée. La partie continue dessous ; toucher l'image la referme. */
-const REVEAL={c1p1:'p28',c1p2:'p12',c1p4:'p38',c1p5:'p02',c1p6:'p16',c1p6bis:'p42',c1p7:'p37',c1p8:'p05',c1p9:'p11',c1p10:'p69',c2p1:'p67',c2p2:'p84',c2p4:'../dassom-golem-incident',c2p5:'p76',c2p6:'p65',c2p7:'p82',c2p8:'../../pantheon/maebril-chance',c2p11:'../../pantheon/pachie-defi'};
+const REVEAL={c1p1:'p28',c1p2:'p12',c1p4:'p38',c1p5:'p02',c1p6:'p16',c1p6bis:'p42',c1p7:'p37',c1p8:'p05',c1p9:'p11',c1p10:'p69',c2p1:'p67',c2p2:'p84',c2p4bis:'../dassom-golem-incident',c2p5:'p76',c2p6:'p65',c2p7:'p82',c2p8:'../../pantheon/maebril-chance',c2p11:'../../pantheon/pachie-defi'};
 window.addEventListener('hackenia:foe-reveal',e=>{if(!pending)return;const k=REVEAL[pending.id],part=PARTS.find(p=>p.id===pending.id);if(!k||!part)return;
  document.getElementById('story-reveal')?.remove();const el=document.createElement('div');el.id='story-reveal';el.setAttribute('role','status');
  el.innerHTML=`<figure><img src="assets/story/cards/${k}.webp?v=359" alt="${esc(part.duel.foe)}"><figcaption>${esc(part.duel.foe)} entre dans le duel !</figcaption></figure>`;
