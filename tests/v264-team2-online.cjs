@@ -58,15 +58,15 @@ async function humanTurn(E,seat){
   assert.equal(E[0].snap(),E[2].snap(),'états initiaux identiques');
   const st=E[0].api.onlineState();assert.equal(st.win,3,'2v2 : 3 passages');assert.equal(st.kw,6,'2v2 : 6 combats');
   /* 12 tours : 0 (hôte) → 1 (IA) → 2 (ami) → 3 (IA) × 3 */
-  const order=[];
-  for(let t=0;t<12;t++){const seat=t%4;order.push(seat);
+  const order=[],first=E[0].run('turnSeat');if(process.env.DBG)console.log('premier siège',first,'kills',E[0].run('JSON.stringify(bonus)'));/* v359 — le D20 d’initiative désigne le premier siège */
+  for(let t=0;t<12;t++){const seat=(first+t)%4;order.push(seat);
    if(seat===0||seat===2){const ok=await humanTurn(E[seat],seat);assert.ok(ok,'pose possible au tour '+t)}
    else{await until(()=>E[0].run('turnSeat')===seat&&E[0].run('mode')==='i'&&!E[0].api.onlineState().busy&&!E[0].api.onlineState().pending,20000,'IA siège '+seat);E[0].run('ia()')}
    await until(()=>E[0].run('turnSeat')===(seat+1)%4&&E[2].run('turnSeat')===(seat+1)%4&&!E[0].api.onlineState().busy&&!E[2].api.onlineState().busy,25000,'passage de relais après le siège '+seat);
    await until(()=>host.S.applied===S.games[0].last_seq&&friend.S.applied===S.games[0].last_seq,10000,'synchro');
    assert.equal(E[0].snap(),E[2].snap(),'divergence entre hôte et ami au tour '+t+' (siège '+seat+')');
   }
-  assert.deepEqual(S.events.filter(e=>e.kind==='place'||e.kind==='skip').map(e=>e.seat).slice(0,8),[0,1,2,3,0,1,2,3],'les poses suivent l’ordre 0→1→2→3');
+  {const seq=S.events.filter(e=>(e.kind==='place'||e.kind==='skip')&&!e.payload?.initiative).map(e=>e.seat).slice(0,8);assert.deepEqual(seq,[0,1,2,3,0,1,2,3].map(k=>(k+first)%4),'les poses suivent l’ordre des sièges à partir du gagnant du D20')}
   assert.ok(S.events.some(e=>e.seat===1&&e.kind==='roll')&&S.events.some(e=>e.seat===3&&e.kind==='roll'),'les IA ont lancé leurs dés via l’hôte');
   assert.equal(E[0].api.onlineState().team2,true);
   /* l'ami ne peut pas piloter une IA */
@@ -87,7 +87,8 @@ async function humanTurn(E,seat){
   assert.deepEqual(C.map(c=>c.S.seat),[0,1,2,3]);assert.deepEqual(C.map(c=>c.S.camp),[0,1,0,1]);assert.ok(E.every(e=>!e.api.onlineState().driver||e===E[0]));
   assert.equal(C[1].S.opponent,'J0 & J2');
   await until(()=>E.every(e=>e.snap()===E[0].snap()),5000,'états initiaux');
-  for(let t=0;t<8;t++){const seat=t%4;assert.ok(await humanTurn(E[seat],seat),'pose au tour '+t);
+  const first4=E[0].run('turnSeat');assert.ok(E.every(e=>e.run('turnSeat')===first4),'même premier siège pour les 4 joueurs');
+  for(let t=0;t<8;t++){const seat=(first4+t)%4;assert.ok(await humanTurn(E[seat],seat),'pose au tour '+t);
    await until(()=>E.every(e=>e.run('turnSeat')===(seat+1)%4&&!e.api.onlineState().busy),25000,'relais siège '+seat);
    await until(()=>C.every(c=>c.S.applied===S.games[0].last_seq),10000,'synchro 4 clients');
    const ref=E[0].snap();E.forEach((e,i)=>assert.equal(e.snap(),ref,'divergence siège '+i+' au tour '+t))}
