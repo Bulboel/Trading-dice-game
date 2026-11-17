@@ -2,20 +2,20 @@
 import * as THREE from 'three';
 import { orientBoardModel } from './model-facing.js?v=20261103-v73';
 import { createEmberlands } from './ember-v239.js?v=20261208-v260';
-import { attachHeroParts } from './hero-parts.js?v=20270102-v352';
-import { applyLook } from './variant-look.js?v=20270102-v352';
+import { attachHeroParts } from './hero-parts.js?v=20270102-v353';
+import { applyLook } from './variant-look.js?v=20270102-v353';
 import { createLake } from './lake-v241.js?v=20261122-v241';
 import { createSkyIsland } from './sky-v231.js?v=20261128-v247';
 import { createWindHighlands } from './wind-v232.js?v=20261123-v242';
 import { createWoodland } from './woodland-v238.js?v=20261119-v238';
 import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20261125-v244';
-import { createFrostRoad } from './frost-v240.js?v=20270102-v352';
+import { createFrostRoad } from './frost-v240.js?v=20270102-v353';
 import { createCity } from './city-v246.js?v=20261128-v247';
-import { createCave } from './cave-v246.js?v=20270102-v352';
+import { createCave } from './cave-v246.js?v=20270102-v353';
 import { createAutumn } from './autumn-v253.js?v=20261202-v253';
-import { createFairyMists } from './fairy-v335.js?v=20270102-v352';
+import { createFairyMists } from './fairy-v335.js?v=20270102-v353';
 import { createNoel } from './noel-v253.js?v=20261202-v253';
-import { createElementWheel } from './element-wheel-v252.js?v=20270102-v352';
+import { createElementWheel } from './element-wheel-v252.js?v=20270102-v353';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -385,7 +385,7 @@ function animateForecast(){const now=performance.now();for(const o of forecastPo
 let bossObj=null,bossLoading=false,bossPool=null;
 function makeBossPool(){const g=new THREE.Group(),m=new THREE.Mesh(new THREE.CircleGeometry(1,40),new THREE.MeshStandardMaterial({color:0x1f3a22,roughness:.25,metalness:.1,emissive:0x0c2a10,emissiveIntensity:.5,transparent:true,opacity:.92}));m.rotation.x=-Math.PI/2;m.scale.set(1.15,2.15,1);m.position.y=.24;g.add(m);g.visible=false;world.add(g);return g}
 function updateBoss(){const B=state.boss;/* v351 — plus de mare sous le ver */
- if(B&&!bossObj&&!bossLoading){bossLoading=true;spawnWalker('ver-geant',3.1,null).then(o=>{bossLoading=false;if(!o)return;bossObj=o;/* v352 — sens d’origine, gueule tournée vers le camp du joueur qui l’attaque (+z) */o.group.children[0].rotation.y=0;o.group.traverse(c=>{c.userData.imported=true});world.add(o.group)})}
+ if(B&&!bossObj&&!bossLoading){bossLoading=true;spawnWalker('ver-geant',2.8,null)/* v352 — hauteur choisie pour que le corps couvre ses 3 rangées */.then(o=>{bossLoading=false;if(!o)return;bossObj=o;/* v352 — sens d’origine, gueule tournée vers le camp du joueur qui l’attaque (+z) */o.group.children[0].rotation.y=0;o.group.traverse(c=>{c.userData.imported=true});world.add(o.group);updateBoss()/* v352 — placé dès la fin du chargement (sinon il restait au centre du plateau jusqu’au rafraîchissement suivant) */})}
  if(bossObj){bossObj.group.visible=!!B;if(B)bossObj.group.position.set(B.x+B.w/2-.5-3.5,.22,B.y+B.h/2-.5-HZ)}}
 function updateFxBoard(){updateForecast();updateBoss();const W=state.walls||[],T=state.traps||[];while(wallPool.length<W.length)wallPool.push(makeWall());while(trapPool.length<T.length)trapPool.push(makeTrap());
  const top=(x,y)=>{const c=state.b[y]?.[x];return .22+(c&&!c.f?.28:0)};
