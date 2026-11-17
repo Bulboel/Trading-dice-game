@@ -77,14 +77,14 @@ const ventMats=[];for(const [vx,vy] of vents){const x=cellX(vx),z=cellZ(vy);
 updates.push((t,light,moving)=>{for(const m of ventMats){if(m.isLava)continue;if(m.isSprite){m.material.opacity=.55+(moving?Math.sin(t*2.3+m.position.x)*.18:0);m.scale.setScalar(1+(moving?Math.sin(t*1.7+m.position.z)*.08:0))}else m.rotation.z=moving?t*.25:0}});
 
 // ---------- 5. Volcans dans les coins arrière, coulées et panaches ----------
-const streakTex=canvasTex(256,128,(g,w,h)=>{g.clearRect(0,0,w,h);for(const u0 of[.08,.37,.62,.86]){let u=u0*w;const width=5+rnd()*5;for(let y=0;y<h;y++){u+=(rnd()-.5)*2.2+Math.sin(y*.12+u0*9)*.6;const k=y/h,fade=y<h*.12?0:Math.min(1,(k-.12)*4)*(y>h*.86?Math.max(0,1-(k-.86)*7):1),wd=width*(.6+k*.7);const gr=g.createLinearGradient(u-wd,0,u+wd,0);gr.addColorStop(0,'rgba(255,60,10,0)');gr.addColorStop(.35,`rgba(255,110,25,${.85*fade})`);gr.addColorStop(.5,`rgba(255,170,60,${fade})`);gr.addColorStop(.65,`rgba(255,110,25,${.85*fade})`);gr.addColorStop(1,'rgba(255,60,10,0)');g.fillStyle=gr;g.fillRect(u-wd,y,wd*2,1.2)}}});streakTex.wrapT=THREE.ClampToEdgeWrapping;streakTex.flipY=false;
-function volcano(x,z,r,h){const prof=[];for(let i=0;i<=14;i++){const k=i/14,rad=mix(r,r*.24,Math.pow(k,.85)),y=mix(-.6,h,k);prof.push(new THREE.Vector2(rad*(1+(i%3?.03:-.03)),y))}prof.push(new THREE.Vector2(r*.16,h-.18));
+const streakPaths=[];const streakTex=canvasTex(256,128,(g,w,h)=>{g.clearRect(0,0,w,h);for(const u0 of[.08,.37,.62,.86]){let u=u0*w;const width=5+rnd()*5,path=[];streakPaths.push(path);for(let y=0;y<h;y++){u+=(rnd()-.5)*2.2+Math.sin(y*.12+u0*9)*.6;path.push(u/w);const k=y/h,fade=/* v364 : la traînée descend jusqu'au sol (avant : elle s'éteignait à mi-pente) */(y<h*.03?0:Math.min(1,(k-.03)*12))*(y>h*.86?Math.max(0,1-(k-.86)*7):1),wd=width*(.6+k*.7);const gr=g.createLinearGradient(u-wd,0,u+wd,0);gr.addColorStop(0,'rgba(255,60,10,0)');gr.addColorStop(.35,`rgba(255,110,25,${.85*fade})`);gr.addColorStop(.5,`rgba(255,170,60,${fade})`);gr.addColorStop(.65,`rgba(255,110,25,${.85*fade})`);gr.addColorStop(1,'rgba(255,60,10,0)');g.fillStyle=gr;g.fillRect(u-wd,y,wd*2,1.2)}}});streakTex.wrapT=THREE.ClampToEdgeWrapping;streakTex.flipY=false;
+const volcanoFeet=[];function volcano(x,z,r,h){const prof=[];for(let i=0;i<=14;i++){const k=i/14,rad=mix(r,r*.24,Math.pow(k,.85)),y=mix(-.6,h,k);prof.push(new THREE.Vector2(rad*(1+(i%3?.03:-.03)),y))}prof.push(new THREE.Vector2(r*.16,h-.18));
  const geo=new THREE.LatheGeometry(prof,software?14:30);const p=geo.attributes.position,c=[];for(let i=0;i<p.count;i++){const X=p.getX(i),Y=p.getY(i),Z=p.getZ(i),n=noise(X*2.2+x,Z*2.2+Y);p.setX(i,X*(1+n*.07));p.setZ(i,Z*(1+n*.07));const col=new THREE.Color(0x857a7c).lerp(new THREE.Color(0xa89a92),smooth(-.4,.6,n)*.6).lerp(new THREE.Color(0x4a3e40),smooth(h*.55,h,Y)*.5);c.push(col.r,col.g,col.b)}geo.setAttribute('color',new THREE.Float32BufferAttribute(c,3));geo.computeVertexNormals();
  const cone=add(geo,mat(0xffffff,{vertexColors:true,map:ashTex,bumpMap:ashTex,bumpScale:.06}));cone.position.set(x,0,z);
  const crater=new THREE.Mesh(new THREE.CircleGeometry(r*.22,20),new THREE.MeshBasicMaterial({map:magmaTex}));crater.rotation.x=-Math.PI/2;crater.position.set(x,h-.12,z);root.add(crater);ventMats.push(crater);
  const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,opacity:.8}));halo.position.set(x,h+.1,z);halo.scale.setScalar(r*1.3);root.add(halo);ventMats.push(halo);
  // Coulées : peintes sur un second habillage du cône (UV de révolution), elles épousent exactement la pente.
- const flow=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({map:streakTex,transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2}));flow.position.copy(cone.position);flow.scale.setScalar(1.006);flow.rotation.y=Math.atan2(-x,-z)*0+rnd()*6;root.add(flow);ventMats.push({isLava:true,m:flow.material});
+ const flow=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({map:streakTex,transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2}));flow.position.copy(cone.position);flow.scale.setScalar(1.006);flow.rotation.y=Math.atan2(-x,-z)*0+rnd()*6;root.add(flow);{const kg=clamp((groundH(x,z)+.6)/(h+.6)),rad=mix(r,r*.24,Math.pow(kg,.85))*.98,iy=Math.min(127,Math.round(kg*128));for(const path of streakPaths){const phi=path[iy]*Math.PI*2+flow.rotation.y;volcanoFeet.push({x:x+Math.sin(phi)*rad,z:z+Math.cos(phi)*rad,dx:Math.sin(phi),dz:Math.cos(phi)})}}ventMats.push({isLava:true,m:flow.material});
  flame(x,h-.2,z,.55+r*.2);smoke(x,h+.2,z,2.4+r,6)}
 const VZ=-FZ+1.25;volcano(-FX+1.4,VZ,1.3,2.3);volcano(FX-1.3,VZ+.1,1,1.6);
 updates.push((t,light,moving)=>{for(const v of ventMats)if(v.isLava){const k=moving?Math.sin(t*1.6)*.12:0;v.m.color.setRGB(1,.92+k*.5,.85+k)}});
@@ -134,20 +134,31 @@ const flowTex=canvasTex(64,256,(g,w,h)=>{const gr=g.createLinearGradient(0,0,w,0
 flowTex.repeat.set(1,3);
 const flowMat=new THREE.MeshBasicMaterial({map:flowTex,side:THREE.DoubleSide}),crustMat=new THREE.MeshBasicMaterial({color:0x1f0b06,side:THREE.DoubleSide});
 const lavaGlows=[];
-function downhill(x0,z0,seedPhase,drift=[0,0]){const pts=[[x0,z0]];let x=x0,z=z0,ph=seedPhase;for(let k=0;k<80;k++){const e=.12,gx=(groundH(x+e,z)-groundH(x-e,z))/(2*e),gz=(groundH(x,z+e)-groundH(x,z-e))/(2*e);let dx=-gx,dz=-gz;let L=Math.hypot(dx,dz);
-  // la pente seule est presque nulle sur la rive plate : on y ajoute l'attraction vers le damier le plus proche
-  const cx=Math.max(-BX,Math.min(BX,x)),cz=Math.max(-BZ,Math.min(BZ,z)),ax=cx-x,az=cz-z,al=Math.hypot(ax,az)||1;const far=Math.min(1,Math.max(0,(outside(x,z)-1)/1.2));dx=dx*2+ax/al*.6+drift[0]*far*1.3;dz=dz*2+az/al*.6+drift[1]*far*1.3;L=Math.hypot(dx,dz)||1;dx/=L;dz/=L;
-  // méandre : oscillation latérale douce
-  const m=Math.sin(ph)*.55;ph+=.55;const nx=-dz,nz=dx;x+=(dx+nx*m)*.34;z+=(dz+nz*m)*.34;pts.push([x,z]);if(outside(x,z)<.92)break}return pts}
-function lavaFlow(x0,z0,width,phase=0,drift){const raw=downhill(x0,z0,phase,drift);if(raw.length<5)return;const curve=new THREE.CatmullRomCurve3(raw.map(([x,z])=>V3(x,0,z)),false,'catmullrom',.5),N=Math.max(30,raw.length*3),build=(wMul,dy,material,order)=>{const pos=[],uv=[],idx=[];let len=0,prev=curve.getPoint(0);
-  for(let i=0;i<=N;i++){const k=i/N,c=curve.getPoint(k),tan=curve.getTangent(k),nx=-tan.z,nz=tan.x,w=width*wMul*(.5+.45*Math.sin(Math.min(1,k*1.15)*Math.PI*.9)+.9*Math.pow(k,3.2)+.12*Math.sin(k*17+phase));len+=c.distanceTo(prev);prev=c;
-   for(const side of[-1,1]){const x=c.x+nx*w*side*.5,z=c.z+nz*w*side*.5;pos.push(x,Math.max(groundH(x,z),-.55)+dy,z);uv.push(side<0?0:1,len*.3)}}
-  for(let i=0;i<N;i++){const a=i*2;idx.push(a,a+1,a+2,a+1,a+3,a+2)}const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(idx);const m=new THREE.Mesh(g,material);m.renderOrder=order;root.add(m)};
- build(1.55,.028,crustMat,-2);build(1,.04,flowMat,-1);// croûte sombre sur les bords, cœur incandescent
- const g=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,opacity:.7}));g.position.set(x0,groundH(x0,z0)+.18,z0);g.scale.setScalar(1.6);root.add(g);lavaGlows.push(g)}
-// sources : sur la crête de la rive, au fond et sur les côtés (jamais devant la caméra)
-/* v260 — elles naissent au pied des volcans et suivent la rive avant de se jeter dans les douves */
-lavaFlow(-FX+2.15,-FZ+2.3,.6,0,[0,1]);lavaFlow(-FX+.8,-FZ+2.4,.5,2.2,[0,1]);lavaFlow(FX-1.7,-FZ+2.25,.55,3.1,[0,1]);if(!software){lavaFlow(FX-.6,-FZ+2.3,.4,4.4,[0,1]);lavaFlow(-2.4,-FZ+.55,.46,5.2,[1,0])}
+/* v364 — coulées refaites : elles partent du pied des traînées des volcans ou d'une fissure, descendent la rive en serpentant
+   et se jettent dans les douves (le bout de la coulée plonge sous la lave). Plus de coulée qui s'arrête au milieu de la pente. */
+const flowPts=[],nearFlow=(x,z,m=.35)=>flowPts.some(([fx,fz,w])=>Math.hypot(fx-x,fz-z)<w*.9+m);
+function downhill(x0,z0,ph,init=null){const pts=[[x0,z0]];let x=x0,z=z0;for(let k=0;k<140;k++){const e=.1,gx=(groundH(x+e,z)-groundH(x-e,z))/(2*e),gz=(groundH(x,z+e)-groundH(x,z-e))/(2*e);
+  const cx=Math.max(-BX,Math.min(BX,x)),cz=Math.max(-BZ,Math.min(BZ,z)),ax=cx-x,az=cz-z,al=Math.hypot(ax,az)||1;
+  let dx=-gx*1.6+ax/al,dz=-gz*1.6+az/al;if(init&&k<6){const w=1-k/6;dx=dx*(1-w)+init[0]*w*1.4;dz=dz*(1-w)+init[1]*w*1.4}
+  let L=Math.hypot(dx,dz)||1;dx/=L;dz/=L;const m=Math.sin(ph)*.42*smooth(.9,1.6,outside(x,z));ph+=.5;x+=(dx-dz*m)*.2;z+=(dz+dx*m)*.2;
+  x=clamp(x,-FX+.35,FX-.35);z=clamp(z,-FZ+.35,FZ-.35);pts.push([x,z]);if(outside(x,z)<.78)break}return pts}
+function lavaFlow(x0,z0,width,phase=0,init=null){const raw=downhill(x0,z0,phase,init);if(raw.length<4)return;for(const [x,z] of raw)flowPts.push([x,z,width]);
+ const curve=new THREE.CatmullRomCurve3(raw.map(([x,z])=>V3(x,0,z)),false,'catmullrom',.5),N=Math.max(30,raw.length*3),CS=4,
+ build=(wMul,dy,material,order)=>{const pos=[],uv=[],idx=[];let len=0,prev=curve.getPoint(0);
+  for(let i=0;i<=N;i++){const k=i/N,c=curve.getPoint(k),tan=curve.getTangent(k),nx=-tan.z,nz=tan.x,w=width*wMul*(.45+.35*smooth(0,.25,k)+.15*Math.sin(k*13+phase)+.75*Math.pow(k,4));len+=c.distanceTo(prev);prev=c;
+   for(let j=0;j<=CS;j++){const sd=j/CS-.5,x=c.x+nx*w*sd,z=c.z+nz*w*sd,e=.08,sl=Math.hypot(groundH(x+e,z)-groundH(x-e,z),groundH(x,z+e)-groundH(x,z-e))/(2*e);pos.push(x,Math.max(groundH(x,z),-.55)+dy+Math.min(.06,sl*.035)+(1-4*sd*sd)*.012,z);uv.push(j/CS,len*.3)}}
+  for(let i=0;i<N;i++)for(let j=0;j<CS;j++){const a=i*(CS+1)+j,b=a+CS+1;idx.push(a,b,a+1,a+1,b,b+1)}const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(idx);const m=new THREE.Mesh(g,material);m.renderOrder=order;root.add(m)};
+ build(1.5,.03,crustMat,-2);build(1,.045,flowMat,-1);// croûte sombre sur les bords, cœur incandescent
+ const g=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,opacity:.7}));g.position.set(x0,groundH(x0,z0)+.18,z0);g.scale.setScalar(init?1:1.5);root.add(g);lavaGlows.push(g)}
+// Fissure d'où jaillit une coulée : lèvres de roche sombre, magma au fond.
+function fissure(x,z,ry){const g=new THREE.Group();g.position.set(x,groundH(x,z)+.01,z);g.rotation.y=ry;root.add(g);for(const sd of[-1,1]){const lip=add(new THREE.CapsuleGeometry(.05,.34,3,6),mat(0x2a1d1b,{roughness:1}),g,false);lip.rotation.z=Math.PI/2;lip.scale.set(.45,1,1);lip.position.set(0,.012,sd*.07)}const core=new THREE.Mesh(new THREE.PlaneGeometry(.42,.1),new THREE.MeshBasicMaterial({map:magmaTex}));core.rotation.x=-Math.PI/2;core.position.y=.025;g.add(core);smoke(x,groundH(x,z)+.25,z,.7,software?1:3)}
+// 1) au pied des traînées des volcans tournées vers le damier ; les autres forment une petite mare de lave au pied du cône
+for(const f of volcanoFeet){const cx=Math.max(-BX,Math.min(BX,f.x)),cz=Math.max(-BZ,Math.min(BZ,f.z)),tx=cx-f.x,tz=cz-f.z,tl=Math.hypot(tx,tz)||1;
+ if((f.dx*tx+f.dz*tz)/tl>-.15&&Math.abs(f.x)<FX-.4&&Math.abs(f.z)<FZ-.4)lavaFlow(f.x,f.z,.42,f.x*3,[f.dx,f.dz]);
+ else{const pool=new THREE.Mesh(new THREE.CircleGeometry(.26,16),flowMat);pool.rotation.x=-Math.PI/2;pool.scale.set(1.3,.8,1);pool.position.set(f.x,groundH(f.x,f.z)+.04,f.z);pool.renderOrder=-1;root.add(pool)}}
+// 2) fissures sur la rive, au fond et sur les côtés (jamais devant la caméra)
+const fis=[[-FX+.75,-2.2,.55,1.1],[-FX+.8,.6,.5,2.3],[-FX+.7,HZ-1.2,.45,3.4],[FX-.75,-2.9,.55,4.2],[FX-.8,.2,.5,5.1],[FX-.75,HZ-1.6,.42,6],[-2.6,-FZ+.65,.5,6.8],[1.4,-FZ+.7,.46,7.7]].filter((f,i)=>!software||i%2===0);
+for(const [x,z,w,ph] of fis){fissure(x,z,Math.abs(x)>FX-1.2?Math.PI/2:0);lavaFlow(x,z,w,ph)}
 updates.push((t,light,moving)=>{if(moving)flowTex.offset.y=-t*.17;for(const g of lavaGlows)g.material.opacity=.55+(moving?Math.sin(t*2.1+g.position.x)*.15:0)});
 // Arbres calcinés : tronc noueux et tordu, grosses branches arquées, brindilles, racines qui agrippent la cendre, braises dans les fissures.
 const barkTex=canvasTex(128,128,(g,w,h)=>{g.fillStyle='#17110f';g.fillRect(0,0,w,h);for(let i=0;i<60;i++){const x=rnd()*w;g.strokeStyle=`rgba(${60+rnd()*40},${45+rnd()*25},${40+rnd()*20},${.35+rnd()*.4})`;g.lineWidth=.6+rnd()*1.6;g.beginPath();g.moveTo(x,0);for(let y=0;y<=h;y+=12)g.lineTo(x+(rnd()-.5)*7,y);g.stroke()}for(let i=0;i<10;i++){g.strokeStyle=`rgba(255,${80+rnd()*60},20,${.5+rnd()*.4})`;g.lineWidth=.8+rnd();const x=rnd()*w,y0=rnd()*h;g.beginPath();g.moveTo(x,y0);g.lineTo(x+(rnd()-.5)*8,y0+8+rnd()*18);g.stroke()}});
@@ -160,7 +171,7 @@ function deadTree(x,z,h){const g=new THREE.Group();g.position.set(x,groundH(x,z)
  const lean=V3((rnd()-.5)*.35,1,(rnd()-.5)*.35).normalize();gnarl(g,V3(0,0,0),lean,h,h*.085,software?1:2);
  for(let i=0;i<(software?2:4);i++){const a=i/4*Math.PI*2+rnd(),o=V3(Math.cos(a)*.04,.08+rnd()*.1,Math.sin(a)*.04),c=new THREE.CatmullRomCurve3([o,V3(Math.cos(a)*h*.14,.05,Math.sin(a)*h*.14),V3(Math.cos(a)*h*.28,-.04,Math.sin(a)*h*.28)]);taper(c,h*.045,h*.012,5,5,charMat,g,false)}
  return g}
-for(let i=0;i<(software?5:10);i++){let x,z,k=0;do{x=(rnd()*2-1)*(FX-.6);z=(rnd()*2-1)*(FZ-.6);k++}while((outside(x,z)<1.55||Math.abs(x)>FX-.55||Math.abs(z)>FZ-.5||groundH(x,z)<-.1||(x>1.6&&z>1)||(x>0&&z>HZ-.5))&&k<150);if(k<150)deadTree(x,z,.8+rnd()*.6)}
+for(let i=0;i<(software?5:10);i++){let x,z,k=0;do{x=(rnd()*2-1)*(FX-.6);z=(rnd()*2-1)*(FZ-.6);k++}while((outside(x,z)<1.55||Math.abs(x)>FX-.55||Math.abs(z)>FZ-.5||groundH(x,z)<-.1||nearFlow(x,z,.4)||(x>1.6&&z>1)||(x>0&&z>HZ-.5))&&k<150);if(k<150)deadTree(x,z,.8+rnd()*.6)}
 // Squelettes : crâne (mâchoire entrouverte, dents, orbites), colonne, côtes en arcs, bassin, os longs articulés.
 const boneMat=mat(0xe8dcc0,{roughness:.8}),dark=new THREE.MeshBasicMaterial({color:0x0e0908});
 function longBone(parent,a,b,r=.016){r*=1.8;const d=b.clone().sub(a),len=d.length(),m=add(new THREE.CylinderGeometry(r,r*.8,len,6),boneMat,parent,false);m.position.copy(a.clone().add(b).multiplyScalar(.5));m.quaternion.setFromUnitVectors(Y,d.normalize());for(const e of[a,b]){for(const o of[-1,1]){const k=add(new THREE.SphereGeometry(r*1.6,6,5),boneMat,parent,false);k.position.copy(e).addScaledVector(d,0);k.position.x+=o*r*.5;k.position.z+=o*r*.4}}return m}
@@ -171,15 +182,21 @@ function skull(parent,s=1){const g=new THREE.Group();parent.add(g);const cr=add(
  const jaw=new THREE.Group();jaw.position.set(0,.03*s,.03*s);jaw.rotation.x=.4;g.add(jaw);const jb=add(new THREE.BoxGeometry(.088*s,.02*s,.09*s),boneMat,jaw,false);jb.position.set(0,-.01*s,.04*s);
  for(let t=0;t<7;t++){for(const [parentG,y,zz] of[[g,.018,.112],[jaw,.002,.082]]){const tooth=add(new THREE.BoxGeometry(.008*s,.014*s,.006*s),boneMat,parentG,false);tooth.position.set((t-3)*.0115*s,y*s-(parentG===jaw?.0:.0),zz*s*(parentG===jaw?1:1))}}
  return g}
-function ribcage(parent,s=1,n=8){const g=new THREE.Group();parent.add(g);
- const spine=new THREE.CatmullRomCurve3([V3(-.1*s,.03*s,0),V3(.25*s,.045*s,.01*s),V3(.6*s,.03*s,-.01*s),V3(.95*s,.035*s,0)]);taper(spine,.024*s,.02*s,18,6,boneMat,g,false);
- for(let i=0;i<n;i++){const x=(-.05+i*.095)*s,f=1-Math.pow((i-n*.4)/(n*.7),2)*.55,H=.15*s*f,W=.14*s*f;for(const sz of[-1,1]){const pts=[];for(let k=0;k<=5;k++){const a=k/5*Math.PI*.82;pts.push(V3(x+k*.004*s,H*Math.sin(a)*.95+.04*s,sz*W*(1-Math.cos(a))*.72))}taper(new THREE.CatmullRomCurve3(pts),.013*s,.009*s,8,5,boneMat,g,false)}
-  const v=add(new THREE.SphereGeometry(.017*s,6,5),boneMat,g,false);v.position.set(x,.04*s,0)}
+/* v364 — cage thoracique anatomique : colonne du cou au bassin, 6 paires de côtes qui s'enroulent de la colonne vers le sternum
+   (squelette couché sur le dos), plus petites en haut et en bas, inclinées vers le bassin. */
+function ribcage(parent,s=1,n=6){const g=new THREE.Group();parent.add(g);
+ const spine=new THREE.CatmullRomCurve3([V3(-.38*s,.03*s,0),V3(-.1*s,.042*s,.006*s),V3(.25*s,.04*s,-.006*s),V3(.6*s,.032*s,0)]);taper(spine,.022*s,.018*s,18,6,boneMat,g,false);
+ for(let k=0;k<9;k++){const v=add(new THREE.CylinderGeometry(.022*s,.022*s,.022*s,7),boneMat,g,false);v.rotation.z=Math.PI/2;v.position.set((-.34+k*.115)*s,.036*s,0)}
+ const x0=-.02,dx=.07;for(let i=0;i<n;i++){const x=(x0+i*dx)*s,t=i/(n-1),f=.72+.28*Math.sin(Math.PI*(.25+t*.75)),H=.11*s*f,W=.14*s*f;
+  for(const sz of[-1,1]){const pts=[];for(let k=0;k<=8;k++){const a=k/8*Math.PI*.93;pts.push(V3(x+Math.sin(a)*.045*s,.04*s+H*(1-Math.cos(a)),sz*W*Math.sin(a)*(k===8?.9:1)))}taper(new THREE.CatmullRomCurve3(pts),.01*s,.0075*s,12,5,boneMat,g,false)}}
+ const st=add(new THREE.BoxGeometry((n-1)*dx*s*.9,.012*s,.022*s),boneMat,g,false);st.position.set((x0+(n-1)*dx*.45+.04)*s,.04*s+.22*s*.97,0);
+ // clavicules
+ for(const sz of[-1,1])longBone(g,V3(-.06*s,.12*s,sz*.02*s),V3(-.05*s,.09*s,sz*.13*s),.008*s);
  return g}
 function pelvis(parent,s=1){const g=new THREE.Group();parent.add(g);for(const sz of[-1,1]){const w=add(new THREE.TorusGeometry(.065*s,.014*s,5,10,Math.PI*1.1),boneMat,g,false);w.rotation.set(Math.PI/2*.9,0,sz*.5);w.position.set(0,.05*s,sz*.055*s);w.scale.set(1,.9,.6)}const sac=add(new THREE.SphereGeometry(.03*s,6,5),boneMat,g,false);sac.position.set(-.03*s,.045*s,0);sac.scale.set(1,.6,1.3);return g}
 function skeleton(x,z,ry,s=1,pose=0){const g=new THREE.Group();g.position.set(x,groundH(x,z)+.005,z);g.rotation.y=ry;root.add(g);
- const sk=skull(g,s*1.45);sk.position.set(-.46*s,0,0);sk.rotation.set(0,Math.PI/2+(rnd()-.5)*.5,(rnd()-.5)*.3);
- const rc=ribcage(g,s,pose===2?6:8);rc.position.x=-.3*s;if(pose===1)rc.rotation.x=.15;
+ const sk=skull(g,s*1.15);sk.position.set(-.44*s,0,0);sk.rotation.set(0,Math.PI/2+(rnd()-.5)*.5,(rnd()-.5)*.3);
+ const rc=ribcage(g,s,pose===2?5:6);rc.position.x=0;if(pose===1)rc.rotation.x=.15;
  const pv=pelvis(g,s);pv.position.set(.62*s,0,0);pv.rotation.y=Math.PI/2;
  for(const sz of[-1,1]){const hip=V3(.62*s,.05*s,sz*.055*s),knee=V3(hip.x+(.3+rnd()*.12)*s,.04*s,sz*(.08+rnd()*.12)*s),foot=V3(knee.x+(.26+rnd()*.15)*s,.025*s,sz*(.1+rnd()*.25)*s);longBone(g,hip,knee,.017*s);longBone(g,knee,foot,.014*s)
   const sh=V3(-.02*s,.08*s,sz*.13*s),el=V3(sh.x+(.08+rnd()*.1)*s,.03*s,sz*(.2+rnd()*.1)*s),hand=V3(el.x+(rnd()-.2)*.2*s,.02*s,sz*(.22+rnd()*.15)*s);longBone(g,sh,el,.012*s);longBone(g,el,hand,.01*s)}
@@ -188,8 +205,8 @@ function skeleton(x,z,ry,s=1,pose=0){const g=new THREE.Group();g.position.set(x,
 // Une main qui sort de la cendre.
 function reachingHand(x,z){const g=new THREE.Group();g.position.set(x,groundH(x,z)-.02,z);g.rotation.y=rnd()*6;root.add(g);longBone(g,V3(0,0,0),V3(.05,.28,.03),.016);longBone(g,V3(.05,.28,.03),V3(.12,.42,.02),.012);for(let f=0;f<4;f++){const a=(f-1.5)*.26;longBone(g,V3(.12,.42,.02),V3(.12+Math.sin(a)*.08+.04,.5+Math.cos(a)*.05,.02+Math.sin(a)*.1),.006)}longBone(g,V3(.12,.42,.02),V3(.2,.46,-.03),.006)}
 const bonePlaces=[[-5.9,-3.6,1],[5.8,-2.4,0],[-6.2,3.0,2],[2.9,-FZ+.9,0],[-2.4,FZ-.8,1],[6.0,3.8,0]];
-bonePlaces.forEach(([x,z,pose])=>{if(outside(x,z)>1.2)skeleton(x,z,rnd()*6.3,.95+rnd()*.3,pose)});
-reachingHand(-5.2,-1.6);reachingHand(5.4,1.4);
+bonePlaces.forEach(([x,z,pose])=>{for(let k=0;k<12&&nearFlow(x,z,.55);k++){x+=Math.sign(x||1)*.0+(rnd()-.5)*.9;z+=(rnd()-.5)*.9}if(outside(x,z)>1.2&&!nearFlow(x,z,.4))skeleton(x,z,rnd()*6.3,.95+rnd()*.3,pose)});
+for(const [x,z] of[[-5.2,-1.6],[5.4,1.4]])if(!nearFlow(x,z,.3))reachingHand(x,z);
 // Côte géante d'un dragon planté dans la cendre (au fond, à gauche).
 {const g=new THREE.Group();g.position.set(-FX+.7,groundH(-FX+.7,-FZ+.8)-.05,-FZ+.8);g.rotation.y=.12;root.add(g);
  taper(new THREE.CatmullRomCurve3([V3(-.3,.05,0),V3(.6,.15,.05),V3(1.4,.1,-.05),V3(2.2,.06,0)]),.09,.06,16,6,boneMat,g,false);
