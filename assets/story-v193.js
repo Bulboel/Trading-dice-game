@@ -18,12 +18,12 @@ function complete(id){const portal=P();if(!portal)return;const pr=portal.profile
 // ——— Scène de dialogue ———
 let scene,seq=[],step=0,onDone=null;
 function ensureScene(){if(scene)return scene;scene=document.createElement('section');scene.id='story-scene';scene.hidden=true;scene.setAttribute('role','dialog');scene.setAttribute('aria-label','Histoire');
- scene.innerHTML='<div class="ss-bg"></div><div class="ss-bgb"></div><div class="ss-caption"></div><div class="ss-cast"></div><div class="ss-box"><div class="ss-speaker"></div><p class="ss-text" aria-live="polite"></p><div class="ss-choices"></div><div class="ss-actions"><span class="ss-progress"></span><button type="button" data-ss="prev">Précédent</button><button type="button" data-ss="quit">Menu</button><button type="button" class="ss-next" data-ss="next">Continuer</button></div></div>';
+ scene.innerHTML='<div class="ss-bg"></div><div class="ss-bgb"></div><div class="ss-caption"></div><div class="ss-cast"></div><div class="ss-box"><button type="button" class="ss-skip" data-ss="skip" hidden></button><div class="ss-speaker"></div><p class="ss-text" aria-live="polite"></p><div class="ss-choices"></div><div class="ss-actions"><span class="ss-progress"></span><button type="button" data-ss="prev">Précédent</button><button type="button" data-ss="quit">Menu</button><button type="button" class="ss-next" data-ss="next">Continuer</button></div></div>';
  document.body.append(scene);
- scene.addEventListener('click',e=>{const a=e.target.closest('[data-ss]')?.dataset.ss;if(a==='prev'&&step>0){step--;draw()}else if(a==='next')next();else if(a==='quit'){close();P()?.open('story')}else if(a==='choice'){const c=seq[step].choices[+e.target.closest('[data-i]').dataset.i];close();choose(c.go)}});
+ scene.addEventListener('click',e=>{const a=e.target.closest('[data-ss]')?.dataset.ss;if(a==='prev'&&step>0){step--;draw()}else if(a==='next')next();else if(a==='quit'){close();P()?.open('story')}else if(a==='skip'&&skipHandler){const f=skipHandler;close();f()}else if(a==='choice'){const c=seq[step].choices[+e.target.closest('[data-i]').dataset.i];close();choose(c.go)}});
  document.addEventListener('keydown',e=>{if(scene.hidden)return;if(e.key==='Enter'||e.key===' '||e.key==='ArrowRight'){if(!seq[step]?.choices){e.preventDefault();next()}}else if(e.key==='ArrowLeft'&&step>0){step--;draw()}});return scene}
-let chooseHandler=null;function choose(go){chooseHandler?.(go)}
-function play(beats,done,choice){ensureScene();seq=beats;step=0;onDone=done;chooseHandler=choice||null;if(!seq.length){done?.();return}scene.hidden=false;document.body.classList.add('story-open');draw()}
+let chooseHandler=null,skipHandler=null,skipLabel='';function choose(go){chooseHandler?.(go)}
+function play(beats,done,choice,skip=null,label='⏩ Passer au duel'){ensureScene();seq=beats;step=0;onDone=done;chooseHandler=choice||null;skipHandler=skip;skipLabel=label;if(!seq.length){done?.();return}scene.hidden=false;document.body.classList.add('story-open');draw()}
 function close(){if(scene){scene.hidden=true}document.body.classList.remove('story-open')}
 function next(){if(step<seq.length-1){step++;draw()}else{const d=onDone;close();d?.()}}
 function draw(){const b=seq[step];scene.className='ss '+(b.c||[]).map(c=>'ss-'+c).join(' ')+(b.s==='Voix off'?' ss-narration':'');
@@ -34,7 +34,7 @@ function draw(){const b=seq[step];scene.className='ss '+(b.c||[]).map(c=>'ss-'+c
   if(x.p){sp.style.backgroundImage='none';const im=document.createElement('img');im.src=x.p;im.alt='';sp.append(im)}else{sp.style.backgroundImage=x.img;sp.style.backgroundSize=x.sz||'contain';sp.style.backgroundPosition=x.pos||'center bottom'}cast.append(sp)}
  scene.querySelector('.ss-speaker').textContent=b.s;scene.querySelector('.ss-text').textContent=b.t;
  const ch=scene.querySelector('.ss-choices');ch.innerHTML=(b.choices||[]).map((c,i)=>`<button type="button" data-ss="choice" data-i="${i}" class="${c.go==='duel'?'ss-primary':''}">${esc(c.label)}</button>`).join('');
- const nx=scene.querySelector('.ss-next');nx.hidden=!!b.choices;nx.textContent=step===seq.length-1?(b.next||'Continuer'):'Continuer';scene.querySelector('[data-ss="prev"]').disabled=step===0;scene.querySelector('.ss-progress').textContent=(step+1)+' / '+seq.length}
+ const nx=scene.querySelector('.ss-next');nx.hidden=!!b.choices;nx.textContent=step===seq.length-1?(b.next||'Continuer'):'Continuer';scene.querySelector('[data-ss="prev"]').disabled=step===0;scene.querySelector('.ss-progress').textContent=(step+1)+' / '+seq.length;const sk=scene.querySelector('.ss-skip');sk.hidden=!skipHandler;sk.textContent=skipLabel}
 
 // ——— Déroulement d’une partie ———
 /* v302 — avant chaque duel de l'Histoire : confirmer (ou changer) le deck utilisé. */
@@ -46,12 +46,15 @@ function chooseDeck(go){const decks=P()?.legalDecks?.()||[];if(!decks.length){go
  dlg.addEventListener('click',e=>{const a=e.target.closest('[data-sd]')?.dataset.sd;if(a==='go'){P().setPreferredDeck?.(sel.value);dlg.close();go()}else if(a==='cancel'){dlg.close();P()?.open('story')}});dlg.addEventListener('cancel',()=>{P()?.open('story')});dlg.addEventListener('close',()=>dlg.remove());document.body.append(dlg);dlg.showModal()}
 function start(id){const part=PARTS.find(p=>p.id===id);if(!part||!unlocked(id))return;
  const afterIntro=()=>part.duel?chooseDeck(()=>duel(part)):complete(part.id)||P()?.open('story');
- play(part.intro,afterIntro,go=>{if(go==='duel')chooseDeck(()=>duel(part));else play(part.silence||[],()=>{complete(part.id);P()?.open('story')})});}
-function duel(part){const d=part.duel,deck=P()?.preferredDeck();pending={id:part.id};document.body.classList.remove('portal-open');location.hash='partie';
+ /* v379 — duel déjà tenté (ou partie déjà finie) : un bouton permet de passer directement au duel */const tried=part.duel&&(prog().done[part.id]||triedSet().has(part.id));
+ play(part.intro,afterIntro,go=>{if(go==='duel')chooseDeck(()=>duel(part));else play(part.silence||[],()=>{complete(part.id);P()?.open('story')})},tried?()=>chooseDeck(()=>duel(part)):null);}
+function triedSet(){try{return new Set(JSON.parse(localStorage.getItem('hackenia-story-tried')||'[]'))}catch{return new Set()}}
+function markTried(id){try{const t=triedSet();t.add(id);localStorage.setItem('hackenia-story-tried',JSON.stringify([...t]))}catch{}}
+function duel(part){const d=part.duel,deck=P()?.preferredDeck();pending={id:part.id};markTried(part.id);document.body.classList.remove('portal-open');location.hash='partie';
  game.start(deck?deck.dice:LOAN,d.terrain,'story',d.level,{name:d.foe,dice:d.dice,boss:d.boss});window.dispatchEvent(new Event('resize'));
  if(!deck)setTimeout(()=>P()?.toast('Aucun deck valide : Kayla vous prête un deck de départ pour ce duel.'),600)}
 function after(won){if(!pending)return;const part=PARTS.find(p=>p.id===pending.id);pending=null;if(!part)return;
- setTimeout(()=>{game.pause?.();if(won||part.id==='c1p1')play(part.victory||[],()=>{complete(part.id);P()?.open('story')});else play(part.lose&&part.lose.length?part.lose:[{s:'Voix off',t:'Ce duel est perdu… Reprenez votre souffle et retentez votre chance depuis le menu Histoire.',l:part.title,c:[],cast:[],next:'Retour au menu'}],()=>P()?.open('story'))},2600)}
+ setTimeout(()=>{game.pause?.();if(won||part.id==='c1p1')play(part.victory||[],()=>{complete(part.id);P()?.open('story')});else play(part.lose&&part.lose.length?part.lose:[{s:'Voix off',t:'Ce duel est perdu… Reprenez votre souffle et retentez votre chance depuis le menu Histoire.',l:part.title,c:[],cast:[],next:'Retour au menu'}],()=>P()?.open('story'),null,()=>chooseDeck(()=>duel(part)),'↻ Rejouer le duel')},2600)}
 window.addEventListener('hackenia-player-victory',e=>{if(e.gameMode==='story')after(true)});
 window.addEventListener('hackenia-player-defeat',e=>{if(e.gameMode==='story')after(false)});
 window.addEventListener('hackenia-player-draw',e=>{if(e.gameMode==='story')after(false)});
