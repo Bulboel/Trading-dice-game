@@ -201,3 +201,11 @@ model-viewer.gesture-ghost{animation:ghost-float 3.4s ease-in-out infinite}
 .coli-toast[data-tone="boo"]{background:linear-gradient(180deg,#3b3240,#211b26);border-color:#a99ab8;color:#efe8f6}
 @media (max-width:700px){.coli-toast{top:66px;font-size:12.5px;padding:6px 12px}}
 @media (prefers-reduced-motion:reduce){.coli-toast{transition:opacity .2s}}
+
+/* v383 — noms de camp longs (« Les Sans-chiffres »…) : le nom passe sur deux lignes, un peu plus petit, et les compteurs restent alignés dans la pastille */
+#hd .camp-score{overflow:hidden;min-height:36px}
+#hd .camp-score>.camp-name{flex:1 1 auto!important;min-width:0!important;white-space:normal!important}
+#hd .camp-score>.camp-name .camp-label{min-width:0;white-space:normal!important;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;line-height:1.12;overflow-wrap:anywhere;hyphens:auto;text-align:left}
+#hd .camp-score>.camp-name.long .camp-label{font-size:.86em;letter-spacing:-.1px}
+#hd .camp-score>.camp-name.xlong .camp-label{font-size:.78em}
+#hd .camp-score>.score-metric,#hd .camp-score>.bonus-counter{flex:0 0 auto}
