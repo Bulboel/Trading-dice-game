@@ -6,8 +6,8 @@
 // Valeur d'un exemplaire recyclé, par rareté (1 commun, 2 peu commun, 3 rare, 5 légendaire, 6 divin, 7 Énergie).
 // v342 : barème revu à la baisse pour les raretés hautes (1 commun, 1 peu commun, 2 rare, 3 légendaire, 5 divin, 2 Énergie, 100 Crépitant).
 // v360 : barème beaucoup plus bas, en dixièmes de Bubulle (TENTHS) : 10 communs = 1, 5 peu communs = 1, 2 rares = 1, 1 légendaire = 1,
-// 1 divin = 50, 1 Crépitant = 100 (Énergie comme un rare : 2 = 1). Les fractions restantes sont gardées dans profile.recycleCredit (dixièmes).
-const TENTHS={1:1,2:2,3:5,5:10,6:500,7:5,8:1000},VALUE=Object.fromEntries(Object.entries(TENTHS).map(([k,v])=>[k,v/10]));
+// 1 divin = 50, 1 Crépitant = 100 (Énergie comme un peu commun : 5 = 1). Les fractions restantes sont gardées dans profile.recycleCredit (dixièmes).
+const TENTHS={1:1,2:2,3:5,5:10,6:500,7:2,8:1000},VALUE=Object.fromEntries(Object.entries(TENTHS).map(([k,v])=>[k,v/10]));
 const credit=p=>Number.isInteger(p?.recycleCredit)&&p.recycleCredit>0&&p.recycleCredit<10?p.recycleCredit:0;
 // Exemplaires gardés au minimum : ce qu'un deck peut contenir (4 rares, 2 légendaires, 1 divin, 2 Énergie), 4 pour les autres.
 const KEEP={1:4,2:4,3:4,5:2,6:1,7:2};/* un Crépitant (8) garde le minimum de son dé de base (voir plan) */
