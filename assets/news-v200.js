@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v363',title:'Étincelles de rareté',items:['La gerbe d’étincelles de la cérémonie annonce la rareté : toutes les couleurs pour un divin, blanc, violet et noir pour un Crépitant, blanc, vert et noir pour un Crépitant émeraude.']},
  {id:'v362',title:'En-tête de la boutique',items:['Sur téléphone, le raccourci vers l’accueil et votre portrait restent à la même place dans la boutique que dans les autres onglets.']},
  {id:'v360',title:'Recyclage revu',items:['Nouveau barème de recyclage : 10 communs, 5 peu communs, 2 rares ou 1 légendaire donnent 1 Bubulle ; un divin 50 Bubulles et un Crépitant 100. Les fractions sont gardées et s’ajoutent au recyclage suivant.']},
  {id:'v359',title:'Un vrai D20 en 3D',items:['Le lancer d’initiative utilise désormais un vrai D20 en 3D : il est lancé, roule, rebondit et s’immobilise sur la face tirée, aux couleurs de vos dés de jet.','L’immondice géant : la bonne illustration du ver géant surgit au début du duel.']},

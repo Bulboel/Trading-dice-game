@@ -492,5 +492,7 @@
  "Nouveau barème de recyclage : 10 communs, 5 peu communs, 2 rares ou 1 légendaire donnent 1 Bubulle ; un divin 50 Bubulles et un Crépitant 100. Les fractions sont gardées et s’ajoutent au recyclage suivant.": "New recycling rates: 10 commons, 5 uncommons, 2 rares or 1 legendary give 1 Bubble; a divine gives 50 Bubbles and a Crackling 100. Fractions are kept and added to your next recycling.",
  "Barème : 10 communs = 1 🫧 · 5 peu communs = 1 · 2 rares = 1 · 1 légendaire = 1 · 1 divin = 50 · 1 Crépitant = 100 (5 Énergie = 1). Les fractions sont gardées pour le prochain recyclage.": "Rates: 10 commons = 1 🫧 · 5 uncommons = 1 · 2 rares = 1 · 1 legendary = 1 · 1 divine = 50 · 1 Crackling = 100 (5 Energy = 1). Fractions are kept for your next recycling.",
  "En-tête de la boutique": "Shop header",
- "Sur téléphone, le raccourci vers l’accueil et votre portrait restent à la même place dans la boutique que dans les autres onglets.": "On phones, the home shortcut and your portrait now stay in the same place in the shop as in the other tabs."
+ "Sur téléphone, le raccourci vers l’accueil et votre portrait restent à la même place dans la boutique que dans les autres onglets.": "On phones, the home shortcut and your portrait now stay in the same place in the shop as in the other tabs.",
+ "Étincelles de rareté": "Rarity sparks",
+ "La gerbe d’étincelles de la cérémonie annonce la rareté : toutes les couleurs pour un divin, blanc, violet et noir pour un Crépitant, blanc, vert et noir pour un Crépitant émeraude.": "The burst of sparks in the ceremony now hints at the rarity: every colour for a divine, white, purple and black for a Crackling, white, green and black for an emerald Crackling."
 }
