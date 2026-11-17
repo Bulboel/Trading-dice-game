@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v356',title:'Le ver géant : combat animé et victoire',items:['L’immondice géant : chaque frappe contre le ver géant joue une vraie animation de combat, et l’abattre fait gagner la partie.','Nouveau défi « L’immondice terrassée » : vainquez le ver géant en réduisant ses points de vie à zéro pour débloquer la boubourse en peau de ver géant.','La boubourse Messire Balai affiche sa tête en grand, et son sceau est un petit Messire Balai doré ou argenté selon la cordelette.']},
  {id:'v355',title:'Cérémonies des boubourses sur smartphone',items:['Les cérémonies des dés divins et crépitants se jouent maintenant aussi quand le téléphone réduit les animations (économie d’énergie), quand l’ouverture est lente, et en ouverture rapide, même pour un dé déjà possédé.']},
  {id:'v354',title:'Le ver géant attaqué au contact',items:['L’immondice géant : une créature qui apparaît ou s’arrête à côté du ver géant le frappe d’elle-même, puis se fait engloutir. Inutile de toucher le ver.']},
  {id:'v353',title:'Combat du ver géant corrigé',items:['L’immondice géant : le ver occupe maintenant 6 cases (2 de large, 3 de long) collées au camp adverse, et son modèle 3D est affiché exactement dessus. Les dalles se posent jusqu’à son contact et vos créatures peuvent l’attaquer.']},
