@@ -1,0 +1,17 @@
+// v368 — La dague sans-chiffres : toujours en second, premier dé posé sans jet ; défi « Les sans-chiffres ».
+const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
+const source=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8').match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,'');
+function setup(values){let next=0;const math=Object.create(Math);math.random=()=>((values[Math.min(next++,values.length-1)]||1)-.5)/6;const timers=[],intervals=[],events=[],els=new Map(),element=()=>({children:[],style:{setProperty(){}},classList:{add(){},remove(){},toggle(){}},firstElementChild:{style:{}},setPointerCapture(){}});const ctx=vm.createContext({window:{dispatchEvent(e){events.push(e)}},Event,CustomEvent:class{constructor(t,o){this.type=t;this.detail=o?.detail}},document:{getElementById(id){if(!els.has(id))els.set(id,element());return els.get(id)}},fetch:()=>Promise.resolve({ok:false}),setTimeout:(fn,ms)=>{timers.push({fn,ms});return timers.length},clearTimeout(){},setInterval:fn=>{intervals.push(fn);return intervals.length},clearInterval(){},console,Date,Math:math});vm.runInContext(source,ctx);vm.runInContext("render=()=>{};landCube=()=>{};showRollDice=()=>{};b=Array.from({length:H},()=>Array(W).fill(null));b[7][2]={o:0,v:2,id:90,lv:1};cr=[];pl=[{s:0,h:[24,24],q:[]},{s:0,h:[0],q:[]}];bonus=[0,0];kills=[0,0];over=0;TER=0;cur=0;hi=0;die=24;rot=2;pc={x:3,y:7};anim=null;ai=false;mode='p';M[24].need=6;M[24].nd=1;",ctx);return{events,run:s=>vm.runInContext(s,ctx),roll(){vm.runInContext('lancer()',ctx);const base=timers.length;intervals.splice(0).forEach(fn=>{for(let i=0;i<14&&timers.length===base;i++)fn()});timers.sort((a,b)=>a.ms-b.ms);while(timers.length)timers.shift().fn()}}}
+// sans la dague, un 1 rate un dé qui demande 6+
+{const g=setup([1]);g.run('gearItem=null;daggerUsed=0');g.roll();assert.equal(g.run('cr.length'),0,'sans dague : le lancer raté ne pose rien')}
+// avec la dague : premier dé posé sans jet (réussite automatique), une seule fois
+{const g=setup([1]);g.run("gearItem={noDigits:1};daggerUsed=0");g.roll();assert.equal(g.run('cr.length'),1,'le premier dé se pose sans lancer');assert.equal(g.run('daggerUsed'),1);assert.ok(g.run("gameEvents.some(e=>e.text.includes('dague sans-chiffres'))"));
+ g.run("over=0;mode='p';cur=0;placedThisTurn=0;b[7][5]={o:0,v:2,id:91,lv:1};die=24;rot=2;pc={x:6,y:7};anim=null");g.roll();assert.equal(g.run('cr.length'),1,'le deuxième dé est lancé normalement (un 1 rate)')}
+// toujours en second : pas de D20, l'adversaire commence
+{const g=setup([6]);g.run("gearItem={noDigits:1};ONLINE=null;bonus=[0,0];cur=0;startInitiative()");assert.equal(g.run('cur'),1);assert.equal(g.run('turnSeat'),1);assert.equal(g.run('initRoll'),null,'aucun D20 en attente')}
+// défi et objet
+const C=require('../assets/challenges-v180.js');global.window=globalThis;const E=require('../assets/equipment-v198.js');
+assert.ok(C.definitions.some(d=>d.id==='wormpass'&&d.kind==='wormpass'));let pr={inventory:{}};pr=C.advance(pr,{wormpass:true,mode:'story'});assert.ok(C.unlocked(pr).some(d=>d.id==='wormpass'),'défi accompli');
+const dag=E.items.find(i=>i.id==='dague-sans-chiffres');assert.ok(dag&&dag.challenge==='wormpass'&&dag.noDigits&&fs.existsSync(path.join(__dirname,'..',dag.art)));
+assert.ok(fs.readFileSync(path.join(__dirname,'../index.html'),'utf8').includes("new CustomEvent('hackenia:worm-pass'"),'victoire par passages contre le ver annoncée');
+console.log('PASS v368 dague sans-chiffres');

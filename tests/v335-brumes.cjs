@@ -11,5 +11,5 @@ for(let i=0;i<12;i++){run('over=0;terrainEvent0()');const n=run('mistEl');assert
 assert.ok(events.some(e=>e.type==='hackenia:mist'),'le décor est prévenu du changement');
 run("TER=TL.indexOf('terre')");assert.deepEqual(JSON.parse(run("JSON.stringify(boostsOf('terre'))")),['terre']);
 assert.ok(fs.existsSync(path.join(root,'assets/fairy-v335.js'))&&fs.existsSync(path.join(root,'assets/elements/v2-brumes-64.webp')));
-const cl=fs.readFileSync(path.join(root,'assets/clearing-v105.js'),'utf8');assert.equal((cl.match(/'automne','noel','brumes','colisee'\]/g)||[]).length,3,'scène 3D autorisée partout');
+const cl=fs.readFileSync(path.join(root,'assets/clearing-v105.js'),'utf8');assert.equal((cl.match(/'automne','noel','brumes','colisee','taverne'\]/g)||[]).length,3,'scène 3D autorisée partout');
 console.log('PASS: Fairy Mists terrain — one favored element at a time, changing every full turn; 3D scene wired.');
