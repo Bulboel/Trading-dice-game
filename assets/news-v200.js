@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v362',title:'En-tête de la boutique',items:['Sur téléphone, le raccourci vers l’accueil et votre portrait restent à la même place dans la boutique que dans les autres onglets.']},
  {id:'v360',title:'Recyclage revu',items:['Nouveau barème de recyclage : 10 communs, 5 peu communs, 2 rares ou 1 légendaire donnent 1 Bubulle ; un divin 50 Bubulles et un Crépitant 100. Les fractions sont gardées et s’ajoutent au recyclage suivant.']},
  {id:'v359',title:'Un vrai D20 en 3D',items:['Le lancer d’initiative utilise désormais un vrai D20 en 3D : il est lancé, roule, rebondit et s’immobilise sur la face tirée, aux couleurs de vos dés de jet.','L’immondice géant : la bonne illustration du ver géant surgit au début du duel.']},
  {id:'v358',title:'D20 pour tous',items:['Le lancer d’initiative au D20 s’applique aussi en 2 contre 2 et en ligne (même résultat pour tous les joueurs).','Sur PC, la touche Espace donne directement le résultat du D20.']},
