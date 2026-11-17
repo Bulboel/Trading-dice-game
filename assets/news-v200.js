@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v353',title:'Combat du ver géant corrigé',items:['L’immondice géant : le ver occupe maintenant 6 cases (2 de large, 3 de long) collées au camp adverse, et son modèle 3D est affiché exactement dessus. Les dalles se posent jusqu’à son contact et vos créatures peuvent l’attaquer.']},
  {id:'v351',title:'Ver géant retouché, favoris dorés',items:['L’immondice géant : le ver garde sa posture d’origine et tourne sa gueule vers le camp qui l’attaque ; il est collé au camp qu’il protège, sans mare sous lui ; sa jauge de vie est plus compacte.','Collection : le cœur des favoris est doré et plus grand.']},
  {id:'v350',title:'L’immondice géant',items:['Histoire, chapitre II : nouvelle partie 7, « L’immondice géant ». Un ver géant immobile occupe le centre du plateau : chaque créature qui l’attaque lui retire sa valeur d’attaque puis se fait engloutir. Abattez ses 25 points de vie pour gagner un duel.','Trois nouveaux dés sans élément : le Canourson (peu commun), le Canours et le Ver géant (rares), avec leurs versions Crépitantes.','La cabane du vieux fermier a enfin son décor.']},
  {id:'v349',title:'Illustrations de l’Histoire entières',items:['Mode Histoire : les illustrations des adversaires qui surgissent en plein duel montrent maintenant toute la scène, sans personnages coupés.','Cérémonies : les créatures animées (araignées, loups, larves…) restent bien centrées devant leur vignette.']},
