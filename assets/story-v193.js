@@ -57,7 +57,7 @@ window.addEventListener('hackenia-player-defeat',e=>{if(e.gameMode==='story')aft
 window.addEventListener('hackenia-player-draw',e=>{if(e.gameMode==='story')after(false)});
 /* v331 — En plein duel : quand l'adversaire pose sa première créature, l'illustration de sa carte (reprise de la Triade) surgit
    quelques secondes, comme une carte jouée. La partie continue dessous ; toucher l'image la referme. */
-const REVEAL={c1p1:'p28',c1p2:'p12',c1p4:'p38',c1p5:'p02',c1p6:'p16',c1p6bis:'p42',c1p7:'p37',c1p8:'p05',c1p9:'p11',c1p10:'p69',c2p1:'p67',c2p2:'p84',c2p4:'../dassom-golem-incident',c2p5:'p76',c2p6:'p65',c2p7:'p82'};
+const REVEAL={c1p1:'p28',c1p2:'p12',c1p4:'p38',c1p5:'p02',c1p6:'p16',c1p6bis:'p42',c1p7:'p37',c1p8:'p05',c1p9:'p11',c1p10:'p69',c2p1:'p67',c2p2:'p84',c2p4:'../dassom-golem-incident',c2p5:'p76',c2p6:'p65',c2p7:'p82',c2p8:'../../pantheon/pachie-defi'};
 window.addEventListener('hackenia:foe-reveal',e=>{if(!pending)return;const k=REVEAL[pending.id],part=PARTS.find(p=>p.id===pending.id);if(!k||!part)return;
  document.getElementById('story-reveal')?.remove();const el=document.createElement('div');el.id='story-reveal';el.setAttribute('role','status');
  el.innerHTML=`<figure><img src="assets/story/cards/${k}.webp?v=359" alt="${esc(part.duel.foe)}"><figcaption>${esc(part.duel.foe)} entre dans le duel !</figcaption></figure>`;
