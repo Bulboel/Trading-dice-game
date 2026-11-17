@@ -460,5 +460,7 @@
  "Combat du ver géant corrigé": "Giant worm fight fixed",
  "L’immondice géant : le ver occupe maintenant 6 cases (2 de large, 3 de long) collées au camp adverse, et son modèle 3D est affiché exactement dessus. Les dalles se posent jusqu’à son contact et vos créatures peuvent l’attaquer.": "The giant filth: the worm now covers 6 tiles (2 wide, 3 long) against the opponent’s camp, and its 3D model sits exactly on them. Tiles can be placed right up to it and your creatures can attack it.",
  "Le ver géant attaqué au contact": "The giant worm attacked on contact",
- "L’immondice géant : une créature qui apparaît ou s’arrête à côté du ver géant le frappe d’elle-même, puis se fait engloutir. Inutile de toucher le ver.": "The giant filth: a creature that appears or stops next to the giant worm strikes it on its own, then gets swallowed. No need to tap the worm."
+ "L’immondice géant : une créature qui apparaît ou s’arrête à côté du ver géant le frappe d’elle-même, puis se fait engloutir. Inutile de toucher le ver.": "The giant filth: a creature that appears or stops next to the giant worm strikes it on its own, then gets swallowed. No need to tap the worm.",
+ "Cérémonies des boubourses sur smartphone": "Pouch ceremonies on smartphones",
+ "Les cérémonies des dés divins et crépitants se jouent maintenant aussi quand le téléphone réduit les animations (économie d’énergie), quand l’ouverture est lente, et en ouverture rapide, même pour un dé déjà possédé.": "Divine and crackling dice ceremonies now also play when the phone reduces animations (battery saver), when opening is slow, and in quick opening, even for a die you already own."
 }
