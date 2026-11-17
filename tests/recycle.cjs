@@ -6,9 +6,9 @@ const p=R.plan(profile,defs,rar),by=Object.fromEntries(p.items.map(i=>[i.id,i]))
 assert.equal(by[0].keep,6,'A saved deck using 6 copies keeps 6');assert.equal(by[0].extra,1);
 assert.ok(!by[1],'Exactly 4 uncommon copies: nothing to recycle');assert.ok(!by[6],'Single copy never recycled');
 assert.equal(by[2].extra,2);assert.equal(by[3].extra,1,'Legendary: 2 kept (v252)');assert.equal(by[4].extra,1,'Divine: 1 kept');assert.equal(by[5].extra,3,'Énergie: 2 kept');
-assert.equal(p.tenths,1*1+2*5+1*10+1*500+3*5,'v360 : dixièmes (10 communs, 5 peu communs, 2 rares, 1 légendaire = 1 ; divin 50)');assert.equal(p.total,53);assert.equal(p.count,1+2+1+1+3);
+assert.equal(p.tenths,1*1+2*5+1*10+1*500+3*2,'v360 : dixièmes (10 communs, 5 peu communs, 2 rares, 1 légendaire = 1 ; divin 50)');assert.equal(p.total,52);assert.equal(p.count,1+2+1+1+3);
 const all=R.apply(profile,defs,rar);assert.equal(all.profile.gold,10+p.total);assert.equal(all.profile.inventory[3],2);assert.equal(all.profile.inventory[5],2);assert.equal(all.profile.recycled,p.count);assert.equal(profile.inventory[3],3,'Input untouched');
-assert.equal(all.profile.recycleCredit,6,'reste gardé (0,6 Bubulle)');
+assert.equal(all.profile.recycleCredit,7,'reste gardé (0,7 Bubulle)');
 const some=R.apply(profile,defs,rar,[4]);assert.equal(some.gold,50,'un divin = 50');
 {const d1=[{r:1}],p1={version:1,gold:0,inventory:{0:9},decks:[]},a1=R.apply(p1,d1,rar);assert.equal(a1.gold,0,'5 communs < 1 Bubulle');assert.equal(a1.profile.recycleCredit,5);const a2=R.apply({...a1.profile,inventory:{0:9}},d1,rar);assert.equal(a2.gold,1,'le reste s’ajoute au recyclage suivant');assert.equal(a2.profile.recycleCredit,0)}assert.equal(some.profile.inventory[2],6,'Unchosen dice untouched');
 assert.equal(R.plan(all.profile,defs,rar).count,0,'Nothing left after recycling all');
