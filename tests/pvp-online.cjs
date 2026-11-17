@@ -51,8 +51,9 @@ function engine(){const els=new Map(),P=()=>new Proxy(function(){},{get:(t,p)=>p
  await until(()=>cA.S.applied>=2&&cB.S.applied>=2);assert.ok(cA.S.versionOK&&cB.S.versionOK,'versions compatibles');
  /* 10 tours alternés : déplacement (si possible) puis pose d'un dé */
  let moves=0;
+ const first=A.run('turnSeat');assert.equal(B.run('turnSeat'),first,'même premier joueur des deux côtés (D20)');
  for(let t=0;t<10;t++){
-  const E=t%2?B:A,seat=t%2;
+  const seat=(first+t)%2,E=seat?B:A;
   await until(()=>E.run('cur')===seat&&E.run('mode')==='i'&&!E.api.onlineState().pending);
   const mv=E.run("(()=>{for(const c of cr.filter(c=>c.o===cur)){const R=bfs(c),k=Object.keys(R).find(k=>!at(+k.split(',')[0],+k.split(',')[1]));if(!k)continue;const ox=c.x,oy=c.y;movePlan={unit:c,x:+k.split(',')[0],y:+k.split(',')[1]};confirmMove();if(c.x!==ox||c.y!==oy||!cr.includes(c))return 1}return 0})()");moves+=mv;
   if(mv)await until(()=>E.run('mode')==='i');

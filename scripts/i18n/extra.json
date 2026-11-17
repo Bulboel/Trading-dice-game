@@ -484,5 +484,8 @@
  "D20 pour tous": "D20 for everyone",
  "Le lancer d’initiative au D20 s’applique aussi en 2 contre 2 et en ligne (même résultat pour tous les joueurs).": "The D20 initiative roll now also applies in 2 vs 2 and online (same result for every player).",
  "Sur PC, la touche Espace donne directement le résultat du D20.": "On PC, the Space key shows the D20 result immediately.",
- "Espace ou clic : résultat immédiat": "Space or click: instant result"
+ "Espace ou clic : résultat immédiat": "Space or click: instant result",
+ "Un vrai D20 en 3D": "A real 3D D20",
+ "Le lancer d’initiative utilise désormais un vrai D20 en 3D : il est lancé, roule, rebondit et s’immobilise sur la face tirée, aux couleurs de vos dés de jet.": "The initiative roll now uses a real 3D D20: thrown, rolling, bouncing and coming to rest on the rolled face, in your roll dice colours.",
+ "L’immondice géant : la bonne illustration du ver géant surgit au début du duel.": "The giant filth: the right giant worm illustration appears at the start of the duel."
 }
