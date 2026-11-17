@@ -40,5 +40,5 @@ function render(target,values,rolling=false,won=null){
 function registerSkin(name,appearance){if(typeof name!=='string'||!name||!['face','light','shade','edge','ink'].every(k=>typeof appearance?.[k]==='string'&&/^#[0-9a-f]{6}$/i.test(appearance[k])))return false;skins[name]={...appearance};return true}
 function setSkin(name){if(!Object.hasOwn(skins,name))return false;skin=name;paint();return true}
 window.addEventListener?.('hackenia:settings',event=>setSkin(event.detail.rollSkin));
-window.HackeniaRoll={render,reset,preview,registerSkin,setSkin,skins:()=>Object.keys(skins)};
+window.HackeniaRoll={render,reset,preview,registerSkin,setSkin,skins:()=>Object.keys(skins),palette:()=>({...skins[skin]})/* v357 — couleurs du dé de jet choisi (D20 d’initiative) */};
 })();
