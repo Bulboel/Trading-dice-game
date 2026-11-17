@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v384',title:'Avant ou après',items:['Nouvelle règle officielle : pendant votre tour, vous pouvez déplacer une créature avant ou après avoir posé votre dé (hors PVP en ligne).','Les araignées sont plus petites sur le plateau et ne débordent plus sur les dalles voisines.','Histoire : nouvelle illustration pour une certaine baffe bien méritée…']},
  {id:'v383',title:'Noms longs bien rangés',items:['Les noms d’adversaires un peu longs tiennent maintenant dans leur pastille, sur deux lignes, sans pousser les compteurs hors de l’écran.']},
  {id:'v382',title:'Une carte pour le chapitre IV',items:['Histoire : le chapitre IV a maintenant sa propre carte, de la cité jusqu’aux collines noires.']},
  {id:'v381',title:'Entre primes et barde téméraire',items:['Histoire : le chapitre IV est disponible ! 13 nouvelles parties, de la cité jusqu’aux collines noires.','Quatre nouveaux duels sur des terrains variés, et de nouvelles illustrations.','Une harpe perdue, une barde téméraire… et un canard très particulier.']},
