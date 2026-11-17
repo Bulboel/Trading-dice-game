@@ -7,7 +7,7 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 let pending=null;// duel d'histoire en cours : {id}
 
 // ——— Progression ———
-function prog(){const s=P()?.profile()?.story;return{done:{...(s?.done||{})},rewarded:{...(s?.rewarded||{})}}}
+function prog(){const s=P()?.profile()?.story,done={...(s?.done||{})};/* v370 — partie 10 du chapitre I ajoutée en cours de route : déjà vécue par qui a fini la partie suivante */if(done.c1p9&&!done.c1p8bis)done.c1p8bis=true;return{done,rewarded:{...(s?.rewarded||{})}}}
 function mainline(){return PARTS.filter(p=>!p.optional)}
 function unlocked(id){const part=PARTS.find(p=>p.id===id),d=prog().done;if(!part)return false;if(part.optional){const i=PARTS.indexOf(part);return !!d[PARTS[i-1]?.id]}const line=mainline(),i=line.indexOf(part);return line.slice(0,i).every(p=>d[p.id])}
 function complete(id){const portal=P();if(!portal)return;const pr=portal.profile(),first=!pr.story?.rewarded?.[id];let next=structuredClone(pr);next.story={done:{...(pr.story?.done||{}),[id]:true},rewarded:{...(pr.story?.rewarded||{}),[id]:true}};
