@@ -186,10 +186,12 @@ model-viewer.gesture-ghost{animation:ghost-float 3.4s ease-in-out infinite}
 #boss-hp em{display:block;height:100%;background:linear-gradient(90deg,#c0392b,#e2a23b,#8fd14f);transition:width .5s ease}
 #boss-hp b{font-size:15px}
 #boss-hp span{font:700 13px system-ui;color:#eef6dd}#boss-hp small{font-size:10px;opacity:.75;margin-left:1px}
-/* v361 — boutique sur téléphone : les Bubulles quittent l'en-tête (elles sont sur la scène). L'en-tête garde alors
-   deux boutons seulement : maison et portrait, alignés à droite et centrés verticalement comme dans les autres onglets. */
+/* v362 — boutique sur téléphone : les Bubulles quittent l'en-tête (elles sont sur la scène), mais l'en-tête garde
+   exactement la grille des autres onglets (retour 32px · portrait 34px · colonne des Bubulles 88px laissée vide),
+   pour que la maison et le portrait restent au même endroit d'un onglet à l'autre. */
 @media screen and (max-width:700px){
- body.portal-open[data-portal-view="shop"] #portal .portal-head{grid-template-columns:minmax(0,1fr) auto auto!important;align-items:center!important;column-gap:8px!important}
- body.portal-open[data-portal-view="shop"] #portal .portal-head .portal-back:not([hidden]){grid-column:2!important;grid-row:1!important;align-self:center!important}
- body.portal-open[data-portal-view="shop"] #portal .portal-head .portal-level{grid-column:3!important;grid-row:1!important;align-self:center!important;justify-self:end!important}
+ html body.portal-open[data-portal-view="shop"] #portal .portal-head{grid-template-columns:minmax(0,1fr) 32px 34px 88px!important}
+ html body.portal-open[data-portal-view="shop"] #portal .portal-head .portal-back:not([hidden]){grid-column:2!important;grid-row:1!important}
+ html body.portal-open[data-portal-view="shop"] #portal .portal-head .portal-level{grid-column:3!important;grid-row:1!important;justify-self:center!important}
 }
+
