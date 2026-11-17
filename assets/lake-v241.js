@@ -109,8 +109,25 @@ for(const [x,z] of[[-5.1,-1.2],[5.3,-HZ+1.6],[-4.9,HZ-1.8],[1.6,BZ+1],[-1.8,-BZ-
 // ---------- 8. Ponton, barque, poissons, libellules ----------
 const plank=mat(0x8a6446,{roughness:.8}),plankDark=mat(0x6a4a34);
 {const px=BX+.35,pz=-1.4,len=1.9;for(let k=0;k<9;k++){const b=add(new THREE.BoxGeometry(.22,.04,.7),k%2?plank:plankDark);b.position.set(px+k*.215,TOP-.04,pz)}for(const dz of[-.3,.3])for(let k=0;k<3;k++){const post=add(new THREE.CylinderGeometry(.035,.035,.6,6),plankDark);post.position.set(px+.1+k*.85,TOP-.3,pz+dz)}
- const boat=new THREE.Group();boat.position.set(px+1.15,WL+.08,pz+.75);root.add(boat);const hull=add(new THREE.SphereGeometry(1,14,8,0,Math.PI*2,Math.PI/2,Math.PI/2),plank,boat);hull.scale.set(.62,.2,.24);hull.material=new THREE.MeshStandardMaterial({color:0x8a6446,roughness:.8,side:THREE.DoubleSide});const seat=add(new THREE.BoxGeometry(.06,.02,.4),plankDark,boat);seat.position.y=-.03;const oar=add(new THREE.BoxGeometry(.9,.015,.035),plankDark,boat);oar.position.set(.1,.02,.08);oar.rotation.y=.25;
- updates.push((t,l,moving)=>{boat.position.y=WL+.08+(moving?waveH(boat.position.x,boat.position.z,t)+Math.sin(t*1.1)*.01:0);boat.rotation.z=moving?Math.sin(t*.9)*.04:0;boat.rotation.x=moving?Math.sin(t*.7+1)*.03:0})}
+ // v364 — vraie barque : coque effilée (proue pointue, tableau arrière), bordages, liston, deux bancs et rames rangées ; elle flotte en eau profonde, à côté du ponton
+ const boat=new THREE.Group();const BXp=5.2,BZp=pz+.78;boat.position.set(BXp,WL+.07,BZp);boat.rotation.y=.12;root.add(boat);
+ const L=.6,Wd=.25,Dp=.17,NU=18,NT=9,half=u=>u>0?Wd*Math.pow(Math.max(0,1-u*u),.55):Wd*(.62+.38*Math.pow(1-u*u,.5)),deep=u=>Dp*(1-.35*u*u)-(u>.6?(u-.6)*.12:0),rise=u=>.05*u*u*(u>0?1.4:1);
+ const pos=[],uv=[],idx=[];for(let i=0;i<=NU;i++){const u=-1+2*i/NU;for(let j=0;j<=NT;j++){const th=Math.PI*j/NT;pos.push(u*L,rise(u)-deep(u)*Math.sin(th),half(u)*Math.cos(th));uv.push(i/NU,j/NT)}}
+ for(let i=0;i<NU;i++)for(let j=0;j<NT;j++){const a0=i*(NT+1)+j,b0=a0+NT+1;idx.push(a0,b0,a0+1,b0,b0+1,a0+1)}
+ const hg=new THREE.BufferGeometry();hg.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));hg.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));hg.setIndex(idx);hg.computeVertexNormals();
+ const boardTex=canvasTex(64,128,(g,w,h)=>{const cols=['#8b5a36','#7a4d2e','#95633d','#83552f','#9a6a42','#7c4f30'];for(let k=0;k<8;k++){g.fillStyle=cols[k%cols.length];g.fillRect(0,k*h/8,w,h/8);g.fillStyle='rgba(40,22,12,.55)';g.fillRect(0,k*h/8,w,2)}});boardTex.repeat.set(3,1);
+ add(hg,new THREE.MeshStandardMaterial({map:boardTex,roughness:.78,side:THREE.DoubleSide}),boat);
+ // tableau arrière (planche qui ferme la poupe)
+ {const sh=new THREE.Shape(),hw=half(-1),y0=rise(-1);sh.moveTo(-hw,y0);for(let j=0;j<=NT;j++){const th=Math.PI*j/NT;sh.lineTo(-hw*Math.cos(th),y0-deep(-1)*Math.sin(th))}sh.lineTo(-hw,y0);const tr=add(new THREE.ShapeGeometry(sh),new THREE.MeshStandardMaterial({color:0x6e4529,roughness:.8,side:THREE.DoubleSide}),boat);tr.rotation.y=Math.PI/2;tr.position.x=-L}
+ // liston (bord supérieur) de chaque côté
+ const rimMat=mat(0x4f321f,{roughness:.7});for(const sd of[-1,1]){const pts=[];for(let i=0;i<=NU;i++){const u=-1+2*i/NU;pts.push(new THREE.Vector3(u*L,rise(u)+.008,sd*half(u)))}add(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),24,.016,5,false),rimMat,boat)}
+ // étrave et quille
+ {const pts=[];for(let i=0;i<=8;i++){const u=-1+2*i/8;pts.push(new THREE.Vector3(u*L,rise(u)-deep(u)-.005,0))}add(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),16,.013,4,false),rimMat,boat)}
+ // bancs
+ for(const u of[-.45,.2]){const y=rise(u)-.045,seat=add(new THREE.BoxGeometry(.11,.022,half(u)*1.92*Math.cos(.32)),plankDark,boat);seat.position.set(u*L,y,0)}
+ // deux rames rangées dans la barque
+ for(const sd of[-1,1]){const oar=new THREE.Group();const shaft=add(new THREE.CylinderGeometry(.011,.011,.95,6),plankDark,oar);shaft.rotation.z=Math.PI/2;const blade=add(new THREE.BoxGeometry(.2,.008,.07),plank,oar);blade.position.x=.52;oar.position.set(.02,rise(0)-.035,sd*.1);oar.rotation.set(sd*.12,sd*.06,0);boat.add(oar)}
+ updates.push((t,l,moving)=>{boat.position.y=WL+.07+(moving?waveH(BXp,BZp,t)+Math.sin(t*1.1)*.01:0);boat.rotation.z=moving?Math.sin(t*.9)*.035:0;boat.rotation.x=moving?Math.sin(t*.7+1)*.025:0})}
 const fishGeo=new THREE.SphereGeometry(1,8,6);const fishes=[];if(!software)for(let k=0;k<6;k++){const g=new THREE.Group(),c=k%3===0?0xd36a4a:0x58605a,body=new THREE.Mesh(fishGeo,new THREE.MeshStandardMaterial({color:c,roughness:.5}));body.scale.set(.16,.035,.05);g.add(body);const tail=new THREE.Mesh(new THREE.ConeGeometry(.045,.09,4),body.material);tail.rotation.z=Math.PI/2;tail.position.x=-.18;tail.scale.z=.4;g.add(tail);root.add(g);
  let cx,cz;do{cx=(rnd()*2-1)*(FX-1.4);cz=(rnd()*2-1)*(FZ-1.4)}while(outside(cx,cz)<.7||bedH(cx,cz)>-.35);fishes.push({g,tail,cx,cz,r:.35+rnd()*.35,v:(rnd()>.5?1:-1)*(.25+rnd()*.25),p:rnd()*6})}
 updates.push((t,l,moving)=>{for(const f of fishes){const a=f.p+(moving?t*f.v:0),x=f.cx+Math.cos(a)*f.r,z=f.cz+Math.sin(a)*f.r*.8;f.g.position.set(x,Math.max(bedH(x,z)+.08,-.24),z);f.g.rotation.y=-a-(f.v>0?Math.PI/2:-Math.PI/2);f.tail.rotation.y=moving?Math.sin(t*9+f.p)*.5:0}});

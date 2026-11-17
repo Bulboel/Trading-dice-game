@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v364',title:'Le Colisée',items:['Nouveau terrain neutre « Le Colisée » : une arène antique, ses gradins combles et sa loge impériale. Chaque moitié des gradins soutient un camp : la foule acclame les beaux lancers, hue les ratés et fait parfois la ola !','Nouveau défi « Héros de l’arène » : gagnez trois matchs au Colisée.','Ville de Dassom : les maisons côté adversaire sont plus basses et ne cachent plus le plateau ; arbres et étals ne traversent plus les façades.','Lac rose : la barque a été refaite et flotte à côté du ponton.','Terres embrasées : squelettes plus réalistes, coulées de lave plus nombreuses qui descendent jusqu’aux douves.']},
  {id:'v363',title:'Étincelles de rareté',items:['La gerbe d’étincelles de la cérémonie annonce la rareté : toutes les couleurs pour un divin, blanc, violet et noir pour un Crépitant, blanc, vert et noir pour un Crépitant émeraude.']},
  {id:'v362',title:'En-tête de la boutique',items:['Sur téléphone, le raccourci vers l’accueil et votre portrait restent à la même place dans la boutique que dans les autres onglets.']},
  {id:'v360',title:'Recyclage revu',items:['Nouveau barème de recyclage : 10 communs, 5 peu communs, 2 rares ou 1 légendaire donnent 1 Bubulle ; un divin 50 Bubulles et un Crépitant 100. Les fractions sont gardées et s’ajoutent au recyclage suivant.']},

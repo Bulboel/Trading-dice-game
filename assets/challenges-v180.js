@@ -17,6 +17,7 @@ const definitions=[
  {id:'sky',title:'L’île céleste',goal:'Gagnez un match sur l’île céleste.',kind:'terrain',terrain:'foudre',target:1,reward:'Dés à lancer améthyste',roll:'amethyst'},
  {id:'autumn',title:'Feuilles d’or',goal:'Gagnez trois matchs dans la forêt d’automne.',kind:'terrain',terrain:'automne',target:3,reward:'Dés à lancer ambre et 100 Bubulles',roll:'amber',gold:100},
 {id:'mists',title:'Danse des brumes',goal:'Gagnez trois matchs dans le quartier des brumes féeriques.',kind:'terrain',terrain:'brumes',target:3,reward:'150 Bubulles',gold:150},
+{id:'arena',title:'Héros de l’arène',goal:'Gagnez trois matchs au Colisée, sous les acclamations de la foule.',kind:'terrain',terrain:'colisee',target:3,reward:'150 Bubulles',gold:150},
  {id:'dassom',title:'Citoyen de Dassom',goal:'Gagnez trois matchs dans la ville de Dassom.',kind:'terrain',terrain:'ville',target:3,reward:'150 Bubulles',gold:150},
  {id:'deep',title:'Mineur de fond',goal:'Gagnez trois matchs dans la grotte souterraine.',kind:'terrain',terrain:'grotte',target:3,reward:'150 Bubulles',gold:150},
  {id:'divine',title:'Défier les dieux',goal:'Battez l’adversaire Divin dans « Jouer ».',kind:'divine',target:1,reward:'300 Bubulles',gold:300},
