@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="La dague sans-chiffres">
+<defs><radialGradient id="h" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#b8242c" stop-opacity=".55"/><stop offset=".55" stop-color="#5a0d18" stop-opacity=".18"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+<linearGradient id="bl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0d0d12"/><stop offset=".45" stop-color="#3a3a46"/><stop offset=".55" stop-color="#1b1b22"/><stop offset="1" stop-color="#050507"/></linearGradient>
+<linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0b3"/><stop offset=".45" stop-color="#e2ac52"/><stop offset="1" stop-color="#7a4e18"/></linearGradient>
+<filter id="glow"><feGaussianBlur stdDeviation="1.6"/></filter></defs>
+<circle cx="100" cy="100" r="92" fill="url(#h)"/>
+<g transform="rotate(-38 100 100)">
+<path d="M100 14 L113 40 L113 128 L100 140 L87 128 L87 40 Z" fill="url(#bl)" stroke="#000" stroke-width="2"/>
+<path d="M100 18 L100 136" stroke="#5a5a68" stroke-width="1.4" opacity=".7"/>
+<g fill="none" stroke="#ff3b4a" stroke-width="2.2" stroke-linecap="round" filter="url(#glow)"><path d="M94 52 l6 6 l6 -6"/><path d="M95 70 h10 M100 66 v8"/><path d="M94 88 l12 6 M106 88 l-12 6"/><path d="M96 106 q4 -6 8 0 q-4 6 -8 0"/></g>
+<g fill="none" stroke="#ffd2d6" stroke-width=".9" stroke-linecap="round"><path d="M94 52 l6 6 l6 -6"/><path d="M95 70 h10 M100 66 v8"/><path d="M94 88 l12 6 M106 88 l-12 6"/><path d="M96 106 q4 -6 8 0 q-4 6 -8 0"/></g>
+<path d="M66 138 Q100 128 134 138 Q140 144 134 148 Q100 140 66 148 Q60 144 66 138 Z" fill="url(#g)" stroke="#4a2f0c" stroke-width="2"/>
+<circle cx="100" cy="143" r="7" fill="#9b1a26" stroke="url(#g)" stroke-width="3"/>
+<rect x="93" y="150" width="14" height="30" rx="5" fill="#2a1a12" stroke="#120a06" stroke-width="2"/>
+<path d="M93 158 h14 M93 165 h14 M93 172 h14" stroke="url(#g)" stroke-width="2"/>
+<circle cx="100" cy="186" r="8" fill="url(#g)" stroke="#4a2f0c" stroke-width="2"/></g></svg>

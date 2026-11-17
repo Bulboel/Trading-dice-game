@@ -1,10 +1,10 @@
 // v364 — Le Colisée : terrain neutre, foule qui réagit aux lancers ; Dassom, barque du lac, Terres embrasées.
 const fs=require('fs'),path=require('path'),assert=require('assert');const root=path.join(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const html=read('index.html'),cl=read('assets/clearing-v105.js'),portal=read('assets/portal-v159.js'),coli=read('assets/colosseum-v364.js'),ch=read('assets/challenges-v180.js'),pvp=read('assets/pvp-online.js');
-assert.ok(html.includes("NEUTRAL=['ville','grotte','colisee']")&&html.includes("colisee:{n:'Le Colisée'"),'terrain neutre déclaré');
+assert.ok(html.includes("NEUTRAL=['ville','grotte','colisee','taverne']")&&html.includes("colisee:{n:'Le Colisée'"),'terrain neutre déclaré');
 assert.ok(html.includes("new CustomEvent('hackenia:roll-result',{detail:{seat:k,mine:k===(ONLINE?ONLINE.camp:0),name:P[k],success:!!outcome.success"),'résultat de chaque lancer annoncé');
 assert.ok(cl.includes("import { createColosseum } from './colosseum-v364.js")&&cl.includes("coliScene=createColosseum(decor,!!renderer.isSoftware,BH)")&&cl.includes("coliScene.update(t,light,moving)")&&cl.includes("type==='colisee'"),'scène 3D, mise à jour et obstacle branchés');
-assert.ok(portal.includes("['colisee','🏟️','Le Colisée")&&portal.includes("colisee:{text:")&&portal.includes("['ville','grotte','colisee'].includes(id)"),'proposé dans Jouer');
+assert.ok(portal.includes("['colisee','🏟️','Le Colisée")&&portal.includes("colisee:{text:")&&portal.includes("['ville','grotte','colisee','taverne'].includes(id)"),'proposé dans Jouer');
 assert.ok(pvp.includes("['colisee','🏟️','Le Colisée']"),'proposé en ligne');
 assert.ok(ch.includes("{id:'arena'")&&ch.includes("terrain:'colisee'"),'défi Héros de l’arène');
 assert.ok(coli.includes("addEventListener('hackenia:roll-result'")&&/set\(seat,'cheer'/.test(coli)&&/set\(other,'boo'/.test(coli)&&/set\(seat,'dismay'/.test(coli)&&coli.includes("'ovation'"),'la foule acclame, hue, se désole, ovationne');
@@ -13,4 +13,9 @@ const city=read('assets/city-v246.js'),lake=read('assets/lake-v241.js'),ember=re
 assert.ok(city.includes("house(x,-FZ+1.2,w,1.1,.95+rnd()*.4,0)")&&city.includes('if(hits(x,z,hx,hz))return null'),'Dassom : maisons basses côté adversaire, pas de chevauchement');
 assert.ok(lake.includes('vraie barque')&&!lake.includes('hull.scale.set(.62,.2,.24)'),'barque refaite');
 assert.ok(ember.includes('volcanoFeet')&&ember.includes('function fissure(')&&ember.includes("ribcage(g,s,pose===2?5:6)"),'coulées refaites, squelettes à 6 paires de côtes');
-console.log('PASS v364 colisée');
+const tav=read('assets/tavern-v368.js'),story=read('assets/story-data-v193.js');
+assert.ok(html.includes("taverne:{n:'La taverne du Griffon Doré'")&&cl.includes("import { createTavern } from './tavern-v368.js")&&cl.includes("tavernScene=createTavern(decor,!!renderer.isSoftware,BH,{spawnWalker,spawnFighter})")&&portal.includes("['taverne','🍺','La taverne du Griffon Doré"),'v368 — taverne branchée');
+assert.ok(tav.includes('panneau d\'affichage magique')&&tav.includes('drawRunes')&&tav.includes("helpers.spawnFighter"),'taverne : panneau magique, habitués');
+assert.ok(story.includes('"foe":"Maebril","terrain":"taverne"'),'duel de Maebril à la taverne');
+const C=require('../assets/challenges-v180.js');for(const t of['brumes','colisee','taverne'])assert.ok(C.TERRAINS.includes(t),'victoires comptées sur '+t);
+console.log('PASS v364 colisée + v368 taverne');
