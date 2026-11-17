@@ -470,5 +470,15 @@
  "L’immondice terrassée": "The filth slain",
  "Vainquez le ver géant en réduisant ses points de vie à zéro.": "Defeat the giant worm by bringing its hit points to zero.",
  "Boubourse en peau de ver géant": "Giant worm skin pouch",
- "Peau de ver géant": "Giant worm skin"
+ "Peau de ver géant": "Giant worm skin",
+ "Qui commence ? Lancer d’initiative": "Who goes first? Initiative roll",
+ "Avant chaque partie contre un adversaire du jeu, chaque camp lance un D20 : le plus haut lancer commence (égalité : on relance). Un 20 naturel rapporte un dé bonus. Le D20 prend l’apparence de vos dés de jet.": "Before every game against an in-game opponent, each side rolls a D20: the highest roll goes first (a tie is rerolled). A natural 20 grants a bonus die. The D20 uses your roll dice look.",
+ "L’immondice géant : la vraie carte du ver géant surgit dès le début du duel.": "The giant filth: the giant worm’s own card appears right at the start of the duel.",
+ "Qui commence ?": "Who goes first?",
+ "Lancer d’initiative": "Initiative roll",
+ "Les dés roulent…": "The dice are rolling…",
+ "Toucher pour passer": "Tap to skip",
+ "Vous": "You",
+ "20 naturel ! +1 dé bonus": "Natural 20! +1 bonus die",
+ "Vous commencez !": "You go first!"
 }
