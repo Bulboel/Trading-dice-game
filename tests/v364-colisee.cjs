@@ -13,8 +13,8 @@ const city=read('assets/city-v246.js'),lake=read('assets/lake-v241.js'),ember=re
 assert.ok(city.includes("house(x,-FZ+1.2,w,1.1,.95+rnd()*.4,0)")&&city.includes('if(hits(x,z,hx,hz))return null'),'Dassom : maisons basses côté adversaire, pas de chevauchement');
 assert.ok(lake.includes('vraie barque')&&!lake.includes('hull.scale.set(.62,.2,.24)'),'barque refaite');
 assert.ok(ember.includes('volcanoFeet')&&ember.includes('function fissure(')&&ember.includes("ribcage(g,s,pose===2?5:6)"),'coulées refaites, squelettes à 6 paires de côtes');
-const tav=read('assets/tavern-v368.js'),story=read('assets/story-data-v193.js');
-assert.ok(html.includes("taverne:{n:'La taverne du Griffon Doré'")&&cl.includes("import { createTavern } from './tavern-v368.js")&&cl.includes("tavernScene=createTavern(decor,!!renderer.isSoftware,BH,{spawnWalker,spawnFighter})")&&portal.includes("['taverne','🍺','La taverne du Griffon Doré"),'v368 — taverne branchée');
+const tav=read('assets/tavern-v369.js'),story=read('assets/story-data-v193.js');
+assert.ok(html.includes("taverne:{n:'La taverne du Griffon Doré'")&&cl.includes("import { createTavern } from './tavern-v369.js")&&cl.includes("tavernScene=createTavern(decor,!!renderer.isSoftware,BH,{spawnWalker,spawnFighter})")&&portal.includes("['taverne','🍺','La taverne du Griffon Doré"),'v368 — taverne branchée');
 assert.ok(tav.includes('panneau d\'affichage magique')&&tav.includes('drawRunes')&&tav.includes("helpers.spawnFighter"),'taverne : panneau magique, habitués');
 assert.ok(story.includes('"foe":"Maebril","terrain":"taverne"'),'duel de Maebril à la taverne');
 const C=require('../assets/challenges-v180.js');for(const t of['brumes','colisee','taverne'])assert.ok(C.TERRAINS.includes(t),'victoires comptées sur '+t);
