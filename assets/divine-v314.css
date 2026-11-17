@@ -84,3 +84,19 @@
 .dv-hero model-viewer.dv-model{position:absolute;left:4%;bottom:-26%;width:92%;height:104%;background:transparent;--poster-color:transparent;pointer-events:none;opacity:0;transition:opacity .7s ease-out,translate .9s cubic-bezier(.2,1.3,.35,1);filter:drop-shadow(0 10px 18px #000a) drop-shadow(0 0 22px var(--hero-glow,#ffd36b))}
 .dv-hero model-viewer.dv-model.ready{opacity:1}
 .dv-go .dv-hero model-viewer.dv-model:not(.ready){translate:0 14%}
+/* v363 — gerbe d'étincelles du bas : sa couleur annonce la rareté dès les premières secondes.
+   Divin : toutes les couleurs · Crépitant v1 : blanc, violet, noir · Crépitant v2 : blanc, vert, noir — étincelantes. */
+.dv-dialog:not(.dv-legend):not(.dv-crep):not(.dv-emerald) .dv-feathers i:nth-child(6n+1){color:#ff8a8a;text-shadow:0 0 10px #ff4d6d,0 0 20px #ff4d6d}
+.dv-dialog:not(.dv-legend):not(.dv-crep):not(.dv-emerald) .dv-feathers i:nth-child(6n+2){color:#ffd27a;text-shadow:0 0 10px #ff9a2e,0 0 20px #ffb12e}
+.dv-dialog:not(.dv-legend):not(.dv-crep):not(.dv-emerald) .dv-feathers i:nth-child(6n+3){color:#fff6a0;text-shadow:0 0 10px #ffe23a,0 0 20px #e8d000}
+.dv-dialog:not(.dv-legend):not(.dv-crep):not(.dv-emerald) .dv-feathers i:nth-child(6n+4){color:#a8ffb8;text-shadow:0 0 10px #3ee86a,0 0 20px #19c48a}
+.dv-dialog:not(.dv-legend):not(.dv-crep):not(.dv-emerald) .dv-feathers i:nth-child(6n+5){color:#a8e4ff;text-shadow:0 0 10px #3aa8ff,0 0 20px #4d6dff}
+.dv-dialog:not(.dv-legend):not(.dv-crep):not(.dv-emerald) .dv-feathers i:nth-child(6n){color:#e3b0ff;text-shadow:0 0 10px #b04dff,0 0 20px #ff6ad5}
+.dv-crep .dv-feathers i:nth-child(3n+1),.dv-emerald .dv-feathers i:nth-child(3n+1){color:#fff;text-shadow:0 0 8px #fff,0 0 18px #ffffffaa}
+.dv-crep .dv-feathers i:nth-child(3n+2){color:#a54dff;text-shadow:0 0 8px #8a2cff,0 0 18px #8a2cff,0 0 30px #5a12c8}
+.dv-emerald .dv-feathers i:nth-child(3n+2){color:#22e07a;text-shadow:0 0 8px #10c860,0 0 18px #10c860,0 0 30px #087a3c}
+.dv-crep .dv-feathers i:nth-child(3n),.dv-emerald .dv-feathers i:nth-child(3n){color:#0b0612;text-shadow:0 0 2px #fff,0 0 9px #ffffffcc,0 0 18px var(--dv-dark-glow,#9b4dff)}
+.dv-emerald{--dv-dark-glow:#22e07a}
+.dv-go:not(.dv-legend) .dv-feathers i{animation:dv-feather var(--d) var(--dl) ease-in infinite,dv-glint .55s calc(var(--dl) + var(--d)*.13) ease-in-out infinite alternate}
+@keyframes dv-glint{0%{filter:brightness(.8)}100%{filter:brightness(1.35) saturate(1.3) drop-shadow(0 0 3px #fff)}}
+.dv-reduced .dv-feathers i{animation:none!important}
