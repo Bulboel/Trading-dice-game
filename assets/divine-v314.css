@@ -100,8 +100,8 @@
 .dv-go:not(.dv-legend) .dv-feathers i{animation:dv-feather var(--d) var(--dl) ease-in infinite,dv-glint .55s calc(var(--dl) + var(--d)*.13) ease-in-out infinite alternate}
 @keyframes dv-glint{0%{filter:brightness(.8)}100%{filter:brightness(1.35) saturate(1.3) drop-shadow(0 0 3px #fff)}}
 .dv-reduced .dv-feathers i{animation:none!important}
-/* v365 — rayons de fond plus fins et plus francs (moins transparents) ; couleurs propres aux Crépitants */
-.dv-rays{background:repeating-conic-gradient(from 0deg,#ff6b8bdd 0 1.3deg,transparent 1.3deg 7deg,#ffd36bdd 7deg 8.3deg,transparent 8.3deg 14deg,#7af0b5dd 14deg 15.3deg,transparent 15.3deg 21deg,#6fc8ffdd 21deg 22.3deg,transparent 22.3deg 28deg,#c89cffdd 28deg 29.3deg,transparent 29.3deg 35deg)}
-.dv-dialog.dv-crep .dv-rays{filter:none;background:repeating-conic-gradient(from 0deg,#000000ee 0 1.4deg,transparent 1.4deg 7deg,#a54dffdd 7deg 8.3deg,transparent 8.3deg 14deg,#ff7ac8dd 14deg 15.3deg,transparent 15.3deg 21deg,#ffffffdd 21deg 22.3deg,transparent 22.3deg 28deg)}
-.dv-dialog.dv-emerald .dv-rays{filter:none;background:repeating-conic-gradient(from 0deg,#000000ee 0 1.4deg,transparent 1.4deg 7deg,#22e07add 7deg 8.3deg,transparent 8.3deg 14deg,#ffe03add 14deg 15.3deg,transparent 15.3deg 21deg,#ffffffdd 21deg 22.3deg,transparent 22.3deg 28deg)}
-.dv-legend .dv-rays{background:repeating-conic-gradient(from 0deg,#ffb12edd 0 1.4deg,transparent 1.4deg 7deg,#ff7a2acc 7deg 8.2deg,transparent 8.2deg 14deg)}
+/* v372 — rayons fins et francs, espacés régulièrement : la période du motif divise exactement 360° (plus de rayons collés au raccord) */
+.dv-rays{background:repeating-conic-gradient(from 0deg,#ff6b8bdd 0deg 1.3deg,transparent 1.3deg 7.2deg,#ffd36bdd 7.2deg 8.5deg,transparent 8.5deg 14.4deg,#7af0b5dd 14.4deg 15.7deg,transparent 15.7deg 21.6deg,#6fc8ffdd 21.6deg 22.9deg,transparent 22.9deg 28.8deg,#c89cffdd 28.8deg 30.1deg,transparent 30.1deg 36deg)}
+.dv-dialog.dv-crep .dv-rays{filter:none;background:repeating-conic-gradient(from 0deg,#000000ee 0deg 1.4deg,transparent 1.4deg 7.5deg,#a54dffdd 7.5deg 8.9deg,transparent 8.9deg 15deg,#ff7ac8dd 15deg 16.4deg,transparent 16.4deg 22.5deg,#ffffffdd 22.5deg 23.9deg,transparent 23.9deg 30deg)}
+.dv-dialog.dv-emerald .dv-rays{filter:none;background:repeating-conic-gradient(from 0deg,#000000ee 0deg 1.4deg,transparent 1.4deg 7.5deg,#22e07add 7.5deg 8.9deg,transparent 8.9deg 15deg,#ffe03add 15deg 16.4deg,transparent 16.4deg 22.5deg,#ffffffdd 22.5deg 23.9deg,transparent 23.9deg 30deg)}
+.dv-legend .dv-rays{background:repeating-conic-gradient(from 0deg,#ffb12edd 0deg 1.4deg,transparent 1.4deg 7.5deg,#ff7a2acc 7.5deg 8.9deg,transparent 8.9deg 15deg)}
