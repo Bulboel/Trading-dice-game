@@ -3,7 +3,7 @@ const fs=require('fs'),vm=require('vm'),path=require('path'),assert=require('ass
 const html=read('index.html'),css=read('assets/progression-v219.css'),me=read('assets/match-end-v198.js'),mecss=read('assets/match-end-v198.css'),portal=read('assets/portal-v159.js'),settings=read('assets/settings-v171.js'),combat=read('assets/combat.js');
 // Tours rapides
 assert.ok(settings.includes('fast:false')&&settings.includes('fast:!!s.fast')&&portal.includes('name="fast"'),'Fast turns setting');
-assert.ok(html.includes('const SPD=()=>window.HackeniaSettings?.get?.().fast?.5:1')&&html.includes('Math.round(145*SPD())')&&html.includes('900*SPD()')&&html.includes('1000*SPD()'),'Dead times scaled');
+assert.ok(html.includes('const SPD=()=>window.HackeniaSettings?.get?.().fast?.5:1')&&html.includes('Math.round(105*SPD())')&&html.includes('900*SPD()')&&html.includes('1000*SPD()'),'Dead times scaled');
 assert.ok(combat.includes('fast?1400:2500'),'Shorter combats in fast mode');assert.ok(html.includes('id="fast"')&&html.includes('function toggleFast()'),'In-game ⏩ toggle');
 // Espace
 assert.ok(html.includes("addEventListener?.('keydown',e=>{if(e.code!=='Space'")&&html.includes("if(mode==='p'&&pc&&cells().length){e.preventDefault();lancer()")&&html.includes('confirmMove();return}'),'Space launches the placed die or confirms the move');
