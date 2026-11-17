@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v382',title:'Une carte pour le chapitre IV',items:['Histoire : le chapitre IV a maintenant sa propre carte, de la cité jusqu’aux collines noires.']},
  {id:'v381',title:'Entre primes et barde téméraire',items:['Histoire : le chapitre IV est disponible ! 13 nouvelles parties, de la cité jusqu’aux collines noires.','Quatre nouveaux duels sur des terrains variés, et de nouvelles illustrations.','Une harpe perdue, une barde téméraire… et un canard très particulier.']},
  {id:'v379',title:'Droit au duel',items:['Histoire : quand vous avez déjà tenté le duel d’une partie, un bouton « ⏩ Passer au duel » vous y emmène directement, sans relire la narration. Après une défaite, « ↻ Rejouer le duel » relance aussitôt le combat.']},
  {id:'v378',title:'Une partie avec Hilam',items:['Histoire, chapitre III : à la fin de la partie 2, Hilam vous propose une partie de dés pour se détendre dans le bureau des jumeaux.','Le lancer de dés en partie est plus rapide.']},
