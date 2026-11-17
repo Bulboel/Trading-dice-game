@@ -3,7 +3,7 @@
 const fs=require('fs'),path=require('path'),assert=require('assert');const root=path.join(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const html=read('index.html'),clearing=read('assets/clearing-v105.js'),portal=read('assets/portal-v159.js'),sw=read('sw.js');
 // Moteur : terrains et éléments favorisés
-assert.ok(html.includes("TL=['terre','feu','glace','vent','eau','foudre','ville','grotte','automne','noel','brumes']"));
+assert.ok(html.includes("TL=['terre','feu','glace','vent','eau','foudre','ville','grotte','automne','noel','brumes','colisee']"));
 const boost=eval('('+html.match(/const TERRAIN_BOOST=(\{[^}]+\})/)[1]+')');
 assert.deepStrictEqual(boost,{automne:['terre','vent'],noel:['foudre','glace','feu']});
 assert.ok(html.includes('const terrainBonus=els.some(boosted)?(c.t2?2:1):0')&&!/el===TL\[TER\]/.test(html),'le bonus de terrain passe partout par boosted()');
