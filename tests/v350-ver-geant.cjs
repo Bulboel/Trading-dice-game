@@ -17,7 +17,7 @@ const atk=run(`pwc(cr[0],${X},${Y})`);
 run(`mv(cr[0],${B.x},${B.y})`);
 assert.equal(run('boss.hp'),25-atk,'le ver perd la valeur d’attaque de la créature');assert.equal(run('cr.length'),0,'la créature est engloutie');assert.deepEqual(run('kills.slice()'),[0,0],'aucun ennemi vaincu compté pour l’adversaire');
 run(`boss.hp=2;moved=0;cr=[{id:2,o:0,x:${X},y:${Y},mi:0,mn:'Test',em:'',born:-1,lv:1}];`);run(`mv(cr[0],${B.x},${B.y+2})`);
-assert.equal(run('boss'),null,'à zéro, le ver disparaît');assert.deepEqual(run('kills.slice()'),[1,0],'achever le ver compte comme un duel gagné');assert.ok(!run(`blocked(${B.x},${B.y})`),'ses cases redeviennent libres');
+assert.equal(run('boss'),null,'à zéro, le ver disparaît');assert.equal(run('over'),1,'achever le ver fait gagner la partie');assert.equal(run('matchResult.winner'),0,'victoire du camp qui l’a achevé');assert.ok(!run(`blocked(${B.x},${B.y})`),'ses cases redeviennent libres');
 // v352 — le geste du joueur : créature sélectionnée, toucher le ver prépare l’attaque, confirmer la lance
 run(`render=()=>{};boss={x:Math.floor(W/2)-1,y:Z,w:2,h:3,hp:25,max:25};ai=true;ONLINE=null;cur=0;mode='i';moved=0;over=0;placedThisTurn=0;kills=[0,0];b=[...Array(H)].map(()=>Array(W).fill(null));`);
 {const bb=run('boss'),X2=bb.x,Y2=bb.y+bb.h;run(`b[${Y2}][${X2}]={o:0,v:4};b[${Y2+1}][${X2}]={o:0,v:3};cr=[{id:3,o:0,x:${X2},y:${Y2+1},mi:0,mn:'Test',em:'',born:-1,lv:1}];sel=cr[0];movePlan=null;`);
@@ -30,4 +30,4 @@ run(`boss={x:Math.floor(W/2)-1,y:Z,w:2,h:3,hp:25,max:25};kills=[0,0];b=[...Array
  run(`b[${Y3+1}][${X3}]={o:0,v:2};b[${Y3+2}][${X3}]={o:0,v:2};cr=[{id:5,o:0,x:${X3},y:${Y3+2},mi:0,mn:'Test',em:'',born:-1,lv:1}];moved=0;placedThisTurn=0;`);const hp0=run('boss.hp');run(`mv(cr[0],${X3},${Y3+1})`);
  assert.ok(run('boss.hp')<hp0&&run('cr.length')===0,'s’arrêter au contact du ver le frappe aussitôt');
  run(`cr=[{id:6,o:1,x:${X3},y:${Y3},mi:0,mn:'Larve',em:'',born:-1,lv:1}];`);const hp1=run('boss.hp');run('resolve(cr[0])');assert.equal(run('boss.hp'),hp1,'les alliés du ver ne le frappent pas');assert.equal(run('cr.length'),1)}
-console.log('PASS: ver géant 2 × 3 bloquant, 25 PV, dégâts = attaque, créature engloutie sans point pour l’adversaire, duel gagné à zéro, partie 7 du chapitre II.');
+console.log('PASS: ver géant 2 × 3 bloquant, 25 PV, dégâts = attaque, créature engloutie sans point pour l’adversaire, victoire immédiate à zéro, partie 7 du chapitre II.');
