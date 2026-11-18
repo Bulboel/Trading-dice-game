@@ -3,6 +3,8 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v386',title:'Une carte plein écran',items:['Histoire : la carte occupe toute la hauteur de l’écran, la fiche de la partie et son bouton restent visibles sans défiler.','Sur ordinateur, on peut enchaîner les glissements sur la carte sans avoir à recliquer.']},
+ {id:'v385',title:'Écrasement à niveau égal',items:['Un dé de niveau égal ou supérieur posé sur une créature adverse l’écrase désormais : même les divins peuvent être écrasés.','Quand la face qui fait apparaître la créature tombe sur un personnage qu’on ne peut pas écraser, sa case s’affiche en rouge vif.']},
  {id:'v384',title:'Avant ou après',items:['Nouvelle règle officielle : pendant votre tour, vous pouvez déplacer une créature avant ou après avoir posé votre dé (hors PVP en ligne).','Les araignées sont plus petites sur le plateau et ne débordent plus sur les dalles voisines.','Histoire : nouvelle illustration pour une certaine baffe bien méritée…']},
  {id:'v383',title:'Noms longs bien rangés',items:['Les noms d’adversaires un peu longs tiennent maintenant dans leur pastille, sur deux lignes, sans pousser les compteurs hors de l’écran.']},
  {id:'v382',title:'Une carte pour le chapitre IV',items:['Histoire : le chapitre IV a maintenant sa propre carte, de la cité jusqu’aux collines noires.']},

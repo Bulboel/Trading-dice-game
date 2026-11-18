@@ -1,23 +1,23 @@
 /* Presentation adapter. Game legality, turns, decks and combat stay in index.html. */
 import * as THREE from 'three';
 import { orientBoardModel } from './model-facing.js?v=20261103-v73';
-import { createEmberlands } from './ember-v239.js?v=20270102-v384';
-import { attachHeroParts } from './hero-parts.js?v=20270102-v384';
-import { applyLook } from './variant-look.js?v=20270102-v384';
-import { createLake } from './lake-v241.js?v=20270102-v384';
+import { createEmberlands } from './ember-v239.js?v=20270102-v386';
+import { attachHeroParts } from './hero-parts.js?v=20270102-v386';
+import { applyLook } from './variant-look.js?v=20270102-v386';
+import { createLake } from './lake-v241.js?v=20270102-v386';
 import { createSkyIsland } from './sky-v231.js?v=20261128-v247';
 import { createWindHighlands } from './wind-v232.js?v=20261123-v242';
 import { createWoodland } from './woodland-v238.js?v=20261119-v238';
 import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20261125-v244';
-import { createFrostRoad } from './frost-v240.js?v=20270102-v384';
-import { createCity } from './city-v246.js?v=20270102-v384';
-import { createColosseum } from './colosseum-v364.js?v=20270102-v384';
-import { createTavern } from './tavern-v369.js?v=20270102-v384';
-import { createCave } from './cave-v246.js?v=20270102-v384';
+import { createFrostRoad } from './frost-v240.js?v=20270102-v386';
+import { createCity } from './city-v246.js?v=20270102-v386';
+import { createColosseum } from './colosseum-v364.js?v=20270102-v386';
+import { createTavern } from './tavern-v369.js?v=20270102-v386';
+import { createCave } from './cave-v246.js?v=20270102-v386';
 import { createAutumn } from './autumn-v253.js?v=20261202-v253';
-import { createFairyMists } from './fairy-v335.js?v=20270102-v384';
+import { createFairyMists } from './fairy-v335.js?v=20270102-v386';
 import { createNoel } from './noel-v253.js?v=20261202-v253';
-import { createElementWheel } from './element-wheel-v252.js?v=20270102-v384';
+import { createElementWheel } from './element-wheel-v252.js?v=20270102-v386';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -50,7 +50,7 @@ function drawPlacementLens(){
  const left=Math.max(0,Math.min(r.width-crop,centerX-crop/2)),top=Math.max(0,Math.min(r.height-crop,centerY-crop/2)),scale=canvas.width/r.width;
  lensContext.fillStyle='#20392c';lensContext.fillRect(0,0,320,320);lensContext.drawImage(canvas,left*scale,top*scale,crop*scale,crop*scale,0,0,320,320);
  const fx=(focus.x-left)/crop*320,fy=(focus.y-top)/crop*320;lensContext.strokeStyle='#fff0ba';lensContext.lineWidth=2;lensContext.setLineDash([5,4]);lensContext.strokeRect(fx-17,fy-17,34,34);lensContext.setLineDash([]);
- lensCaption.textContent=state.valid?'Placement valide':'Placement impossible';placementLens.dataset.valid=String(state.valid);
+ lensCaption.textContent=state.valid?'Placement valide':state.previewBlocked?'Face ✦ sur une créature':'Placement impossible';placementLens.dataset.valid=String(state.valid);
  // Move aside if the placement itself is near the upper-left corner.
  placementLens.classList.toggle('right',r.left+focus.x<190&&r.top+focus.y<220);
 }
@@ -559,6 +559,7 @@ function sync(){state=game.snapshot();updateLayout();const type=previewMode?prev
  const liveCr=new Set();for(const k of state.cr){const key=k.id;liveCr.add(key);let g=creatures.get(key);if(!g){g=creature(k);g.position.set(k.x-3.5,.23,k.y-HZ);creatures.set(key,g)}if(g.userData.modelId!==k.mi){g.userData.mixer?.stopAllAction();if(g.userData.model){g.remove(g.userData.model);g.userData.model=null}g.userData.mixer=null;g.children.forEach(o=>o.visible=true);attachCreatureModel(g,k)}g.userData.k=k;const c=state.b[k.y][k.x];g.userData.target=new THREE.Vector3(k.x-3.5,.23+(c&&!c.f?.28:0),k.y-HZ);}
  for(const[key,g]of creatures)if(!liveCr.has(key)){pieces.remove(g);g.userData.fadeMaterials?.forEach(m=>m.dispose());g.userData.mixer?.stopAllAction();g.traverse(o=>{if(o.isMesh&&!o.userData.imported&&o.geometry!==sphere)o.geometry.dispose()});creatures.delete(key)}
  disposeHighlights();const previewElement=game.monsters[state.die]?.el,previewColor=game.elementColors[previewElement]||0xf2d880;for(const a of state.preview)if(a[0]>=0&&a[0]<8&&a[1]>=0&&a[1]<BH&&!game.isBlocked(a[0],a[1])){const c=state.b[a[1]][a[0]];highlight(a[0],a[1],previewColor,.24+(c&&!c.f?.28:0),.88)}
+  if(state.previewBlocked){const[bx,by]=state.previewBlocked,c=state.b[by]?.[bx];for(const lv of[.245,.255])highlight(bx,by,0xff2a2a,lv+(c&&!c.f?.28:0),.95)}/* v385 — face ✦ sur une créature non écrasable : case rouge vif */
  if(state.reachable)for(const key of Object.keys(state.reachable)){if(state.reachable[key]===null)continue;const[x,y]=key.split(',').map(Number),k=state.cr.find(c=>c.x===x&&c.y===y);if(k&&k.o===state.cur)continue;const c=state.b[y][x];highlight(x,y,k?0xed806d:0xa5e2d2,.25+(c&&!c.f?.28:0))}
  if(state.tutorial)for(const [x,y] of state.tutorial){const c=state.b[y]?.[x];highlight(x,y,0xffa800,.265+(c&&!c.f?.28:0),.9)}  if(state.movePlan){const p=state.movePlan,x=p.previewX??p.x,y=p.previewY??p.y,c=state.b[y]?.[x];highlight(x,y,0xff303f,.29+(c&&!c.f?.28:0),.95)}
  updateZoneLabels();updateLotus();

@@ -145,7 +145,7 @@ const LESSONS=[
   success:()=>`<p>✓ <b>Posé sans lancer !</b> Idéal pour relier une route ou préparer une bonne dalle.</p>`},
  {title:'Un tour, en bref',kind:'info',focus:'header',
   setup(){reset();path(3,[11,10,9],0,[3,2,3]);unit(0,3,10,D.kala);path(4,[0,1,2],1,[3,3,3]);unit(1,4,1,D.grimgors);pl[0].h=[D.fourmi,D.tortue,D.bosco,D.lapin,D.sentierTerre]},
-  text:()=>`<p><b>À chaque tour :</b></p><ol><li><b>Si tu veux</b>, déplace <b>une</b> créature.</li><li><b>Puis pose un dé</b> : le tour se termine.</li></ol><p>Un dé de <b>niveau supérieur</b> posé sur une créature adverse l’<b>écrase</b>. En haut : les scores, ta <b>Boubourse</b> et l’<b>Historique</b>.</p>`},
+  text:()=>`<p><b>À chaque tour :</b></p><ol><li><b>Si tu veux</b>, déplace <b>une</b> créature.</li><li><b>Puis pose un dé</b> : le tour se termine.</li></ol><p>Un dé de <b>niveau égal ou supérieur</b> posé sur une créature adverse l’<b>écrase</b>. En haut : les scores, ta <b>Boubourse</b> et l’<b>Historique</b>.</p>`},
  {title:'Tu es prêt !',kind:'final',lessonEnd:true,
   setup(){reset()},
   text:()=>`<p>🏆 <b>Pour gagner :</b> 2 créatures dans le camp adverse, <b>ou</b> 4 duels remportés.</p><p>Bonne aventure dans Hackénia !</p>`}]}
