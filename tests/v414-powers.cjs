@@ -14,7 +14,7 @@ assert.ok(!S.canLearn(p1,'vision',1));assert.ok(S.canLearn(p3,'vision',1));asser
 const a=S.learn(p3,'impact',1);assert.deepEqual(a.skills,{vision:0,impact:1,block:0});assert.equal(S.points(a),0);assert.equal(S.learn(a,'block',1),null);
 const b5=S.learn({...a,xp:500},'impact',2);assert.equal(b5.skills.impact,2);assert.equal(S.points(b5),0);
 assert.ok(S.canLearn({...a,xp:500},'block',1));assert.ok(!S.canLearn({xp:500,skills:{block:0}},'block',2));
-assert.ok(S.treeHTML(p5,'').includes('sk-node open'));
+assert.ok(S.treeHTML(p5,'').includes('sk-node r1 open'));
 // Moteur : partie solo contre l'ordinateur
 const fresh=()=>run(`render=()=>{};ai=true;TEAM2=false;ONLINE=null;rewardMode='play';TER=TL.indexOf('ville');LAYOUT='classique';b=Array.from({length:H},()=>Array(W).fill(null));cr=[];walls=[];traps=[];lotus=[];boss=null;scoutUntil=[0,0];turnNumber=3;cur=0;over=0;mode='i';moved=0;placedThisTurn=0;kills=[0,0];pl=[{h:[0,1],q:[],s:0},{h:[2,3],q:[],s:0}];msg='';initPowers()`);
 skills={vision:2,impact:1,block:1};fresh();

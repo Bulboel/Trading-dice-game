@@ -23,19 +23,28 @@ function learn(p,key,rank){if(!canLearn(p,key,rank))return null;const n=structur
 /* Pouvoirs utilisables en partie : charges et puissance. */
 function powers(p){const o=owned(p);return{vision:o.vision,impact:o.impact,block:o.block}}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-/* Sphérier : SVG centré sur le héros, trois branches à 120°, rang 1 (niveau 3) puis rang 2 (niveau 5). */
-function treeHTML(p,avatar){const o=owned(p),pts=points(p),lvl=levelOf(p),C=160,R1=76,R2=148;
- const node=(d,rank,ang)=>{const r=rank===1?R1:R2,x=C+Math.cos(ang)*r,y=C+Math.sin(ang)*r,have=o[d.key]>=rank,can=canLearn(p,d.key,rank),need=rank===1?3:5,locked=lvl<need;
+/* v417 — Sphérier en galaxie : nébuleuses, champ d'étoiles, orbites qui tournent ; chaque pouvoir est un dé qui pivote sur lui-même
+   (D4 pour la v.1, D8 pour la v.2), relié au héros par des constellations. */
+const die=(kind,pal,off)=>window.HackeniaPolyDie?window.HackeniaPolyDie(kind,pal,off):'<span class="sk-fallback">✦</span>';
+function treeHTML(p,avatar){const o=owned(p),pts=points(p),lvl=levelOf(p),C=160,R1=76,R2=150;
+ const node=(d,rank,ang,i)=>{const r=rank===1?R1:R2,x=C+Math.cos(ang)*r,y=C+Math.sin(ang)*r,have=o[d.key]>=rank,can=canLearn(p,d.key,rank),need=rank===1?3:5,locked=lvl<need;
   const st=have?'owned':can?'open':'locked';
-  return{x,y,html:`<button type="button" class="sk-node ${st}" style="left:${(x/3.2).toFixed(2)}%;top:${(y/3.2).toFixed(2)}%;--c:${d.color}" data-action="skill-node" data-skill="${d.key}" data-rank="${rank}" aria-label="${esc(d.name)} v.${rank} : ${have?'appris':can?'disponible':locked?'niveau '+need+' requis':'verrouillé'}"><span class="sk-orb" aria-hidden="true">${d.icon}</span><span class="sk-tag">${esc(d.name)} <b>v.${rank}</b></span></button>`,st}};
- let lines='',nodes='';DEFS.forEach((d,i)=>{const a=-Math.PI/2+i*2*Math.PI/3,n1=node(d,1,a),n2=node(d,2,a);
-  lines+=`<line x1="${C}" y1="${C}" x2="${n1.x}" y2="${n1.y}" class="sk-link ${n1.st}" style="--c:${d.color}"/><line x1="${n1.x}" y1="${n1.y}" x2="${n2.x}" y2="${n2.y}" class="sk-link ${n2.st}" style="--c:${d.color}"/>`;nodes+=n1.html+n2.html});
- const rings=`<circle cx="${C}" cy="${C}" r="${R1}" class="sk-ring"/><circle cx="${C}" cy="${C}" r="${R2}" class="sk-ring"/>`;
- const center=`<div class="sk-core" aria-hidden="true">${avatar?`<img src="${esc(avatar)}" alt="">`:'<span>✦</span>'}<small>Niv. ${lvl}</small></div>`;
- return `<section class="skill-tree" aria-label="Arbre de compétences"><div class="sk-head"><p class="sk-points">${pts?`<b>${pts}</b> point${pts>1?'s':''} à dépenser`:lvl<3?'Premier pouvoir au niveau 3':lvl<5&&spent(p)>=1?'Prochain point au niveau 5':'Tous les points sont dépensés'}</p></div>
- <div class="sk-sphere"><svg viewBox="0 0 320 320" aria-hidden="true">${rings}${lines}</svg>${center}${nodes}</div>
- <p class="sk-help">Niveau 3 : un premier pouvoir au choix. Niveau 5 : un deuxième pouvoir, ou la version améliorée du premier. Touchez une sphère pour la découvrir. Les pouvoirs s’utilisent en partie, y compris en ligne en 1 contre 1.</p></section>`}
+  return{x,y,st,html:`<button type="button" class="sk-node r${rank} ${st}" style="left:${(x/3.2).toFixed(2)}%;top:${(y/3.2).toFixed(2)}%;--c:${d.color}" data-action="skill-node" data-skill="${d.key}" data-rank="${rank}" aria-label="${esc(d.name)} v.${rank} : ${have?'appris':can?'disponible':locked?'niveau '+need+' requis':'verrouillé'}"><span class="sk-halo" aria-hidden="true"></span><span class="sk-die" aria-hidden="true">${die(rank>1?'d8':'d4',have||can?d.key:'lock',i*2.1+rank)}<span class="sk-glyph">${have?d.icon:can?d.icon:'🔒'}</span></span>${have?'<span class="sk-spark" aria-hidden="true"><i></i><i></i><i></i></span>':''}<span class="sk-tag">${esc(d.name)} <b>v.${rank}</b></span></button>`}};
+ let lines='',nodes='';DEFS.forEach((d,i)=>{const a=-Math.PI/2+i*2*Math.PI/3,n1=node(d,1,a,i),n2=node(d,2,a,i);
+  lines+=`<line x1="${C}" y1="${C}" x2="${n1.x.toFixed(1)}" y2="${n1.y.toFixed(1)}" class="sk-link ${n1.st}" style="--c:${d.color}"/><line x1="${n1.x.toFixed(1)}" y1="${n1.y.toFixed(1)}" x2="${n2.x.toFixed(1)}" y2="${n2.y.toFixed(1)}" class="sk-link ${n2.st}" style="--c:${d.color}"/>`;nodes+=n1.html+n2.html});
+ const orbits=`<g class="sk-orbit o1"><circle cx="${C}" cy="${C}" r="${R1}"/></g><g class="sk-orbit o2"><circle cx="${C}" cy="${C}" r="${R2}"/></g>`;
+ const core=`<div class="sk-core" aria-hidden="true"><span class="sk-core-ring"></span>${avatar?`<img src="${esc(avatar)}" alt="">`:`<span class="sk-core-die">${die('d4','d4',0)}</span>`}<small>Niv. ${lvl}</small></div>`;
+ const head=pts?`<p class="skg-points"><b>${pts}</b> point${pts>1?'s':''} à dépenser</p>`:`<p class="skg-points calm">${lvl<3?'Premier pouvoir au niveau 3':lvl<5&&spent(p)>=1?'Prochain point au niveau 5':'Tous les points sont dépensés'}</p>`;
+ return `<section class="sk-galaxy" aria-label="Arbre de compétences"><div class="skg-sky" aria-hidden="true"><i class="skg-neb n1"></i><i class="skg-neb n2"></i><i class="skg-neb n3"></i><i class="skg-spiral"></i><i class="skg-stars s1"></i><i class="skg-stars s2"></i><i class="skg-stars s3"></i><i class="skg-comet"></i></div>
+ <header class="skg-head"><button type="button" class="skg-back" data-action="challenges">‹ Niveau et quêtes</button><h2>Arbre de compétences</h2>${head}</header>
+ <div class="sk-sphere"><svg viewBox="0 0 320 320" aria-hidden="true">${orbits}${lines}</svg>${core}${nodes}</div>
+ <p class="sk-help">Niveau 3 : un premier pouvoir au choix. Niveau 5 : un deuxième pouvoir, ou la version améliorée du premier. Touchez un dé pour découvrir son pouvoir. Les pouvoirs s’utilisent en partie, y compris en ligne en 1 contre 1.</p></section>`}
+/* Animation quand un pouvoir vient d'être appris : onde de choc, éclats d'étoiles, le dé tourbillonne puis s'allume. */
+function celebrate(key,rank){const n=document.querySelector(`.sk-node[data-skill="${key}"][data-rank="${rank}"]`);if(!n)return;
+ const reduce=matchMedia?.('(prefers-reduced-motion:reduce)').matches;n.classList.add('sk-new');setTimeout(()=>n.classList.remove('sk-new'),2400);if(reduce)return;
+ const b=document.createElement('span');b.className='sk-burst';b.setAttribute('aria-hidden','true');b.innerHTML='<i class="ring"></i><i class="ring r2"></i>'+Array.from({length:16},(_,k)=>`<em style="--a:${(k*22.5+(k%3)*7).toFixed(1)}deg;--d:${(46+(k*37)%34)}px;--t:${(.7+((k*13)%5)/10).toFixed(2)}s"></em>`).join('');n.append(b);setTimeout(()=>b.remove(),1800);
+ const link=[...document.querySelectorAll('.sk-link')].filter(l=>l.style.getPropertyValue('--c')===n.style.getPropertyValue('--c'))[rank-1];link?.classList.add('sk-lit');setTimeout(()=>link?.classList.remove('sk-lit'),1600)}
 function describe(key,rank){const d=DEFS.find(x=>x.key===key);return d?{name:d.name+' v.'+rank,icon:d.icon,text:d.v[rank-1],color:d.color}:null}
-const api={DEFS,KEYS,LEVELS,owned,points,earned,spent,canLearn,learn,powers,treeHTML,describe,levelOf};
+const api={DEFS,KEYS,LEVELS,owned,points,earned,spent,canLearn,learn,powers,treeHTML,describe,levelOf,celebrate};
 window.HackeniaSkills=api;if(typeof module!=='undefined')module.exports=api;
 })();

@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v417',title:'Un sphérier dans les étoiles',items:['L’arbre de compétences s’ouvre maintenant par un D4 doré dans lequel on plonge, comme les dés du menu.','À l’intérieur : une galaxie animée, où chaque pouvoir est un dé qui tourne sur lui-même.','Apprendre un pouvoir le fait tourbillonner et briller.']},
  {id:'v416',title:'Des dés plus fins',items:['Les points et les étoiles des dés du menu sont plus fins et plus délicats.']},
  {id:'v415',title:'Boubourse sur iPhone',items:['Correctif : sur iPhone et iPad, la couleur choisie pour la boubourse (Options) s’applique enfin.']},
  {id:'v414',title:'L’arbre de compétences',items:['Nouveau : l’arbre de compétences de votre héros, accessible depuis votre pastille de niveau.','Niveau 3 : choisissez un premier pouvoir parmi Vision (voir la main adverse), Impact (−1 PA à une créature adverse) et Blocage (annuler une attaque et repousser l’attaquant).','Niveau 5 : apprenez un deuxième pouvoir, ou améliorez le premier.','Les pouvoirs s’utilisent contre l’ordinateur et en duel en ligne 1 contre 1.']},
