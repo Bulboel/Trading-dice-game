@@ -216,3 +216,10 @@ model-viewer.gesture-ghost{animation:ghost-float 3.4s ease-in-out infinite}
 body.portal-open:not([data-portal-view="home"]) #portal .portal-brand{cursor:pointer}
 body.portal-open:not([data-portal-view="home"]) #portal .portal-brand:focus-visible{outline:2px solid #e6c778;outline-offset:3px;border-radius:12px}
 body.portal-open #portal .portal-wordmark h1{display:inline-block;white-space:nowrap}
+
+/* v389 — Options › À propos */
+.opt-layout[data-tab="about"] .opt-preview{display:none}
+.opt-layout[data-tab="about"]{grid-template-columns:minmax(0,1fr)!important}
+.opt-about fieldset p{margin:0 0 8px;line-height:1.55;color:#e4dccb}
+.opt-about fieldset p:last-child{margin-bottom:0}
+.opt-about-sign{margin:14px 0 4px;text-align:center;font:italic 13px Georgia,serif;color:#cdb98a;letter-spacing:.04em}
