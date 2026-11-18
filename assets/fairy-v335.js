@@ -1,7 +1,7 @@
 /* v336 — Terrain « Le quartier des brumes féeriques », version nocturne.
    La nuit tombe sur le quartier des fées : sol de mousse bleu nuit parcouru de runes, damier d'ardoise irisée,
    pierres runiques aux couleurs des six éléments, champignons géants bioluminescents, cristaux, et quelques habitations
-   magiques façon D&D (tour de mage tordue coiffée d'un cristal, maisons-champignons, chaumière au toit vrillé) aux fenêtres
+   magiques de conte de fées (tour de mage tordue coiffée d'un cristal, maisons-champignons, chaumière au toit vrillé) aux fenêtres
    allumées. Les pixies sont de petites billes de lumière de toutes les couleurs qui se baladent partout.
    La brume mêle plusieurs couleurs ; une partie prend la couleur de l'élément favorisé, qui change à chaque tour complet
    (règle : moteur du jeu, terrain multi-élément) : setMist(élément). Pachié, Bulbalina et Max des Brumes s'y promènent.

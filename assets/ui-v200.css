@@ -73,3 +73,14 @@ body.portal-open[data-portal-view="home"].onboarding-done #news-die{position:abs
 
 /* Place pour les Bubulles fixées en bas à droite sous le contenu de l'accueil (premiers pas, reprise). */
 body.portal-open[data-portal-view="home"] #portal>#portal-content:not([hidden]){padding-bottom:58px!important}
+
+/* v410 — avertissement « jeu en cours de développement » */
+#news-dialog .news-dev{margin:0 16px 8px;padding:8px 12px;border:1px solid #ffcf5a55;border-radius:10px;background:#ffcf5a12;font-size:13px;line-height:1.45;color:#f4e6bd;text-align:left}
+#dev-dialog{width:min(460px,calc(100vw - 24px));padding:0 0 16px;border:1px solid #ffcf5a88;border-radius:16px;background:linear-gradient(160deg,#1a1710,#0b0a08);color:#efe7cf;box-shadow:0 20px 70px #000b,0 0 40px #ffcf5a22;text-align:left}
+#dev-dialog[open]{display:flex;flex-direction:column}
+#dev-dialog::backdrop{background:#05060ac4;backdrop-filter:blur(4px)}
+#dev-dialog header{padding:16px 18px 2px}
+#dev-dialog h2{margin:0;font:700 20px/1.25 "Cinzel",Georgia,serif;color:#ffd978}
+#dev-dialog .dev-body{padding:4px 18px 6px;font-size:14.5px;line-height:1.55}
+#dev-dialog .dev-body p{margin:8px 0}
+#dev-dialog [data-dev="ok"]{align-self:center;min-width:170px;margin-top:6px}

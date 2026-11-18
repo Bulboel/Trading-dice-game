@@ -55,6 +55,8 @@ URL de la politique de confidentialité (après fusion sur `main`) :
 > • Jouable hors ligne, sauvegarde en ligne automatique sans compte ni email
 > • Aucune publicité
 >
+> 🛠️ Hackénia est en développement actif : de nouveaux dés, terrains et chapitres arrivent régulièrement, et les changements importants sont toujours annoncés dans le jeu.
+>
 > Hackénia est un projet indépendant qui grandit avec les retours des joueurs. Une idée, un souci ? Écris-nous à contact.hackenia.tdg@gmail.com.
 
 ---
@@ -101,6 +103,8 @@ Add these under « Traductions › Anglais ».
 > • Tutorial in four short lessons
 > • Playable offline, automatic cloud save with no account or email
 > • No ads
+>
+> 🛠️ Hackénia is in active development: new dice, terrains and chapters arrive regularly, and major changes are always announced in the game.
 >
 > Hackénia is an independent project that grows with players' feedback. Ideas or issues? Email contact.hackenia.tdg@gmail.com.
 
