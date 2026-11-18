@@ -726,5 +726,10 @@
  "Vous pouvez maintenant cumuler jusqu’à trois dés bonus.": "You can now stack up to three bonus dice.",
  "Trois divinités de l’histoire changent de nom.": "Three deities of the story get new names.",
  "Sur téléphone, le jeu ne coupe plus votre musique : vous pouvez écouter votre playlist en jouant.": "On phones, the game no longer stops your music: you can listen to your playlist while playing.",
- "Correctif : le déplacement d’une créature ne se valide plus tout seul en passant au tour adverse.": "Fix: moving a creature no longer validates itself and skips to the opponent's turn."
+ "Correctif : le déplacement d’une créature ne se valide plus tout seul en passant au tour adverse.": "Fix: moving a creature no longer validates itself and skips to the opponent's turn.",
+ "← Retour à Jouer": "← Back to Play",
+ "Revenir au menu Jouer avec ce deck": "Back to the Play menu with this deck",
+ "Pensez à sauvegarder votre deck pour le choisir ici.": "Remember to save your deck to pick it here.",
+ "De Jouer à Mes decks, et retour": "From Play to My decks, and back",
+ "« Composer un deck » depuis Jouer affiche maintenant un bouton « ← Retour à Jouer » dans Mes decks : le deck sauvegardé y est déjà sélectionné.": "“Build a deck” from Play now shows a “← Back to Play” button in My decks: your saved deck is already selected there."
 }
