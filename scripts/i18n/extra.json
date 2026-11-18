@@ -731,5 +731,9 @@
  "Revenir au menu Jouer avec ce deck": "Back to the Play menu with this deck",
  "Pensez à sauvegarder votre deck pour le choisir ici.": "Remember to save your deck to pick it here.",
  "De Jouer à Mes decks, et retour": "From Play to My decks, and back",
- "« Composer un deck » depuis Jouer affiche maintenant un bouton « ← Retour à Jouer » dans Mes decks : le deck sauvegardé y est déjà sélectionné.": "“Build a deck” from Play now shows a “← Back to Play” button in My decks: your saved deck is already selected there."
+ "« Composer un deck » depuis Jouer affiche maintenant un bouton « ← Retour à Jouer » dans Mes decks : le deck sauvegardé y est déjà sélectionné.": "“Build a deck” from Play now shows a “← Back to Play” button in My decks: your saved deck is already selected there.",
+ "Un ciel plus doux": "A gentler sky",
+ "Les dés du menu tournent sans grésiller sur leurs bords.": "The menu dice now spin without flickering edges.",
+ "Le texte des astuces de l’accueil reste toujours net.": "The home screen tips now stay sharp.",
+ "Le ciel du menu a été retouché.": "The menu sky has been touched up."
 }
