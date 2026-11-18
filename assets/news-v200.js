@@ -3,7 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
- {id:'v399',title:'Le ciel a des secrets',items:['Le ciel du menu cache quelques surprises… à vous de les trouver.']},
+ {id:'v400',title:'Le ciel a des secrets',items:['Le ciel du menu cache quelques surprises… à vous de les trouver.']},
  {id:'v398',title:'Le menu à votre goût',items:['Options › Partie › Affichage : choisissez l’apparence du menu principal, Galaxie (dés étoilés) ou Classique (teintes douces).','Les dés « Apprendre à jouer » et « À propos » répondent désormais sur toute leur surface.']},
  {id:'v397',title:'Un menu galactique',items:['Tous les dés du menu principal passent au style galaxie des dés Crépitants, chacun dans sa couleur, avec de fines étoiles qui scintillent : Annonces en noir et or, Quotidien en nébuleuses arc-en-ciel.','Les dés « Apprendre à jouer » et « À propos » tournent sur eux-mêmes en vraie 3D, comme les dés du menu.','Le ciel du menu scintille davantage, avec des étoiles filantes plus naturelles ; la lune ne s’affiche plus que sur ordinateur.']},
  {id:'v390',title:'À propos d’Hackénia',items:['Sur le menu principal, à côté d’« Apprendre à jouer » : un nouveau dé « À propos » raconte ce qu’est Hackénia et d’où vient son histoire.','Les deux raccourcis prennent la forme de dés Crépitants : un dé à huit faces violet et un dé à dix faces émeraude.']},
