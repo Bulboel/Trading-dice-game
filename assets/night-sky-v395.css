@@ -1,0 +1,52 @@
+/* v395 — Ciel animé du menu. */
+#night-sky{display:none}
+body.portal-open #night-sky{display:block;position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+body.portal-open::before,body.portal-open::after{opacity:.35!important}
+/* voie lactée très douce en diagonale */
+#night-sky .sky-band{position:absolute;inset:-20%;background:linear-gradient(115deg,transparent 30%,#9fb4ff0d 42%,#d8c8ff14 50%,#9fb4ff0d 58%,transparent 70%);filter:blur(18px);animation:sky-band 60s ease-in-out infinite alternate}
+@keyframes sky-band{from{opacity:.6;transform:translateX(-2%)}to{opacity:1;transform:translateX(2%)}}
+#night-sky .sky-layer{position:absolute;inset:-6%;animation:sky-drift 160s linear infinite alternate}
+#night-sky .sky-layer.mid{animation-duration:120s;animation-direction:alternate-reverse}
+#night-sky .sky-layer.near{animation-duration:85s}
+#night-sky .sky-layer i{position:absolute;border-radius:50%;background:currentColor;box-shadow:0 0 3px currentColor;animation:sky-twinkle var(--tw) ease-in-out var(--td) infinite}
+#night-sky .sky-layer.mid i{box-shadow:0 0 4px currentColor}
+#night-sky .sky-layer.near i{box-shadow:0 0 5px 1px currentColor,0 0 10px 1px #ffffff44}
+@keyframes sky-twinkle{0%,100%{opacity:1;transform:scale(1)}35%{opacity:var(--lo);transform:scale(.45)}55%{opacity:.85;transform:scale(1.15)}75%{opacity:calc(var(--lo) + .2);transform:scale(.7)}}
+@keyframes sky-drift{from{transform:translate(0,0)}to{transform:translate(-2.5%,1.5%)}}
+/* étoiles à quatre branches qui s'illuminent de temps en temps */
+#night-sky .sky-glints b{position:absolute;width:22px;height:22px;margin:-11px 0 0 -11px;opacity:0;transform:scale(var(--gs));animation:sky-glint var(--gd) ease-in-out var(--gl) infinite}
+#night-sky .sky-glints b:before,#night-sky .sky-glints b:after{content:'';position:absolute;left:50%;top:50%;background:linear-gradient(90deg,transparent,currentColor,transparent);width:22px;height:1.2px;margin:-.6px 0 0 -11px;filter:drop-shadow(0 0 2px currentColor)}
+#night-sky .sky-glints b:after{transform:rotate(90deg)}
+#night-sky .sky-glints b{background:radial-gradient(circle,currentColor 0 1.4px,transparent 3.5px)}
+@keyframes sky-glint{0%,62%,100%{opacity:0;transform:scale(calc(var(--gs) * .3)) rotate(0)}74%{opacity:1;transform:scale(var(--gs)) rotate(20deg)}86%{opacity:0;transform:scale(calc(var(--gs) * .4)) rotate(40deg)}}
+/* étoiles filantes : partent d'un point, accélèrent le long de leur propre axe, la traînée s'étire puis s'éteint */
+#night-sky .shooting-star{position:absolute;width:var(--len,130px);height:1.6px;opacity:0;transform-origin:0 50%;pointer-events:none}
+#night-sky .shooting-star em{position:absolute;inset:0;border-radius:2px;background:linear-gradient(90deg,#ffffff00,#cfe0ff55 55%,#ffffffee);transform-origin:100% 50%}
+#night-sky .shooting-star em:after{content:'';position:absolute;right:-2px;top:50%;width:4px;height:4px;margin-top:-2px;border-radius:50%;background:#fff;box-shadow:0 0 6px 2px #ffffffcc,0 0 14px 4px #cfe0ff66}
+#night-sky .shooting-star.go{animation:shoot-move var(--dur,1s) cubic-bezier(.45,0,.9,.6) forwards}
+#night-sky .shooting-star.go em{animation:shoot-trail var(--dur,1s) ease-out forwards}
+@keyframes shoot-move{0%{opacity:0;transform:rotate(var(--ang)) translateX(0)}12%{opacity:1}70%{opacity:1}100%{opacity:0;transform:rotate(var(--ang)) translateX(var(--dist))}}
+@keyframes shoot-trail{0%{transform:scaleX(.05)}45%{transform:scaleX(1)}100%{transform:scaleX(.35)}}
+/* lune (ordinateur) : mers sombres, cratères à rebord, ombre du limbe, halo doux */
+#night-sky .sky-moon{position:absolute;left:6%;top:140px;width:clamp(84px,8.5vw,128px);aspect-ratio:1;animation:moon-float 24s ease-in-out infinite alternate}
+#night-sky .moon-halo{position:absolute;inset:-110%;border-radius:50%;background:radial-gradient(circle,#fff6de40 0%,#ffeec61f 20%,#c9d8ff0d 42%,transparent 66%);animation:moon-glow 9s ease-in-out infinite alternate}
+#night-sky .moon-disc{position:absolute;inset:0;border-radius:50%;overflow:hidden;
+ background:radial-gradient(circle at 34% 30%,#fffdf6 0%,#f1ead8 38%,#d8d0bd 68%,#a69e8b 100%);
+ box-shadow:0 0 24px 4px #fff2d055,0 0 70px 14px #ffe7b31c,inset -14px -10px 26px #4a4436b0,inset 5px 4px 10px #ffffffb0}
+#night-sky .moon-disc i{position:absolute;border-radius:50%}
+#night-sky .moon-disc .mare{background:radial-gradient(circle,#8f8a7c55,#8f8a7c22 60%,transparent 72%);filter:blur(1.5px)}
+#night-sky .mare.a{left:22%;top:20%;width:38%;height:30%}
+#night-sky .mare.b{left:48%;top:44%;width:34%;height:28%}
+#night-sky .mare.c{left:26%;top:58%;width:24%;height:18%}
+#night-sky .moon-disc .crater{background:radial-gradient(circle at 60% 62%,#ffffff66 0 30%,transparent 46%),radial-gradient(circle at 42% 40%,#6f6a5c66 0 42%,transparent 60%);box-shadow:inset 1px 1px 1px #5a554a55}
+#night-sky .crater.c1{left:62%;top:24%;width:11%;height:11%}
+#night-sky .crater.c2{left:34%;top:70%;width:9%;height:9%}
+#night-sky .crater.c3{left:72%;top:62%;width:7%;height:7%}
+#night-sky .crater.c4{left:18%;top:46%;width:8%;height:8%}
+#night-sky .crater.c5{left:50%;top:14%;width:6%;height:6%}
+@keyframes moon-glow{from{opacity:.7;transform:scale(.97)}to{opacity:1;transform:scale(1.03)}}
+@keyframes moon-float{from{transform:translateY(0)}to{transform:translateY(-6px)}}
+/* smartphone : pas de lune, elle encombre l'écran */
+@media(max-width:700px){#night-sky .sky-moon{display:none}}
+@media(prefers-reduced-motion:reduce){#night-sky *{animation:none!important}#night-sky .sky-glints b{opacity:.6}}
+.no-motion #night-sky *{animation:none!important}
