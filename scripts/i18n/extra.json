@@ -707,5 +707,10 @@
  "Correctif : après une mise à jour, tous les fichiers du jeu sont bien rechargés (certains éléments pouvaient rester à une ancienne version sur ordinateur).": "Fix: after an update, every game file is now properly reloaded (some parts could stay on an older version on computer).",
  "Un jeu plus léger": "A lighter game",
  "Les personnages en 3D et leurs animations sont deux fois plus légers, sans perte de qualité : téléchargement plus rapide et application plus petite.": "3D characters and their animations are now twice as light with no loss of quality: faster downloads and a smaller app.",
- "Le premier lancement télécharge moins de fichiers : les images de l’Histoire et du Panthéon arrivent quand vous en avez besoin.": "The first launch downloads fewer files: Story and Pantheon images arrive when you need them."
+ "Le premier lancement télécharge moins de fichiers : les images de l’Histoire et du Panthéon arrivent quand vous en avez besoin.": "The first launch downloads fewer files: Story and Pantheon images arrive when you need them.",
+ "Nous contacter": "Contact us",
+ "À propos : une adresse de contact pour vos questions et idées, et un lien vers la politique de confidentialité du jeu.": "About: a contact address for your questions and ideas, and a link to the game's privacy policy.",
+ "Contact": "Contact",
+ "Une question, un souci, une idée ? Écrivez-moi :": "A question, an issue, an idea? Write to me:",
+ "Politique de confidentialité": "Privacy policy"
 }

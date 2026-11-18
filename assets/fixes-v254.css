@@ -335,3 +335,5 @@ html:not(.menu-classic) body #daily-die .daily-cube i.dc-m{background:radial-gra
 
 /* v407 — les étoiles des D8/D10 scintillent par calcul (le dessin est refait à chaque image) */
 .cd-svg[data-die] .cd-star{animation:none!important}
+/* v409 — liens de la fenêtre À propos aux couleurs du jeu */
+#about-dialog a{color:#e3c987;text-underline-offset:2px;word-break:break-word}
