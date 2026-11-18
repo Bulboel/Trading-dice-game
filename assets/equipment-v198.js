@@ -15,8 +15,13 @@ const items=[
  {id:'sac-sans-fond',name:'Le sac sans fond',art:'assets/items/sac-sans-fond.svg',effect:'Vous commencez le duel avec un dé rare supplémentaire, tiré au hasard, dans votre main.',lore:'On y glisse la main pour une pièce et on en ressort un trésor. Personne n’a jamais touché le fond.',challenge:'collector',extraRare:1}
 ];
 function owned(profile){const C=root.HackeniaChallenges;if(!C||!profile)return[];const done=new Set(C.unlocked(profile).map(d=>d.id));return items.filter(i=>i.premium?!!profile.premium?.sage:done.has(i.challenge))}
-function equipped(profile){const id=profile?.equipped;return id?owned(profile).find(i=>i.id===id)||null:null}
+/* v418 — au niveau 40, un deuxième objet porté (profile.equipped2) : les effets des deux objets s'additionnent. */
+const SECOND_LEVEL=40;
+function secondSlot(profile){try{return (root.HackeniaProgress?.levelOf?.(profile?.xp||0)?.level||1)>=SECOND_LEVEL}catch{return false}}
+function equippedList(profile){const own=owned(profile),a=profile?.equipped?own.find(i=>i.id===profile.equipped):null,b=secondSlot(profile)&&profile?.equipped2&&profile.equipped2!==profile?.equipped?own.find(i=>i.id===profile.equipped2):null;return [a,b].filter(Boolean)}
+function equipped(profile){const L=equippedList(profile);if(L.length<2)return L[0]||null;const [a,b]=L,sum=k=>(a[k]|0)+(b[k]|0),any=k=>a[k]||b[k];
+ return{id:a.id+'+'+b.id,name:a.name+' et '+b.name,effect:a.effect+' '+b.effect,startBonus:Math.min(99,sum('startBonus')),reroll:sum('reroll'),goldFirst:sum('goldFirst'),forecast:any('forecast'),scarf:any('scarf'),monoExtra:any('monoExtra'),noDigits:any('noDigits'),extraRare:sum('extraRare'),items:L}}
 // Dés bonus de départ pour le joueur local (seulement contre l'IA : Jouer, Partie rapide, Histoire).
 function startBonus(){try{return equipped(root.HackeniaPortal?.profile?.())?.startBonus||0}catch{return 0}}
-const api={items,owned,equipped,startBonus};root.HackeniaEquipment=api;if(typeof module!=='undefined')module.exports=api;
+const api={items,owned,equipped,equippedList,secondSlot,SECOND_LEVEL,startBonus};root.HackeniaEquipment=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window==='undefined'?globalThis:window);
