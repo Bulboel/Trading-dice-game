@@ -1,40 +1,117 @@
-/* v414 — Arbre de compétences (sphérier) et pouvoirs en partie */
-.skill-entry{display:flex;align-items:center;gap:14px;width:100%;margin:14px 0 4px;padding:14px 18px;border-radius:16px;border:1px solid rgba(255,214,140,.35);background:linear-gradient(120deg,rgba(40,28,70,.92),rgba(24,20,44,.92));color:#f6ecd8;text-align:left;cursor:pointer;font:inherit;box-shadow:0 6px 20px rgba(0,0,0,.25)}
-.skill-entry:hover,.skill-entry:focus-visible{border-color:#ffd68c;transform:translateY(-1px)}
-.skill-entry .se-orb{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;font-size:22px;color:#ffe6a8;background:radial-gradient(circle at 35% 30%,#7a5cc8,#2a1c52);box-shadow:0 0 0 2px rgba(255,214,140,.45),0 0 18px rgba(160,120,255,.45)}
-.skill-entry .se-copy{flex:1;display:grid;gap:2px;min-width:0}.skill-entry strong{font-size:1.08em}.skill-entry small{opacity:.8}
-.skill-entry .se-points{flex:none;padding:4px 10px;border-radius:99px;background:#ffd68c;color:#2a1c52;font-size:.85em;animation:se-pulse 1.8s ease-in-out infinite}
-.skill-entry .se-go{font-size:28px;opacity:.7}
-@keyframes se-pulse{50%{box-shadow:0 0 0 6px rgba(255,214,140,0)}0%,100%{box-shadow:0 0 0 0 rgba(255,214,140,.55)}}
+/* v417 — Arbre de compétences : D4 doré d'accès (style des dés du menu) et sphérier en galaxie */
 .portal-level .pl-dot.skill{background:#ffd68c;color:#2a1c52}
 
-.skill-tree{max-width:620px;margin:8px auto 18px;padding:18px 16px 14px;border-radius:20px;background:radial-gradient(ellipse at 50% 45%,rgba(70,50,130,.55),rgba(14,12,30,.92) 70%);border:1px solid rgba(190,170,255,.22);color:#f2ecff}
-.sk-head{display:flex;justify-content:center;margin-bottom:26px;text-align:center}.sk-head h3{margin:0;font-size:1.2em}
-.sk-points{margin:0;opacity:.9}.sk-points b{color:#ffd68c;font-size:1.2em}
-.sk-sphere{position:relative;width:min(100%,460px);aspect-ratio:1;margin:0 auto 18px}
+/* --- Accès : D4 doré --- */
+.skill-die-wrap{display:flex;justify-content:center;margin:18px 0 6px}
+.skill-die-entry{position:relative;display:grid;justify-items:center;gap:6px;padding:4px 10px 2px;border:0;background:none;color:#fff3cf;font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .2s}
+.skill-die-entry:hover,.skill-die-entry:focus-visible{transform:translateY(-2px)}
+.skill-die-entry:focus-visible{outline:2px solid #ffe6a6;outline-offset:4px;border-radius:14px}
+.sde-die{position:relative;display:block;width:84px;height:84px}
+.sde-die:before{content:'';position:absolute;inset:-14%;border-radius:50%;background:radial-gradient(circle,#ffcf4a55,#ffcf4a10 55%,transparent 70%);animation:sde-breathe 3.2s ease-in-out infinite}
+.sde-die .cd-svg{position:relative;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 0 9px #ffcf4acc) drop-shadow(0 5px 7px #000b)}
+.sde-die .cd-svg,.sde-die .cd-svg *{pointer-events:none}
+.sde-badge{position:absolute;top:-2px;right:-8px;min-width:22px;height:22px;padding:0 6px;border-radius:99px;display:grid;place-items:center;background:linear-gradient(160deg,#fff1b8,#e8b23a);color:#3a2404;font:800 12px/1 system-ui,sans-serif;box-shadow:0 0 0 2px #1a1206,0 0 12px #ffcf4a;animation:sde-ping 1.6s ease-in-out infinite}
+.sde-label{padding:4px 12px;border-radius:999px;font:700 13px/1.2 'Cinzel',Georgia,serif;letter-spacing:.04em;color:#fff1c8;background:linear-gradient(160deg,#4d3206e6,#140c02e6);border:1px solid #ffd04a88;box-shadow:0 0 12px #ffd04a33;text-shadow:0 1px 2px #000;white-space:nowrap}
+.sde-sub{font-size:12px;color:#e9d9b0;opacity:.85;min-height:1em;text-align:center}
+@keyframes sde-breathe{50%{transform:scale(1.12);opacity:.7}}
+@keyframes sde-ping{50%{box-shadow:0 0 0 2px #1a1206,0 0 20px 3px #ffcf4a}}
+
+/* --- Galaxie --- */
+.sk-galaxy{position:relative;isolation:isolate;overflow:hidden;max-width:680px;margin:6px auto 18px;padding:16px 14px 18px;border-radius:24px;color:#f4ecff;
+ background:radial-gradient(120% 90% at 50% 45%,#140c2e 0%,#07051a 55%,#020108 100%);border:1px solid #ffe6a033;box-shadow:0 18px 50px #000a,inset 0 0 60px #000c,inset 0 0 0 1px #ffffff08}
+.skg-sky,.skg-sky i{position:absolute;inset:0;pointer-events:none}
+.skg-sky{z-index:-1}
+.skg-neb{filter:blur(18px);opacity:.75;mix-blend-mode:screen}
+.skg-neb.n1{background:radial-gradient(42% 30% at 30% 30%,#6a2fd0aa,transparent 70%);animation:skg-drift 26s ease-in-out infinite alternate}
+.skg-neb.n2{background:radial-gradient(38% 28% at 72% 66%,#1c8fb588,transparent 70%);animation:skg-drift 32s ease-in-out infinite alternate-reverse}
+.skg-neb.n3{background:radial-gradient(30% 24% at 52% 48%,#ffc84a55,transparent 70%),radial-gradient(26% 20% at 80% 22%,#ff5fa855,transparent 70%)}
+.skg-spiral{inset:-30%!important;background:conic-gradient(from 0deg,transparent 0 8%,#b48cff18 14%,transparent 24% 46%,#5cc8ff14 54%,transparent 64% 82%,#ffd04a14 90%,transparent);-webkit-mask:radial-gradient(circle,#000 0 30%,transparent 62%);mask:radial-gradient(circle,#000 0 30%,transparent 62%);animation:skg-spin 90s linear infinite}
+.skg-stars{background-repeat:repeat}
+.skg-stars.s1{background-image:radial-gradient(circle at 12% 18%,#fff 0 .6px,transparent 1.3px),radial-gradient(circle at 63% 41%,#fff 0 .5px,transparent 1.1px),radial-gradient(circle at 37% 77%,#dfe9ff 0 .6px,transparent 1.3px),radial-gradient(circle at 85% 88%,#fff 0 .5px,transparent 1.1px);background-size:97px 89px;animation:skg-twinkle 4.6s ease-in-out infinite}
+.skg-stars.s2{background-image:radial-gradient(circle at 25% 60%,#fff 0 .8px,transparent 1.7px),radial-gradient(circle at 78% 15%,#ffe9b0 0 .7px,transparent 1.5px),radial-gradient(circle at 50% 92%,#cfe6ff 0 .7px,transparent 1.5px);background-size:151px 137px;animation:skg-twinkle 6.2s ease-in-out -2s infinite}
+.skg-stars.s3{background-image:radial-gradient(circle at 40% 30%,#fff 0 1px,transparent 2.6px),radial-gradient(circle at 70% 75%,#ffe6a0 0 1px,transparent 2.4px);background-size:233px 211px;animation:skg-twinkle 3.4s ease-in-out -1s infinite}
+.skg-comet{inset:auto!important;top:14%;left:-30%;width:120px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,#fff8);transform:rotate(18deg);animation:skg-comet 11s ease-in 3s infinite;opacity:0}
+@keyframes skg-drift{to{transform:translate(4%,-3%) scale(1.08)}}
+@keyframes skg-spin{to{transform:rotate(360deg)}}
+@keyframes skg-twinkle{0%,100%{opacity:.55}50%{opacity:1}}
+@keyframes skg-comet{0%{opacity:0;transform:translate(0,0) rotate(18deg)}4%{opacity:1}12%{opacity:0;transform:translate(560px,180px) rotate(18deg)}100%{opacity:0}}
+
+.skg-head{position:relative;display:grid;justify-items:center;gap:6px;margin-bottom:6px;text-align:center}
+.skg-head h2{margin:2px 0 0;font:700 clamp(19px,5vw,25px)/1.15 'Cinzel',Georgia,serif;letter-spacing:.06em;background:linear-gradient(180deg,#fff6d6,#f3c64a 60%,#b07d1c);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 6px #000c)}
+.skg-back{justify-self:start;padding:5px 12px;border-radius:999px;border:1px solid #ffe6a055;background:#0c0820cc;color:#ffe9b8;font:600 12.5px/1 system-ui,sans-serif;cursor:pointer}
+.skg-back:hover,.skg-back:focus-visible{border-color:#ffd04a;box-shadow:0 0 12px #ffd04a44}
+.skg-points{margin:0;padding:5px 14px;border-radius:999px;font:600 13px/1.2 system-ui,sans-serif;color:#ffeec2;background:linear-gradient(160deg,#4d3206cc,#140c02cc);border:1px solid #ffd04a88;box-shadow:0 0 16px #ffd04a44;animation:sde-ping 2s ease-in-out infinite}
+.skg-points b{font-size:1.25em;color:#fff3c4}
+.skg-points.calm{animation:none;box-shadow:none;border-color:#ffffff22;background:#ffffff0d;color:#d8d0ee;font-weight:500}
+
+.sk-sphere{position:relative;width:min(100%,470px);aspect-ratio:1;margin:4px auto 16px}
 .sk-sphere svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.sk-ring{fill:none;stroke:rgba(200,185,255,.14);stroke-width:1;stroke-dasharray:3 5}
-.sk-link{stroke:rgba(255,255,255,.14);stroke-width:3;stroke-linecap:round}
-.sk-link.open{stroke:var(--c);opacity:.55;stroke-dasharray:6 6;animation:sk-flow 1.4s linear infinite}
-.sk-link.owned{stroke:var(--c);opacity:.95;filter:drop-shadow(0 0 4px var(--c))}
+.sk-orbit{transform-origin:160px 160px;transform-box:view-box}
+.sk-orbit circle{fill:none;stroke:#cdb8ff;stroke-opacity:.18;stroke-width:1;stroke-dasharray:2 7}
+.sk-orbit.o1{animation:skg-spin 60s linear infinite}.sk-orbit.o2{animation:skg-spin 110s linear infinite reverse}
+.sk-orbit.o2 circle{stroke:#ffe6a0;stroke-opacity:.14;stroke-dasharray:1 9}
+.sk-link{stroke:#ffffff;stroke-opacity:.1;stroke-width:1.6;stroke-linecap:round;stroke-dasharray:1 5}
+.sk-link.open{stroke:var(--c);stroke-opacity:.75;stroke-width:2;stroke-dasharray:5 7;animation:sk-flow 1.2s linear infinite;filter:drop-shadow(0 0 3px var(--c))}
+.sk-link.owned{stroke:var(--c);stroke-opacity:1;stroke-width:2.6;stroke-dasharray:none;filter:drop-shadow(0 0 5px var(--c)) drop-shadow(0 0 10px var(--c))}
+.sk-link.sk-lit{animation:sk-lit 1.4s ease-out}
 @keyframes sk-flow{to{stroke-dashoffset:-12}}
-.sk-core{position:absolute;left:50%;top:50%;width:21%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 40% 35%,#fff3cf,#c9a05a 55%,#5b3d1c);box-shadow:0 0 0 3px rgba(255,230,170,.7),0 0 28px rgba(255,210,120,.55);overflow:hidden}
-.sk-core img{width:100%;height:100%;object-fit:cover}.sk-core span{font-size:34px;color:#4a2f10}
-.sk-core small{position:absolute;bottom:6%;left:50%;transform:translateX(-50%);padding:1px 8px;border-radius:99px;background:rgba(20,14,40,.85);color:#ffe6a8;font-size:11px;white-space:nowrap}
-.sk-node{position:absolute;transform:translate(-50%,-50%);display:block;padding:0;border:0;background:none;color:inherit;font:inherit;cursor:pointer}
-.sk-orb{display:grid;place-items:center;width:clamp(42px,12vw,56px);aspect-ratio:1;border-radius:50%;font-size:clamp(20px,6vw,26px);background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.18),rgba(20,16,40,.95) 70%);border:2px solid rgba(255,255,255,.18);filter:grayscale(.9) brightness(.7);transition:transform .2s,filter .2s,box-shadow .2s}
-.sk-tag{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:3px;font-size:12px;white-space:nowrap;padding:1px 7px;border-radius:8px;background:rgba(10,8,24,.7);opacity:.75}.sk-tag b{color:var(--c)}
-.sk-node.open .sk-orb{filter:none;border-color:var(--c);box-shadow:0 0 0 0 var(--c);animation:sk-call 1.6s ease-in-out infinite}
-.sk-node.owned .sk-orb{filter:none;border-color:var(--c);background:radial-gradient(circle at 35% 30%,#fff,var(--c) 45%,rgba(20,16,40,.95) 100%);box-shadow:0 0 16px var(--c)}
-.sk-node.owned .sk-tag,.sk-node.open .sk-tag{opacity:1}
-.sk-node:hover .sk-orb,.sk-node:focus-visible .sk-orb{transform:scale(1.1)}
-@keyframes sk-call{50%{box-shadow:0 0 0 8px transparent,0 0 14px var(--c)}}
-.sk-help{margin:10px 4px 0;font-size:.88em;opacity:.78;text-align:center}
-.skill-dialog{max-width:min(92vw,400px);border:1px solid var(--c);border-radius:18px;background:#1b1530;color:#f2ecff;text-align:center;padding:22px 20px 18px}
-.skill-dialog::backdrop{background:rgba(5,3,14,.7)}
-.skd-orb{width:64px;height:64px;margin:0 auto 6px;display:grid;place-items:center;font-size:30px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,var(--c) 45%,#1b1530);box-shadow:0 0 18px var(--c)}
-.skill-dialog h2{margin:.2em 0}.sk-state{display:inline-block;margin:4px 0;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.08);font-weight:600}.sk-state.owned{color:#9be37a}.sk-state.open{color:#ffd68c}
+@keyframes sk-lit{0%{stroke-width:7;stroke-opacity:1}100%{stroke-width:2.6}}
+
+.sk-core{position:absolute;left:50%;top:50%;width:23%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;display:grid;place-items:center}
+.sk-core-ring{position:absolute;inset:-9%;border-radius:50%;background:conic-gradient(from 0deg,#fff6d6,#f3c64a,#7a4f0c,#ffd04a,#fff6d6,#b07d1c,#fff6d6);-webkit-mask:radial-gradient(circle,transparent 62%,#000 64%);mask:radial-gradient(circle,transparent 62%,#000 64%);animation:skg-spin 14s linear infinite;filter:drop-shadow(0 0 10px #ffcf4a)}
+.sk-core:before{content:'';position:absolute;inset:-40%;border-radius:50%;background:radial-gradient(circle,#ffcf4a40,#ffcf4a10 45%,transparent 68%);animation:sde-breathe 4s ease-in-out infinite}
+.sk-core img{position:relative;width:100%;height:100%;object-fit:cover;border-radius:50%;box-shadow:inset 0 0 12px #000a}
+.sk-core-die{position:relative;width:118%;height:118%}.sk-core-die .cd-svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 0 12px #ffcf4a)}
+.sk-core small{position:absolute;bottom:-14%;left:50%;transform:translateX(-50%);padding:2px 9px;border-radius:99px;background:linear-gradient(160deg,#4d3206,#140c02);border:1px solid #ffd04a99;color:#fff1c8;font:700 11px/1.2 'Cinzel',Georgia,serif;white-space:nowrap}
+
+.sk-node{position:absolute;transform:translate(-50%,-50%);display:block;padding:0;border:0;background:none;color:inherit;font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.sk-die{position:relative;display:block;width:clamp(48px,14vw,62px);aspect-ratio:1;transition:transform .25s}
+.sk-node.r2 .sk-die{width:clamp(52px,15vw,68px)}
+.sk-die .cd-svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 4px 6px #000b)}
+.sk-die .cd-svg,.sk-die .cd-svg *{pointer-events:none}
+.sk-glyph{position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);font-size:clamp(14px,4vw,18px);filter:drop-shadow(0 1px 2px #000) drop-shadow(0 0 4px #000a);pointer-events:none}
+.sk-node.locked .sk-glyph{font-size:12px;opacity:.75}
+.sk-node.locked .sk-die{opacity:.72}
+.sk-halo{position:absolute;left:50%;top:50%;width:150%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none}
+.sk-node.open .sk-halo{background:radial-gradient(circle,color-mix(in srgb,var(--c) 45%,transparent),transparent 65%);animation:sk-call 1.8s ease-in-out infinite}
+.sk-node.open .sk-die .cd-svg{filter:drop-shadow(0 0 7px var(--c)) drop-shadow(0 4px 6px #000b)}
+.sk-node.owned .sk-halo{background:radial-gradient(circle,color-mix(in srgb,var(--c) 38%,transparent),transparent 62%)}
+.sk-node.owned .sk-die .cd-svg{filter:drop-shadow(0 0 10px var(--c)) drop-shadow(0 0 3px #fff8) drop-shadow(0 4px 6px #000b)}
+.sk-node:hover .sk-die,.sk-node:focus-visible .sk-die{transform:scale(1.1)}
+.sk-node:focus-visible{outline:none}.sk-node:focus-visible .sk-halo{box-shadow:0 0 0 2px #ffe6a0}
+@keyframes sk-call{0%,100%{transform:translate(-50%,-50%) scale(.85);opacity:.55}50%{transform:translate(-50%,-50%) scale(1.1);opacity:1}}
+.sk-spark{position:absolute;left:50%;top:50%;width:120%;aspect-ratio:1;transform:translate(-50%,-50%);pointer-events:none;animation:skg-spin 7s linear infinite}
+.sk-spark i{position:absolute;width:4px;height:4px;border-radius:50%;background:#fff;box-shadow:0 0 6px 2px var(--c);animation:sk-tw 1.6s ease-in-out infinite}
+.sk-spark i:nth-child(1){left:50%;top:0}.sk-spark i:nth-child(2){left:6%;top:70%;animation-delay:-.5s;width:3px;height:3px}.sk-spark i:nth-child(3){left:92%;top:72%;animation-delay:-1s;width:3px;height:3px}
+@keyframes sk-tw{50%{opacity:.25;transform:scale(.5)}}
+.sk-tag{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:2px;font:600 11.5px/1.2 system-ui,sans-serif;white-space:nowrap;padding:2px 8px;border-radius:99px;background:#07051acc;border:1px solid #ffffff1a;color:#d9d2ee}
+.sk-tag b{color:var(--c)}
+.sk-node.owned .sk-tag,.sk-node.open .sk-tag{color:#fff;border-color:color-mix(in srgb,var(--c) 55%,transparent)}
+.sk-node.locked .sk-tag{opacity:.7}
+/* Pouvoir appris : le dé tourbillonne, onde de choc et éclats */
+.sk-node.sk-new .sk-die{animation:sk-whirl 1.1s cubic-bezier(.2,.8,.2,1)}
+@keyframes sk-whirl{0%{transform:scale(.6) rotate(-200deg);filter:brightness(2.4)}55%{transform:scale(1.35) rotate(12deg);filter:brightness(1.8)}100%{transform:scale(1) rotate(0)}}
+.sk-burst{position:absolute;left:50%;top:50%;width:0;height:0;pointer-events:none;z-index:3}
+.sk-burst .ring{position:absolute;left:-40px;top:-40px;width:80px;height:80px;border-radius:50%;border:2px solid var(--c);box-shadow:0 0 18px var(--c),inset 0 0 12px var(--c);animation:sk-ring .9s ease-out forwards}
+.sk-burst .ring.r2{animation-delay:.18s;border-color:#fff6d6;opacity:0}
+.sk-burst em{position:absolute;left:-3px;top:-3px;width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 8px 2px var(--c);animation:sk-shard var(--t) cubic-bezier(.1,.7,.3,1) forwards}
+.sk-burst em:nth-child(3n){width:4px;height:4px;background:var(--c)}
+@keyframes sk-ring{0%{transform:scale(.2);opacity:1}100%{transform:scale(2.6);opacity:0}}
+@keyframes sk-shard{0%{transform:rotate(var(--a)) translateX(0) scale(1.4);opacity:1}100%{transform:rotate(var(--a)) translateX(var(--d)) scale(.2);opacity:0}}
+.sk-help{position:relative;margin:4px 6px 0;font-size:.86em;line-height:1.45;color:#cfc6e8;opacity:.85;text-align:center}
+
+/* --- Fiche d'un pouvoir --- */
+.skill-dialog{position:relative;overflow:hidden;max-width:min(92vw,400px);border:1px solid color-mix(in srgb,var(--c) 70%,transparent);border-radius:22px;background:radial-gradient(120% 80% at 50% 0%,color-mix(in srgb,var(--c) 22%,#0c0820),#07051a 60%);color:#f2ecff;text-align:center;padding:22px 20px 18px;box-shadow:0 0 40px color-mix(in srgb,var(--c) 35%,transparent),0 20px 60px #000c}
+.skill-dialog::backdrop{background:#04020ccc;backdrop-filter:blur(3px)}
+.skd-stars{position:absolute;inset:0;pointer-events:none;z-index:-1;opacity:.8;background-image:radial-gradient(circle at 15% 25%,#fff 0 .6px,transparent 1.3px),radial-gradient(circle at 70% 60%,#fff 0 .5px,transparent 1.1px),radial-gradient(circle at 40% 85%,#ffe6a0 0 .7px,transparent 1.5px),radial-gradient(circle at 85% 15%,#cfe6ff 0 .5px,transparent 1.2px);background-size:97px 89px,151px 137px,233px 211px,61px 173px;animation:skg-twinkle 4s ease-in-out infinite}
+.skd-orb{position:relative;width:96px;height:96px;margin:0 auto 4px}
+.skd-orb .cd-svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 0 14px var(--c)) drop-shadow(0 5px 7px #000b)}
+.skd-icon{position:absolute;left:50%;top:57%;transform:translate(-50%,-50%);font-size:24px;filter:drop-shadow(0 1px 2px #000)}
+.skill-dialog h2{margin:.2em 0;font:700 22px/1.2 'Cinzel',Georgia,serif;color:#fff3d6;letter-spacing:.04em}
+.skill-dialog p{line-height:1.5}
+.sk-state{display:inline-block;margin:4px 0;padding:4px 12px;border-radius:99px;background:#ffffff12;font-weight:600}.sk-state.owned{color:#9be37a}.sk-state.open{color:#ffd68c}
 .sk-warn{font-size:.85em;opacity:.7;margin:6px 0 0}.skd-actions{display:flex;gap:10px;justify-content:center;margin-top:14px}
+@media (prefers-reduced-motion:reduce){.sk-galaxy *,.skill-die-entry *{animation:none!important}}
 
 /* En partie */
 #power-bar{position:absolute;left:10px;bottom:58px;z-index:30;display:flex;gap:6px;pointer-events:auto}
@@ -53,3 +130,7 @@
 .power-banner.foe{border-color:#ff8a8a}
 @keyframes power-pop{0%{opacity:0;transform:translateX(-50%) scale(.6)}12%{opacity:1;transform:translateX(-50%) scale(1.08)}22%{transform:translateX(-50%) scale(1)}80%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-14px)}}
 @media (prefers-reduced-motion:reduce){.sk-link.open,.sk-node.open .sk-orb,.skill-entry .se-points{animation:none}}
+
+/* v417 — neutralise le style général des boutons du portail (fond, bordure, ombre) */
+#portal .skill-die-entry,#portal .sk-node,.skill-die-entry,.sk-node{background:none!important;border:0!important;box-shadow:none!important;min-height:0!important;padding:0!important}
+#portal .skill-die-entry{padding:4px 10px 2px!important}
