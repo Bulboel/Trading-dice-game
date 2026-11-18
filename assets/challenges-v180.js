@@ -11,7 +11,7 @@ const definitions=[
  {id:'worm',title:'L’immondice terrassée',goal:'Vainquez le ver géant en réduisant ses points de vie à zéro.',kind:'worm',target:1,reward:'Boubourse en peau de ver géant',pouch:'ver'},/* v356 */
  {id:'wormpass',title:'Les sans-chiffres',goal:'Remportez le combat contre le ver géant en passant deux fois dans le camp ennemi.',kind:'wormpass',target:1,reward:'Objet porté : la dague sans-chiffres'},/* v368 */
  {id:'chapter1',title:'Les jumeaux de Dassom',goal:'Finissez le chapitre 1 de l’histoire (toutes les parties principales).',kind:'story',chapter:1,target:11,reward:'Bubulles et l’histoire continue au chapitre 2',gold:50},
- {id:'chapter3',title:'Le tournoi des apprenti(e)s',goal:'Finissez le chapitre III de l’histoire : remportez le grand tournoi et recevez la bague de l’apprenti(e).',kind:'story',chapter:3,target:10,reward:'Bague chanceuse (objet porté) : un dé de jet bonus au début de chaque duel',item:'bague-chanceuse'},
+ {id:'chapter3',title:'Le tournoi des apprenti(e)s',goal:'Finissez le chapitre III de l’histoire : remportez le grand tournoi et recevez la bague de l’apprenti(e).',kind:'story',chapter:3,target:10,reward:'Bague de l’Apprenti(e) (objet porté) : un dé de jet bonus au début de chaque duel',item:'bague-chanceuse'},
  // v253 — nouveaux défis : terrains manquants, saisons, IA divine, grands paliers (certains rapportent des Bubulles)
  {id:'wind',title:'Les vents de Hacko',goal:'Gagnez un match dans les vents de Hacko.',kind:'terrain',terrain:'vent',target:1,reward:'Dés à lancer jade',roll:'jade'},
  {id:'lake',title:'Le lac rose',goal:'Gagnez un match au lac rose.',kind:'terrain',terrain:'eau',target:1,reward:'Dés à lancer rose',roll:'rose'},
