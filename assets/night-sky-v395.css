@@ -82,18 +82,8 @@ body.portal-open::before,body.portal-open::after{opacity:.35!important}
 @keyframes fx-star{0%{opacity:0;transform:rotate(var(--ang)) translateX(0)}15%{opacity:1}100%{opacity:0;transform:rotate(var(--ang)) translateX(var(--dist))}}
 #night-sky .fx-spark{width:5px;height:5px;margin:-2.5px;border-radius:50%;background:#fff;box-shadow:0 0 8px 3px #bfe0ff;animation:fx-spark 1.2s ease-out forwards}
 @keyframes fx-spark{0%{transform:rotate(var(--a)) translateX(0);opacity:1}100%{transform:rotate(var(--a)) translateX(70px) scale(.3);opacity:0}}
-/* comète (téléphone) : noyau blanc-bleu, chevelure, queue de poussière rose-violet et queue d'ions bleue, orientées à l'opposé du mouvement */
-#sky-comet{position:fixed;left:0;top:0;z-index:6;width:64px;height:64px;margin:-32px 0 0 -32px;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;min-height:0!important;cursor:pointer;-webkit-tap-highlight-color:transparent;overflow:visible}
+/* v401 — comète en particules (canevas) ; le bouton invisible suit le noyau pour l'attraper */
+#night-sky #comet-canvas{position:fixed;left:0;top:0;width:100vw;height:100vh;pointer-events:none}
+#sky-comet{position:fixed;left:0;top:0;z-index:6;width:64px;height:64px;margin:-32px 0 0 -32px;padding:0!important;border:0!important;border-radius:50%!important;background:transparent!important;box-shadow:none!important;min-height:0!important;cursor:pointer;-webkit-tap-highlight-color:transparent}
 #sky-comet[hidden]{display:none}
-#sky-comet.go{animation:comet-cross var(--cdur,34s) linear forwards}
-#sky-comet .comet-body{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(var(--rot,0deg))}
-#sky-comet .comet-tail{position:absolute;right:0;top:calc(var(--clen,200px) * -.24);width:var(--clen,200px);height:calc(var(--clen,200px) * .48);overflow:visible;mix-blend-mode:screen;animation:comet-flicker 3s ease-in-out infinite}
-#sky-comet .comet-coma{position:absolute;left:-16px;top:-16px;width:32px;height:32px;border-radius:50%;background:radial-gradient(circle,#d8f1ffcc 0,#7fc3ff66 35%,#6b7cff22 60%,transparent 72%);filter:blur(1px)}
-#sky-comet .comet-head{position:absolute;left:-4px;top:-4px;width:8px;height:8px;border-radius:50%;background:radial-gradient(circle,#fff 0 45%,#dff4ff 70%,#bfe6ff 100%);box-shadow:0 0 6px 2px #ffffffee,0 0 16px 6px #8fd0ffaa,0 0 30px 10px #5f8cff44;animation:comet-pulse 2.6s ease-in-out infinite}
-#sky-comet.caught{animation-play-state:paused}
-#sky-comet.caught .comet-body{animation:comet-pop .6s ease-out forwards}
-@keyframes comet-cross{from{transform:translate(var(--x0),var(--y0))}to{transform:translate(var(--x1),var(--y1))}}
-@keyframes comet-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
-@keyframes comet-flicker{0%,100%{opacity:.92}50%{opacity:1}}
-@keyframes comet-pop{to{opacity:0;transform:rotate(var(--rot,0deg)) scale(1.8)}}
 @media(prefers-reduced-motion:reduce){#sky-comet{display:none!important}}
