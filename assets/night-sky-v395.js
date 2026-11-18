@@ -60,18 +60,18 @@ const comet=document.createElement('button');comet.type='button';comet.id='sky-c
 function emit(n,kind,hx,hy){const back=[-C.dx,-C.dy],perp=[-C.dy,C.dx];for(let k=0;k<n;k++){const ion=kind==='ion',sp=ion?rnd(95,150):rnd(45,85),spread=ion?rnd(-3,3):rnd(-14,14),drift=ion?0:rnd(3,9);
   C.parts.push({x:hx+rnd(-1.5,1.5),y:hy+rnd(-1.5,1.5),vx:back[0]*sp+perp[0]*spread,vy:back[1]*sp+perp[1]*spread+drift,life:0,max:ion?rnd(1.5,2.3):rnd(2,3.2),s:ion?rnd(1.6,2.6):rnd(4,7.5),g:ion?.9:1.25,kind:ion?'ion':(Math.random()<.55?'dust0':'dust1')})}}
 function frame(now){if(!C.on)return;requestAnimationFrame(frame);const dt=Math.min(.05,(now-(C.last||now))/1000);C.last=now;const t=Math.min(1,(now-C.t0)/C.dur);
- if(!C.caught){C.hx=C.x0+(C.x1-C.x0)*t;C.hy=C.y0+(C.y1-C.y0)*t+Math.sin(t*Math.PI)*-8;emit(6,'ion',C.hx,C.hy);emit(6,'dust',C.hx,C.hy);comet.style.transform=`translate(${C.hx}px,${C.hy}px)`}
+ if(!C.caught&&t<1){C.hx=C.x0+(C.x1-C.x0)*t;C.hy=C.y0+(C.y1-C.y0)*t+Math.sin(t*Math.PI)*-8;emit(6,'ion',C.hx,C.hy);emit(6,'dust',C.hx,C.hy);comet.style.transform=`translate(${C.hx}px,${C.hy}px)`}
  const ctx=cx2;ctx.setTransform(DPR,0,0,DPR,0,0);ctx.clearRect(0,0,innerWidth,innerHeight);ctx.globalCompositeOperation='lighter';
  C.parts=C.parts.filter(p=>(p.life+=dt)<p.max);for(const p of C.parts){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=.992;p.vy*=.992;const a=1-p.life/p.max,sz=p.s*(1+p.life*p.g);ctx.globalAlpha=a*(p.kind==='ion'?.2:.055);ctx.drawImage(SPR[p.kind],p.x-sz,p.y-sz,sz*2,sz*2)}
- if(!C.caught){const pulse=1+Math.sin(now/420)*.08;ctx.globalAlpha=1;ctx.drawImage(SPR.glow,C.hx-22*pulse,C.hy-22*pulse,44*pulse,44*pulse);ctx.globalAlpha=1;ctx.drawImage(SPR.glow,C.hx-7,C.hy-7,14,14)}
+ if(!C.caught&&t<1){const pulse=1+Math.sin(now/420)*.08;ctx.globalAlpha=1;ctx.drawImage(SPR.glow,C.hx-22*pulse,C.hy-22*pulse,44*pulse,44*pulse);ctx.globalAlpha=1;ctx.drawImage(SPR.glow,C.hx-7,C.hy-7,14,14)}
  ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';
- if((t>=1||C.caught)&&!C.parts.length){C.on=false;comet.hidden=true;ctx.clearRect(0,0,innerWidth,innerHeight)}else if(t>=1)comet.hidden=true}
-function launchComet(force){const mobile=matchMedia('(max-width:700px)').matches,home=document.body.classList.contains('portal-open')&&document.body.dataset.portalView==='home';
- if((force||(mobile&&home&&!document.hidden))&&!calm()&&!C.on){const ltr=Math.random()<.5,W=innerWidth,H=innerHeight,top=.07*H,bot=.29*H;C.y0=rnd(top,bot);C.y1=Math.min(bot,Math.max(top,C.y0+rnd(-.12,.14)*H));C.x0=ltr?-30:W+30;C.x1=ltr?W+30:-30;
-  const L=Math.hypot(C.x1-C.x0,C.y1-C.y0);C.dx=(C.x1-C.x0)/L;C.dy=(C.y1-C.y0)/L;C.dur=rnd(28000,40000);C.t0=performance.now();C.last=0;C.parts=[];C.caught=false;C.on=true;comet.hidden=false;sizeCanvas();requestAnimationFrame(frame)}
+ if((t>=1||C.caught)&&(!C.parts.length||now-C.t0>C.dur+6000)){C.parts=[];C.on=false;comet.hidden=true;ctx.clearRect(0,0,innerWidth,innerHeight)}else if(t>=1)comet.hidden=true}
+function launchComet(force,dur){const mobile=matchMedia('(max-width:700px)').matches,home=document.body.classList.contains('portal-open')&&document.body.dataset.portalView==='home';
+ if((force||(mobile&&home&&!document.hidden))&&!calm()&&!C.on){const ltr=Math.random()<.5,W=innerWidth,H=innerHeight,top=.07*H,bot=.29*H;C.y0=rnd(top,bot);C.y1=Math.min(bot,Math.max(top,C.y0+rnd(-.12,.14)*H));C.x0=ltr?-30:W+30;C.x1=ltr?W+60:-60;
+  const L=Math.hypot(C.x1-C.x0,C.y1-C.y0);C.dx=(C.x1-C.x0)/L;C.dy=(C.y1-C.y0)/L;C.dur=dur||rnd(28000,40000);C.t0=performance.now();C.last=0;C.parts=[];C.caught=false;C.on=true;comet.hidden=false;sizeCanvas();requestAnimationFrame(frame)}
  if(!force)setTimeout(()=>launchComet(),rnd(45000,80000))}
 comet.addEventListener('click',()=>{if(!C.on||C.caught)return;C.caught=true;comet.hidden=true;SFX.shimmer();poke(5);
  for(let k=0;k<70;k++){const a=Math.random()*Math.PI*2,sp=rnd(30,140);C.parts.push({x:C.hx,y:C.hy,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:0,max:rnd(.8,1.6),s:rnd(2,5),g:1.2,kind:k%3?'ion':'dust0'})}});
 setTimeout(()=>launchComet(),20000);
-window.HackeniaSky={pokeMoon,launchComet:()=>launchComet(true)};
+window.HackeniaSky={pokeMoon,launchComet:d=>launchComet(true,d)};
 })();
