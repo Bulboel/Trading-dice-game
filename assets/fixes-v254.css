@@ -254,7 +254,7 @@ html body.portal-open[data-portal-view="home"] #home-corner #home-learn,html bod
 /* v392 — Les 12 dés du menu principal au style galaxie Crépitant : noir profond, nébuleuse de la couleur du dé, fines étoiles ; coins jointifs */
 html body #portal #portal-nav .menu-cube .md-face{
  border:1.4px solid color-mix(in srgb,var(--accent) 60%,#fff)!important;
- border-radius:calc(var(--menu-size) * .028)!important;
+ border-radius:0!important;
  background:
   radial-gradient(circle at 18% 26%,#fff 0 .45px,transparent .9px),
   radial-gradient(circle at 74% 17%,#fff 0 .35px,transparent .8px),
@@ -265,7 +265,7 @@ html body #portal #portal-nav .menu-cube .md-face{
   radial-gradient(105% 90% at 26% 14%,color-mix(in srgb,var(--accent) 90%,#fff) 0%,color-mix(in srgb,var(--accent) 55%,#06030d) 18%,color-mix(in srgb,var(--accent) 22%,#05030b) 40%,#030208 78%)!important;
  box-shadow:inset 0 1px 1px #ffffff55,inset 0 0 12px #000c,0 0 6px color-mix(in srgb,var(--accent) 40%,transparent)!important;
 }
-html body #portal #portal-nav .menu-cube .md-face:before{border-color:color-mix(in srgb,var(--accent) 45%,#fff)!important;border-radius:calc(var(--menu-size) * .02)!important;opacity:.45!important;box-shadow:0 0 4px color-mix(in srgb,var(--accent) 45%,transparent)!important}
+html body #portal #portal-nav .menu-cube .md-face:before{border-color:color-mix(in srgb,var(--accent) 45%,#fff)!important;border-radius:2px!important;opacity:.45!important;box-shadow:0 0 4px color-mix(in srgb,var(--accent) 45%,transparent)!important}
 html body #portal #portal-nav .menu-cube .md-face:after{border-radius:inherit;background:
   radial-gradient(circle at 37% 58%,#fff 0 .4px,transparent .9px),
   radial-gradient(circle at 66% 35%,#fff 0 .45px,transparent .95px),
@@ -283,7 +283,7 @@ html body #portal #portal-nav .menu-pips .pip{transform:scale(.68);background:ra
 html body.portal-open[data-portal-view="home"] #portal #portal-nav .home-dice-ring .portal-tab strong{font-size:clamp(11px,3.05vw,13px)!important;text-shadow:0 2px 6px #000,0 0 8px #000,0 0 3px #000!important}
 /* v393 — Dés Annonces (noir et or) et Quotidien (arc-en-ciel discret) au même style galaxie que les dés du menu */
 html body #news-die .news-cube i,html body #daily-die .daily-cube i{
- border:1.4px solid var(--gx-edge)!important;border-radius:6%!important;background-clip:border-box!important;
+ border:1.4px solid var(--gx-edge)!important;border-radius:0!important;background-clip:border-box!important;
  box-shadow:inset 0 1px 1px #ffffff50,inset 0 0 12px #000c,0 0 6px var(--gx-glow)!important}
 html body #news-die .news-cube i{--gx-edge:#f3d27a;--gx-glow:#e8b23a66;
  background:
