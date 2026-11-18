@@ -50,3 +50,47 @@ body.portal-open::before,body.portal-open::after{opacity:.35!important}
 @media(max-width:700px){#night-sky .sky-moon{display:none}}
 @media(prefers-reduced-motion:reduce){#night-sky *{animation:none!important}#night-sky .sky-glints b{opacity:.6}}
 .no-motion #night-sky *{animation:none!important}
+
+/* v399 — lune taquinée : clin d'œil et joues roses */
+#night-sky .moon-face{position:absolute;inset:0;opacity:0;pointer-events:none}
+#night-sky .moon-face u{position:absolute;display:block}
+#night-sky .moon-face .eye{top:40%;width:9%;height:5%;border-bottom:2px solid #4a4436;border-radius:0 0 50% 50%}
+#night-sky .moon-face .eye.l{left:30%}#night-sky .moon-face .eye.r{left:58%}
+#night-sky .moon-face .cheek{top:52%;width:14%;height:8%;border-radius:50%;background:#ff8fa877;filter:blur(1.5px)}
+#night-sky .moon-face .cheek.l{left:22%}#night-sky .moon-face .cheek.r{left:62%}
+#night-sky .moon-face .mouth{left:43%;top:58%;width:13%;height:6%;border-bottom:2px solid #4a4436;border-radius:0 0 50% 50%}
+#night-sky .moon-disc.poked{animation:moon-wobble .9s ease-out}
+#night-sky .moon-disc.poked .moon-face{animation:moon-face 2.4s ease-out}
+#night-sky .moon-disc.poked .eye.r{animation:moon-wink 2.4s ease-out}
+@keyframes moon-wobble{0%{transform:scale(1)}20%{transform:scale(1.08,.94) rotate(-4deg)}45%{transform:scale(.96,1.05) rotate(3deg)}70%{transform:scale(1.02) rotate(-1deg)}100%{transform:scale(1)}}
+@keyframes moon-face{0%{opacity:0}12%,75%{opacity:1}100%{opacity:0}}
+@keyframes moon-wink{0%,30%{transform:scaleY(1)}40%,55%{transform:scaleY(.15) translateY(1px)}65%,100%{transform:scaleY(1)}}
+#moon-hit{position:fixed;z-index:6;padding:0!important;margin:0;border:0!important;border-radius:50%!important;background:transparent!important;box-shadow:none!important;min-height:0!important;cursor:pointer}
+#moon-hit[hidden]{display:none}
+#moon-hit:focus-visible{outline:2px solid #ffe6a6;outline-offset:4px}
+/* scènes */
+#night-sky .sky-fx{position:fixed;left:0;top:0;pointer-events:none}
+#night-sky .fx-balai{width:var(--w);animation:fx-balai 3s ease-in-out forwards}
+#night-sky .fx-balai svg{width:100%;fill:#05060c;filter:drop-shadow(0 0 2px #ffffff66)}
+@keyframes fx-balai{0%{transform:translate(0,10px) rotate(-6deg);opacity:0}10%{opacity:1}50%{transform:translate(calc(var(--dx) * .5),-14px) rotate(4deg)}90%{opacity:1}100%{transform:translate(var(--dx),6px) rotate(-4deg);opacity:0}}
+#night-sky .fx-wolf{width:var(--w);aspect-ratio:1;animation:fx-wolf 3.4s ease-in-out forwards}
+#night-sky .fx-wolf svg{width:100%;height:100%;fill:#05060c;filter:drop-shadow(0 0 2px #ffffff55)}
+@keyframes fx-wolf{0%{opacity:0;transform:translateY(10px)}15%,80%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(6px)}}
+#night-sky .fx-star{width:110px;height:1.5px;transform-origin:0 50%;opacity:0;animation:fx-star 1.3s cubic-bezier(.45,0,.9,.6) var(--d) forwards}
+#night-sky .fx-star em{position:absolute;inset:0;background:linear-gradient(90deg,#fff0,#dfe9ffaa 60%,#fff)}
+#night-sky .fx-star em:after{content:'';position:absolute;right:-2px;top:50%;width:3px;height:3px;margin-top:-1.5px;border-radius:50%;background:#fff;box-shadow:0 0 6px 2px #fffc}
+@keyframes fx-star{0%{opacity:0;transform:rotate(var(--ang)) translateX(0)}15%{opacity:1}100%{opacity:0;transform:rotate(var(--ang)) translateX(var(--dist))}}
+#night-sky .fx-spark{width:5px;height:5px;margin:-2.5px;border-radius:50%;background:#fff;box-shadow:0 0 8px 3px #bfe0ff;animation:fx-spark 1.2s ease-out forwards}
+@keyframes fx-spark{0%{transform:rotate(var(--a)) translateX(0);opacity:1}100%{transform:rotate(var(--a)) translateX(70px) scale(.3);opacity:0}}
+/* comète (téléphone) */
+#sky-comet{position:fixed;left:0;top:0;z-index:6;width:64px;height:64px;margin:-32px 0 0 -32px;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;min-height:0!important;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#sky-comet[hidden]{display:none}
+#sky-comet.go{animation:comet-cross 34s linear forwards}
+#sky-comet .comet-head{position:absolute;left:50%;top:50%;width:12px;height:12px;margin:-6px;border-radius:50%;background:radial-gradient(circle,#fff 0 35%,#cfe6ff 60%,#8fc4ff00 100%);box-shadow:0 0 14px 6px #bfe0ffaa,0 0 34px 12px #7fb8ff55;animation:comet-pulse 2.4s ease-in-out infinite}
+#sky-comet .comet-tail{position:absolute;left:50%;top:50%;width:150px;height:14px;margin-top:-7px;transform-origin:0 50%;transform:rotate(var(--tail));background:linear-gradient(90deg,#dff0ffcc,#9fcbff55 35%,#9fcbff00);border-radius:50%;filter:blur(2px)}
+#sky-comet.caught{animation-play-state:paused}
+#sky-comet.caught .comet-head,#sky-comet.caught .comet-tail{animation:comet-pop .6s ease-out forwards}
+@keyframes comet-cross{from{transform:translate(var(--x0),var(--y0))}to{transform:translate(var(--x1),var(--y1))}}
+@keyframes comet-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+@keyframes comet-pop{to{opacity:0;transform:scale(2.2)}}
+@media(prefers-reduced-motion:reduce){#sky-comet{display:none!important}}
