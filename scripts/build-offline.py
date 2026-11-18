@@ -22,10 +22,16 @@ shell+=sorted('assets/elements/'+f for f in os.listdir('assets/elements') if f.s
 for dp,_,fs in os.walk('assets/vendor'):
     shell+=sorted(os.path.join(dp,f).replace(os.sep,'/') for f in fs if not f.endswith(('.md','.txt','LICENSE')))
 shell=list(dict.fromkeys(shell))
+# v405 — démarrage léger : ce qui ne sert pas tout de suite (images de l'Histoire et du Panthéon,
+# musiques) n'est plus téléchargé au premier lancement. Ces fichiers sont chargés puis gardés sur l'appareil à la première
+# utilisation, et restent dans « Télécharger tout le jeu » (FULL) pour le mode hors ligne.
+LATER=re.compile(r'^assets/(story/|pantheon/|audio/|Musique%20|Musique )')
+later=[u for u in shell if LATER.search(u.split('?')[0])]
+shell=[u for u in shell if u not in later]
 full=[]
 for d,pat in [('assets/models-web',r'\.glb$'),('assets/characters',r'\.glb$'),('assets/story',r'\.(webp|png|jpg)$'),('assets/pantheon',r'\.webp$'),('assets/story/cards',r'\.webp$'),('assets/models',r'\.glb$')]:
     if os.path.isdir(d):full+=sorted(f'{d}/{f}' for f in os.listdir(d) if re.search(pat,f))
-full=[f for f in full if f not in shell]
+full=list(dict.fromkeys(later+[f for f in full if f not in shell]))
 h=hashlib.sha1()
 for u in shell:
     p=u.split('?')[0];p='index.html' if p in('./','./index.html') else p
