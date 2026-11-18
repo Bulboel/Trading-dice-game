@@ -217,9 +217,37 @@ body.portal-open:not([data-portal-view="home"]) #portal .portal-brand{cursor:poi
 body.portal-open:not([data-portal-view="home"]) #portal .portal-brand:focus-visible{outline:2px solid #e6c778;outline-offset:3px;border-radius:12px}
 body.portal-open #portal .portal-wordmark h1{display:inline-block;white-space:nowrap}
 
-/* v389 — Options › À propos */
-.opt-layout[data-tab="about"] .opt-preview{display:none}
-.opt-layout[data-tab="about"]{grid-template-columns:minmax(0,1fr)!important}
-.opt-about fieldset p{margin:0 0 8px;line-height:1.55;color:#e4dccb}
-.opt-about fieldset p:last-child{margin-bottom:0}
-.opt-about-sign{margin:14px 0 4px;text-align:center;font:italic 13px Georgia,serif;color:#cdb98a;letter-spacing:.04em}
+
+
+/* v390 — Coin du menu principal : D8 « Apprendre à jouer » (Crépitant violet) et D10 « À propos » (Crépitant émeraude) */
+#home-corner{display:none}
+body.portal-open[data-portal-view="home"]:not(.start-menu-open) #home-corner{display:flex;position:fixed;left:10px;bottom:10px;z-index:80;gap:8px;align-items:flex-end}
+html body.portal-open[data-portal-view="home"] #home-corner #home-learn,html body.portal-open[data-portal-view="home"] #home-corner #home-about{position:relative!important;left:auto!important;bottom:auto!important;display:inline-flex!important;flex-direction:column;align-items:center;gap:3px;min-height:0!important;width:auto;min-width:72px;padding:4px 2px 6px!important;border:0!important;border-radius:14px!important;background:none!important;box-shadow:none!important;cursor:pointer;font:600 11.5px/1.15 system-ui,sans-serif!important;letter-spacing:.2px;text-align:center;transition:transform .2s}
+#home-corner .corner-die:hover,#home-corner .corner-die:focus-visible{transform:translateY(-2px)}
+#home-corner .corner-die:focus-visible{outline:2px solid #ffe6a6!important;outline-offset:2px}
+#home-corner .cd-svg{width:50px;height:50px;overflow:visible;animation:cd-float 4.2s ease-in-out infinite}
+#home-corner .cd-v2 .cd-svg{animation-delay:-2.1s}
+#home-corner .cd-v1 .cd-svg{filter:drop-shadow(0 0 7px #a54dffaa) drop-shadow(0 4px 6px #000a)}
+#home-corner .cd-v2 .cd-svg{filter:drop-shadow(0 0 7px #22e07a99) drop-shadow(0 4px 6px #000a)}
+#home-corner .cd-label{padding:3px 8px;border-radius:999px;white-space:nowrap;text-shadow:0 1px 2px #000}
+#home-corner .cd-v1 .cd-label{color:#f1e2ff;background:linear-gradient(160deg,#2b0d4fe6,#0e0618e6);border:1px solid #a54dff88;box-shadow:0 0 10px #a54dff33}
+#home-corner .cd-v2 .cd-label{color:#e2fff0;background:linear-gradient(160deg,#0b3a22e6,#03100ae6);border:1px solid #22e07a88;box-shadow:0 0 10px #22e07a33}
+.cd-star{animation:cd-twinkle 2.6s ease-in-out infinite}
+@keyframes cd-float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-4px) rotate(4deg)}}
+@keyframes cd-twinkle{0%,100%{opacity:.25}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce){#home-corner .cd-svg,.cd-star{animation:none}}
+@media(max-width:380px){html body.portal-open[data-portal-view="home"] #home-corner .corner-die{min-width:64px;font-size:10.5px!important}#home-corner .cd-svg{width:44px;height:44px}}
+/* Fenêtre « À propos » aux teintes Crépitant émeraude */
+#about-dialog{width:min(560px,calc(100vw - 24px));max-height:min(86vh,760px);padding:0;border:1px solid #22e07a66;border-radius:20px;color:#e4f2ea;background:radial-gradient(120% 70% at 20% 0%,#0f4a2c 0%,#06180f 45%,#020805 100%);box-shadow:0 0 0 1px #ffd76a22,0 0 40px #22e07a33,0 24px 60px #000c;overflow:hidden;display:flex;flex-direction:column}
+#about-dialog:not([open]){display:none}
+#about-dialog::backdrop{background:#000b;backdrop-filter:blur(3px)}
+#about-dialog header{display:flex;align-items:center;gap:12px;padding:14px 16px 10px;border-bottom:1px solid #22e07a33;background:linear-gradient(180deg,#0b3a2266,transparent)}
+#about-dialog .about-die .cd-svg{width:44px;height:44px;filter:drop-shadow(0 0 8px #22e07aaa);animation:cd-float 4.2s ease-in-out infinite}
+#about-dialog h2{flex:1;margin:0;font:700 22px/1.1 Georgia,serif;letter-spacing:.06em;color:#ffe6a6;text-shadow:0 0 12px #ffd76a55}
+#about-dialog [data-about="close"]{width:34px;height:34px;min-height:0!important;padding:0!important;border-radius:50%!important;border:1px solid #22e07a66!important;background:#03100acc!important;color:#e2fff0!important;font-size:14px!important}
+#about-dialog .about-body{overflow:auto;padding:12px 16px 16px;display:grid;gap:12px}
+#about-dialog fieldset{margin:0;padding:12px 14px;border:1px solid #22e07a40;border-radius:14px;background:linear-gradient(160deg,#0b2a1ab3,#03100a99)}
+#about-dialog legend{padding:0 8px;font:700 15px Georgia,serif;color:#ffd76a}
+#about-dialog p{margin:0 0 8px;font:14.5px/1.6 system-ui,sans-serif;color:#dcefe4;text-align:left}
+#about-dialog p:last-child{margin-bottom:0}
+#about-dialog .opt-about-sign{margin:4px 0 0;text-align:center;font:italic 13px Georgia,serif;color:#9fd8b8;letter-spacing:.04em}
