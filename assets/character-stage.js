@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import {alignModelForward} from './model-facing.js?v=20261103-v71';
+import {alignModelForward} from './model-facing.js?v=20270102-v403';
 import { GLTFLoader } from './vendor/three/examples/jsm/loaders/GLTFLoader.js';
-import { applyLook } from './variant-look.js?v=20270102-v402';
-import { attachHeroParts } from './hero-parts.js?v=20270102-v402';
+import { applyLook } from './variant-look.js?v=20270102-v403';
+import { attachHeroParts } from './hero-parts.js?v=20270102-v403';
 import { OrbitControls } from './vendor/three/examples/jsm/controls/OrbitControls.js';
 
 export async function createCharacterStage(host,info,isCurrent){

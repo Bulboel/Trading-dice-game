@@ -703,5 +703,6 @@
  "Complétez toute la collection de dés (hors Crépitants).": "Complete the whole dice collection (Crackling excluded).",
  "Boubourse et dés de jet « Galaxie bleue »": "“Blue galaxy” pouch and roll dice",
  "Galaxie bleue": "Blue galaxy",
- "Nouveau défi : complétez toute la collection de dés (hors Crépitants) pour une récompense très spéciale.": "New challenge: complete the whole dice collection (Crackling excluded) for a very special reward."
+ "Nouveau défi : complétez toute la collection de dés (hors Crépitants) pour une récompense très spéciale.": "New challenge: complete the whole dice collection (Crackling excluded) for a very special reward.",
+ "Correctif : après une mise à jour, tous les fichiers du jeu sont bien rechargés (certains éléments pouvaient rester à une ancienne version sur ordinateur).": "Fix: after an update, every game file is now properly reloaded (some parts could stay on an older version on computer)."
 }
