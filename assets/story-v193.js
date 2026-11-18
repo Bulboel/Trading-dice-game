@@ -9,7 +9,7 @@ let pending=null;// duel d'histoire en cours : {id}
 // ——— Progression ———
 function prog(){const s=P()?.profile()?.story,done={...(s?.done||{})};/* v370 — partie 10 du chapitre I ajoutée en cours de route : déjà vécue par qui a fini la partie suivante */if(done.c1p9&&!done.c1p8bis)done.c1p8bis=true;if(done.c2p5&&!done.c2p4bis)done.c2p4bis=true;/* v373 — idem pour la partie 5 du chapitre II */return{done,rewarded:{...(s?.rewarded||{})}}}
 function mainline(){return PARTS.filter(p=>!p.optional)}
-function unlocked(id){const part=PARTS.find(p=>p.id===id),d=prog().done;if(!part)return false;if(part.optional){const i=PARTS.indexOf(part);return !!d[PARTS[i-1]?.id]}const line=mainline(),i=line.indexOf(part);return line.slice(0,i).every(p=>d[p.id])}
+function unlocked(id){const part=PARTS.find(p=>p.id===id),d=prog().done;if(!part)return false;if(part.optional){const i=PARTS.indexOf(part);return !!d[PARTS[i-1]?.id]}const line=mainline(),i=line.indexOf(part);return line.slice(0,i).every(p=>d[p.id]||(p.id==='c1p1'&&triedSet().has('c1p1'))/* v418 — duel contre Kayla : il suffit de l’avoir tenté, même abandonné en cours */)}
 function complete(id){const portal=P();if(!portal)return;const pr=portal.profile(),first=!pr.story?.rewarded?.[id];let next=structuredClone(pr);next.story={done:{...(pr.story?.done||{}),[id]:true},rewarded:{...(pr.story?.rewarded||{}),[id]:true}};
  let gift='';if(first){const withPouch=portal.planPouch({...next,gold:next.gold+10});if(withPouch){next=withPouch;gift=' et une boubourse offerte'}else next.gold+=10;next.gold+=REWARD}
  const C=window.HackeniaChallenges,before=C?C.unlocked(pr).map(d=>d.id):[];
@@ -50,10 +50,10 @@ function start(id){const part=PARTS.find(p=>p.id===id);if(!part||!unlocked(id))r
  play(part.intro,afterIntro,go=>{if(go==='duel')chooseDeck(()=>duel(part));else play(part.silence||[],()=>{complete(part.id);P()?.open('story')})},tried?()=>chooseDeck(()=>duel(part)):null);}
 function triedSet(){try{return new Set(JSON.parse(localStorage.getItem('hackenia-story-tried')||'[]'))}catch{return new Set()}}
 function markTried(id){try{const t=triedSet();t.add(id);localStorage.setItem('hackenia-story-tried',JSON.stringify([...t]))}catch{}}
-function duel(part){const d=part.duel,deck=P()?.preferredDeck();pending={id:part.id};markTried(part.id);document.body.classList.remove('portal-open');location.hash='partie';
+function duel(part){const d=part.duel,deck=P()?.preferredDeck();pending={id:part.id};window.__hkDuelOwner='story';markTried(part.id);document.body.classList.remove('portal-open');location.hash='partie';
  game.start(deck?deck.dice:LOAN,d.terrain,'story',d.level,{name:d.foe,dice:d.dice,boss:d.boss});window.dispatchEvent(new Event('resize'));
  if(!deck)setTimeout(()=>P()?.toast('Aucun deck valide : Kayla vous prête un deck de départ pour ce duel.'),600)}
-function after(won){if(!pending)return;const part=PARTS.find(p=>p.id===pending.id);pending=null;if(!part)return;
+function after(won){if(!pending||window.__hkDuelOwner!=='story')return;const part=PARTS.find(p=>p.id===pending.id);pending=null;if(!part)return;
  setTimeout(()=>{game.pause?.();if(won||part.id==='c1p1')play(part.victory||[],()=>{complete(part.id);P()?.open('story')});else play(part.lose&&part.lose.length?part.lose:[{s:'Voix off',t:'Ce duel est perdu… Reprenez votre souffle et retentez votre chance depuis le menu Histoire.',l:part.title,c:[],cast:[],next:'Retour au menu'}],()=>P()?.open('story'),null,()=>chooseDeck(()=>duel(part)),'↻ Rejouer le duel')},2600)}
 window.addEventListener('hackenia-player-victory',e=>{if(e.gameMode==='story')after(true)});
 window.addEventListener('hackenia-player-defeat',e=>{if(e.gameMode==='story')after(false)});

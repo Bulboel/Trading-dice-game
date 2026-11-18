@@ -103,9 +103,9 @@ function gift(f,dice){let k=0;dice.forEach((i,j)=>{const a=game.monsters[i],b=ga
  show({img:'velmarys-cadeau',text:'« Tiens, un cadeau pour ton aventure… »',own:1,
   note:`🎁 Velmarys t’offre ${game.monsters[GIFT].cn}… et garde ton ${game.monsters[taken]?.cn||'dé'} pour ce duel.`,
   actions:[['Retour',()=>{hide();P()?.open('pantheon')}],['⚔ Commencer le duel',()=>duel(f,mine,[taken]),1]]})}
-function duel(f,deck,extra=[]){hide();pending={id:f.id};document.body.classList.remove('portal-open');location.hash='partie';
+function duel(f,deck,extra=[]){hide();pending={id:f.id};window.__hkDuelOwner='pantheon';document.body.classList.remove('portal-open');location.hash='partie';
  game.start(deck,f.terrain,'story',f.level,{name:f.name,dice:[...extra,...f.dice],power:['sneeze','tactic'].includes(f.power)?f.power:''});window.dispatchEvent(new Event('resize'))}
-function after(won){if(!pending)return;const f=FOES.find(x=>x.id===pending.id);pending=null;if(!f)return;
+function after(won){if(!pending||window.__hkDuelOwner!=='pantheon')return;const f=FOES.find(x=>x.id===pending.id);pending=null;if(!f)return;
  setTimeout(()=>{game.pause?.();if(won){const msg=record(f),i=FOES.indexOf(f),nx=FOES[i+1];
    sequence(f.win,[['Retour au Panthéon',()=>{hide();P()?.open('pantheon');if(msg)P()?.toast(msg+(nx?` Prochaine épreuve : ${nx.name}.`:' Vous avez terminé le Panthéon !'))},1]])}
   else show({img:f.meet[f.meet.length-1][0],text:`${f.name} remporte ce duel… Reprenez votre souffle et retentez votre chance !`,actions:[['Retour au Panthéon',()=>{hide();P()?.open('pantheon')}],['⚔ Réessayer',()=>chooseDeck(f),1]]})},2600)}
