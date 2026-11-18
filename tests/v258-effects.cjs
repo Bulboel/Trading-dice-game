@@ -6,7 +6,7 @@ const c=vm.createContext({window:{dispatchEvent(){}},Event,document:{getElementB
 vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,''),c);const run=s=>vm.runInContext(s,c);
 const M=c.window.hackeniaGame.monsters;
 const fxDice=M.map((d,i)=>[i,d]).filter(([,d])=>d.fx),sacred=M.map((d,i)=>[i,d]).filter(([,d])=>d.terrain2);
-assert.equal(fxDice.length,6);assert.equal(sacred.length,3,'v267 : Shauntéa a pris la place d\'un divin sacré mis de côté');
+assert.equal(fxDice.length,6);assert.equal(sacred.length,3,'v267 : Floréa a pris la place d\'un divin sacré mis de côté');
 for(const [i,d] of fxDice){assert.equal(d.rarity,3,d.cn+' est rare');assert.equal(d.c.length,4,d.cn+' : 4 dalles (une de moins)');assert.equal(d.c.reduce((a,t)=>a+t[2],0),d.multi?16:18,d.cn+' : total 18 (16 pour un multi-élément)')}
 for(const [i,d] of sacred){assert.equal(d.rarity??d.lv,6);assert.equal(d.c.length,5,d.cn+' : 5 dalles (une de moins)');assert.equal(d.c.reduce((a,t)=>a+t[2],0),26)}
 const idx=n=>M.findIndex(d=>d.cn===n);

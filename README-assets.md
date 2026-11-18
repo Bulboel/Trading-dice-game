@@ -61,5 +61,4 @@ sont mieux en modèles 3D séparés que peints sur le sol.
 - En ligne : pousse le dossier sur GitHub (GitHub Pages), ouvre la page : les modèles apparaissent dans la fiche de créature.
 - En local : ouvre un terminal dans le dossier et lance `python3 -m http.server`, puis va sur http://localhost:8000
   (un double-clic sur index.html ne charge pas les fichiers).
-- La version publiée dans l'aperçu de Claude ne peut pas charger tes fichiers : utilise GitHub Pages.
 

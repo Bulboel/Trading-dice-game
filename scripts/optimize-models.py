@@ -16,9 +16,9 @@ OUT = ASSETS / 'models-web'
 TOOL = sys.argv[1:] or ['npx', '--yes', '@gltf-transform/cli@4.5.1']
 SIZE, QUALITY = 1024, 88
 # v267 — modèles riches en textures dont la qualité WebP est réduite pour rester sous le budget de 4 Mo (tests/model-budget.cjs).
-QUALITY_BY_FILE = {'Shauntea idle.glb': 62}
+QUALITY_BY_FILE = {'Florea idle.glb': 62}
 # Animation d'attente très longue (20 s, 78 os) : rééchantillonnage des images clés (aucune perte visible, tolérance 0,003).
-RESAMPLE = {'Shauntea idle.glb'}
+RESAMPLE = {'Florea idle.glb'}
 # Modèles hors manifeste (objets portés…) : nom du fichier source → nom publié dans assets/models-web/.
 EXTRA = {"La bague de l'apprentie équipement.glb": 'bague-chanceuse.glb',
          # v301 — coiffures et tenues du héros (pièces séparées, habillées sur le squelette du modèle neutre au chargement)
