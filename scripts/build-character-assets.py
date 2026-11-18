@@ -106,3 +106,6 @@ for key,filename in PORTRAITS.items():
 for key,clips in CLIPS.items():
  for kind,(source,name) in clips.items(): animation_only(find(source),name,OUTPUT/f'{key}-{kind}.glb')
 print(f'Built {2*len(PORTRAITS)} portraits and {sum(map(len,CLIPS.values()))} animation-only clips.')
+# v406 — compression meshopt des clips et modèles produits (voir scripts/compress-models.py)
+import subprocess as _sp,sys as _sy
+_sp.run([_sy.executable,str(pathlib.Path(__file__).with_name('compress-models.py'))],check=True)
