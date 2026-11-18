@@ -2,7 +2,7 @@
 (()=>{'use strict';const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const SPECIAL=/divin|cr[ée]pitant|l[ée]gend/i;
 function ceremonyFor(id,rarity){const d=window.hackeniaGame?.monsters?.[id]||{},r=String(rarity||''),crep=/cr[ée]pitant/i.test(r),div=/divin/i.test(r);return {variant:crep?(d.shinyKind===2?'emerald':'crep'):'',theme:div||crep?'divine':'legend',title:crep?'CRÉPITANT':div?'DIVIN':'LÉGENDAIRE',kicker:crep?(d.shinyKind===2?'Un éclat de nébuleuse émeraude…':'Un éclat de voie lactée…'):div?'Une présence supérieure s’éveille…':'Une légende s’éveille…',name:d.cn||'',id:d.portrait?id:null,portrait:d.portrait?'assets/characters/'+d.portrait+'-512.webp?v=340':''}}
-let invocationModule;const getInvocationModule=()=>invocationModule??=import('./invocation-v212.js?v=20270102-v413');
+let invocationModule;const getInvocationModule=()=>invocationModule??=import('./invocation-v212.js?v=20270102-v414');
 const ELEMENT_GLYPHS={
 eau:'<path d="M12 2.7C9.3 6.8 4.8 11.5 4.8 16.1a7.2 7.2 0 0 0 14.4 0C19.2 11.5 14.7 6.8 12 2.7Z"/><path d="M7.3 15.8c1.1-1.3 2.2-1.3 3.3 0s2.2 1.3 3.3 0 2.2-1.3 3.1 0M9 19.2c1 .7 2 .9 3 .9"/>',
 feu:'<path d="M13.2 2.8c.5 3.2-.9 4.8-2.6 6.4-.2-1.6-1-2.8-2.2-3.7C8.2 9 4.5 11.6 4.5 16.2a7.5 7.5 0 0 0 15 0c0-4.5-2.6-7.3-6.3-13.4Z"/><path d="M12.3 12.2c.2 1.8-2.2 2.8-2.2 5a2 2 0 0 0 3.9.6c.4-1.2-.2-2.2-1.7-5.6Z"/>',

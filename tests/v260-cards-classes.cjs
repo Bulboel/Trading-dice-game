@@ -27,6 +27,6 @@ assert.equal(run('b[8][3]'),null);
 run(`b[8][3]={o:1,el:'',v:6,lv:1,id:9}`);run(`classEffect(cr[0],[[3,9,2]])`);assert.equal(run('b[8][3].o'),0,'la dalle voisine la plus forte est reprise');
 // --- Éclaireur : main adverse visible 2 tours
 fresh();run(`const sc={o:0,x:3,y:9,mi:${scout},lv:3};cr.push(sc);classEffect(sc,[[3,9,2]])`);assert.equal(run('scoutUntil[0]>turnNumber'),true);
-assert.ok(html.includes('function renderScout()')&&html.includes("scoutUntil[0]>turnNumber"));
+assert.ok(html.includes('function renderScout()')&&html.includes("scoutUntil[me]>turnNumber"));
 assert.ok(fs.readFileSync(path.join(__dirname,'../assets/clearing-v105.js'),'utf8').includes('function updateFxBoard()'));
 console.log('v260 cards + classes OK');
