@@ -66,6 +66,7 @@ import {
 	InstancedBufferAttribute
 } from 'three';
 import { toTrianglesDrawMode } from '../utils/BufferGeometryUtils.js';
+import { MeshoptDecoder } from '../libs/meshopt_decoder.module.js'; // Hackénia v406 : modèles compressés (EXT_meshopt_compression) lus partout
 
 class GLTFLoader extends Loader {
 
@@ -75,7 +76,7 @@ class GLTFLoader extends Loader {
 
 		this.dracoLoader = null;
 		this.ktx2Loader = null;
-		this.meshoptDecoder = null;
+		this.meshoptDecoder = MeshoptDecoder;
 
 		this.pluginCallbacks = [];
 

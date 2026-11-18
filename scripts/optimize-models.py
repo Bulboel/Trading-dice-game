@@ -75,3 +75,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # v406 — compression meshopt de tout ce qui vient d'être produit
+    import importlib.util as _u;_s=_u.spec_from_file_location('cm',ROOT/'scripts'/'compress-models.py');_m=_u.module_from_spec(_s);_s.loader.exec_module(_m);_m.compress_all(TOOL)
