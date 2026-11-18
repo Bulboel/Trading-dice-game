@@ -3,6 +3,8 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v410',title:'Un jeu qui grandit',items:['Hackénia est toujours en cours de développement : les changements importants seront toujours annoncés ici.','Trois 6 sur un même lancer de trois ou quatre dés : mort subite, la partie est gagnée ! (Quatre 6 : +10 Bubulles.)','Vous pouvez maintenant cumuler jusqu’à trois dés bonus.','Trois divinités de l’histoire changent de nom.','Sur téléphone, le jeu ne coupe plus votre musique : vous pouvez écouter votre playlist en jouant.','Correctif : le déplacement d’une créature ne se valide plus tout seul en passant au tour adverse.']},
+ {id:'v409',title:'Nous contacter',items:['À propos : une adresse de contact pour vos questions et idées, et un lien vers la politique de confidentialité du jeu.']},
  {id:'v408',title:'Un jeu plus léger',items:['Les personnages en 3D et leurs animations sont deux fois plus légers, sans perte de qualité : téléchargement plus rapide et application plus petite.','Le premier lancement télécharge moins de fichiers : les images de l’Histoire et du Panthéon arrivent quand vous en avez besoin.']},
  {id:'v405',title:'Gardien de la collection',items:['Nouveau défi : complétez toute la collection de dés (hors Crépitants) pour une récompense très spéciale.','Correctif : après une mise à jour, tous les fichiers du jeu sont bien rechargés (certains éléments pouvaient rester à une ancienne version sur ordinateur).']},
  {id:'v401',title:'Le ciel a des secrets',items:['Le ciel du menu cache quelques surprises… à vous de les trouver.']},
@@ -39,7 +41,15 @@ function setup(){const nav=document.querySelector('#portal .portal-head');if(!na
  die.innerHTML='<span class="news-stage" aria-hidden="true"><span class="news-cube"><u class="ncore"></u><u class="ncore y"></u><u class="ncore z"></u>'+[['f',[4]],['k',[0,2,3,5,6,8]],['r',[0,8]],['l',[0,2,6,8]],['t',[0,4,8]],['m',[0,2,4,6,8]]].map(([f,p])=>'<i class="nc-'+f+'">'+Array.from({length:9},(_,k)=>'<b'+(p.includes(k)?' class="on"':'')+'></b>').join('')+'</i>').join('')+'</span></span><span class="news-label">Annonces</span><span class="news-count" hidden></span>';
  nav.append(die);
  dlg=document.createElement('dialog');dlg.id='news-dialog';dlg.setAttribute('aria-labelledby','news-title');
- dlg.innerHTML='<header><h2 id="news-title">Annonces</h2><button type="button" data-news="close" aria-label="Fermer">✕</button></header><p class="news-intro">Les dernières nouveautés d’Hackénia, en quelques mots.</p><div id="news-body"></div>';document.body.append(dlg);
+ dlg.innerHTML='<header><h2 id="news-title">Annonces</h2><button type="button" data-news="close" aria-label="Fermer">✕</button></header><p class="news-intro">Les dernières nouveautés d’Hackénia, en quelques mots.</p><p class="news-dev">🛠️ Hackénia est toujours en cours de développement : les changements importants sont toujours annoncés ici.</p><div id="news-body"></div>';document.body.append(dlg);
  die.onclick=()=>{draw();dlg.showModal();markRead()};dlg.addEventListener('click',e=>{if(e.target.closest('[data-news="close"]')||e.target===dlg)dlg.close()});update()}
-setup();window.HackeniaNews={items:NEWS,latest};
+// v410 — Avertissement « jeu en cours de développement » : affiché une seule fois, dès que le joueur arrive sur le menu.
+const DEV='hackenia-dev-notice-v1';
+function devNotice(){let done=false;try{done=localStorage.getItem(DEV)==='1'}catch{}if(done)return;
+ const timer=setInterval(()=>{const P=window.HackeniaPortal?.profile?.();if(!document.body.classList.contains('portal-open')||document.querySelector('dialog[open]')||document.querySelector('.start-menu-open,#start-menu:not([hidden])')||document.documentElement.classList.contains('start-menu-open')||!P?.onboardingDone)return;clearInterval(timer);
+  const d=document.createElement('dialog');d.id='dev-dialog';d.setAttribute('aria-labelledby','dev-title');
+  d.innerHTML='<header><h2 id="dev-title">🛠️ Un jeu qui grandit</h2></header><div class="dev-body"><p>Hackénia est toujours en cours de développement : de nouveaux dés, terrains et chapitres arrivent régulièrement, et certaines règles peuvent encore évoluer.</p><p>Les changements importants seront toujours annoncés dans le dé « Annonces » du menu principal.</p><p>Merci pour votre patience et pour vos retours !</p></div><button type="button" class="portal-primary" data-dev="ok">J’ai compris</button>';
+  const close=()=>{try{localStorage.setItem(DEV,'1')}catch{}d.close()};d.addEventListener('click',e=>{if(e.target.closest('[data-dev="ok"]'))close()});d.addEventListener('cancel',()=>{try{localStorage.setItem(DEV,'1')}catch{}});d.addEventListener('close',()=>d.remove());
+  document.body.append(d);window.HackeniaI18n?.apply?.(d);d.showModal()},1500)}
+setup();devNotice();window.HackeniaNews={items:NEWS,latest};
 })();

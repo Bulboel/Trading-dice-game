@@ -55,16 +55,16 @@ for key,prefix in [('myconide','Myconide'),('yoris','Yoris')]:
 CLIPS['hydrelithe-majeure']={'spell':('Hydrelithe majeure de terre attaque.glb',None), 'victory':('Hydrelithe majeure de terre victoire.glb',None), 'walk':('Hydrelithe majeur de terre marche.glb',None)}
 CLIPS['mineur']={'spell':('Mineur attaque.glb',None), 'victory':('Mineur victoire.glb',None), 'walk':('Mineur court.glb',None)}
 CLIPS['hydrelithe']={'spell':('Hydrelithe attaque.glb',None), 'victory':('Hydrelithe victoire.glb',None), 'walk':('Hydrelithe marche.glb',None)}
-# v267 — nouveaux personnages : Lathandre (remplace l'Eberien divin), Shauntéa, Jordan (sans animation) et les six bébémentaires.
+# v267 — nouveaux personnages : Lumérion (remplace l'Eberien divin), Floréa, Jordan (sans animation) et les six bébémentaires.
 # Les miniatures sont détourées par scripts/cutout-miniatures.py ; celles des bébémentaires sont rendues depuis leur modèle 3D
 # (scripts/render-bebementaires.cjs puis scripts/medallion-bebementaires.py). v268 : médaillons des dés double et triple élément.
-for key in ('lathandre','shauntea','jordan'): PORTRAITS[key]=None
+for key in ('lumerion','florea','jordan'): PORTRAITS[key]=None
 ELEMENTS=('eau','feu','foudre','glace','terre','vent')
 for el in ELEMENTS: PORTRAITS['bebementaire-'+el]=None
 COMBOS=('eau-feu','glace-terre','vent-foudre','feu-glace','terre-vent','foudre-eau','eau-glace-vent','feu-terre-foudre')
 for c in COMBOS: PORTRAITS['bebe-'+c]=None
-CLIPS['lathandre']={'spell':('Lathandre attaque.glb',None),'victory':('Lathandre victoire.glb',None),'walk':('Lathandre marche.glb',None)}
-CLIPS['shauntea']={'spell':('Shauntéa attaque.glb',None),'victory':('Shauntea victoire.glb',None),'walk':('Shauntéa marche.glb',None)}
+CLIPS['lumerion']={'spell':('Lumerion attaque.glb',None),'victory':('Lumerion victoire.glb',None),'walk':('Lumerion marche.glb',None)}
+CLIPS['florea']={'spell':('Florea attaque.glb',None),'victory':('Florea victoire.glb',None),'walk':('Florea marche.glb',None)}
 for el in ELEMENTS: CLIPS['bebementaire-'+el]={'spell':(f'Bébémentaire {el} attaque.glb',None),'victory':(f'Bébémentaire {el} victoire.glb',None),'walk':(f'Bébémentaire {el} marche.glb',None)}
 # v350 — Canours (rare, quatre animations). Le Canourson et le Ver géant n'ont pas d'animation (gestuelle procédurale).
 CLIPS['canours']={'spell':('Canours attaque.glb',None),'victory':('Canours victoire.glb',None),'walk':('Canours marche.glb',None)}

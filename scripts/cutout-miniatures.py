@@ -8,7 +8,7 @@ import numpy as np
 from scipy import ndimage as ndi
 ROOT=Path(__file__).resolve().parents[1]/'assets'
 SRC=ROOT/'Models/Characters';OUT=ROOT/'characters/cutouts'
-MINIS={'lathandre':'Lathandre miniature.png','shauntea':'Shauntea miniature.png','jordan':'Jordan miniature.png','max':'Max commun miniature.png',
+MINIS={'lumerion':'Lumerion miniature.png','florea':'Florea miniature.png','jordan':'Jordan miniature.png','max':'Max commun miniature.png',
        'max-alastor':'miniature max alastor 2.PNG','orcus':'miniature orcus 2.PNG'}
 # Miniatures dont l'intérieur du cadre est un faux damier de transparence : fond de remplacement (dégradé radial centre→bord).
 FILL_INTERIOR={'max':((190,150,104),(92,64,44))}

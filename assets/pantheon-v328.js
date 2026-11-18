@@ -55,7 +55,7 @@ const FOES=[
   win:[['hilam-victoire','« Il te reste une ultime étape pour terminer le Panthéon. En attendant, si tu t’ennuies, reviens me voir ! »',1]]},
  {id:'caleizis',name:'Caleïzis',title:'Caleïzis, proche du divin',terrain:'foudre',level:'divin',reward:300,dice:[112,144,88,30,113],power:'divine',
   intro:'Dans une caverne de cristaux violets, l’air crépite autour de Caleïzis.',
-  powerText:'Proche du divin : Caleïzis aligne trois versions d’elle-même, dont la Tempête sacrée, et la divine Shauntéa.',
+  powerText:'Proche du divin : Caleïzis aligne trois versions d’elle-même, dont la Tempête sacrée, et la divine Floréa.',
   meet:[['caleizis-rencontre','« Tu oses te confronter à moi ? Très bien, tu l’auras voulu… »',1],['caleizis-defi','« Je te promets un duel chaotique. »',1]],
   win:[['caleizis-victoire','« Mais… Comment… »',1]]}];
 const LEVELS={moyen:'Moyen',difficile:'Difficile',divin:'Divin'};

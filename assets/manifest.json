@@ -522,26 +522,26 @@
       "boardHeight": 0.72,
       "gesture": "spider"
     },
-    "lathandre": {
-      "glb": "models-web/Lathandre idle.glb",
-      "nom": "Lathandre",
+    "lumerion": {
+      "glb": "models-web/Lumerion idle.glb",
+      "nom": "Lumérion",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.2,
       "animations": {
-        "spell": "characters/lathandre-spell.glb",
-        "victory": "characters/lathandre-victory.glb",
-        "walk": "characters/lathandre-walk.glb"
+        "spell": "characters/lumerion-spell.glb",
+        "victory": "characters/lumerion-victory.glb",
+        "walk": "characters/lumerion-walk.glb"
       }
     },
-    "shauntea": {
-      "glb": "models-web/Shauntea idle.glb",
-      "nom": "Shauntéa",
+    "florea": {
+      "glb": "models-web/Florea idle.glb",
+      "nom": "Floréa",
       "boardYaw": 3.141592653589793,
       "boardHeight": 2.1,
       "animations": {
-        "spell": "characters/shauntea-spell.glb",
-        "victory": "characters/shauntea-victory.glb",
-        "walk": "characters/shauntea-walk.glb"
+        "spell": "characters/florea-spell.glb",
+        "victory": "characters/florea-victory.glb",
+        "walk": "characters/florea-walk.glb"
       }
     },
     "jordan": {
