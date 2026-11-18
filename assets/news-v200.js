@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v391',title:'Des dés galactiques',items:['Les douze dés du menu principal passent au style galaxie des dés Crépitants, chacun dans sa couleur, avec des étoiles qui scintillent.','Les dés « Apprendre à jouer » et « À propos » tournent doucement sur eux-mêmes.']},
  {id:'v390',title:'À propos d’Hackénia',items:['Sur le menu principal, à côté d’« Apprendre à jouer » : un nouveau dé « À propos » raconte ce qu’est Hackénia et d’où vient son histoire.','Les deux raccourcis prennent la forme de dés Crépitants : un dé à huit faces violet et un dé à dix faces émeraude.']},
  {id:'v388',title:'Règles et confort',items:['Pendant votre tour, déplacez une créature avant ou après avoir posé votre dé (hors PVP en ligne).','Un dé de niveau égal ou supérieur posé sur une créature adverse l’écrase et prend sa dalle.','Pendant la pose, la case où votre créature doit apparaître passe au rouge si un personnage qu’on ne peut pas écraser l’occupe.','Touchez le nom HACKÉNIA ou le logo en haut de l’écran pour revenir au menu principal.','Les annonces ont été allégées : une entrée par grand sujet.']},
  {id:'v386',title:'Le mode Histoire',items:['Quatre chapitres à vivre, chacun sur sa propre carte : glissez pour explorer, touchez une étape pour l’ouvrir.','Récits illustrés et duels contre des adversaires qui jouent un deck à leur image.','Un duel déjà tenté se relance directement, sans relire le récit.']},
