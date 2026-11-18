@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v409',title:'Nous contacter',items:['À propos : une adresse de contact pour vos questions et idées, et un lien vers la politique de confidentialité du jeu.']},
  {id:'v408',title:'Un jeu plus léger',items:['Les personnages en 3D et leurs animations sont deux fois plus légers, sans perte de qualité : téléchargement plus rapide et application plus petite.','Le premier lancement télécharge moins de fichiers : les images de l’Histoire et du Panthéon arrivent quand vous en avez besoin.']},
  {id:'v405',title:'Gardien de la collection',items:['Nouveau défi : complétez toute la collection de dés (hors Crépitants) pour une récompense très spéciale.','Correctif : après une mise à jour, tous les fichiers du jeu sont bien rechargés (certains éléments pouvaient rester à une ancienne version sur ordinateur).']},
  {id:'v401',title:'Le ciel a des secrets',items:['Le ciel du menu cache quelques surprises… à vous de les trouver.']},
