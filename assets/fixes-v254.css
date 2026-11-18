@@ -324,3 +324,11 @@ html:not(.menu-classic) body #daily-die .daily-cube i.dc-m{background:radial-gra
 #home-corner .cd-svg,#home-corner .cd-svg *,#about-dialog .cd-svg,#about-dialog .cd-svg *{pointer-events:none}
 .opt-select{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:4px 0 8px}
 .opt-select select{min-height:34px;padding:4px 8px;border-radius:9px}
+
+/* v402 — dés de jet « Galaxie bleue » : fond étoilé bleu nuit, points blancs bien lisibles avec un halo */
+[data-roll-skin="galaxy"] .roll-plane{background:
+ radial-gradient(circle at 18% 22%,#fff 0 .6px,transparent 1.2px),radial-gradient(circle at 78% 30%,#dfe9ff 0 .5px,transparent 1px),
+ radial-gradient(circle at 30% 80%,#fff 0 .5px,transparent 1px),radial-gradient(circle at 84% 78%,#cfe0ff 0 .6px,transparent 1.2px),
+ radial-gradient(60% 50% at 70% 72%,#6b3fd855,transparent 70%),
+ radial-gradient(110% 90% at 26% 18%,#5d86ff 0%,#2a45b8 22%,#0d1a4f 55%,#050a26 100%)!important;border-color:#9fc0ff!important;box-shadow:inset 0 0 0 1px #ffffff40,inset 0 0 8px #000a!important}
+[data-roll-skin="galaxy"] .roll-pip{background:#fff!important;box-shadow:0 0 3px 1px #bcd4ffcc,0 0 1px #fff!important}

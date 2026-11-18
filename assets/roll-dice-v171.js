@@ -10,7 +10,7 @@ const pose=value=>{const [x,y]=turns[value];return `rotateX(-16deg) rotateY(-20d
 // Matching transform functions preserve full turns rather than matrix-shortcut interpolation.
 const landing=(value,index)=>{const [x,y]=turns[value],direction=index%2?-1:1;return `rotateX(-16deg) rotateY(-20deg) rotateX(${direction*1080+x}deg) rotateY(${direction*1440+y}deg)`};
 function reveal(d,value,index){d.cube.style.transform=pose(value);d.spin?.cancel();d.spin=null;d.result.textContent=String(value);d.wrap.setAttribute('aria-label','Dé '+(index+1)+' : '+value)}
-function paint(){if(!host)return;for(const [key,color]of Object.entries(skins[skin]))host.style.setProperty('--roll-'+key,color)}
+function paint(){if(!host)return;for(const [key,color]of Object.entries(skins[skin]))host.style.setProperty('--roll-'+key,color);host.dataset.rollSkin=skin}/* v402 — le nom du style permet des effets en plus des couleurs (galaxie) */
 function reset(){for(const d of dice){d.spin?.cancel()}dice=[];host=null;spinning=false}
 function createDie(){
  const wrap=document.createElement('span');wrap.className='roll-volume';wrap.setAttribute('role','img');
@@ -20,7 +20,7 @@ function createDie(){
  return{wrap,cube,result,spin:null,finished:false,ready:false,rollValue:null};
 }
 function build(target,count){reset();host=target;target.replaceChildren();paint();for(let i=0;i<count;i++){const d=createDie();target.append(d.wrap);dice.push(d)}}
-function preview(target,name){const appearance=skins[name];if(!appearance||!target)return false;target.replaceChildren();for(const [key,color]of Object.entries(appearance))target.style.setProperty('--roll-'+key,color);const d=createDie();d.wrap.setAttribute('aria-hidden','true');d.cube.style.transform=pose(5);target.append(d.wrap);return true}
+function preview(target,name){const appearance=skins[name];if(!appearance||!target)return false;target.replaceChildren();for(const [key,color]of Object.entries(appearance))target.style.setProperty('--roll-'+key,color);target.dataset.rollSkin=name;const d=createDie();d.wrap.setAttribute('aria-hidden','true');d.cube.style.transform=pose(5);target.append(d.wrap);return true}
 function render(target,values,rolling=false,won=null){
  if(!values.length)return;if(host!==target||dice.length!==values.length||dice.some(d=>d.wrap.parentElement!==target))build(target,values.length);
  paint();target.className='roll-dice-tray roll-volume-tray'+(rolling?' rolling':won===true?' win':won===false?' lose':'');
