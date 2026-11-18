@@ -35,5 +35,5 @@ function run(){if(started)return;started=true;build();const d=document.querySele
 api.start=run;
 for(const f of['alert','confirm','prompt']){const o=window[f].bind(window);window[f]=(m,...a)=>o(api.t(String(m??'')),...a)}
 const loc=(proto,fn)=>{const o=proto[fn];proto[fn]=function(l,...a){return o.call(this,l==='fr-FR'||l==='fr'?'en-US':l,...a)}};loc(Number.prototype,'toLocaleString');loc(Date.prototype,'toLocaleString');loc(Date.prototype,'toLocaleDateString');loc(Date.prototype,'toLocaleTimeString');
-document.write('<script src="assets/i18n-en-v316.js?v=20270102-v406"><\/script><script>HackeniaI18n.start()<\/script>');
+document.write('<script src="assets/i18n-en-v316.js?v=20270102-v407"><\/script><script>HackeniaI18n.start()<\/script>');
 })();
