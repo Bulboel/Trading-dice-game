@@ -827,5 +827,9 @@
  "Ultime : votre prochain lancer d’invocation réussit d’office (sauf mort subite).": "Ultimate: your next summoning roll automatically succeeds (except sudden death).",
  "Une vignette à votre image": "A portrait in your image",
  "La vignette de votre héros est refaite : on le voit en entier, du dessus des genoux jusqu’à la tête.": "Your hero's portrait has been redone: you now see them from above the knees up to the head.",
- "L’arbre de compétences affiche l’avatar que vous avez choisi pour votre pastille de niveau.": "The skill tree shows the avatar you picked for your level badge."
+ "L’arbre de compétences affiche l’avatar que vous avez choisi pour votre pastille de niveau.": "The skill tree shows the avatar you picked for your level badge.",
+ "Un arbre plus lisible": "A clearer tree",
+ "Arbre de compétences : le niveau requis est indiqué au début de chaque ligne de pouvoirs, en doré quand il est atteint.": "Skill tree: the required level is shown at the start of each row of powers, in gold once reached.",
+ "Chaque ligne se débloque au niveau indiqué à gauche.": "Each row unlocks at the level shown on the left.",
+ "Un seul ultime au choix, dès le niveau indiqué au centre.": "Pick only one ultimate, from the level shown in the centre."
 }
