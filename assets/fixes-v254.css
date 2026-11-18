@@ -345,3 +345,11 @@ body.portal-open[data-portal-view="home"] #portal #portal-nav .home-tip-text{ani
 /* v412 — dés du menu : bords lissés pendant la rotation (contour transparent = anticrénelage des faces 3D, faces de dos masquées) */
 html:not(.menu-classic) body #portal #portal-nav .menu-cube .md-face,html:not(.menu-classic) body #news-die .news-cube i,html:not(.menu-classic) body #daily-die .daily-cube i{outline:1px solid transparent!important;-webkit-backface-visibility:hidden;backface-visibility:hidden}
 html:not(.menu-classic) body #portal #portal-nav .menu-cube .md-face:before{box-shadow:none!important}
+/* v413 — estompage des faces de profil (valeur --f calculée par menu-dice-facing-v413.js : 1 de face, 0 de profil) */
+html:not(.menu-classic) body #portal #portal-nav .menu-cube .md-face{border-color:color-mix(in srgb,color-mix(in srgb,var(--accent) 60%,#fff) calc(var(--f,1) * 100%),transparent)!important;box-shadow:inset 0 1px 1px color-mix(in srgb,#ffffff55 calc(var(--f,1) * 100%),transparent),inset 0 0 12px #000c,0 0 6px color-mix(in srgb,var(--accent) calc(var(--f,1) * 40%),transparent)!important}
+html:not(.menu-classic) body #portal #portal-nav .menu-cube .md-face:before,html:not(.menu-classic) body #portal #portal-nav .menu-cube .md-face>*{opacity:calc(var(--f,1) * .45)!important}
+html:not(.menu-classic) body #portal #portal-nav .menu-cube .md-face>*{opacity:var(--f,1)!important}
+html:not(.menu-classic) body #portal #portal-nav .menu-cube .md-face:after{animation-name:md-twinkle-f!important}
+@keyframes md-twinkle-f{0%,100%{opacity:calc(var(--f,1) * .3)}50%{opacity:var(--f,1)}}
+html:not(.menu-classic) body #news-die .news-cube i,html:not(.menu-classic) body #daily-die .daily-cube i{border-color:color-mix(in srgb,var(--gx-edge) calc(var(--f,1) * 100%),transparent)!important;box-shadow:inset 0 1px 1px color-mix(in srgb,#ffffff50 calc(var(--f,1) * 100%),transparent),inset 0 0 12px #000c,0 0 6px color-mix(in srgb,var(--gx-glow) calc(var(--f,1) * 100%),transparent)!important}
+html:not(.menu-classic) body #news-die .news-cube i>*,html:not(.menu-classic) body #daily-die .daily-cube i>*,html:not(.menu-classic) body #news-die .news-cube i:after,html:not(.menu-classic) body #daily-die .daily-cube i:after{opacity:var(--f,1)!important}
