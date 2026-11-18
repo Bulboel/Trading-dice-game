@@ -587,5 +587,8 @@
  " par un dé de niveau égal ou supérieur.": " by a die of equal or higher level.",
  "cette créature est de niveau supérieur à ton dé : elle protège sa dalle.": "this creature is of a higher level than your die: it protects its tile.",
  "niveau égal ou supérieur": "equal or higher level",
- "Victoire : 2 passages dans le camp adverse OU 4 combats remportés. En combat, l’attaque décide ; un dé de niveau égal ou supérieur écrase la créature adverse qu’il recouvre ; face à une créature de niveau supérieur, sa case reste intacte. Les statistiques affichées sont celles de l’action.": "Victory: 2 passages into the enemy camp OR 4 fights won. In a fight, attack decides; a die of equal or higher level crushes the enemy creature it covers; against a higher-level creature, its tile stays intact. The stats shown are those of the action."
+ "Victoire : 2 passages dans le camp adverse OU 4 combats remportés. En combat, l’attaque décide ; un dé de niveau égal ou supérieur écrase la créature adverse qu’il recouvre ; face à une créature de niveau supérieur, sa case reste intacte. Les statistiques affichées sont celles de l’action.": "Victory: 2 passages into the enemy camp OR 4 fights won. In a fight, attack decides; a die of equal or higher level crushes the enemy creature it covers; against a higher-level creature, its tile stays intact. The stats shown are those of the action.",
+ "Une carte plein écran": "A full-screen map",
+ "Histoire : la carte occupe toute la hauteur de l’écran, la fiche de la partie et son bouton restent visibles sans défiler.": "Story: the map fills the screen height; the part card and its button stay visible without scrolling.",
+ "Sur ordinateur, on peut enchaîner les glissements sur la carte sans avoir à recliquer.": "On computer, you can drag the map again and again without clicking first."
 }

@@ -39,7 +39,7 @@ function render(box,A){const d=A.prog(),parts=A.parts,pos=POS();
  const donePts=main.slice(0,Math.min(main.length,reached+(reached<main.length?1:0))).map(n=>n.xy),todoPts=main.slice(Math.max(0,reached)).map(n=>n.xy);
  const seenAll=store.get(SEEN,{}),seen=seenAll&&typeof seenAll==='object'?seenAll[tab]||0:0;
  const CHN={1:'I',2:'II',3:'III',4:'IV'},CHT=A.chapters||{};
- box.innerHTML=`<div class="portal-title story-head"><div><h2>Histoire</h2><span class="portal-muted">La Triade d’Hackénia</span></div><div class="story-progress" aria-label="${doneCount} parties terminées sur ${mainAll.length}"><span><b>${doneCount}</b> / ${mainAll.length} parties</span><i><em style="width:${Math.round(doneCount/Math.max(1,mainAll.length)*100)}%"></em></i></div></div>
+ box.innerHTML=`<div class="portal-title story-head compact"><h2 class="story-sr">Histoire</h2><div class="story-progress" aria-label="${doneCount} parties terminées sur ${mainAll.length}"><span><b>${doneCount}</b> / ${mainAll.length} parties</span><i><em style="width:${Math.round(doneCount/Math.max(1,mainAll.length)*100)}%"></em></i></div></div>
  <div class="sm-tabs" role="tablist">${chapters.map(ch=>{const o=chOpen(ch)||editing,dn=parts.filter(p=>chOf(p)===ch&&!p.optional&&d.done[p.id]).length,tot=parts.filter(p=>chOf(p)===ch&&!p.optional).length;return `<button type="button" role="tab" class="sm-tab${ch===tab?' on':''}" data-tab="${ch}" aria-selected="${ch===tab}" ${o?'':'disabled'}><small>Chapitre ${CHN[ch]||ch}</small><b>${esc(CHT[ch]?.t||'')}</b><span>${o?dn+' / '+tot:'🔒'}</span></button>`}).join('')}</div>
  ${editing?`<div class="sm-edit-bar"><b>Mode placement</b><span>Glissez les points à leur place, puis copiez les positions.</span><div><button type="button" data-ed="copy" class="portal-primary">📋 Copier les positions</button><button type="button" data-ed="reset">↺ Réinitialiser</button><button type="button" data-ed="quit">✓ Terminer</button></div><textarea class="sm-json" hidden readonly></textarea></div>`:''}
  <div class="sm-wrap"><div class="sm-viewport${editing?' editing':''}" tabindex="0" aria-label="Carte d’Hackénia : glissez pour vous déplacer, pincez pour zoomer"><div class="sm-world" style="width:${MAP.w}px;height:${MAP.h}px">
@@ -66,7 +66,8 @@ function render(box,A){const d=A.prog(),parts=A.parts,pos=POS();
  // gestes : la capture du pointeur ne commence qu’au premier vrai glissement (sinon le clic suivant, sur la fiche, était détourné vers la carte)
  const pts=new Map();let moved=0,pinch=0,startCam=null,drag=null;
  const toMap=(cx,cy)=>{const r=vp.getBoundingClientRect();return [(cx-r.left-tx)/lastS,(cy-r.top-ty)/lastS]};
- vp.addEventListener('pointerdown',e=>{pts.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=0;startCam={...cam};if(pts.size===2){const [a,b]=[...pts.values()];pinch=Math.hypot(a.x-b.x,a.y-b.y);drag=null}
+ vp.addEventListener('dragstart',e=>e.preventDefault());vp.addEventListener('selectstart',e=>e.preventDefault());/* v386 — sur PC, la sélection de texte du 1er glissement faisait démarrer un glisser natif au 2e, qui annulait le déplacement */
+ vp.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'){try{getSelection()?.removeAllRanges()}catch{}}pts.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=0;startCam={...cam};if(pts.size===2){const [a,b]=[...pts.values()];pinch=Math.hypot(a.x-b.x,a.y-b.y);drag=null}
   else if(editing){const node=e.target.closest?.('.sm-node');if(node){drag=node;try{vp.setPointerCapture(e.pointerId)}catch{}}}});
  vp.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const prev=pts.get(e.pointerId),c2={x:e.clientX,y:e.clientY};pts.set(e.pointerId,c2);
   if(drag){const [mx,my]=toMap(e.clientX,e.clientY);drag.style.left=Math.max(0,Math.min(MAP.w,mx))+'px';drag.style.top=Math.max(0,Math.min(MAP.h,my))+'px';moved+=9;return}
@@ -84,6 +85,8 @@ function render(box,A){const d=A.prog(),parts=A.parts,pos=POS();
  if(editing){const ta=box.querySelector('.sm-json');box.querySelector('.sm-edit-bar').addEventListener('click',async e=>{const a=e.target.closest('[data-ed]')?.dataset.ed;if(!a)return;
   if(a==='copy'){const P=POS(),out={};for(const p of parts)if(P[p.id])out[p.id]=P[p.id];const json=JSON.stringify(out);ta.hidden=false;ta.value=json;ta.select();let ok=false;try{await navigator.clipboard.writeText(json);ok=true}catch{}const b=e.target.closest('button');b.textContent=ok?'✓ Copié !':'Copiez le texte ci-dessous';setTimeout(()=>{b.textContent='📋 Copier les positions'},2500)}
   else if(a==='reset'){store.set(POSKEY,{});render(box,A)}else if(a==='quit'){setEdit(false);render(box,A)}})}
+ const fit=()=>{if(!vp.isConnected){removeEventListener('resize',fit);return}const r=vp.getBoundingClientRect(),foot=box.querySelector('.sm-foot'),fh=foot?foot.getBoundingClientRect().height+8:0,h=Math.round(innerHeight-r.top-fh-12);vp.style.height=Math.max(260,Math.min(h,1000))+'px'};/* v386 — la carte occupe la hauteur restante de l'écran : rien d'important sous la ligne de flottaison */
+ fit();addEventListener('resize',fit);requestAnimationFrame(fit);
  new ResizeObserver(()=>apply()).observe(vp)}
 window.HackeniaStoryMap={render,positions:BASE,setEdit,isEditing:()=>editing};
 })();
