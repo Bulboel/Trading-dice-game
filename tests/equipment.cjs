@@ -1,6 +1,6 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
 const root=path.join(__dirname,'..');
-// Défi « chapitre 1 » : seules les parties principales comptent ; il débloque la Bague chanceuse.
+// Défi « chapitre 1 » : seules les parties principales comptent ; il débloque la Bague de l’Apprenti(e).
 global.window={};require(path.join(root,'assets/story-data-v193.js'));const C=require(path.join(root,'assets/challenges-v180.js'));window.HackeniaChallenges=C;
 const E=require(path.join(root,'assets/equipment-v198.js'));
 const d=C.definitions.find(x=>x.id==='chapter3');assert.ok(d,'Chapter 3 challenge exists');
