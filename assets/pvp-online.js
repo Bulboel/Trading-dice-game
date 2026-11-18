@@ -57,8 +57,8 @@ function createCore(o){
   if(S.started&&!S.ended&&S.gameRow.status==='finished'){await fetchEvents();if(S.applied>=Number(S.gameRow.last_seq||0))finishFromServer()}emit()}
  function startMatch(){try{const seats=S.team2?[0,1,2,3]:[0,1],decks=seats.map(s=>{const p=S.players.find(x=>x.seat===s);return sanitizeDeck(p?p.deck:(S.gameRow.ai_decks||{})[s],monsters)});
    const run=()=>game.startOnline({seat:S.seat,team2:S.team2,aiSeats:S.aiSeats,driver:S.team2&&S.seat===S.driverSeat,decks,terrain:S.gameRow.terrain,seed:Number(S.gameRow.seed),send:fn=>send(fn),onError:e=>{S.error=e&&e.message||String(e);emit()}});
-   S.started=true;S.status='playing';S.lastAct=Date.now();S.lastCur=null;S.terrain=S.gameRow.terrain;(o.enter||(f=>f()))(run);
-   send(rpc=>rpc('play_action',{p_kind:'hello',p_payload:{version:cfg.version||''}})).catch(()=>{});fetchEvents().catch(()=>{});emit()}
+   game.setFoePowers?.(null);S.started=true;S.status='playing';S.lastAct=Date.now();S.lastCur=null;S.terrain=S.gameRow.terrain;(o.enter||(f=>f()))(run);
+   send(rpc=>rpc('play_action',{p_kind:'hello',p_payload:Object.assign({version:cfg.version||''},S.team2?{}:{powers:(()=>{try{return window.HackeniaSkills?.powers?.(window.HackeniaPortal?.profile?.())||{}}catch{return{}}})()})})).catch(()=>{});fetchEvents().catch(()=>{});emit()}
   catch(e){S.error=e.message;S.status='error';emit()}}
  function send(fn){const p=q.then(()=>fn((name,args)=>rpc(name,Object.assign({p_game:S.gameId},args))));q=p.catch(()=>{});return p}
  async function fetchEvents(){const r=await sb.from('game_events').select('*').eq('game_id',S.gameId).gt('seq',S.applied).order('seq',{ascending:true});if(r.error)throw new Error(r.error.message);ingest(r.data||[])}
@@ -72,7 +72,8 @@ function createCore(o){
     const mine=ev.seat===S.seat||(S.team2&&S.seat===S.driverSeat&&S.aiSeats.includes(Number(ev.seat)));/* v264 : les coups des IA pilotées par l'hôte sont déjà joués chez lui */
     if(!mine){
      if(ev.kind==='roll')game.pushRoll((ev.payload.values||[]).map(Number));
-     else if(ev.kind==='hello'){if(String(ev.payload.version||'')!==String(cfg.version||'')){S.versionOK=false;S.error='Ton adversaire n’a pas la même version du jeu : recharge la page des deux côtés.'}}
+     else if(ev.kind==='hello'&&ev.payload?.power){/* v414 — pouvoir utilisé par l'adversaire (Impact) */const ok=await waitIdle(ev);if(ok&&!game.applyRemotePower?.(ev)){S.error='Désynchronisation : pouvoir de l’adversaire refusé par le moteur.';S.status='desync';emit();break}}
+     else if(ev.kind==='hello'){if(String(ev.payload.version||'')!==String(cfg.version||'')){S.versionOK=false;S.error='Ton adversaire n’a pas la même version du jeu : recharge la page des deux côtés.'}else if(ev.payload.powers&&!S.team2)game.setFoePowers?.(ev.payload.powers)}
      else if(ev.kind==='resign'){const mate=S.team2&&ev.seat%2===S.camp;game.endOnline(mate?1-S.camp:S.camp,mate?'Ton allié a abandonné : la partie est perdue.':(ev.payload?.reason==='idle'?'Ton adversaire est resté 2 minutes sans jouer : victoire !':'L’adversaire abandonne : victoire !'));S.ended=true}
      else if(ev.kind==='win'&&ev.payload?.reason==='idle'&&!game.onlineState().over){game.endOnline(S.team2?ev.seat%2:ev.seat,'Temps écoulé : 2 minutes sans jouer, la partie est perdue.');S.ended=true}
      else if(ev.kind==='place'||ev.kind==='move'){const ok=await waitIdle(ev);if(!ok&&!game.onlineState().over){S.error='Désynchronisation : impossible de rejouer l’action de l’adversaire.';S.status='desync';emit();break}
