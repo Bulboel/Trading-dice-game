@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v415',title:'Boubourse sur iPhone',items:['Correctif : sur iPhone et iPad, la couleur choisie pour la boubourse (Options) s’applique enfin.']},
  {id:'v414',title:'L’arbre de compétences',items:['Nouveau : l’arbre de compétences de votre héros, accessible depuis votre pastille de niveau.','Niveau 3 : choisissez un premier pouvoir parmi Vision (voir la main adverse), Impact (−1 PA à une créature adverse) et Blocage (annuler une attaque et repousser l’attaquant).','Niveau 5 : apprenez un deuxième pouvoir, ou améliorez le premier.','Les pouvoirs s’utilisent contre l’ordinateur et en duel en ligne 1 contre 1.']},
  {id:'v413',title:'Un ciel plus doux',items:['Les dés du menu tournent sans grésiller sur leurs bords.','Le texte des astuces de l’accueil reste toujours net.','Le ciel du menu a été retouché.']},
  {id:'v411',title:'De Jouer à Mes decks, et retour',items:['« Composer un deck » depuis Jouer affiche maintenant un bouton « ← Retour à Jouer » dans Mes decks : le deck sauvegardé y est déjà sélectionné.']},
