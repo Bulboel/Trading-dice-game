@@ -824,5 +824,8 @@
  "Ultime : la première de vos créatures vaincue renaît aussitôt sur sa case d’apparition.": "Ultimate: the first of your creatures to be defeated is instantly reborn on its spawn square.",
  "Ultime : téléporte une de vos créatures, avec sa dalle, sur n’importe quelle case libre de votre moitié du plateau.": "Ultimate: teleport one of your creatures, with its tile, to any free square on your half of the board.",
  "Ultime : toutes les créatures adverses perdent 1 PA pendant deux tours.": "Ultimate: all enemy creatures lose 1 AP for two turns.",
- "Ultime : votre prochain lancer d’invocation réussit d’office (sauf mort subite).": "Ultimate: your next summoning roll automatically succeeds (except sudden death)."
+ "Ultime : votre prochain lancer d’invocation réussit d’office (sauf mort subite).": "Ultimate: your next summoning roll automatically succeeds (except sudden death).",
+ "Une vignette à votre image": "A portrait in your image",
+ "La vignette de votre héros est refaite : on le voit en entier, du dessus des genoux jusqu’à la tête.": "Your hero's portrait has been redone: you now see them from above the knees up to the head.",
+ "L’arbre de compétences affiche l’avatar que vous avez choisi pour votre pastille de niveau.": "The skill tree shows the avatar you picked for your level badge."
 }
