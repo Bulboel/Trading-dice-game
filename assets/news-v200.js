@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v411',title:'De Jouer à Mes decks, et retour',items:['« Composer un deck » depuis Jouer affiche maintenant un bouton « ← Retour à Jouer » dans Mes decks : le deck sauvegardé y est déjà sélectionné.']},
  {id:'v410',title:'Un jeu qui grandit',items:['Hackénia est toujours en cours de développement : les changements importants seront toujours annoncés ici.','Trois 6 sur un même lancer de trois ou quatre dés : mort subite, la partie est gagnée ! (Quatre 6 : +10 Bubulles.)','Vous pouvez maintenant cumuler jusqu’à trois dés bonus.','Trois divinités de l’histoire changent de nom.','Sur téléphone, le jeu ne coupe plus votre musique : vous pouvez écouter votre playlist en jouant.','Correctif : le déplacement d’une créature ne se valide plus tout seul en passant au tour adverse.']},
  {id:'v409',title:'Nous contacter',items:['À propos : une adresse de contact pour vos questions et idées, et un lien vers la politique de confidentialité du jeu.']},
  {id:'v408',title:'Un jeu plus léger',items:['Les personnages en 3D et leurs animations sont deux fois plus légers, sans perte de qualité : téléchargement plus rapide et application plus petite.','Le premier lancement télécharge moins de fichiers : les images de l’Histoire et du Panthéon arrivent quand vous en avez besoin.']},

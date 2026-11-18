@@ -337,3 +337,6 @@ html:not(.menu-classic) body #daily-die .daily-cube i.dc-m{background:radial-gra
 .cd-svg[data-die] .cd-star{animation:none!important}
 /* v409 — liens de la fenêtre À propos aux couleurs du jeu */
 #about-dialog a{color:#e3c987;text-underline-offset:2px;word-break:break-word}
+/* v411 — retour vers Jouer depuis Mes decks */
+.deck-head-actions .deck-back-play{border-color:#e3c98799;color:#f3dfa5}
+@media (max-width:700px){.deck-head-actions .deck-back-play{grid-column:1/-1;width:100%}}
