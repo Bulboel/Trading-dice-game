@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v424',title:'Un héros bien habillé',items:['Votre héros porte désormais toujours une tenue : un tee-shirt et un short par défaut.','Correctif : les coiffures et les vêtements du héros s’affichent de nouveau au bon endroit.']},
  {id:'v423',title:'L’arbre de compétences',items:['Un arbre de compétences est maintenant à disposition dans le niveau de joueur.','Au niveau 40, vous pourrez porter deux objets à la fois.','Histoire : le premier duel contre Kayla débloque toujours la suite.']},
  {id:'v419',title:'Une vignette à votre image',items:['La vignette de votre héros a été refaite : on le voit bien en entier.']},
  {id:'v416',title:'Des dés plus fins',items:['Les dés du menu sont plus fins et plus délicats.']},

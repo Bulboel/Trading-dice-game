@@ -3,7 +3,7 @@
    copient les poids du sommet du corps le plus proche. La couleur se change avec la teinte du jeu (variant-look.js, kind « tint »). */
 import * as THREE from 'three';
 import {GLTFLoader} from './vendor/three/examples/jsm/loaders/GLTFLoader.js';
-import {applyLook} from './variant-look.js?v=20270102-v423';
+import {applyLook} from './variant-look.js?v=20270102-v424';
 export const PARTS={
  hair:{court:{label:'Courte',file:'hero-cheveux-court.glb',s:.84,xs:.85,zs:.96,rx:-.32,x:0,y:1.52,z:-.02,cap:'#2f8f2f'},
        longs:{label:'Longue',file:'hero-cheveux-longs.glb',s:.4,xs:1.02,zs:1,rx:-.24,x:0,y:1.465,z:-.025,cap:'#5a3a22'}},
@@ -31,8 +31,13 @@ const FIELDS={
  short:()=>(x,y,z)=>Math.min(.88-y,y-.53,.245-Math.abs(x)),
  suit:()=>(x,y,z)=>Math.min(NECK_Y-y,.39-Math.abs(x),y-.14,neckField('round',x,y,z,false)+.02)};
 const OFFSET={tee:.016,tank:.016,short:.012,suit:.013};
-function genGeometry(def,body){const bg=body.geometry,pa=bg.attributes.position,na=bg.attributes.normal,bi=bg.attributes.skinIndex,bw=bg.attributes.skinWeight,idx=bg.index.array,n=pa.count,f=FIELDS[def.gen](def),off=OFFSET[def.gen],fv=new Float32Array(n);
- for(let v=0;v<n;v++)fv[v]=f(pa.getX(v),pa.getY(v),pa.getZ(v));
+/* v424 — depuis la compression des modèles (v406), le corps du héros est stocké en coordonnées quantifiées (−1…1, facteur caché
+   dans le squelette). Les coupes et les placements ci-dessous sont pensés pour le corps réel (1,70 de haut, pieds en 0) :
+   on convertit donc chaque position vers ce repère réel (toR) et on remet les pièces dans le repère du modèle (toQ). */
+function frame(body){const g=body.geometry;if(g.userData.hpFrame)return g.userData.hpFrame;g.computeBoundingBox();const bb=g.boundingBox,S=1.7/Math.max(1e-6,bb.max.y-bb.min.y),cx=(bb.min.x+bb.max.x)/2,my=bb.min.y,cz=(bb.min.z+bb.max.z)/2;
+ return g.userData.hpFrame={S,cx,my,cz,toR:(x,y,z)=>[(x-cx)*S,(y-my)*S,(z-cz)*S],toQ(geom){geom.scale(1/S,1/S,1/S);geom.translate(cx,my,cz);return geom}}}
+function genGeometry(def,body){const F=frame(body),R=F.toR;const bg=body.geometry,pa=bg.attributes.position,na=bg.attributes.normal,bi=bg.attributes.skinIndex,bw=bg.attributes.skinWeight,idx=bg.index.array,n=pa.count,f=FIELDS[def.gen](def),off=OFFSET[def.gen],fv=new Float32Array(n);
+ for(let v=0;v<n;v++)fv[v]=f(...R(pa.getX(v),pa.getY(v),pa.getZ(v)));
  /* normales soudées par position : les sommets dédoublés (coutures UV) se déplacent ensemble, donc plus de fentes entre triangles */
  const key=v=>Math.round(pa.getX(v)*2e4)+','+Math.round(pa.getY(v)*2e4)+','+Math.round(pa.getZ(v)*2e4),acc=new Map();
  for(let v=0;v<n;v++){const k=key(v),a=acc.get(k)||[0,0,0];a[0]+=na.getX(v);a[1]+=na.getY(v);a[2]+=na.getZ(v);acc.set(k,a)}
@@ -40,10 +45,10 @@ function genGeometry(def,body){const bg=body.geometry,pa=bg.attributes.position,
  const P=[],N=[],SI=[],SW=[],UV=[];
  const vert=(a,b,t)=>{/* t cherché par dichotomie sur le vrai champ : bords lisses, indépendants de la taille des triangles */
   if(t>0){let lo=0,hi=1;const pt=u=>[pa.getX(a)+(pa.getX(b)-pa.getX(a))*u,pa.getY(a)+(pa.getY(b)-pa.getY(a))*u,pa.getZ(a)+(pa.getZ(b)-pa.getZ(a))*u];
-   const inA=fv[a]>=0;for(let k=0;k<12;k++){const m=(lo+hi)/2,q=pt(m);if((f(q[0],q[1],q[2])>=0)===inA)lo=m;else hi=m}t=(lo+hi)/2}
+   const inA=fv[a]>=0;for(let k=0;k<12;k++){const m=(lo+hi)/2,q=R(...pt(m));if((f(q[0],q[1],q[2])>=0)===inA)lo=m;else hi=m}t=(lo+hi)/2}
   const lerp=(A,B)=>A+(B-A)*t;let x=lerp(pa.getX(a),pa.getX(b)),y=lerp(pa.getY(a),pa.getY(b)),z=lerp(pa.getZ(a),pa.getZ(b)),nx=lerp(wn[a*3],wn[b*3]),ny=lerp(wn[a*3+1],wn[b*3+1]),nz=lerp(wn[a*3+2],wn[b*3+2]);
-  const L=Math.hypot(nx,ny,nz)||1;nx/=L;ny/=L;nz/=L;P.push(x+nx*off,y+ny*off,z+nz*off);N.push(nx,ny,nz);
-  const sgn=clamp(x/.05,-1,1),k=11;UV.push(k*(x+.8*z*sgn),k*y);
+  const L=Math.hypot(nx,ny,nz)||1;nx/=L;ny/=L;nz/=L;const oq=off/F.S;P.push(x+nx*oq,y+ny*oq,z+nz*oq);N.push(nx,ny,nz);
+  const [rx,ry,rz]=R(x,y,z),sgn=clamp(rx/.05,-1,1),k=11;UV.push(k*(rx+.8*rz*sgn),k*ry);
   const src=t<.5?a:b;for(let q=0;q<4;q++){SI.push(bi.getComponent(src,q));SW.push(bw.getComponent(src,q))}};
  for(let t=0;t<idx.length;t+=3){const ia=idx[t],ib=idx[t+1],ic=idx[t+2],tri=[ia,ib,ic],fs=[fv[ia],fv[ib],fv[ic]];
   if(fs[0]<0&&fs[1]<0&&fs[2]<0)continue;
@@ -68,7 +73,7 @@ function fabricTexture(kind){if(texCache.has(kind))return texCache.get(kind);con
 function fabricMaterial(def,color){const t=fabricTexture(def.tex);return new THREE.MeshStandardMaterial({color:color||def.color,map:t,bumpMap:t,bumpScale:def.tex==='denim'?2.2:1.2,roughness:def.tex==='denim'?.9:.82,metalness:0,side:THREE.DoubleSide})}
 const loader=new GLTFLoader(),prepared=new Map();
 function bodyMesh(root){let m=null;root.traverse(o=>{if(!m&&o.isSkinnedMesh)m=o});return m}
-function skin(geom,body,torso){const pos=geom.attributes.position,n=pos.count,bg=body.geometry,bp=bg.attributes.position,bi=bg.attributes.skinIndex,bw=bg.attributes.skinWeight,idx=new Uint16Array(n*4),wt=new Float32Array(n*4);
+function skin(geom,body,torso){const pos=geom.attributes.position,n=pos.count,bg=body.geometry,bq=bg.attributes.position,F=frame(body),BR=new Float32Array(bq.count*3);for(let i=0;i<bq.count;i++){const r=F.toR(bq.getX(i),bq.getY(i),bq.getZ(i));BR[i*3]=r[0];BR[i*3+1]=r[1];BR[i*3+2]=r[2]}const bp={count:bq.count,getX:i=>BR[i*3],getY:i=>BR[i*3+1],getZ:i=>BR[i*3+2]},bi=bg.attributes.skinIndex,bw=bg.attributes.skinWeight,idx=new Uint16Array(n*4),wt=new Float32Array(n*4);
   const armV=new Uint8Array(bp.count),bn=body.skeleton.bones;for(let v=0;v<bp.count;v++){let bj=0,bwm=-1;for(let a=0;a<4;a++){const w=bw.getComponent(v,a);if(w>bwm){bwm=w;bj=bi.getComponent(v,a)}}armV[v]=/arm|hand|shoulder|thumb|index|middle|ring|pinky/i.test(bn[bj]?.name||'')?1:0}
   {const cell=.05,grid=new Map(),k=(x,y,z)=>x+','+y+','+z;for(let i=0;i<bp.count;i++){const c=k(Math.floor(bp.getX(i)/cell),Math.floor(bp.getY(i)/cell),Math.floor(bp.getZ(i)/cell));(grid.get(c)||grid.set(c,[]).get(c)).push(i)}
    for(let i=0;i<n;i++){const x=pos.getX(i),y=pos.getY(i),z=pos.getZ(i),cx=Math.floor(x/cell),cy=Math.floor(y/cell),cz=Math.floor(z/cell);let cand=[];
@@ -80,14 +85,16 @@ function skin(geom,body,torso){const pos=geom.attributes.position,n=pos.count,bg
 }
 async function prepare(kind,id,body){const def=PARTS[kind]?.[id];if(!def)return null;const key=kind+'/'+id;if(prepared.has(key))return prepared.get(key);
  const job=(async()=>{if(def.gen)return{geom:genGeometry(def,body),def,gen:true};const gltf=await loader.loadAsync('assets/models-web/'+def.file);let mesh=null;gltf.scene.traverse(o=>{if(!mesh&&o.isMesh)mesh=o});if(!mesh)return null;
-  mesh.updateWorldMatrix(true,false);const geom=mesh.geometry.clone();geom.applyMatrix4(mesh.matrixWorld);geom.scale(def.s*(def.xs||1),def.s*(def.ys||1),def.s*(def.zs||1));if(def.rx)geom.rotateX(def.rx);geom.translate(def.x,def.y,def.z);geom.computeBoundingSphere();geom.computeBoundingBox();
-  skin(geom,body,def.torso);
+  mesh.updateWorldMatrix(true,false);const geom=mesh.geometry.clone();/* v424 — attributs quantifiés (entiers normalisés) : en flottants avant toute transformation, sinon les valeurs hors de −1…1 sont écrasées */for(const k of['position','normal']){const a=geom.attributes[k];if(a&&(a.normalized||!(a.array instanceof Float32Array))){const f=new Float32Array(a.count*3);for(let i=0;i<a.count;i++){f[i*3]=a.getX(i);f[i*3+1]=a.getY(i);f[i*3+2]=a.getZ(i)}geom.setAttribute(k,new THREE.Float32BufferAttribute(f,3))}}geom.applyMatrix4(mesh.matrixWorld);geom.scale(def.s*(def.xs||1),def.s*(def.ys||1),def.s*(def.zs||1));if(def.rx)geom.rotateX(def.rx);geom.translate(def.x,def.y,def.z);geom.computeBoundingSphere();geom.computeBoundingBox();
+  skin(geom,body,def.torso);frame(body).toQ(geom);geom.computeBoundingSphere();
   const mat=mesh.material;if(mat.map){mat.map.colorSpace=THREE.SRGBColorSpace}mat.side=THREE.DoubleSide;
-  let cap=null;if(def.cap){const mk=(r,ps,pl,tl,ts=0)=>{const g=new THREE.SphereGeometry(r,28,16,ps,pl,ts,tl);g.translate(0,1.45,-.012);skin(g,body);return g};/* calotte : dessus du crâne + arrière du crâne, sans jamais toucher les oreilles (côtés) */cap={geoms:[mk(.254,0,Math.PI*2,Math.PI*.42),mk(.256,Math.PI*1.22,Math.PI*.56,Math.PI*.78,Math.PI*.3)],color:def.cap}}
+  let cap=null;if(def.cap){const mk=(r,ps,pl,tl,ts=0)=>{const g=new THREE.SphereGeometry(r,28,16,ps,pl,ts,tl);g.translate(0,1.45,-.012);skin(g,body);return frame(body).toQ(g)};/* calotte : dessus du crâne + arrière du crâne, sans jamais toucher les oreilles (côtés) */cap={geoms:[mk(.254,0,Math.PI*2,Math.PI*.42),mk(.256,Math.PI*1.22,Math.PI*.56,Math.PI*.78,Math.PI*.3)],color:def.cap}}
   const under=null;
   return{geom,mat,cap,under}})().catch(()=>null);prepared.set(key,job);return job}
 /* Habille `root` (clone du modèle neutre) avec la coiffure et la tenue de `hero` ({hair:{id,color},outfit:{id,color}}). Remplace les pièces précédentes. */
-export async function attachHeroParts(root,hero,isCurrent=()=>true){const body=bodyMesh(root);if(!body)return;
+/* v424 — jamais de héros dévêtu : sans combinaison, un tee-shirt col rond et un short en tissu par défaut */
+export function dressedHero(hero){if(!hero||hero.suit?.id)return hero;return{...hero,top:hero.top?.id?hero.top:{id:'rond',color:''},bottom:hero.bottom?.id?hero.bottom:{id:'tissu',color:''}}}
+export async function attachHeroParts(root,hero,isCurrent=()=>true){const body=bodyMesh(root);if(!body)return;hero=dressedHero(hero);
  (root.userData.heroPieces||[]).forEach(m=>{m.parent?.remove(m)});root.userData.heroPieces=[];
  for(const kind of['suit','top','bottom','hair']){const sel=hero?.[kind];if(!sel?.id)continue;if((kind==='top'||kind==='bottom')&&hero?.suit?.id)continue;const p=await prepare(kind,sel.id,body);if(!p||!isCurrent())continue;
   const m=new THREE.SkinnedMesh(p.geom,p.gen?fabricMaterial(p.def,sel.color):p.mat.clone());m.frustumCulled=false;m.castShadow=true;m.receiveShadow=true;m.position.copy(body.position);m.quaternion.copy(body.quaternion);m.scale.copy(body.scale);body.parent.add(m);m.bind(body.skeleton,body.bindMatrix);
