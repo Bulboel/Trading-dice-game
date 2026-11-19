@@ -30,7 +30,7 @@ fresh({foresight:2});run(`choose=(t,o,cb)=>cb(2)`);run("usePower('foresight')");
 fresh({surge:1});run("usePower('surge')");assert.equal(run('surgeArm[0]'),1);run('mv(me,3,6)');assert.equal(run('me.y'),6);assert.equal(run('moved'),0);assert.equal(run('surgeSecond[0]'),1);run('mv(me,3,5)');assert.equal(run('moved'),1);
 fresh({surge:1});run("usePower('surge')");run('mv(me,3,6)');run('foe.y=4');run('mv(me,3,4)');assert.equal(run('cr.includes(foe)'),true);assert.ok(/ne peut pas attaquer/.test(run('msg')));
 // Phénix : ma créature vaincue renaît sur sa case d'apparition
-fresh({phoenix:1});run('me.sx=3;me.sy=7;me.boost=-5;cur=1');run('mv(foe,3,6)');assert.equal(run('cr.includes(me)'),true);assert.equal(run('me.x'),3);assert.equal(run('me.y'),7);assert.equal(run('powLeft[0].phoenix'),0);
+fresh({phoenix:1});run('me.sx=3;me.sy=7;me.boost=-5;cur=1');run('mv(foe,3,6)');assert.equal(run('cr.includes(me)'),true);assert.equal(run('powLeft[0].phoenix'),0);assert.equal(run('D4.some(([dx,dy])=>{const e=at(me.x+dx,me.y+dy);return e&&e.o!==me.o})'),false,'renaît hors de portée des ennemis');
 // Blocage v.3 : repousse de 3 cases et étourdit
 fresh({block:3});run(`foe.y=1;cur=1;askBlock=(c,bt,done)=>done(true)`);run('mv(foe,3,6)');assert.ok(run('(foe.stun|0)>turnNumber'));
 // Vision v.3 : pièges adverses révélés pendant la vision
@@ -39,4 +39,7 @@ fresh({vision:3});run(`traps=[{x:2,y:2,o:1}]`);assert.equal(run('window.hackenia
 global.window={HackeniaProgress:{levelOf:xp=>({level:xp>=4000?40:10})},HackeniaChallenges:{unlocked:()=>[{id:'chapter3'},{id:'noel5'}]}};const E=require('../assets/equipment-v198.js');
 const pr={xp:4000,equipped:'bague-chanceuse',equipped2:'grelot-des-neiges'};assert.equal(E.equippedList(pr).length,2);const g=E.equipped(pr);assert.equal(g.startBonus,1);assert.equal(g.reroll,1);
 assert.equal(E.equippedList({...pr,xp:1000}).length,1);
+// v423 — Phénix : la case d'apparition est menacée → renaissance un peu en retrait, côté de son camp
+fresh({phoenix:1});run('me.sx=3;me.sy=7;cr.push({o:1,x:3,y:6,em:"",id:12,mn:"h",mi:0,lv:1,born:0});me.boost=-5;foe.x=4;foe.y=6;cur=1');run('mv(foe,4,7)');
+assert.equal(run('cr.includes(me)'),true);assert.equal(run('D4.some(([dx,dy])=>{const e=at(me.x+dx,me.y+dy);return e&&e.o!==me.o})'),false);assert.ok(run('me.y')>=7,'recule vers son camp');
 console.log('v418 powers OK');
