@@ -187,3 +187,11 @@
 .skg-head{margin-bottom:14px}
 .sk-const.c1{padding-top:4px}
 .sk-const.c2 .sk-sphere{margin-top:8px;margin-bottom:22px}
+
+/* v421 — repères de niveau gravés (sans pastille) et jauge verticale */
+.sk-lvl{position:absolute;transform:translate(-50%,-50%);z-index:2;display:grid;justify-items:center;gap:1px;padding:5px 3px;min-width:30px;border:0!important;border-radius:50%;background:radial-gradient(circle,#07051a 52%,#07051a00 74%)!important;box-shadow:none!important;color:#8a84a3;font:700 10px/1 'Cinzel',Georgia,serif;letter-spacing:.06em;text-align:center;pointer-events:none}
+.sk-lvl small{font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.85}
+.sk-lvl b{font-size:17px;font-weight:700;letter-spacing:0}
+.sk-lvl.ok{color:#ffe6a0;text-shadow:0 0 8px #ffcf4a99,0 0 2px #ffcf4a}
+.sk-rail{position:absolute;z-index:1;width:1.5px;transform:translateX(-50%);background:linear-gradient(#ffffff14,#ffffff2a,#ffffff14);border-radius:2px;pointer-events:none}
+.sk-rail i{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(#ffe6a0,#e8b23a);box-shadow:0 0 6px #ffcf4a}

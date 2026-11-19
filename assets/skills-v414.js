@@ -65,7 +65,11 @@ function treeHTML(p,avatar){const o=owned(p),pts=points(p),lvl=levelOf(p),C=160;
  /* Les origines forment un arbre : le héros en bas, trois branches qui montent (Blocage à gauche, Vision au centre, Impact à droite).
    L'éveil et les ultimes sont des constellations en étoile autour d'un dé central. */
  /* v420 — le niveau requis est affiché au bout de chaque ligne (origines) ou sur chaque anneau (éveil, ultimes) */
- const badge=(x,y,level)=>`<span class="sk-lvl${lvl>=level?' ok':''}" style="left:${(x/3.2).toFixed(2)}%;top:${(y/3.2).toFixed(2)}%">${lvl>=level?'':'🔒 '}Niv. ${level}</span>`;
+ const badge=(x,y,level)=>`<span class="sk-lvl${lvl>=level?' ok':''}" style="left:${(x/3.2).toFixed(2)}%;top:${(y/3.2).toFixed(2)}%" aria-label="Niveau ${level}${lvl>=level?' atteint':' requis'}"><small>Niv.</small><b>${level}</b></span>`;
+ /* v421 — jauge de niveaux : un fin trait vertical qui relie les repères gravés d'une même section */
+ const rail=(x,levels)=>{const ys=levels.map(a=>a[0]),y1=Math.min(...ys),y2=Math.max(...ys),reached=levels.filter(a=>lvl>=a[1]).map(a=>a[0]),yr=reached.length?Math.min(...reached):null;
+  return `<span class="sk-rail" style="left:${(x/3.2).toFixed(2)}%;top:${(y1/3.2).toFixed(2)}%;height:${((y2-y1)/3.2).toFixed(2)}%">${yr!==null?`<i style="top:${((yr-y1)/(y2-y1||1)*100).toFixed(1)}%"></i>`:''}</span>`+levels.map(([y,l])=>badge(x,y,l)).join('')};
+ const COLS=[160,240,80];
  const constellation=(R,radii,centerHTML,cls,cx=C,cy=C,angles=null,pos=null,badges='')=>{const list=DEFS.filter(d=>d.ring===R.ring);let lines='',nodes=badges;
   list.forEach((d,i)=>{const a=angles?angles[i]:-Math.PI/2+i*2*Math.PI/list.length+(R.ring===3?Math.PI/4:0);let [px,py]=pos&&!centerHTML?pos(i,1):[cx,cy];
    for(let r=1;r<=d.max;r++){const [x,y]=pos?pos(i,r):[cx+Math.cos(a)*radii[r-1],cy+Math.sin(a)*radii[r-1]],n=node(d,r,x,y,i,!pos&&!angles&&y<cy-12);lines+=`<line x1="${px.toFixed(1)}" y1="${py.toFixed(1)}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" class="sk-link ${n.st}" data-skill="${d.key}" style="--c:${d.color}"/>`;nodes+=n.html;px=x;py=y}});
@@ -82,7 +86,7 @@ function treeHTML(p,avatar){const o=owned(p),pts=points(p),lvl=levelOf(p),C=160;
  const resetBtn=spent(p)?`<button type="button" class="sk-reset" data-action="skill-reset">↺ Réinitialiser l’arbre <small>${RESET_COST} Bubulles</small></button>`:'';
  return `<section class="sk-galaxy" aria-label="Arbre de compétences"><div class="skg-sky" aria-hidden="true"><i class="skg-neb n1"></i><i class="skg-neb n2"></i><i class="skg-neb n3"></i><i class="skg-spiral"></i><i class="skg-stars s1"></i><i class="skg-stars s2"></i><i class="skg-stars s3"></i><i class="skg-comet"></i></div>
  <header class="skg-head"><button type="button" class="skg-back" data-action="challenges">‹ Niveau et quêtes</button><h2>Arbre de compétences</h2>${head}</header>
- ${constellation(RINGS[0],[],core,'c1',C,276,null,(i,r)=>[[160,252,68][i],[200,128,56][r-1]],[[200,3],[128,5],[56,20]].map(([y,l])=>badge(18,y,l)).join(''))}${constellation(RINGS[1],[],'','c2',C,C,null,(i,r)=>[[160,252,68][i%3],i<3?[290,214][r-1]:[134,58][r-1]],[[290,10],[214,15],[134,10],[58,15]].map(([y,l])=>badge(18,y,l)).join(''))}${constellation(RINGS[2],[104],crown,'c3',C,C,null,null,badge(C,C+46,25))}
+ ${constellation(RINGS[0],[],core,'c1',C,276,null,(i,r)=>[COLS[i],[200,128,56][r-1]],rail(24,[[200,3],[128,5],[56,20]]))}${constellation(RINGS[1],[],'','c2',C,C,null,(i,r)=>[COLS[i%3],i<3?[290,214][r-1]:[134,58][r-1]],rail(24,[[290,10],[214,15]])+rail(24,[[134,10],[58,15]]))}${constellation(RINGS[2],[104],crown,'c3',C,C,null,null,badge(C,C+46,25))}
  ${loadout}${resetBtn}
  <p class="sk-help">Un point aux niveaux ${LEVELS.join(', ')} : impossible de tout apprendre, à vous de choisir votre style. Touchez un dé pour découvrir son pouvoir. Au niveau 40, vous pourrez porter un deuxième objet.</p></section>`}
 /* Animation quand un pouvoir vient d'être appris : onde de choc, éclats d'étoiles, le dé tourbillonne puis s'allume. */
