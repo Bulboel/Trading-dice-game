@@ -15,8 +15,8 @@ const definitions=[
  {id:'chapter3',title:'Le tournoi des apprenti(e)s',goal:'Finissez le chapitre III de l’histoire : remportez le grand tournoi et recevez la bague de l’apprenti(e).',kind:'story',chapter:3,target:10,reward:'Bague de l’Apprenti(e) (objet porté) : un dé de jet bonus au début de chaque duel',item:'bague-chanceuse'},
  // v253 — nouveaux défis : terrains manquants, saisons, IA divine, grands paliers (certains rapportent des Bubulles)
  {id:'wind',title:'Les vents de Hacko',goal:'Gagnez un match dans les vents de Hacko.',kind:'terrain',terrain:'vent',target:1,reward:'Dés à lancer jade',roll:'jade'},
- {id:'lake',title:'Le lac rose',goal:'Gagnez un match au lac rose.',kind:'terrain',terrain:'eau',target:1,reward:'Dés à lancer rose',roll:'rose'},
- {id:'lakedrop',title:'Les gouttes du lac rose',goal:'Remportez trois parties sur le terrain « Le lac rose ».',kind:'terrain',terrain:'eau',target:3,reward:'Effet de dé bonus « Goutte d’eau »'},/* v426 */
+ {id:'lake',title:'Le lac rose',goal:'Gagnez un match au lac rose.',kind:'terrain',terrain:'eau',target:1,reward:'Dés à lancer rose et effet de dé bonus « Goutte d’eau »',roll:'rose'},
+ {id:'lakedrop',title:'Les gouttes du lac rose',goal:'Remportez trois parties sur le terrain « Le lac rose ».',kind:'terrain',terrain:'eau',target:3,reward:'Effet de dé bonus « Goutte rose »'},/* v426, v427 : la goutte rose */
  {id:'sky',title:'L’île céleste',goal:'Gagnez un match sur l’île céleste.',kind:'terrain',terrain:'foudre',target:1,reward:'Dés à lancer améthyste',roll:'amethyst'},
  {id:'autumn',title:'Feuilles d’or',goal:'Gagnez trois matchs dans la forêt d’automne.',kind:'terrain',terrain:'automne',target:3,reward:'Dés à lancer ambre et 100 Bubulles',roll:'amber',gold:100},
 {id:'mists',title:'Danse des brumes',goal:'Gagnez trois matchs dans le quartier des brumes féeriques.',kind:'terrain',terrain:'brumes',target:3,reward:'150 Bubulles',gold:150},
