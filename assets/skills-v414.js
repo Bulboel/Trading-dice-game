@@ -36,7 +36,7 @@ const DEFS=[
 const LEVELS=[3,5,10,15,20,25,30,35];/* niveaux qui donnent un point ; le niveau 40 donne un 2e objet porté */
 const NEED={1:[3,5,20],2:[10,15],3:[25]};
 const KEYS=DEFS.map(d=>d.key),BY=Object.fromEntries(DEFS.map(d=>[d.key,d])),ONLINE_MAX=3,RESET_COST=200;
-const RINGS=[{ring:1,title:'Les origines',sub:'Niveau 3 · v.2 au niveau 5 · v.3 au niveau 20'},{ring:2,title:'L’éveil',sub:'Niveau 10 · v.2 au niveau 15'},{ring:3,title:'Les ultimes',sub:'Niveau 25 · un seul au choix'}];
+const RINGS=[{ring:1,title:'Les origines',sub:'Chaque ligne se débloque au niveau indiqué à gauche.'},{ring:2,title:'L’éveil',sub:'Chaque ligne se débloque au niveau indiqué à gauche.'},{ring:3,title:'Les ultimes',sub:'Un seul ultime au choix, dès le niveau indiqué au centre.'}];
 const levelOf=p=>{try{return window.HackeniaProgress?.levelOf?.(p?.xp||0)?.level||1}catch{return 1}};
 const needFor=(key,rank)=>NEED[BY[key]?.ring]?.[rank-1]||99;
 function owned(p){const s=p&&typeof p.skills==='object'&&p.skills||{},o={};for(const d of DEFS)o[d.key]=Math.max(0,Math.min(d.max,s[d.key]|0));return o}
@@ -64,8 +64,10 @@ function treeHTML(p,avatar){const o=owned(p),pts=points(p),lvl=levelOf(p),C=160;
   return{x,y,st,html:`<button type="button" class="sk-node r${rank} g${d.ring} ${st}${up?' tag-up':''}" style="left:${(x/3.2).toFixed(2)}%;top:${(y/3.2).toFixed(2)}%;--c:${d.color}" data-action="skill-node" data-skill="${d.key}" data-rank="${rank}" aria-label="${esc(d.name)}${d.max>1?' v.'+rank:''} : ${have?'appris':can?'disponible':lvl<need?'niveau '+need+' requis':'verrouillé'}"><span class="sk-halo" aria-hidden="true"></span><span class="sk-die" aria-hidden="true">${die(kind,pal,i*2.1+rank,have||can?d.key:'lock')}</span>${have?'<span class="sk-spark" aria-hidden="true"><i></i><i></i><i></i></span>':''}<span class="sk-tag">${esc(d.name)}${d.max>1?` <b>v.${rank}</b>`:''}</span></button>`}};
  /* Les origines forment un arbre : le héros en bas, trois branches qui montent (Blocage à gauche, Vision au centre, Impact à droite).
    L'éveil et les ultimes sont des constellations en étoile autour d'un dé central. */
- const constellation=(R,radii,centerHTML,cls,cx=C,cy=C,angles=null,pos=null)=>{const list=DEFS.filter(d=>d.ring===R.ring);let lines='',nodes='';
-  list.forEach((d,i)=>{const a=angles?angles[i]:-Math.PI/2+i*2*Math.PI/list.length+(R.ring===3?Math.PI/4:0);let px=cx,py=cy;
+ /* v420 — le niveau requis est affiché au bout de chaque ligne (origines) ou sur chaque anneau (éveil, ultimes) */
+ const badge=(x,y,level)=>`<span class="sk-lvl${lvl>=level?' ok':''}" style="left:${(x/3.2).toFixed(2)}%;top:${(y/3.2).toFixed(2)}%">${lvl>=level?'':'🔒 '}Niv. ${level}</span>`;
+ const constellation=(R,radii,centerHTML,cls,cx=C,cy=C,angles=null,pos=null,badges='')=>{const list=DEFS.filter(d=>d.ring===R.ring);let lines='',nodes=badges;
+  list.forEach((d,i)=>{const a=angles?angles[i]:-Math.PI/2+i*2*Math.PI/list.length+(R.ring===3?Math.PI/4:0);let [px,py]=pos&&!centerHTML?pos(i,1):[cx,cy];
    for(let r=1;r<=d.max;r++){const [x,y]=pos?pos(i,r):[cx+Math.cos(a)*radii[r-1],cy+Math.sin(a)*radii[r-1]],n=node(d,r,x,y,i,!pos&&!angles&&y<cy-12);lines+=`<line x1="${px.toFixed(1)}" y1="${py.toFixed(1)}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" class="sk-link ${n.st}" data-skill="${d.key}" style="--c:${d.color}"/>`;nodes+=n.html;px=x;py=y}});
   const sealed=lvl<NEED[R.ring][0];
   const orbits=radii.map((r,k)=>`<g class="sk-orbit o${k+1}"><circle cx="${C}" cy="${C}" r="${r}"/></g>`).join('');
@@ -80,7 +82,7 @@ function treeHTML(p,avatar){const o=owned(p),pts=points(p),lvl=levelOf(p),C=160;
  const resetBtn=spent(p)?`<button type="button" class="sk-reset" data-action="skill-reset">↺ Réinitialiser l’arbre <small>${RESET_COST} Bubulles</small></button>`:'';
  return `<section class="sk-galaxy" aria-label="Arbre de compétences"><div class="skg-sky" aria-hidden="true"><i class="skg-neb n1"></i><i class="skg-neb n2"></i><i class="skg-neb n3"></i><i class="skg-spiral"></i><i class="skg-stars s1"></i><i class="skg-stars s2"></i><i class="skg-stars s3"></i><i class="skg-comet"></i></div>
  <header class="skg-head"><button type="button" class="skg-back" data-action="challenges">‹ Niveau et quêtes</button><h2>Arbre de compétences</h2>${head}</header>
- ${constellation(RINGS[0],[],core,'c1',C,276,null,(i,r)=>[[160,264,56][i],[200,128,56][r-1]])}${constellation(RINGS[1],[74,142],star,'c2')}${constellation(RINGS[2],[104],crown,'c3')}
+ ${constellation(RINGS[0],[],core,'c1',C,276,null,(i,r)=>[[160,252,68][i],[200,128,56][r-1]],[[200,3],[128,5],[56,20]].map(([y,l])=>badge(18,y,l)).join(''))}${constellation(RINGS[1],[],'','c2',C,C,null,(i,r)=>[[160,252,68][i%3],i<3?[290,214][r-1]:[134,58][r-1]],[[290,10],[214,15],[134,10],[58,15]].map(([y,l])=>badge(18,y,l)).join(''))}${constellation(RINGS[2],[104],crown,'c3',C,C,null,null,badge(C,C+46,25))}
  ${loadout}${resetBtn}
  <p class="sk-help">Un point aux niveaux ${LEVELS.join(', ')} : impossible de tout apprendre, à vous de choisir votre style. Touchez un dé pour découvrir son pouvoir. Au niveau 40, vous pourrez porter un deuxième objet.</p></section>`}
 /* Animation quand un pouvoir vient d'être appris : onde de choc, éclats d'étoiles, le dé tourbillonne puis s'allume. */

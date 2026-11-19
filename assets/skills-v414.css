@@ -180,3 +180,10 @@
 .sk-const.c1 .sk-sphere{aspect-ratio:1/1.02;margin-top:10px;margin-bottom:26px}
 .sk-const.c2 .sk-sphere{margin-top:30px;margin-bottom:26px}
 .sk-const.c3 .sk-sphere{margin-top:6px}
+
+/* v420 — niveau requis par ligne / anneau */
+.sk-lvl{position:absolute;transform:translate(-50%,-50%);z-index:2;padding:3px 8px;border-radius:999px;font:700 11px/1.2 system-ui,sans-serif;white-space:nowrap;color:#b9b2cf;background:#0b0820e6;border:1px solid #ffffff2a;pointer-events:none}
+.sk-lvl.ok{color:#2a1a03;background:linear-gradient(160deg,#fff1b8,#e8b23a);border-color:#fff3c4;box-shadow:0 0 10px #ffd04a66}
+.skg-head{margin-bottom:14px}
+.sk-const.c1{padding-top:4px}
+.sk-const.c2 .sk-sphere{margin-top:8px;margin-bottom:22px}
