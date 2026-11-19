@@ -834,5 +834,20 @@
  "Un seul ultime au choix, dès le niveau indiqué au centre.": "Pick only one ultimate, from the level shown in the centre.",
  "Arbre de compétences : une jauge de niveaux, à gauche, indique le niveau requis pour chaque ligne de pouvoirs ; elle s’illumine en doré quand il est atteint.": "Skill tree: a level gauge on the left shows the level required for each row of powers; it lights up in gold once reached.",
  "Un D4 bien doré": "A truly golden D4",
- "Le D4 qui ouvre l’arbre de compétences tourne lentement sur lui-même, comme les dés du menu, avec un dégradé doré plus riche.": "The D4 that opens the skill tree now slowly spins like the menu dice, with a richer golden gradient."
+ "Le D4 qui ouvre l’arbre de compétences tourne lentement sur lui-même, comme les dés du menu, avec un dégradé doré plus riche.": "The D4 that opens the skill tree now slowly spins like the menu dice, with a richer golden gradient.",
+ "Un arbre de compétences est maintenant à disposition dans le niveau de joueur.": "A skill tree is now available in the player level menu.",
+ "Au niveau 40, vous pourrez porter deux objets à la fois.": "At level 40, you can wear two items at once.",
+ "Histoire : le premier duel contre Kayla débloque toujours la suite.": "Story: the first duel against Kayla always unlocks what comes next.",
+ "La vignette de votre héros a été refaite : on le voit bien en entier.": "Your hero's portrait has been redone: you now see them clearly.",
+ "Les dés du menu sont plus fins et plus délicats.": "The menu dice are finer and more delicate.",
+ "Sur iPhone et iPad, la couleur de la boubourse s’applique enfin.": "On iPhone and iPad, the pouch colour now applies.",
+ "Les dés et le ciel du menu ont été retouchés.": "The menu dice and sky have been polished.",
+ "Depuis Jouer, « Composer un deck » vous ramène ensuite directement à Jouer.": "From Play, “Build a deck” now brings you straight back to Play.",
+ "Hackénia est toujours en cours de développement : les changements importants seront annoncés ici.": "Hackénia is still in development: important changes will be announced here.",
+ "Trois 6 sur un même lancer : mort subite, la partie est gagnée !": "Three 6s on a single roll: sudden death, you win the game!",
+ "Vous pouvez cumuler jusqu’à trois dés bonus.": "You can stack up to three bonus dice.",
+ "Sur téléphone, le jeu ne coupe plus votre musique.": "On phones, the game no longer stops your music.",
+ "À propos : une adresse de contact et la politique de confidentialité.": "About: a contact address and the privacy policy.",
+ "Le jeu est plus léger : il se télécharge et se lance plus vite.": "The game is lighter: it downloads and starts faster.",
+ "Nouveau défi : complétez toute la collection de dés pour une récompense très spéciale.": "New challenge: complete the whole dice collection for a very special reward."
 }
