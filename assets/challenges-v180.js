@@ -16,6 +16,7 @@ const definitions=[
  // v253 — nouveaux défis : terrains manquants, saisons, IA divine, grands paliers (certains rapportent des Bubulles)
  {id:'wind',title:'Les vents de Hacko',goal:'Gagnez un match dans les vents de Hacko.',kind:'terrain',terrain:'vent',target:1,reward:'Dés à lancer jade',roll:'jade'},
  {id:'lake',title:'Le lac rose',goal:'Gagnez un match au lac rose.',kind:'terrain',terrain:'eau',target:1,reward:'Dés à lancer rose',roll:'rose'},
+ {id:'lakedrop',title:'Les gouttes du lac rose',goal:'Remportez trois parties sur le terrain « Le lac rose ».',kind:'terrain',terrain:'eau',target:3,reward:'Effet de dé bonus « Goutte d’eau »'},/* v426 */
  {id:'sky',title:'L’île céleste',goal:'Gagnez un match sur l’île céleste.',kind:'terrain',terrain:'foudre',target:1,reward:'Dés à lancer améthyste',roll:'amethyst'},
  {id:'autumn',title:'Feuilles d’or',goal:'Gagnez trois matchs dans la forêt d’automne.',kind:'terrain',terrain:'automne',target:3,reward:'Dés à lancer ambre et 100 Bubulles',roll:'amber',gold:100},
 {id:'mists',title:'Danse des brumes',goal:'Gagnez trois matchs dans le quartier des brumes féeriques.',kind:'terrain',terrain:'brumes',target:3,reward:'150 Bubulles',gold:150},

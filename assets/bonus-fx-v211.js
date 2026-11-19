@@ -4,13 +4,15 @@
 (()=>{'use strict';
 const STYLES=[
  {id:'star',name:'Étoile dorée',desc:'L’étoile classique qui file vers votre compteur.'},
- {id:'drop',name:'Goutte d’eau',desc:'Une goutte tombe, éclabousse, puis fond sur votre compteur comme une tête chercheuse.'},
+ {id:'drop',challenge:'lakedrop',name:'Goutte d’eau',desc:'Une goutte tombe, éclabousse, puis fond sur votre compteur comme une tête chercheuse.'},
  {id:'spark',name:'Éclair',desc:'Un éclair zèbre le plateau jusqu’à votre compteur.',level:5},
  {id:'leaf',name:'Feuille d’automne',desc:'Une feuille tourbillonne, puis un coup de vent l’emporte vers votre compteur.',level:10}];
 // v219 — Les effets « Éclair » et « Feuille » se débloquent avec le niveau de joueur.
-const isLocked=s=>!!s.level&&!window.HackeniaProgress?.unlocked?.(window.HackeniaPortal?.profile?.(),s.id);
-for(const st of STYLES)if(st.level)Object.defineProperty(st,'locked',{enumerable:true,get(){return isLocked(st)}});
-for(const st of STYLES)if(st.level)Object.defineProperty(st,'hint',{enumerable:true,get(){return isLocked(st)?'Débloqué au niveau '+st.level:''}});
+/* v426 — la Goutte d'eau se gagne avec le défi « Les gouttes du lac rose » (trois victoires au lac rose) */
+const challengeDone=id=>{try{return(window.HackeniaChallenges?.unlocked?.(window.HackeniaPortal?.profile?.())||[]).some(d=>d.id===id)}catch{return false}};
+const isLocked=s=>s.challenge?!challengeDone(s.challenge):!!s.level&&!window.HackeniaProgress?.unlocked?.(window.HackeniaPortal?.profile?.(),s.id);
+for(const st of STYLES)if(st.level||st.challenge)Object.defineProperty(st,'locked',{enumerable:true,get(){return isLocked(st)}});
+for(const st of STYLES)if(st.level||st.challenge)Object.defineProperty(st,'hint',{enumerable:true,get(){return isLocked(st)?(st.challenge?'Défi « Les gouttes du lac rose » : remportez trois parties au lac rose':'Débloqué au niveau '+st.level):''}});
 const current=()=>{const v=window.HackeniaSettings?.get?.().bonusFx;return STYLES.some(s=>s.id===v&&!s.locked)?v:'star'};
 const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches||window.HackeniaSettings?.get?.().motion===false;
 
