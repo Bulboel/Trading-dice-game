@@ -26,7 +26,7 @@ const DEFS=[
  {key:'foresight',ring:2,max:2,icon:'🔮',name:'Prévoyance',color:'#d59cff',
   v:['Une fois par partie : regardez vos trois prochains dés et choisissez celui qui arrivera dans votre main.','Deux fois par partie : regardez vos trois prochains dés et choisissez celui qui arrivera dans votre main.']},
  {key:'phoenix',ring:3,max:1,icon:'🔥',name:'Phénix',color:'#ff9a3c',
-  v:['Ultime : la première de vos créatures vaincue renaît aussitôt sur sa case d’apparition.']},
+  v:['Ultime : la première de vos créatures vaincue renaît aussitôt sur sa case d’apparition, ou un peu en retrait si un ennemi s’y trouve à côté.']},
  {key:'portal',ring:3,max:1,icon:'🌀',name:'Portail',color:'#8f9bff',
   v:['Ultime : téléporte une de vos créatures, avec sa dalle, sur n’importe quelle case libre de votre moitié du plateau.']},
  {key:'storm',ring:3,max:1,icon:'⛈',name:'Tempête',color:'#9fd0ff',
