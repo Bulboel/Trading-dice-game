@@ -427,7 +427,6 @@
  "Taux des boubourses revus": "Pouch rates revised",
  "Les dés divins deviennent plus rares : 0,4 % par dé tiré. La garantie d’un divin toutes les 80 boubourses sans divin est conservée.": "Divine dice become rarer: 0.4% per die drawn. A divine is still guaranteed every 80 pouches without one.",
  "Crépitants : 0,2 % pour la version violette et 0,1 % pour la version émeraude, désormais la plus rare de toutes.": "Crackling dice: 0.2% for the violet version and 0.1% for the emerald version, now the rarest of all.",
- "Commun 33,8 % · Peu commun 27 % · Rare 22 % · Énergie 10,5 % · Légendaire 6 % · Divin 0,4 % · Crépitant 0,2 % · Crépitant émeraude 0,1 %. Les six éléments sont équiprobables.": "Common 33.8% · Uncommon 27% · Rare 22% · Energy 10.5% · Legendary 6% · Divine 0.4% · Crackling 0.2% · Emerald Crackling 0.1%. The six elements are equally likely.",
  "Boutique : 0,4 % de chances d’obtenir un dé divin par dé tiré. Une garantie vous offre un divin toutes les 80 boubourses sans divin, et un légendaire toutes les 50 boubourses sans légendaire.": "Shop: 0.4% chance of getting a divine die per die drawn. A guarantee gives you a divine every 80 pouches without one, and a legendary every 50 pouches without one.",
  "Trois nouveaux dés": "Three new dice",
  "Le Loup (commun, Feu), la Larve (commune, Eau) et le Guerrier fantôme (peu commun, Glace) rejoignent la collection, avec leurs versions Crépitantes violette et émeraude.": "The Wolf (common, Fire), the Larva (common, Water) and the Ghost Warrior (uncommon, Ice) join the collection, with their violet and emerald Crackling versions.",
@@ -853,5 +852,8 @@
  "Ultime : la première de vos créatures vaincue renaît aussitôt sur sa case d’apparition, ou un peu en retrait si un ennemi s’y trouve à côté.": "Ultimate: the first of your creatures to be defeated is instantly reborn on its spawn square, or a little further back if an enemy stands next to it.",
  "Un héros bien habillé": "A well-dressed hero",
  "Votre héros porte désormais toujours une tenue : un tee-shirt et un short par défaut.": "Your hero now always wears an outfit: a T-shirt and shorts by default.",
- "Correctif : les coiffures et les vêtements du héros s’affichent de nouveau au bon endroit.": "Fix: the hero's hairstyles and clothes are shown in the right place again."
+ "Correctif : les coiffures et les vêtements du héros s’affichent de nouveau au bon endroit.": "Fix: the hero's hairstyles and clothes are shown in the right place again.",
+ "Commun 28,3 % · Peu commun 21 % · Rare 22 % · Énergie 22 % · Légendaire 6 % · Divin 0,4 % · Crépitant 0,2 % · Crépitant émeraude 0,1 %. Les six éléments sont équiprobables.": "Common 28.3% · Uncommon 21% · Rare 22% · Energy 22% · Legendary 6% · Divine 0.4% · Crackling 0.2% · Emerald Crackling 0.1%. The six elements are equally likely.",
+ "Des dés Énergie plus fréquents": "More frequent Energy dice",
+ "Les dés Énergie sortent maintenant aussi souvent que les dés rares, et un deck peut en contenir 4.": "Energy dice now drop as often as rare dice, and a deck can hold 4 of them."
 }
