@@ -832,5 +832,7 @@
  "Arbre de compétences : le niveau requis est indiqué au début de chaque ligne de pouvoirs, en doré quand il est atteint.": "Skill tree: the required level is shown at the start of each row of powers, in gold once reached.",
  "Chaque ligne se débloque au niveau indiqué à gauche.": "Each row unlocks at the level shown on the left.",
  "Un seul ultime au choix, dès le niveau indiqué au centre.": "Pick only one ultimate, from the level shown in the centre.",
- "Arbre de compétences : une jauge de niveaux, à gauche, indique le niveau requis pour chaque ligne de pouvoirs ; elle s’illumine en doré quand il est atteint.": "Skill tree: a level gauge on the left shows the level required for each row of powers; it lights up in gold once reached."
+ "Arbre de compétences : une jauge de niveaux, à gauche, indique le niveau requis pour chaque ligne de pouvoirs ; elle s’illumine en doré quand il est atteint.": "Skill tree: a level gauge on the left shows the level required for each row of powers; it lights up in gold once reached.",
+ "Un D4 bien doré": "A truly golden D4",
+ "Le D4 qui ouvre l’arbre de compétences tourne lentement sur lui-même, comme les dés du menu, avec un dégradé doré plus riche.": "The D4 that opens the skill tree now slowly spins like the menu dice, with a richer golden gradient."
 }

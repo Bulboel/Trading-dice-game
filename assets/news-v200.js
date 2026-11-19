@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v422',title:'Un D4 bien doré',items:['Le D4 qui ouvre l’arbre de compétences tourne lentement sur lui-même, comme les dés du menu, avec un dégradé doré plus riche.']},
  {id:'v421',title:'Un arbre plus lisible',items:['Arbre de compétences : une jauge de niveaux, à gauche, indique le niveau requis pour chaque ligne de pouvoirs ; elle s’illumine en doré quand il est atteint.']},
  {id:'v419',title:'Une vignette à votre image',items:['La vignette de votre héros est refaite : on le voit en entier, du dessus des genoux jusqu’à la tête.','L’arbre de compétences affiche l’avatar que vous avez choisi pour votre pastille de niveau.']},
  {id:'v418',title:'L’arbre complet, jusqu’au niveau 40',items:['Un point de compétence aux niveaux 3, 5, 10, 15, 20, 25, 30 et 35 : impossible de tout apprendre, à vous de choisir votre style.','Niveau 20 : la v.3 de Vision, Impact et Blocage. Niveau 10 : six nouveaux pouvoirs (Bénédiction, Entrave, Rappel, Élan, Sabotage, Prévoyance). Niveau 25 : un ultime au choix parmi Phénix, Portail, Tempête et Faveur des dés.','En ligne, vous emportez 3 pouvoirs choisis. L’arbre peut être réinitialisé contre 200 Bubulles.','Niveau 40 : vous pouvez porter deux objets à la fois.','Les dés du sphérier restent face à vous, avec un pictogramme dessiné sur leur face.','Histoire : le duel contre Kayla débloque toujours la suite, même perdu ou abandonné.']},
