@@ -1,7 +1,7 @@
 // Reuses the validated Eberien v16 panels, gold circles, lid lift and 1,300-particle dissolution.
 import * as THREE from 'three';
 import {invocationPalette} from './invocation-colors.js?v=166';
-import {invocationNormalization,invocationFrame} from './invocation-layout.js?v=20270102-v426';
+import {invocationNormalization,invocationFrame} from './invocation-layout.js?v=20270102-v427';
 import {GLTFLoader} from './vendor/three/examples/jsm/loaders/GLTFLoader.js';
 import {OrbitControls} from './vendor/three/examples/jsm/controls/OrbitControls.js';
 export async function createInvocation(stage,{info,definition,reduced,isCurrent,onComplete,onReady,onReveal}){
