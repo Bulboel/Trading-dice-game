@@ -2,9 +2,9 @@
    v257 — taux revus (Légendaire 6 %, Divin 1,5 %) et garanties : un légendaire que vous ne possédez pas toutes les 50 boubourses
    sans légendaire, un divin toutes les 100 boubourses sans divin (compteurs profile.pity = {leg, div}, remis à zéro dès qu'il en sort un). */
 (()=>{'use strict';
-// v344 — % par dé (total 100) : Commun 33,8, Peu commun 27, Rare 22, Légendaire 6, Divin 0,4, Énergie 10,5, Crépitant 0,3
+// v425 — % par dé (total 100) : Commun 28,3, Peu commun 21, Rare 22, Légendaire 6, Divin 0,4, Énergie 22, Crépitant 0,3
 // (dont Crépitant v1 0,2 et Crépitant émeraude v2 0,1 : voir CREP_SPLIT).
-const WEIGHTS=[33.8,27,22,0,6,0.4,10.5,0.3],CREP_SPLIT={1:0.2,2:0.1};/* v269 : Crépitant (rareté 8) = trois fois plus rare qu'un divin *//* % par dé : Commun 33, Peu commun 27, Rare 22, (ancien Épique, retiré), Légendaire 6, Divin 1,5, Énergie 10,5 */
+/* v425 — Énergie aussi fréquent qu'un rare (22 %) : Commun 28,3, Peu commun 21, Rare 22, Légendaire 6, Divin 0,4, Énergie 22, Crépitant 0,3 */const WEIGHTS=[28.3,21,22,0,6,0.4,22,0.3],CREP_SPLIT={1:0.2,2:0.1};/* v269 : Crépitant (rareté 8) = trois fois plus rare qu'un divin *//* % par dé : Commun 33, Peu commun 27, Rare 22, (ancien Épique, retiré), Légendaire 6, Divin 1,5, Énergie 10,5 */
 const PITY={leg:50,div:80};
 const pool=(r,kind=0)=>{const defs=window.hackeniaGame?.monsters;return defs?.map((d,i)=>({d,i})).filter(({d})=>(d.rarity??d.lv)===r&&!d.reserved&&(!kind||(d.shinyKind||1)===kind)).map(({i})=>i)||Array.from({length:6},(_,i)=>(r===7?58:r===8?128:(r-1)*6)+i)};
 function plan(profile,count,random=Math.random){if(count!==1&&count!==10&&count!==100)throw RangeError('Lot invalide');if(count===100&&!profile.premium?.sage)return null;const price=count===100?900:count===10?90:10;if(profile.gold<price||(profile.pouchQueue?.length||0)>0)return null;const next=structuredClone(profile);next.pouchQueue=[];

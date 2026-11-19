@@ -5,7 +5,7 @@ const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8');
 const el=()=>({style:{setProperty(){}},classList:{add(){},remove(){},toggle(){}},firstElementChild:{style:{}},setPointerCapture(){}}),els=new Map();
 const c=vm.createContext({window:{dispatchEvent(){}},Event,document:{getElementById(i){if(!els.has(i))els.set(i,el());return els.get(i)}},fetch:()=>Promise.resolve({ok:false}),setTimeout:()=>0,clearTimeout(){},setInterval:()=>0,clearInterval(){},Date,Math,console});
 vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,''),c);const run=s=>vm.runInContext(s,c);
-const CAP={6:1,5:2,7:2,3:4};let checked=0;
+const CAP={6:1,5:2,7:4,3:4};let checked=0;
 function check(deck,label){assert.equal(deck.length,10,label+' : 10 dés');assert.equal(new Set(deck).size,10,label+' : sans doublon');
  const n={};for(const m of deck){assert.ok(!run(`M[${m}].shiny`),label+' : pas de Crépitant');const r=run(`rarityOf(M[${m}].shiny?M[M[${m}].shinyOf]:M[${m}])`);n[r]=(n[r]||0)+1}
  for(const [r,max] of Object.entries(CAP))assert.ok((n[r]||0)<=max,`${label} : ${n[r]} dés de rareté ${r} (maximum ${max})`);checked++}
