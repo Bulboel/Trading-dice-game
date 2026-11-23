@@ -2,9 +2,10 @@
 // or ardent / arc-en-ciel, finition du dé, cercles au sol, poussière, faisceau et éclat d'apparition.
 import * as THREE from 'three';
 import {invocationPalette} from './invocation-colors.js?v=166';
-import {applyLook} from './variant-look.js?v=20270102-v429';
-import {invocationNormalization,invocationFrame} from './invocation-layout.js?v=20270102-v429';
+import {applyLook} from './variant-look.js?v=20270102-v430';
+import {invocationNormalization,invocationFrame} from './invocation-layout.js?v=20270102-v430';
 import {GLTFLoader} from './vendor/three/examples/jsm/loaders/GLTFLoader.js';
+import {loadPaperTextures,buildPaperFigure} from './paper-figure.js?v=20270102-v430';
 import {OrbitControls} from './vendor/three/examples/jsm/controls/OrbitControls.js';
 const TIERS={
  commun:{metal:0xb87d4b,rough:.6,metalness:.15,emissive:0,sigils:1,dust:500,beam:0,flash:0},
@@ -80,6 +81,8 @@ let observer;
 try{if(info?.glb){try{/* v289 : dés double / triple élément — chaque bébémentaire est chargé et placé côte à côte (info.partsInfo). */const list=info.partsInfo?.length>1?info.partsInfo:[info],n=list.length,k=(n>2?.62:n>1?.74:1)*(definition?.pure===1?.5:1),lay=n>2?[[-1.0,0],[1.0,0],[0,-.85]]:n>1?[[-.85,0],[.85,0]]:[[0,0]];const loader=new GLTFLoader();
 for(let i=0;i<n;i++){const data=await loader.loadAsync('assets/'+list[i].glb);const m=data.scene;if(definition?.variant)applyLook(m,definition.variant);const mx=new THREE.AnimationMixer(m);const idle=data.animations.find(a=>/idle|stand|breath/i.test(a.name))||data.animations[0];if(idle)mx.clipAction(idle).play();mx.update(0);m.updateMatrixWorld(true);const box=new THREE.Box3().setFromObject(m,true),fit=invocationNormalization(box.min,box.max),normalized=new THREE.Group();normalized.scale.setScalar(fit.scale*k);normalized.position.set(fit.x*k+lay[i][0],fit.y*k,fit.z*k+lay[i][1]);normalized.add(m);
 if(i===0){model=m;mixer=mx}else extraMixers.push(mx);character.add(normalized)}}catch{model=null;mixer?.stopAllAction();mixer=null;/* Keep the illustration if a model cannot be loaded or framed. */}}
+/* v430 — dé « en papier » : la figurine plate (avec son épaisseur de carton) apparaît au centre, comme un modèle 3D */
+if(!model&&info?.sprite){try{const tex=await loadPaperTextures(info.sprite);if(tex.idle){const fig=buildPaperFigure(tex.idle,2.9,{tint:definition?.variant?.color||null});const holder=new THREE.Group();holder.add(fig.object);holder.rotation.y=-.35;character.add(holder);model=holder;model.userData.paper=fig}}catch{model=null}}
 if(!isCurrent()){dispose();throw Error('closed')}
 if(fallback){if(model)fallback.hidden=true;else fallback.classList.add('fallback-portrait-only')}const accent=stage.parentElement?.style.getPropertyValue('--invocation-accent');if(accent){ring.material.color.set(accent);light.color.set(accent);glow.material.color.set(accent)}
 const sigils=new THREE.Group();scene.add(sigils);for(let i=0;i<T.sigils;i++){const sigil=new THREE.Mesh(new THREE.RingGeometry(1.45+i*.35,1.48+i*.35,96),new THREE.MeshBasicMaterial({color:i%2?T.metal:theme.glow,transparent:true,opacity:.6,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));sigil.rotation.x=-Math.PI/2;sigil.position.y=.025+i*.012;sigils.add(sigil)}

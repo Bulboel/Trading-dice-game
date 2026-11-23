@@ -7,7 +7,7 @@ const c=vm.createContext({window:win,Event,CustomEvent:Event,document:{body:{cla
 vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,''),c);const run=s=>vm.runInContext(s,c);
 const M=win.hackeniaGame.monsters;
 // --- dés mis de côté
-const parked=M.map((d,i)=>[i,d]).filter(([,d])=>d.reserved&&!d.foe);/* v342 : les créatures d’Histoire sont à part */assert.equal(parked.length,10,'10 dés restent mis de côté (Lumérion, Floréa et Jordan ont reçu leurs modèles)');
+const parked=M.map((d,i)=>[i,d]).filter(([,d])=>d.reserved&&!d.foe&&d.retiredTo===undefined);/* v430 : les copies teintées retirées (retiredTo) sont comptées à part */assert.equal(M.filter(d=>d.retiredTo!==undefined).length,14,'v430 : 14 copies teintées retirées des boubourses');/* v342 : les créatures d’Histoire sont à part */assert.equal(parked.length,10,'10 dés restent mis de côté (Lumérion, Floréa et Jordan ont reçu leurs modèles)');
 const lum=M[33];assert.equal(lum.cn,'Lumérion');assert.ok(lum.multi&&lum.el===''&&!lum.reserved&&lum.modelKey==='lumerion');assert.equal(lum.c.reduce((a,t)=>a+t[2],0),30,'multi-élément : 2 points de force en moins');
 const P=vm.createContext({window:{hackeniaGame:{monsters:JSON.parse(JSON.stringify(M))}},structuredClone,Math,RangeError});vm.runInContext(fs.readFileSync(path.join(__dirname,'../assets/purchases.js'),'utf8'),P);
 let seed=3;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;const drawn=new Set();

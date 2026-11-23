@@ -222,3 +222,14 @@
 #power-sheet .ps-actions button{flex:1;padding:10px 12px;border-radius:12px;border:1px solid #ffffff2a;background:#ffffff10;color:#f2ecff;font:700 13px/1 system-ui,sans-serif;cursor:pointer}
 #power-sheet .ps-actions [data-ps="use"]{background:linear-gradient(160deg,#fff1b8,#e8b23a);color:#2a1a03;border-color:#fff3c4;box-shadow:0 0 14px #ffd04a66}
 @media(max-width:700px){#power-bar button.pw-medal{width:44px;height:44px}#power-bar button.pw-medal .cd-svg{width:34px;height:34px}}
+/* v430 — Plateau épuré : les gestes tactiles (et le clic maintenu sur ordinateur) suffisent pour zoomer, déplacer et tourner la vue.
+   Les anciens boutons de caméra disparaissent et les pouvoirs descendent dans l'angle en bas à gauche. */
+#rot,#board-navigation,#bw.view3d #board-navigation{display:none!important}
+#power-bar{bottom:10px!important;left:10px!important}
+/* v430 — Onglets de terrain : toutes les cartes ont exactement la même taille (icône, nom sur deux lignes, élément sur une ligne). */
+.terrain-picker{grid-auto-rows:1fr;align-items:stretch}
+.tp-item{height:100%;min-height:96px;box-sizing:border-box;justify-content:flex-start;padding:7px 4px 6px}
+.tp-item .tp-ico{width:34px!important;height:34px!important;flex:0 0 34px}
+.tp-item span{flex:1;width:100%;justify-content:space-between;gap:2px}
+.tp-item b{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;min-height:2.2em;line-height:1.1;font-size:10.5px;overflow-wrap:normal;hyphens:none;word-break:normal}
+.tp-item small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:8px;letter-spacing:.03em}
