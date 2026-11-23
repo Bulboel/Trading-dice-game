@@ -795,6 +795,50 @@
       "boardYaw": 3.141592653589793,
       "boardHeight": 1.5,
       "gesture": "larva"
+    },
+    "gobelin": {
+      "glb": "models-web/Gobelin idle.glb",
+      "nom": "Gobelin des collines",
+      "boardYaw": 4.71238898038469,
+      "boardHeight": 1.35,
+      "animations": {
+        "spell": "characters/gobelin-spell.glb",
+        "victory": "characters/gobelin-victory.glb",
+        "walk": "characters/gobelin-walk.glb"
+      }
+    },
+    "ogre": {
+      "glb": "models-web/ogre.glb",
+      "nom": "Ogre des collines noires",
+      "boardYaw": 3.141592653589793,
+      "boardHeight": 2.2,
+      "gesture": "beast"
+    },
+    "maestro": {
+      "nom": "Maestro",
+      "boardHeight": 0.95,
+      "sprite": {
+        "idle": "story/emo/maestro-1.webp",
+        "walk": "story/emo/maestro-1.webp",
+        "attack": "story/emo/maestro-3.webp",
+        "hit": "story/emo/maestro-5.webp",
+        "ko": "story/emo/maestro-6.webp",
+        "win": "story/emo/maestro-1.webp"
+      },
+      "paper": true
+    },
+    "rat-a-forfalla": {
+      "nom": "Rat de Forfalla",
+      "boardHeight": 0.95,
+      "sprite": {
+        "idle": "story/emo/rat-a-forfalla-2.webp",
+        "walk": "story/emo/rat-a-forfalla-1.webp",
+        "attack": "story/emo/rat-a-forfalla-3.webp",
+        "hit": "story/emo/rat-a-forfalla-5.webp",
+        "ko": "story/emo/rat-a-forfalla-6.webp",
+        "win": "story/emo/rat-a-forfalla-1.webp"
+      },
+      "paper": true
     }
   },
   "terrains": {

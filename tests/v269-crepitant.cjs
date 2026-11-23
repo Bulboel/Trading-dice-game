@@ -9,7 +9,7 @@ const shiny=M.map((d,i)=>[i,d]).filter(([,d])=>d.shiny&&d.shinyKind!==2),emerald
 // v338 : seconde version « émeraude », même rareté, ajoutée après les Crépitants (identifiants 180 à 231)
 assert.equal(emerald.length,58);assert.ok(emerald.every(([i,d])=>i>=180&&d.rarity===8&&d.variant.kind==='galaxy2'&&d.portrait.endsWith('-crep2')));
 // Sélection : dés de base uniquement (ni variantes, ni dés à effet, sacrés, de carte ou de classe, ni dés mis de côté)
-const isBase=d=>!d.shiny&&!d.pure&&!d.variant&&!d.fx&&!d.terrain2&&!d.cls&&!d.reserved&&!d.card;
+const isBase=d=>!d.shiny&&!d.pure&&!d.variant&&!d.fx&&!d.terrain2&&!d.cls&&!d.reserved&&!d.card&&!d.paper;/* v429 : les dés en papier (prototype) n’ont pas encore de Crépitant */
 const base=M.map((d,i)=>[i,d]).filter(([,d])=>isBase(d));
 assert.equal(shiny.length,base.length,'une version Crépitante par dé de base');assert.equal(shiny.length,58);/* v345 : +3 (Loup, Larve, Guerrier fantôme) */
 assert.ok(shiny.every(([,d])=>d.shinyOf!==undefined&&isBase(M[d.shinyOf])),'chaque Crépitant renvoie à un dé de base');

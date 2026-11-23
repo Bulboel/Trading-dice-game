@@ -1,23 +1,23 @@
 /* Presentation adapter. Game legality, turns, decks and combat stay in index.html. */
 import * as THREE from 'three';
-import { orientBoardModel } from './model-facing.js?v=20270102-v428';
-import { createEmberlands } from './ember-v239.js?v=20270102-v428';
-import { attachHeroParts } from './hero-parts.js?v=20270102-v428';
-import { applyLook } from './variant-look.js?v=20270102-v428';
-import { createLake } from './lake-v241.js?v=20270102-v428';
-import { createSkyIsland } from './sky-v231.js?v=20270102-v428';
-import { createWindHighlands } from './wind-v232.js?v=20270102-v428';
-import { createWoodland } from './woodland-v238.js?v=20270102-v428';
-import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20270102-v428';
-import { createFrostRoad } from './frost-v240.js?v=20270102-v428';
-import { createCity } from './city-v246.js?v=20270102-v428';
-import { createColosseum } from './colosseum-v364.js?v=20270102-v428';
-import { createTavern } from './tavern-v369.js?v=20270102-v428';
-import { createCave } from './cave-v246.js?v=20270102-v428';
-import { createAutumn } from './autumn-v253.js?v=20270102-v428';
-import { createFairyMists } from './fairy-v335.js?v=20270102-v428';
-import { createNoel } from './noel-v253.js?v=20270102-v428';
-import { createElementWheel } from './element-wheel-v252.js?v=20270102-v428';
+import { orientBoardModel } from './model-facing.js?v=20270102-v429';
+import { createEmberlands } from './ember-v239.js?v=20270102-v429';
+import { attachHeroParts } from './hero-parts.js?v=20270102-v429';
+import { applyLook } from './variant-look.js?v=20270102-v429';
+import { createLake } from './lake-v241.js?v=20270102-v429';
+import { createSkyIsland } from './sky-v231.js?v=20270102-v429';
+import { createWindHighlands } from './wind-v232.js?v=20270102-v429';
+import { createWoodland } from './woodland-v238.js?v=20270102-v429';
+import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20270102-v429';
+import { createFrostRoad } from './frost-v240.js?v=20270102-v429';
+import { createCity } from './city-v246.js?v=20270102-v429';
+import { createColosseum } from './colosseum-v364.js?v=20270102-v429';
+import { createTavern } from './tavern-v369.js?v=20270102-v429';
+import { createCave } from './cave-v246.js?v=20270102-v429';
+import { createAutumn } from './autumn-v253.js?v=20270102-v429';
+import { createFairyMists } from './fairy-v335.js?v=20270102-v429';
+import { createNoel } from './noel-v253.js?v=20270102-v429';
+import { createElementWheel } from './element-wheel-v252.js?v=20270102-v429';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -386,8 +386,8 @@ function animateForecast(){const now=performance.now();for(const o of forecastPo
 // v350 — Ver géant (Histoire) : il surgit d'une mare au centre du plateau, sur ses 2 × 4 cases, et disparaît quand il tombe à zéro.
 let bossObj=null,bossLoading=false,bossPool=null;
 function makeBossPool(){const g=new THREE.Group(),m=new THREE.Mesh(new THREE.CircleGeometry(1,40),new THREE.MeshStandardMaterial({color:0x1f3a22,roughness:.25,metalness:.1,emissive:0x0c2a10,emissiveIntensity:.5,transparent:true,opacity:.92}));m.rotation.x=-Math.PI/2;m.scale.set(1.15,2.15,1);m.position.y=.24;g.add(m);g.visible=false;world.add(g);return g}
-function updateBoss(){const B=state.boss;/* v351 — plus de mare sous le ver */
- if(B&&!bossObj&&!bossLoading){bossLoading=true;spawnWalker('ver-geant',2.8,null)/* v352 — hauteur choisie pour que le corps couvre ses 3 rangées */.then(o=>{bossLoading=false;if(!o)return;bossObj=o;/* v352 — sens d’origine, gueule tournée vers le camp du joueur qui l’attaque (+z) */o.group.children[0].rotation.y=0;o.group.traverse(c=>{c.userData.imported=true});world.add(o.group);updateBoss()/* v352 — placé dès la fin du chargement (sinon il restait au centre du plateau jusqu’au rafraîchissement suivant) */})}
+function updateBoss(){const B=state.boss;/* v429 — un boss d’un autre type (ver → ogre) remplace l’ancien modèle */if(B&&bossObj&&bossObj.kind!==(B.kind||'ver')){bossObj.group.removeFromParent();bossObj=null}/* v351 — plus de mare sous le ver */
+ if(B&&!bossObj&&!bossLoading){bossLoading=true;const kind=B.kind||'ver';spawnWalker(kind==='ogre'?'ogre':'ver-geant',kind==='ogre'?2.3:2.8,null)/* v352 — hauteur choisie pour que le corps couvre ses 3 rangées */.then(o=>{bossLoading=false;if(!o)return;o.kind=kind;bossObj=o;/* v352 — sens d’origine, gueule tournée vers le camp du joueur qui l’attaque (+z) */o.group.children[0].rotation.y=0;o.group.traverse(c=>{c.userData.imported=true});world.add(o.group);updateBoss()/* v352 — placé dès la fin du chargement (sinon il restait au centre du plateau jusqu’au rafraîchissement suivant) */})}
  if(bossObj){bossObj.group.visible=!!B;if(B)bossObj.group.position.set(B.x+B.w/2-.5-3.5,.22,B.y+B.h/2-.5-HZ)}}
 function updateFxBoard(){updateForecast();updateBoss();const W=state.walls||[],T=state.traps||[];while(wallPool.length<W.length)wallPool.push(makeWall());while(trapPool.length<T.length)trapPool.push(makeTrap());
  const top=(x,y)=>{const c=state.b[y]?.[x];return .22+(c&&!c.f?.28:0)};
@@ -481,9 +481,45 @@ async function attachCompositeModel(g,k,info){const mi=k.mi;const man=await (spa
  const live=parts.filter(q=>q.mixer);if(live.length){const idleOf=q=>q.asset.gltf.animations.find(a=>/idle|stand|breath/i.test(a.name))||q.asset.gltf.animations[0];
   const idle=new PartsAction(live.map(q=>q.mixer.clipAction(idleOf(q))));idle.play();g.userData.idleAction=idle;g.userData.activeAction=idle;g.userData.mixer=new PartsMixer(live);
   for(const kind of ['spell','victory','walk'])if(info.animations?.[kind])getCombatClip(info.animations[kind]).catch(()=>null)}}
+/* v429 — Personnages « en papier » (prototype) : une figurine plate, toujours tournée vers la caméra, animée en changeant d'image
+   (poses des planches d'émotions). Chaque changement de pose fait pivoter la feuille sur elle-même, comme une carte qu'on retourne.
+   manifest.creatures.<clé>.sprite = {idle, walk, attack, hit, ko, win} (chemins d'images dans assets/). */
+const paperTex=new Map(),texLoader=new THREE.TextureLoader();
+function paperTexture(path){const url='assets/'+path;if(!paperTex.has(url))paperTex.set(url,new Promise(ok=>texLoader.load(url,t=>{t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=4;ok(t)},undefined,()=>ok(null))));return paperTex.get(url)}
+async function attachPaperModel(g,k,info){const mi=k.mi;g.userData.modelId=mi;const S=info.sprite,keys=Object.keys(S),tex={};
+ await Promise.all(keys.map(async q=>{tex[q]=await paperTexture(S[q])}));if(!tex.idle||!g.parent||g.userData.modelId!==mi)return;
+ const H=1.35*(info.boardHeight||.95)*(game.monsters[mi]?.boardScale||1),aspect=t=>t.image.width/t.image.height,W=H*aspect(tex.idle);
+ const mat=new THREE.MeshStandardMaterial({map:tex.idle,transparent:true,alphaTest:.45,side:THREE.DoubleSide,roughness:1,metalness:0,emissive:0xffffff,emissiveMap:tex.idle,emissiveIntensity:.35});
+ if(game.monsters[mi]?.variant?.color){const c=new THREE.Color(game.monsters[mi].variant.color);mat.color.lerp(c,.35)}
+ const mesh=new THREE.Mesh(new THREE.PlaneGeometry(1,1),mat);mesh.scale.set(W,H,1);mesh.position.y=H/2+.1;mesh.castShadow=true;
+ mesh.customDepthMaterial=new THREE.MeshDepthMaterial({depthPacking:THREE.RGBADepthPacking,map:tex.idle,alphaTest:.45});
+ const holder=new THREE.Group(),node=new THREE.Group(),flipper=new THREE.Group();holder.userData.imported=true;node.userData.imported=true;flipper.add(mesh);node.add(flipper);holder.add(node);
+ mesh.userData.imported=true;flipper.userData.imported=true;g.children.forEach((o,i)=>{if(i>0)o.visible=false});g.add(holder);g.userData.model=holder;g.userData.animationInfo=info;
+ g.userData.gest={node,kind:'paper',phase:Math.random()*6,paper:{mesh,flipper,tex,H,pose:'idle',want:'idle',flipT:1,face:1,lastX:null}};
+ if(game.monsters[mi]?.shiny)addCrackle(g);if(game.rarity?.(game.monsters[mi]||{})===6)addDivineAura(g,game.monsters[mi])}
+const _pv=new THREE.Vector3(),_pd=new THREE.Vector3(),_pr=new THREE.Vector3();
+function animatePaper(g,k,f,combat,t,G){const P=G.paper,now=performance.now();let pose='idle',y=0,sq=0;
+ const walking=k.walk&&Date.now()<k.walk.started+k.walk.duration;
+ if(f&&combat&&!combat.reduced){const p=combat.progress,att=k.id===combat.fighters[0].id;
+  if(f.loser&&p>.55)pose=P.tex.ko?'ko':'hit';else if(!f.loser&&p>.7&&combat.stats[0].attack!==combat.stats[1].attack){pose='win';y=.12*Math.abs(Math.sin((p-.7)*Math.PI*6))}
+  else if(att&&p<.62){pose='attack';if(p>.3)y=.08*Math.sin(Math.PI*(p-.3)/.32)}else if(!att&&p>.3)pose='hit'}
+ else if(G.celebrate&&moving){pose='win';y=.16*Math.abs(Math.sin(t*4.4+G.phase))}
+ else if(walking){pose='walk';y=.14*Math.abs(Math.sin(t*9+G.phase))}
+ else if(moving){sq=.025*Math.sin(t*2.4+G.phase)}
+ if(!P.tex[pose])pose='idle';
+ /* changement de pose : la feuille pivote (demi-tour), on change d'image à mi-course */
+ if(pose!==P.want){P.want=pose;P.flipT=0}
+ if(P.flipT<1){P.flipT=Math.min(1,P.flipT+(moving?.16:1));if(P.flipT>=.5&&P.pose!==P.want){P.pose=P.want;const tx=P.tex[P.pose];P.mesh.material.map=tx;P.mesh.material.emissiveMap=tx;P.mesh.material.needsUpdate=true;P.mesh.customDepthMaterial.map=tx;P.mesh.customDepthMaterial.needsUpdate=true;P.mesh.scale.x=P.H*tx.image.width/tx.image.height}}
+ /* regard vers la gauche ou la droite de l'écran selon le sens de la marche */
+ g.getWorldPosition(_pv);camera.getWorldDirection(_pd);_pr.setFromMatrixColumn(camera.matrixWorld,0);
+ if(P.lastX){const dx=_pv.clone().sub(P.lastX).dot(_pr);if(Math.abs(dx)>.004)P.face=dx>0?-1:1}P.lastX=_pv.clone();
+ const flip=Math.abs(Math.cos(Math.PI*P.flipT));G.node.position.set(0,y,0);G.node.scale.set(1-sq,1+sq*1.6,1);
+ P.flipper.scale.set(P.face*Math.max(.04,flip),1,1);
+ /* feuille face à la caméra (rotation autour de la verticale seulement) */
+ G.node.getWorldPosition(_pv);_pd.y*=.45;_pv.sub(_pd.normalize());G.node.lookAt(_pv)/* légèrement penchée vers la caméra : la feuille reste lisible vue d’en haut */}
 async function attachCreatureModel(g,k){
  const mi=k.hero?-1:k.mi;g.userData.modelId=mi;
- try{const info=k.hero?await game.heroModelInfo(k.hero):await game.modelInfo(mi);if(!info?.glb)return;if(info.parts?.length>1){await attachCompositeModel(g,k,info);return}const url='assets/'+info.glb+(mi===37?'?revision=kala-idle-dc1986a2':mi===36?'?revision=eberien-idle-14d7089a':'');
+ try{const info=k.hero?await game.heroModelInfo(k.hero):await game.modelInfo(mi);if(info?.sprite){await attachPaperModel(g,k,info);return}if(!info?.glb)return;if(info.parts?.length>1){await attachCompositeModel(g,k,info);return}const url='assets/'+info.glb+(mi===37?'?revision=kala-idle-dc1986a2':mi===36?'?revision=eberien-idle-14d7089a':'');
  if(!modelCache.has(url))modelCache.set(url,(async()=>{const exists=await fetch(url,{method:'HEAD'});if(!exists.ok)return null;const tools=await getModelTools();const gltf=await tools.loader.loadAsync(url);return{gltf,clone:tools.clone}})().catch(()=>null));
  const asset=await modelCache.get(url);if(!asset||!g.parent||g.userData.modelId!==mi)return;
  const root=asset.clone(asset.gltf.scene),holder=new THREE.Group();holder.userData.imported=true;if(k.hero){applyLook(root,game.heroLook(k.hero));attachHeroParts(root,k.hero).catch(()=>null)}else if(game.monsters[mi]?.variant)applyLook(root,game.monsters[mi].variant);g.userData.idleModelYaw=info.boardYaw??0;holder.rotation.y=g.userData.idleModelYaw;holder.add(root);root.updateMatrixWorld(true);const bounds=new THREE.Box3().setFromObject(root),size=bounds.getSize(new THREE.Vector3());if(!Number.isFinite(size.y)||size.y<=0)return;
@@ -498,7 +534,7 @@ async function attachCreatureModel(g,k){
 }
 /* v256 — Gestuelle procédurale des créatures sans clip (araignées) : respiration au repos, coup de tête en avant
    quand elle attaque, cabrage de joie quand elle gagne un combat ou la partie. */
-function animateGesture(g,k,f,combat,t){const G=g.userData.gest,n=G.node,T=moving?t:0;let z=0,rx=.07*Math.sin(T*1.9+G.phase),y=.02*Math.abs(Math.sin(T*2.6+G.phase)),rz=.09*Math.sin(T*1.3+G.phase),sy=1+.07*Math.sin(T*2.6+G.phase),sxz=1-.035*Math.sin(T*2.6+G.phase);/* v262 — respiration et balancement plus marqués : l'araignée blanche n'a pas de clip d'animation */
+function animateGesture(g,k,f,combat,t){if(g.userData.gest.kind==='paper')return animatePaper(g,k,f,combat,t,g.userData.gest);const G=g.userData.gest,n=G.node,T=moving?t:0;let z=0,rx=.07*Math.sin(T*1.9+G.phase),y=.02*Math.abs(Math.sin(T*2.6+G.phase)),rz=.09*Math.sin(T*1.3+G.phase),sy=1+.07*Math.sin(T*2.6+G.phase),sxz=1-.035*Math.sin(T*2.6+G.phase);/* v262 — respiration et balancement plus marqués : l'araignée blanche n'a pas de clip d'animation */
  if(G.kind==='larva'&&moving){/* v342 — larve : se tortille (écrasement et torsion plus marqués) */const w=Math.sin(T*3.4+G.phase);sy=1+.13*w;sxz=1-.07*w;rz=.16*Math.sin(T*2.2+G.phase);rx=.05*Math.sin(T*1.6+G.phase)}
  if(G.kind==='ghost'&&moving){/* v342 — guerrier fantomatique : flotte lentement, sans respiration */y=.12+.07*Math.sin(T*1.2+G.phase);sy=1;sxz=1;rx=.03*Math.sin(T*.9+G.phase);rz=.04*Math.sin(T*.7+G.phase)}
  if(G.kind==='beast'&&moving){/* v342 — loup : respiration et petits coups de tête */const t6=Math.pow(Math.max(0,Math.sin(T*1.1+G.phase)),8);rx+=.1*t6;sy=1+.035*Math.sin(T*2.6+G.phase);sxz=1-.018*Math.sin(T*2.6+G.phase)}
