@@ -29,7 +29,7 @@ LATER=re.compile(r'^assets/(story/|pantheon/|audio/|Musique%20|Musique )')
 later=[u for u in shell if LATER.search(u.split('?')[0])]
 shell=[u for u in shell if u not in later]
 full=[]
-for d,pat in [('assets/models-web',r'\.glb$'),('assets/characters',r'\.glb$'),('assets/story',r'\.(webp|png|jpg)$'),('assets/pantheon',r'\.webp$'),('assets/story/cards',r'\.webp$'),('assets/models',r'\.glb$')]:
+for d,pat in [('assets/models-web',r'\.glb$'),('assets/characters',r'\.glb$'),('assets/story',r'\.(webp|png|jpg)$'),('assets/pantheon',r'\.webp$'),('assets/story/cards',r'\.webp$'),('assets/story/emo',r'\.webp$'),('assets/models',r'\.glb$')]:
     if os.path.isdir(d):full+=sorted(f'{d}/{f}' for f in os.listdir(d) if re.search(pat,f))
 full=list(dict.fromkeys(later+[f for f in full if f not in shell]))
 h=hashlib.sha1()

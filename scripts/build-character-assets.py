@@ -68,6 +68,8 @@ CLIPS['florea']={'spell':('Florea attaque.glb',None),'victory':('Florea victoire
 for el in ELEMENTS: CLIPS['bebementaire-'+el]={'spell':(f'Bébémentaire {el} attaque.glb',None),'victory':(f'Bébémentaire {el} victoire.glb',None),'walk':(f'Bébémentaire {el} marche.glb',None)}
 # v350 — Canours (rare, quatre animations). Le Canourson et le Ver géant n'ont pas d'animation (gestuelle procédurale).
 CLIPS['canours']={'spell':('Canours attaque.glb',None),'victory':('Canours victoire.glb',None),'walk':('Canours marche.glb',None)}
+# v429 — Gobelin des collines (dés d'Histoire, quatre animations). L'ogre n'a pas d'animation (gestuelle procédurale).
+CLIPS['gobelin']={'spell':('Gobelin attaque.glb',None),'victory':('Gobelin victoire.glb',None),'walk':('Gobelin marche.glb',None)}
 def find(name):
     # tolère les différences de casse et de forme Unicode (NFC/NFD) dans les noms de fichiers livrés
     exact=SOURCE/name

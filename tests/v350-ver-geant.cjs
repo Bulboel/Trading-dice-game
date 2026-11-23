@@ -5,7 +5,7 @@ const src=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8').match(/<s
 const els=new Map(),el=()=>({style:{setProperty(){}},classList:{add(){},remove(){},toggle(){}},firstElementChild:{style:{}},setPointerCapture(){}});
 const c=vm.createContext({window:{dispatchEvent(){}},Event,document:{getElementById(i){if(!els.has(i))els.set(i,el());return els.get(i)}},fetch:()=>Promise.resolve({ok:false}),setTimeout:()=>0,clearTimeout(){},setInterval:()=>0,clearInterval(){},Date,Math,console});vm.runInContext(src,c);
 const run=s=>vm.runInContext(s,c);
-assert.ok(src.includes("boss=storyFoe?.boss==='ver'?{x:Math.floor(W/2)-1,y:Z,w:2,h:3,hp:25,max:25}:null"),'init : ver géant créé au centre pour un duel d’Histoire avec boss');
+assert.ok(src.includes("ver:{name:'Ver géant',em:'🪱',w:2,h:3,hp:25")&&src.includes("ogre:{name:'Ogre des collines noires',em:'👹',w:2,h:2,hp:25")&&src.includes("boss=BOSS_KINDS[storyFoe?.boss]?"),'init : ver géant (2 × 3) ou ogre (2 × 2, v429), 25 PV, créé pour un duel d’Histoire avec boss');
 run(`boss={x:Math.floor(W/2)-1,y:Z,w:2,h:3,hp:25,max:25};b=[...Array(H)].map(()=>Array(W).fill(null));finishTurn=()=>{};`);
 const B=run('boss');assert.ok(B&&B.hp===25&&B.w===2&&B.h===3,'ver géant présent dès le début : 6 cases (2 × 3), 25 PV');
 assert.ok(run(`blocked(${B.x},${B.y})&&blocked(${B.x+1},${B.y+2})&&!blocked(${B.x},${B.y+3})&&!blocked(${B.x-1},${B.y})`),'ses cases sont bloquées (ni dalle, ni passage)');

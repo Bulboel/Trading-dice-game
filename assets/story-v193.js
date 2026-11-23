@@ -25,14 +25,16 @@ function ensureScene(){if(scene)return scene;scene=document.createElement('secti
 let chooseHandler=null,skipHandler=null,skipLabel='';function choose(go){chooseHandler?.(go)}
 function play(beats,done,choice,skip=null,label='⏩ Passer au duel'){ensureScene();seq=beats;step=0;onDone=done;chooseHandler=choice||null;skipHandler=skip;skipLabel=label;if(!seq.length){done?.();return}scene.hidden=false;document.body.classList.add('story-open');draw()}
 function close(){if(scene){scene.hidden=true}document.body.classList.remove('story-open')}
+function preloadNext(){const b=seq[step+1];for(const x of b?.cast||[]){const u=x.p?null:window.HackeniaEmo?.pick(x.n,x.m||x.e);if(u)(new Image).src=u}}/* v429 — la pose suivante est déjà chargée */
 function next(){if(step<seq.length-1){step++;draw()}else{const d=onDone;close();d?.()}}
 function draw(){const b=seq[step];scene.className='ss '+(b.c||[]).map(c=>'ss-'+c).join(' ')+(b.s==='Voix off'?' ss-narration':'');
  scene.querySelector('.ss-bg').style.backgroundImage=b.bg&&b.bg!=='none'?b.bg:'';scene.querySelector('.ss-bgb').style.backgroundImage=b.bgb||'';
  scene.querySelector('.ss-caption').textContent=b.l||'';const cast=scene.querySelector('.ss-cast');cast.replaceChildren();
  for(const x of b.cast||[]){if(x.art){const img=document.createElement('img');img.className='ss-art';img.src=x.art;img.alt=x.alt||'';cast.append(img);continue}
   const sp=document.createElement('div');sp.className='ss-sprite '+(x.k||[]).map(k=>'ss-'+k.replace(/^story-/,'').replace(/^is-/,'')).join(' ');sp.setAttribute('role','img');sp.setAttribute('aria-label',x.n||'');
-  if(x.p){sp.style.backgroundImage='none';const im=document.createElement('img');im.src=x.p;im.alt='';sp.append(im)}else{sp.style.backgroundImage=x.img;sp.style.backgroundSize=x.sz||'contain';sp.style.backgroundPosition=x.pos||'center bottom'}cast.append(sp)}
- scene.querySelector('.ss-speaker').textContent=b.s;scene.querySelector('.ss-text').textContent=b.t;
+  const emo=x.p?null:window.HackeniaEmo?.pick(x.n,x.m||x.e);/* v429 — pose de la planche d’émotions qui correspond à l’humeur de la réplique */
+  if(x.p||emo){sp.style.backgroundImage='none';const im=document.createElement('img');im.src=x.p||emo;im.alt='';if(emo)sp.classList.add('ss-emo');sp.append(im)}else{sp.style.backgroundImage=x.img;sp.style.backgroundSize=x.sz||'contain';sp.style.backgroundPosition=x.pos||'center bottom'}cast.append(sp)}
+ preloadNext();scene.querySelector('.ss-speaker').textContent=b.s;scene.querySelector('.ss-text').textContent=b.t;
  const ch=scene.querySelector('.ss-choices');ch.innerHTML=(b.choices||[]).map((c,i)=>`<button type="button" data-ss="choice" data-i="${i}" class="${c.go==='duel'?'ss-primary':''}">${esc(c.label)}</button>`).join('');
  const nx=scene.querySelector('.ss-next');nx.hidden=!!b.choices;nx.textContent=step===seq.length-1?(b.next||'Continuer'):'Continuer';scene.querySelector('[data-ss="prev"]').disabled=step===0;scene.querySelector('.ss-progress').textContent=(step+1)+' / '+seq.length;const sk=scene.querySelector('.ss-skip');sk.hidden=!skipHandler;sk.textContent=skipLabel}
 
