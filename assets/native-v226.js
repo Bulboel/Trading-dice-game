@@ -19,5 +19,5 @@ P.App?.addListener('backButton',()=>{
  const back=document.getElementById('portal-back');if(back&&!back.hidden){back.click();return}
  P.App.minimizeApp?P.App.minimizeApp():P.App.exitApp()});
 P.App?.addListener('appStateChange',({isActive})=>dispatchEvent(new CustomEvent('hackenia-app-state',{detail:{active:isActive}})));
-P.StatusBar?.setBackgroundColor?.({color:'#10211d'}).catch?.(()=>{});P.StatusBar?.setStyle?.({style:'DARK'}).catch?.(()=>{});
+P.StatusBar?.hide?.().catch?.(()=>{});/* v428 — plein écran immersif (voir MainActivity.java) */
 })();

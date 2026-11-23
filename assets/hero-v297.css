@@ -77,3 +77,8 @@ body.portal-open[data-portal-view="home"] #portal .portal-head .portal-level.has
 #portal .onb-callout{margin:-4px 0 14px;padding:10px 12px;border-radius:12px;border:1px solid #ff6b6b99;background:#3a1d1dcc;color:#ffe3e3;font-size:13.5px;line-height:1.45}
 #portal .onb-callout b{color:#fff}
 @media(prefers-reduced-motion:reduce){#portal .onb-target,#portal .onb-target::before{animation:none}}
+/* v428 — tenues compactes : petites pastilles en grille (3 par ligne sur téléphone) au lieu de grands boutons */
+#hero-dialog .hero-pieces{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px!important}
+#hero-dialog .hero-piece{padding:6px 8px!important;font-size:12.5px!important;line-height:1.15;border-radius:999px!important;min-height:0;text-align:center}
+#hero-dialog fieldset legend{margin-bottom:2px}
+#hero-dialog .hero-pieces[data-piece="suit"]::after{content:"Remplace le haut et le bas";grid-column:1/-1;font:500 11px system-ui;color:#cfc6a8;opacity:.7;text-align:center}

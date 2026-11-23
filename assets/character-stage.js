@@ -1,13 +1,13 @@
 import * as THREE from 'three';
-import {alignModelForward} from './model-facing.js?v=20270102-v427';
+import {alignModelForward} from './model-facing.js?v=20270102-v428';
 import { GLTFLoader } from './vendor/three/examples/jsm/loaders/GLTFLoader.js';
-import { applyLook } from './variant-look.js?v=20270102-v427';
-import { attachHeroParts } from './hero-parts.js?v=20270102-v427';
+import { applyLook } from './variant-look.js?v=20270102-v428';
+import { attachHeroParts } from './hero-parts.js?v=20270102-v428';
 import { OrbitControls } from './vendor/three/examples/jsm/controls/OrbitControls.js';
 
 export async function createCharacterStage(host,info,isCurrent){
  const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});
- renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.75));renderer.setClearColor(0,0);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;
+ renderer.setPixelRatio(Math.min(devicePixelRatio||1,(typeof matchMedia==='function'&&matchMedia('(pointer:coarse)').matches)?1.35:1.75));/* v428 — un peu moins de pixels sur téléphone : animation fluide */renderer.setClearColor(0,0);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;
  const canvas=renderer.domElement;canvas.setAttribute('aria-label',`Modèle 3D de ${info.nom||'la créature'}`);canvas.setAttribute('role','img');canvas.style.touchAction='none';host.append(canvas);
  const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(34,1,.01,100),controls=new OrbitControls(camera,canvas);
  scene.add(new THREE.HemisphereLight(0xe4efff,0x756351,3));

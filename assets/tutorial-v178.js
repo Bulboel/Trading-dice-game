@@ -136,7 +136,7 @@ const LESSONS=[
   targets:()=>anchors(D.bosco),
   text:()=>`<p>Repose <b>Bosco</b>. Dans la barre de lancer, active <b>« Dé bonus ✦ »</b> (3 dés au lieu de 2), puis lance !</p><p>Si <b>tous les dés montrent la même face</b>, l’invocation réussit toujours.</p>`,
   check:()=>mine().length>0&&mode==='i'&&idle(),
-  success:()=>`<p>✓ <b>Dés identiques : invocation magique !</b> Bosco apparaît malgré des 2.</p><p>Tu gagnes un dé bonus après chaque échec (2 au plus en réserve).</p>`},
+  success:()=>`<p>✓ <b>Dés identiques : invocation magique !</b> Bosco apparaît malgré des 2.</p><p>Tu gagnes un dé bonus après chaque échec (3 au plus en réserve).</p>`},
  {title:'Les dés élémentaires',kind:'action',focus:'hand',
   setup(){reset();path(3,[11,10,9],0,[3,2,3]);path(3,[6,5],0,[2,4]);unit(0,3,9,D.kala);pl[0].h=[D.sentierTerre];T.base=tilesOf(0)},
   targets:()=>[[3,8],[3,7]],
@@ -145,10 +145,32 @@ const LESSONS=[
   success:()=>`<p>✓ <b>Posé sans lancer !</b> Idéal pour relier une route ou préparer une bonne dalle.</p>`},
  {title:'Un tour, en bref',kind:'info',focus:'header',
   setup(){reset();path(3,[11,10,9],0,[3,2,3]);unit(0,3,10,D.kala);path(4,[0,1,2],1,[3,3,3]);unit(1,4,1,D.grimgors);pl[0].h=[D.fourmi,D.tortue,D.bosco,D.lapin,D.sentierTerre]},
-  text:()=>`<p><b>À chaque tour :</b></p><ol><li><b>Si tu veux</b>, déplace <b>une</b> créature.</li><li><b>Puis pose un dé</b> : le tour se termine.</li></ol><p>Un dé de <b>niveau égal ou supérieur</b> posé sur une créature adverse l’<b>écrase</b>. En haut : les scores, ta <b>Boubourse</b> et l’<b>Historique</b>.</p>`},
+  text:()=>`<p><b>À chaque tour :</b></p><ol><li><b>Pose un dé</b> (un seul par tour).</li><li><b>Si tu veux</b>, déplace <b>une</b> créature, <b>avant ou après</b> la pose. Puis « Finir le tour ».</li></ol><p>Un dé de <b>niveau égal ou supérieur</b> posé sur une créature adverse l’<b>écrase</b>. En haut : les scores, ta <b>Boubourse</b> et l’<b>Historique</b>.</p>`},
  {title:'Tu es prêt !',kind:'final',lessonEnd:true,
   setup(){reset()},
-  text:()=>`<p>🏆 <b>Pour gagner :</b> 2 créatures dans le camp adverse, <b>ou</b> 4 duels remportés.</p><p>Bonne aventure dans Hackénia !</p>`}]}
+  text:()=>`<p>🏆 <b>Pour gagner :</b> 2 créatures dans le camp adverse, <b>ou</b> 4 duels remportés.</p><p>Bonne aventure dans Hackénia !</p>`}]},
+/* v428 — leçon bonus : ce qui est arrivé dans le jeu depuis (déplacement avant/après la pose, synergies, arbre de compétences, pouvoirs, objets) */
+{id:'powers',title:'Pouvoirs et astuces',optional:true,goal:'Découvrir l’arbre de compétences, les pouvoirs et les petits secrets du plateau.',steps:[
+ {title:'Avant ou après la pose',kind:'info',focus:'hand',
+  setup(){reset();path(3,[11,10,9,8],0,[3,2,4,2]);unit(0,3,10,D.kala);pl[0].h=[D.grimgors,D.fourmi,D.bosco]},
+  targets:()=>[[3,8]],
+  text:()=>`<p>Contre l’ordinateur, tu peux déplacer <b>une</b> créature <b>avant ou après</b> avoir posé ton dé.</p><p>Une fois le dé posé, les dés de ta main se <b>grisent</b> : déplace une créature si tu veux, puis touche <b>« Finir le tour »</b>.</p><p>Une créature tout juste posée ne bouge qu’au tour suivant.</p>`},
+ {title:'Les synergies',kind:'info',
+  setup(){reset();path(3,[11,10],0,[3,3]);path(4,[11,10],0,[3,3]);unit(0,3,10,D.kala);unit(0,4,10,D.grimgors)},
+  targets:()=>[[3,10],[4,10]],
+  text:()=>`<p>Certains personnages <b>liés par l’histoire</b> se renforcent : quand ils sont <b>ensemble sur le plateau</b>, ils gagnent <b>+1 d’attaque</b>.</p><p>Reste appuyé sur une carte (ou touche deux fois une créature) : sa fiche indique ses <b>synergies</b>.</p>`},
+ {title:'L’arbre de compétences',kind:'info',
+  setup(){reset()},
+  text:()=>`<p>En gagnant des niveaux, tu reçois des <b>points de compétence</b> (niveaux 3, 5, 10, 15, 20, 25, 30 et 35).</p><p>Pour les dépenser : touche ta <b>pastille de niveau</b> en haut, puis le <b>D4 doré</b>. Chaque ligne de pouvoirs se débloque au niveau indiqué à gauche ; à toi de choisir ton style !</p>`},
+ {title:'Utiliser un pouvoir',kind:'info',
+  setup(){reset();path(3,[11,10,9],0,[3,2,3]);unit(0,3,10,D.kala);path(4,[0,1,2],1,[3,3,3]);unit(1,4,1,D.grimgors)},
+  text:()=>`<p>En partie, tes pouvoirs apparaissent en <b>médaillons</b> en bas à gauche du plateau.</p><ul><li><b>Ordinateur :</b> survole un médaillon pour lire sa fiche, clique pour l’activer.</li><li><b>Téléphone :</b> touche-le, la fiche s’ouvre avec <b>« Activer l’effet ? »</b>.</li></ul><p><b>Blocage</b> et <b>Phénix</b> se déclenchent tout seuls (le jeu te demande « Bloquer ? »). En ligne, tu emportes <b>3 pouvoirs</b> choisis dans l’arbre.</p>`},
+ {title:'Objets et défis',kind:'info',
+  setup(){reset()},
+  text:()=>`<p>Les <b>défis</b> (pastille de niveau) rapportent des Bubulles, des dés de jet, des <b>effets de dé bonus</b> et des <b>objets portés</b>.</p><p>Équipe un objet dans <b>Options › Objet</b> : son effet s’applique contre l’ordinateur. Au <b>niveau 40</b>, tu peux en porter <b>deux</b>.</p>`},
+ {title:'Tu connais tout !',kind:'final',lessonEnd:true,
+  setup(){reset()},
+  text:()=>`<p>🏆 Tu maîtrises maintenant les <b>pouvoirs</b>, les <b>synergies</b> et les petits secrets du plateau.</p><p>À toi de te forger un style. Bonne aventure !</p>`}]}
 ];
 const TOTAL=LESSONS.reduce((n,l)=>n+l.steps.length,0);
 const lesson=()=>LESSONS[T.l],step=()=>LESSONS[T.l].steps[T.i];
@@ -158,7 +180,7 @@ function hubEl(){let h=document.getElementById('tuto-hub');if(!h){h=document.cre
  h.addEventListener('click',e=>{const a=e.target.closest('[data-tuto]');if(!a)return;const k=a.dataset.tuto;if(k==='lesson')begin(+a.dataset.l);else if(k==='hub-quit'){closeHub();window.HackeniaPortal?.afterTutorial?.()}})}return h}
 function closeHub(){document.getElementById('tuto-hub')?.remove();document.body.classList.remove('tuto-hub-open')}
 function showHub(){const done=new Set(progress()),next=LESSONS.findIndex(l=>!l.optional&&!done.has(l.id)),h=hubEl();document.body.classList.add('tuto-hub-open');
- h.innerHTML=`<div class="tuto-hub-card"><h2 id="tuto-hub-title">Apprendre à jouer</h2><p class="tuto-hub-intro">Quatre petites leçons, une <b>mini-partie</b> chacune, environ une minute. Chaque leçon s’appuie sur la précédente.</p>
+ h.innerHTML=`<div class="tuto-hub-card"><h2 id="tuto-hub-title">Apprendre à jouer</h2><p class="tuto-hub-intro">Quatre petites leçons et deux bonus, une <b>mini-partie</b> chacune, environ une minute. Chaque leçon s’appuie sur la précédente.</p>
  <ol class="tuto-lessons">${LESSONS.map((l,k)=>{const d=done.has(l.id),isNext=k===next;return `<li class="${d?'done':''}${isNext?' next':''}${l.optional?' optional':''}"><button type="button" data-tuto="lesson" data-l="${k}"><span class="num" aria-hidden="true">${d?'✓':l.optional?'★':k+1}</span><span class="txt"><b>${l.optional?'':'Leçon '+(k+1)+' · '}${l.title}</b><small>${l.goal}</small></span><span class="go" aria-hidden="true">${isNext?'Commencer ▶':d?'Rejouer':'▶'}</span></button></li>`}).join('')}</ol>
  <div class="tuto-hub-actions"><button type="button" data-tuto="hub-quit">Retour au menu</button></div></div>`;
  h.querySelector('.next button, li button')?.focus?.()}

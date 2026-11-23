@@ -14,7 +14,7 @@ const ctx=vm.createContext({window:{dispatchEvent(){},matchMedia:()=>({matches:f
 vm.runInContext(src,ctx);vm.runInContext("render=()=>{};landCube=()=>{};showRollDice=()=>{};",ctx);vm.runInContext(tuto,ctx);
 const run=c=>vm.runInContext(c,ctx),T=ctx.window.HackeniaTutorial,X=T._test;
 const flush=()=>{for(let k=0;k<30;k++){clock.t+=3000;if(!timers.length&&!intervals.length)break;for(const f of intervals.slice())for(let i=0;i<14;i++)f();intervals.length=0;timers.sort((a,b)=>a.ms-b.ms);for(const t of timers.splice(0))t.fn()}clock.t+=5000};
-assert.equal(T.lessons.length,5);assert.deepEqual(T.lessons.map(l=>l.id),['place','cross','fight','affinity','more']);assert.ok(T.lessons[4].optional&&!T.lessons.slice(0,4).some(l=>l.optional));
+assert.equal(T.lessons.length,6);assert.deepEqual(T.lessons.map(l=>l.id),['place','cross','fight','affinity','more','powers']);assert.ok(T.lessons[4].optional&&T.lessons[5].optional&&!T.lessons.slice(0,4).some(l=>l.optional));
 assert.equal(T.steps,T.lessons.reduce((n,l)=>n+l.steps,0));
 // Lancers forcés : uniquement pendant une leçon
 assert.equal(T.nextRoll(2),null);

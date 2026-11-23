@@ -102,3 +102,10 @@ body.tuto-hub-open{overflow:hidden}
 /* v288 — Menu des leçons : le centrage flex coupait le haut quand la carte dépasse l'écran ; marges automatiques à la place (centré si ça tient, défilable sinon). */
 #tuto-hub{align-items:flex-start!important;justify-content:center;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 #tuto-hub .tuto-hub-card{margin:auto!important}
+/* v428 — panneau du tutoriel transparent (≈ 70 % moins opaque) pour voir le plateau derrière, texte lisible grâce à une ombre ;
+   boutons du bas sur une seule ligne, plus compacts */
+body.tutorial-mode #bw>#tuto-coach{background:linear-gradient(160deg,#21392d4d,#101e184d)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border-color:#e7cd8a66!important;box-shadow:none!important}
+body.tutorial-mode #bw>#tuto-coach,body.tutorial-mode #bw>#tuto-coach h2,body.tutorial-mode #bw>#tuto-coach p,body.tutorial-mode #bw>#tuto-coach li,body.tutorial-mode #bw>#tuto-coach strong,body.tutorial-mode #bw>#tuto-coach small{text-shadow:0 1px 2px #000,0 0 6px #000,0 0 10px #000c}
+body.tutorial-mode #bw>#tuto-coach footer{display:flex!important;flex-wrap:nowrap!important;gap:5px}
+body.tutorial-mode #bw>#tuto-coach footer button{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 2px 6px #0008}
+@media(max-width:700px){body.tutorial-mode #bw>#tuto-coach{max-height:min(38%,300px)!important}body.tutorial-mode #bw>#tuto-coach footer button{min-height:30px!important;padding:4px 7px!important;font-size:11px!important}}

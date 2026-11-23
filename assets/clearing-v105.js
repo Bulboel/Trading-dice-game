@@ -1,23 +1,23 @@
 /* Presentation adapter. Game legality, turns, decks and combat stay in index.html. */
 import * as THREE from 'three';
-import { orientBoardModel } from './model-facing.js?v=20270102-v427';
-import { createEmberlands } from './ember-v239.js?v=20270102-v427';
-import { attachHeroParts } from './hero-parts.js?v=20270102-v427';
-import { applyLook } from './variant-look.js?v=20270102-v427';
-import { createLake } from './lake-v241.js?v=20270102-v427';
-import { createSkyIsland } from './sky-v231.js?v=20270102-v427';
-import { createWindHighlands } from './wind-v232.js?v=20270102-v427';
-import { createWoodland } from './woodland-v238.js?v=20270102-v427';
-import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20270102-v427';
-import { createFrostRoad } from './frost-v240.js?v=20270102-v427';
-import { createCity } from './city-v246.js?v=20270102-v427';
-import { createColosseum } from './colosseum-v364.js?v=20270102-v427';
-import { createTavern } from './tavern-v369.js?v=20270102-v427';
-import { createCave } from './cave-v246.js?v=20270102-v427';
-import { createAutumn } from './autumn-v253.js?v=20270102-v427';
-import { createFairyMists } from './fairy-v335.js?v=20270102-v427';
-import { createNoel } from './noel-v253.js?v=20270102-v427';
-import { createElementWheel } from './element-wheel-v252.js?v=20270102-v427';
+import { orientBoardModel } from './model-facing.js?v=20270102-v428';
+import { createEmberlands } from './ember-v239.js?v=20270102-v428';
+import { attachHeroParts } from './hero-parts.js?v=20270102-v428';
+import { applyLook } from './variant-look.js?v=20270102-v428';
+import { createLake } from './lake-v241.js?v=20270102-v428';
+import { createSkyIsland } from './sky-v231.js?v=20270102-v428';
+import { createWindHighlands } from './wind-v232.js?v=20270102-v428';
+import { createWoodland } from './woodland-v238.js?v=20270102-v428';
+import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20270102-v428';
+import { createFrostRoad } from './frost-v240.js?v=20270102-v428';
+import { createCity } from './city-v246.js?v=20270102-v428';
+import { createColosseum } from './colosseum-v364.js?v=20270102-v428';
+import { createTavern } from './tavern-v369.js?v=20270102-v428';
+import { createCave } from './cave-v246.js?v=20270102-v428';
+import { createAutumn } from './autumn-v253.js?v=20270102-v428';
+import { createFairyMists } from './fairy-v335.js?v=20270102-v428';
+import { createNoel } from './noel-v253.js?v=20270102-v428';
+import { createElementWheel } from './element-wheel-v252.js?v=20270102-v428';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -646,7 +646,7 @@ canvas.onpointermove=e=>{
   }
  }
  if(mouseGesture?.unit&&!panDrag&&state.mode==='i'&&!state.moved&&!state.over&&(!state.ai||state.cur===0)&&!window.HackeniaCombat?.busy&&Math.hypot(e.clientX-mouseGesture.x,e.clientY-mouseGesture.y)>8){if(!mouseGesture.dragUnit){mouseGesture.dragUnit=true;if(state.sel?.id!==mouseGesture.unit.id)game.tap(mouseGesture.unit.x,mouseGesture.unit.y)}return}
- if(panDrag){if(e.pointerId!==panDrag.id)return;const r=canvas.getBoundingClientRect(),dx=e.clientX-panDrag.x,dy=e.clientY-panDrag.y;if(panDrag.orbit){orbitYaw-=dx/r.width*Math.PI*2;orbitPitch=Math.max(.035,Math.min(Math.PI/2-.035,orbitPitch+dy/r.height*Math.PI))}else{panX-=dx/r.width*2*viewSpan*viewAspect/zoom;panY+=dy/r.height*2*viewSpan/zoom;panX=Math.max(-18,Math.min(18,panX));panY=Math.max(-18,Math.min(18,panY))}panDrag.x=e.clientX;panDrag.y=e.clientY;updateCamera();return}
+ if(panDrag){if(e.pointerId!==panDrag.id)return;const r=canvas.getBoundingClientRect(),dx=e.clientX-panDrag.x,dy=e.clientY-panDrag.y;if(panDrag.orbit||e.pointerType==='mouse'&&(e.buttons&3)===3){/* v428 — clic droit maintenu : déplacer ; clic droit + clic gauche maintenus : faire pivoter */orbitYaw-=dx/r.width*Math.PI*2;orbitPitch=Math.max(.035,Math.min(Math.PI/2-.035,orbitPitch+dy/r.height*Math.PI))}else{panX-=dx/r.width*2*viewSpan*viewAspect/zoom;panY+=dy/r.height*2*viewSpan/zoom;panX=Math.max(-18,Math.min(18,panX));panY=Math.max(-18,Math.min(18,panY))}panDrag.x=e.clientX;panDrag.y=e.clientY;updateCamera();return}
  game.board.onpointermove(e)
 };
 canvas.onpointerup=e=>{

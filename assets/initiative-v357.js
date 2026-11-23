@@ -11,7 +11,9 @@ const reduced=()=>window.HackeniaSettings?.get?.().motion===false||matchMedia('(
 const sfx=k=>{try{window.HackeniaSettings?.play?.(k)}catch{}};
 const palette=()=>window.HackeniaRoll?.palette?.()||{face:'#e6dfca',light:'#faf5e6',shade:'#b4ac96',edge:'#b89a5d',ink:'#243c35'};
 let threeP=null;const getThree=()=>threeP||=import('three').catch(()=>null);
-const ROLL_MS=1700;
+const ROLL_MS=2050;/* v428 — un poil plus lent (1,7 s → 2,05 s) */
+/* v428 — on attend que le plateau soit vraiment à l'écran (menu fermé, plongée terminée, onglet visible) avant de lancer */
+async function whenBoardShown(){const t0=Date.now();while(Date.now()-t0<6000){const b=document.body;if(!b.classList.contains('portal-open')&&!document.querySelector('.dive')&&document.visibilityState==='visible'&&!b.classList.contains('story-open'))break;await wait(100)}await wait(450)}
 
 /* ---------- D20 en 3D ---------- */
 // Atlas : 20 cases (5 × 4) de 256 px ; chaque case porte une face triangulaire avec son numéro centré sur le barycentre.
@@ -95,7 +97,7 @@ async function show({rolls,winner,crit,names,id,me=0,online=false}){box?.remove(
  crit.forEach((c,o)=>{if(c){players[o].classList.add('crit');players[o].querySelector('.ini-crit').hidden=false}});if(crit.some(Boolean))sfx('Rareté');sfx(winner===0?'Victoire':'Point');
  result.innerHTML=winner===0?`<strong>Vous commencez !</strong> ${last[0]} contre ${last[1]}`:`<strong>${esc(foe)} commence.</strong> ${last[1]} contre ${last[0]}`;
  await wait(window.__iniHold||(skip?700:fast?1500:2000));finish()}
-window.addEventListener('hackenia:initiative',e=>{show(e.detail).catch(()=>{document.getElementById('initiative')?.remove();if(!e.detail.online)window.hackeniaGame?.initiativeDone?.(e.detail.id)})});
+window.addEventListener('hackenia:initiative',e=>{whenBoardShown().then(()=>show(e.detail)).catch(()=>{document.getElementById('initiative')?.remove();if(!e.detail.online)window.hackeniaGame?.initiativeDone?.(e.detail.id)})});
 getThree();/* préchargement de three.js */
 window.HackeniaInitiative={show};
 })();

@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v428',title:'Hackénia passe en bêta : version 0.5.0 !',items:['Correctif : sur le lac rose, l’adversaire ne joue plus jamais à votre place.','Nouvelles icônes des pouvoirs en partie : survolez-les (ordinateur) ou touchez-les (téléphone) pour lire leur fiche.','Nouvel effet de dé bonus « Flocon de neige » : remportez trois parties sur la Route vers Forfalla.','Une fois votre dé posé, votre main se grise pour le rappeler.','Tutoriel : une leçon bonus sur les pouvoirs, les synergies et les objets.','Sur ordinateur : clic droit maintenu pour déplacer le plateau, clic droit + clic gauche pour le faire pivoter, Espace pour valider un choix.']},
  {id:'v427',title:'Les gouttes du lac rose',items:['Gagnez une partie au lac rose pour obtenir l’effet de dé bonus « Goutte d’eau », et trois parties pour la « Goutte rose » !']},
  {id:'v425',title:'Des dés Énergie plus fréquents',items:['Les dés Énergie sortent maintenant aussi souvent que les dés rares, et un deck peut en contenir 4.']},
  {id:'v424',title:'Un héros bien habillé',items:['Votre héros porte désormais toujours une tenue : un tee-shirt et un short par défaut.','Correctif : les coiffures et les vêtements du héros s’affichent de nouveau au bon endroit.']},
