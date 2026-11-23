@@ -46,9 +46,9 @@ jobs:
       - name: Numéro de version
         id: v
         run: |
-          NAME=$(grep -o 'portal-build">v[0-9]*' assets/portal-v159.js | grep -o '[0-9]*$')
+          NAME=$(grep -o 'data-version="[0-9.]*"' assets/portal-v159.js | grep -o '[0-9][0-9.]*')
           echo "code=$((1000 + GITHUB_RUN_NUMBER))" >> "$GITHUB_OUTPUT"
-          echo "name=1.0.$NAME" >> "$GITHUB_OUTPUT"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
       - name: APK de test
         working-directory: android
         run: ./gradlew --no-daemon assembleDebug -PversionCode=${{ steps.v.outputs.code }} -PversionName=${{ steps.v.outputs.name }}

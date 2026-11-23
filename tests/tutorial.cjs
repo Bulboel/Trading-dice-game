@@ -4,7 +4,7 @@ const els=new Map(),element=()=>({style:{setProperty(){}},classList:{add(){},rem
 const win={addEventListener(){},matchMedia:()=>({matches:false,addEventListener(){}}),dispatchEvent(){}};
 const ctx=vm.createContext({window:win,document:{getElementById(id){if(!els.has(id))els.set(id,element());return els.get(id)},createElement:()=>element(),body:element(),querySelector:()=>null,querySelectorAll:()=>[]},location:{hash:''},fetch:()=>Promise.resolve({ok:false}),setTimeout:()=>0,clearTimeout(){},setInterval:()=>0,clearInterval(){},requestAnimationFrame:()=>0,cancelAnimationFrame(){},Date,Math,console,Event:class{constructor(t){this.type=t}}});
 vm.runInContext(source,ctx);vm.runInContext(fs.readFileSync(path.join(__dirname,'../assets/tutorial-v178.js'),'utf8'),ctx);
-const T=ctx.window.HackeniaTutorial;assert.ok(T,'Tutorial API is exposed');assert.equal(T.lessons.length,5);assert.equal(T.steps,20);assert.equal(T.nextRoll(2),null,'No forced roll outside the tutorial');
+const T=ctx.window.HackeniaTutorial;assert.ok(T,'Tutorial API is exposed');assert.equal(T.lessons.length,6);assert.equal(T.steps,26);assert.equal(T.nextRoll(2),null,'No forced roll outside the tutorial');
 // Le tutoriel est branché au moteur : lancers forcés, cibles transmises au plateau, entrée depuis le menu.
 assert.ok(html.includes('const forced=window.HackeniaTutorial?.nextRoll?.(n);if(forced)return forced;'));
 assert.ok(html.includes('tutorial:window.HackeniaTutorial?.targets?.()||null'));

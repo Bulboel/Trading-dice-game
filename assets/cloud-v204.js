@@ -5,7 +5,7 @@
 (function(root){'use strict';
 const META='hackenia-cloud-v1',DEBOUNCE=4000,RETRY=60000;
 
-function summaryOf(p){const inv=p?.inventory||{};return{gold:p?.gold|0,dice:Object.values(inv).reduce((a,n)=>a+(n|0),0),kinds:Object.values(inv).filter(n=>n>0).length,decks:(p?.decks||[]).length,story:Object.keys(p?.story?.done||{}).length,...(p?.xp?{level:(typeof window!=='undefined'&&window.HackeniaProgress||globalThis.HackeniaProgress)?.levelOf?.(p.xp)?.level||1}:{})}}
+function summaryOf(p){const inv=p?.inventory||{};return{gold:p?.gold|0,dice:Object.values(inv).reduce((a,n)=>a+(n|0),0),kinds:Object.values(inv).filter(n=>n>0).length,decks:(p?.decks||[]).length,story:Object.keys(p?.story?.done||{}).length,/* v428 — noms pour retrouver le joueur dans l'administration */...(p?.hero?.name?{hero:String(p.hero.name).slice(0,24)}:{}),...((()=>{try{const n=(typeof window!=='undefined'&&window.HackeniaSettings?.get?.().playerName)||'';return n?{pseudo:String(n).slice(0,24)}:{}}catch{return{}}})()),...(p?.xp?{level:(typeof window!=='undefined'&&window.HackeniaProgress||globalThis.HackeniaProgress)?.levelOf?.(p.xp)?.level||1}:{})}}
 const missingTable=e=>/PGRST20[25]|42P01|42883|could not find|does not exist/i.test(String(e?.code||'')+' '+String(e?.message||''));
 const denied=e=>/42501|permission denied/i.test(String(e?.code||'')+' '+String(e?.message||''));
 

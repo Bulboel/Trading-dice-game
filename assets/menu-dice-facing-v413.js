@@ -12,7 +12,7 @@ const mat=el=>{const t=getComputedStyle(el).transform;if(!t||t==='none')return n
 function collect(){cubes=[...document.querySelectorAll(SEL)].map(c=>({c,faces:[...c.querySelectorAll(FACES)].map(f=>({f,n:null,v:-1}))})).filter(x=>x.faces.length)}
 const smooth=z=>{const t=Math.min(1,Math.max(0,(z-.04)/.3));return t*t*(3-2*t)};
 function frame(now){raf=requestAnimationFrame(frame);if(now-last<30)return;last=now;
- if(document.hidden)return;
+ if(document.hidden||document.body.classList.contains('hk-busy-3d'))return;
  for(const {c,faces} of cubes){if(!c.isConnected||!c.offsetParent)continue;const m=mat(c);if(!m)continue;
   for(const o of faces){if(!o.n){const fm=mat(o.f);if(!fm)continue;o.n=[fm[8],fm[9],fm[10]]}const z=m[2]*o.n[0]+m[6]*o.n[1]+m[10]*o.n[2];const v=Math.round(smooth(z)*40)/40;if(v!==o.v){o.v=v;o.f.style.setProperty('--f',v)}}}}
 function start(){collect();if(!raf)raf=requestAnimationFrame(frame)}

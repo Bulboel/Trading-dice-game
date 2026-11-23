@@ -195,3 +195,30 @@
 .sk-lvl.ok{color:#ffe6a0;text-shadow:0 0 8px #ffcf4a99,0 0 2px #ffcf4a}
 .sk-rail{position:absolute;z-index:1;width:1.5px;transform:translateX(-50%);background:linear-gradient(#ffffff14,#ffffff2a,#ffffff14);border-radius:2px;pointer-events:none}
 .sk-rail i{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(#ffe6a0,#e8b23a);box-shadow:0 0 6px #ffcf4a}
+
+/* v428 — barre des pouvoirs en médaillons (style du sphérier) */
+#power-bar{position:absolute;left:10px;bottom:58px;z-index:30;display:flex;flex-wrap:wrap;gap:7px!important;max-width:calc(100% - 100px)}
+#power-bar button.pw-medal{position:relative;display:grid;place-items:center;width:48px;height:48px;min-width:0;padding:0!important;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--c) 70%,#fff3);background:radial-gradient(circle at 50% 38%,color-mix(in srgb,var(--c) 26%,#0b0820) 0%,#07051ae8 70%);box-shadow:0 0 0 2px #07051a99,0 4px 10px #000a,inset 0 0 10px color-mix(in srgb,var(--c) 30%,transparent);cursor:pointer;transition:transform .18s,box-shadow .18s,filter .18s;backdrop-filter:blur(2px)}
+#power-bar button.pw-medal .cd-svg{width:38px;height:38px;overflow:visible;filter:drop-shadow(0 0 5px var(--c));pointer-events:none}
+#power-bar button.pw-medal .cd-svg *{pointer-events:none}
+#power-bar button.pw-medal:hover,#power-bar button.pw-medal:focus-visible{transform:translateY(-2px) scale(1.06);box-shadow:0 0 0 2px #07051a99,0 0 16px var(--c),inset 0 0 12px color-mix(in srgb,var(--c) 40%,transparent)}
+#power-bar button.pw-medal.on{border-color:#fff3c4;box-shadow:0 0 0 2px #ffd04a,0 0 18px #ffd04a,inset 0 0 12px #ffd04a66;animation:pw-on 1.4s ease-in-out infinite}
+#power-bar button.pw-medal.idle:not(.spent):not(.passive){filter:saturate(.55) brightness(.8)}
+#power-bar button.pw-medal.spent{filter:grayscale(1) brightness(.55);border-color:#ffffff22}
+#power-bar button.pw-medal.passive{border-style:dashed}
+#power-bar .pw-count,#power-bar .pw-done{position:absolute;right:-3px;top:-3px;min-width:17px;height:17px;padding:0 4px;border-radius:99px;display:grid;place-items:center;font:800 10px/1 system-ui,sans-serif;font-style:normal;color:#2a1a03;background:linear-gradient(160deg,#fff1b8,#e8b23a);box-shadow:0 0 0 1.5px #07051a}
+#power-bar .pw-done{background:#3a3a46;color:#cfcfe0}
+@keyframes pw-on{50%{box-shadow:0 0 0 2px #ffd04a,0 0 26px #ffd04a,inset 0 0 14px #ffd04a88}}
+#power-tip{position:absolute;z-index:70;width:min(260px,80vw);padding:10px 12px;border-radius:12px;border:1px solid color-mix(in srgb,var(--c) 65%,transparent);background:linear-gradient(160deg,#130d2bf2,#07051af2);color:#f2ecff;box-shadow:0 8px 24px #000b,0 0 14px color-mix(in srgb,var(--c) 30%,transparent);pointer-events:none}
+#power-tip b{display:block;font:700 13.5px/1.2 'Cinzel',Georgia,serif;color:#fff3d6;letter-spacing:.03em}
+#power-tip p{margin:4px 0 5px;font:500 12px/1.4 system-ui,sans-serif;color:#ddd6f2}
+#power-tip small{font:600 11px/1.2 system-ui,sans-serif;color:color-mix(in srgb,var(--c) 60%,#fff)}
+#power-sheet{position:absolute;left:8px;right:8px;bottom:8px;z-index:75;display:grid;grid-template-columns:64px 1fr;gap:4px 12px;align-items:center;padding:12px 14px;border-radius:18px;border:1.5px solid color-mix(in srgb,var(--c) 70%,transparent);background:linear-gradient(160deg,#150e2ef5,#07051af5);color:#f2ecff;box-shadow:0 10px 30px #000c,0 0 20px color-mix(in srgb,var(--c) 35%,transparent);animation:block-in .22s ease-out}
+#power-sheet .ps-die{width:64px;height:64px}#power-sheet .ps-die .cd-svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 0 8px var(--c))}
+#power-sheet b{font:700 15px/1.2 'Cinzel',Georgia,serif;color:#fff3d6}
+#power-sheet p{margin:4px 0;font:500 12.5px/1.4 system-ui,sans-serif;color:#ddd6f2}
+#power-sheet small{font:600 11.5px/1.2 system-ui,sans-serif;color:color-mix(in srgb,var(--c) 60%,#fff)}
+#power-sheet .ps-actions{grid-column:1/-1;display:flex;gap:8px;margin-top:6px}
+#power-sheet .ps-actions button{flex:1;padding:10px 12px;border-radius:12px;border:1px solid #ffffff2a;background:#ffffff10;color:#f2ecff;font:700 13px/1 system-ui,sans-serif;cursor:pointer}
+#power-sheet .ps-actions [data-ps="use"]{background:linear-gradient(160deg,#fff1b8,#e8b23a);color:#2a1a03;border-color:#fff3c4;box-shadow:0 0 14px #ffd04a66}
+@media(max-width:700px){#power-bar button.pw-medal{width:44px;height:44px}#power-bar button.pw-medal .cd-svg{width:34px;height:34px}}

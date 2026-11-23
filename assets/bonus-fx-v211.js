@@ -7,13 +7,14 @@ const STYLES=[
  {id:'drop',challenge:'lake',name:'Goutte d’eau',desc:'Une goutte tombe, éclabousse, puis fond sur votre compteur comme une tête chercheuse.'},
  {id:'droppink',challenge:'lakedrop',name:'Goutte rose',desc:'La goutte du lac rose : elle tombe, éclabousse de rose, puis fond sur votre compteur.'},
  {id:'spark',name:'Éclair',desc:'Un éclair zèbre le plateau jusqu’à votre compteur.',level:5},
+ {id:'snow',challenge:'icesnow',name:'Flocon de neige',desc:'Un flocon scintillant se forme, tournoie doucement, puis glisse en spirale jusqu’à votre compteur.',hintText:'Défi « Les flocons de Forfalla » : remportez trois parties sur la Route vers Forfalla'},
  {id:'leaf',name:'Feuille d’automne',desc:'Une feuille tourbillonne, puis un coup de vent l’emporte vers votre compteur.',level:10}];
 // v219 — Les effets « Éclair » et « Feuille » se débloquent avec le niveau de joueur.
 /* v426 — la Goutte d'eau se gagne avec le défi « Les gouttes du lac rose » (trois victoires au lac rose) */
 const challengeDone=id=>{try{return(window.HackeniaChallenges?.unlocked?.(window.HackeniaPortal?.profile?.())||[]).some(d=>d.id===id)}catch{return false}};
 const isLocked=s=>s.challenge?!challengeDone(s.challenge):!!s.level&&!window.HackeniaProgress?.unlocked?.(window.HackeniaPortal?.profile?.(),s.id);
 for(const st of STYLES)if(st.level||st.challenge)Object.defineProperty(st,'locked',{enumerable:true,get(){return isLocked(st)}});
-for(const st of STYLES)if(st.level||st.challenge)Object.defineProperty(st,'hint',{enumerable:true,get(){return isLocked(st)?(st.challenge==='lake'?'Défi « Le lac rose » : gagnez une partie au lac rose':st.challenge?'Défi « Les gouttes du lac rose » : remportez trois parties au lac rose':'Débloqué au niveau '+st.level):''}});
+for(const st of STYLES)if(st.level||st.challenge)Object.defineProperty(st,'hint',{enumerable:true,get(){return isLocked(st)?(st.hintText||(st.challenge==='lake'?'Défi « Le lac rose » : gagnez une partie au lac rose':st.challenge?'Défi « Les gouttes du lac rose » : remportez trois parties au lac rose':'Débloqué au niveau '+st.level)):''}});
 const current=()=>{const v=window.HackeniaSettings?.get?.().bonusFx;return STYLES.some(s=>s.id===v&&!s.locked)?v:'star'};
 const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches||window.HackeniaSettings?.get?.().motion===false;
 
@@ -74,9 +75,25 @@ function leafFx(a,b,done){const {c,g}=canvasLayer(),ox=a.left+a.width/2,oy=a.top
   for(const p of trail){p.life-=.05;if(p.life>0){g.fillStyle=`rgba(250,204,21,${p.life*.35})`;g.beginPath();g.arc(p.x,p.y,4*p.life,0,Math.PI*2);g.fill()}}
   if(!arrived)drawLeaf(g,x,y,18,ang);
   if(e<T1+T2+500)requestAnimationFrame(frame);else c.remove()};requestAnimationFrame(frame)}
+/* v428 — Flocon de neige (défi « Les flocons de Forfalla ») : six branches cristallines, éclats de givre en traînée */
+function drawFlake(g,x,y,r,ang,alpha=1){g.save();g.translate(x,y);g.rotate(ang);g.globalAlpha=alpha;g.strokeStyle='#f4fbff';g.lineCap='round';g.shadowColor='#9fdcff';g.shadowBlur=12;
+ for(let i=0;i<6;i++){g.rotate(Math.PI/3);g.lineWidth=r*.16;g.beginPath();g.moveTo(0,0);g.lineTo(0,-r);g.stroke();g.lineWidth=r*.11;
+  for(const [d,l] of [[.45,.3],[.72,.22]]){g.beginPath();g.moveTo(0,-r*d);g.lineTo(-r*l,-r*(d+l*.8));g.moveTo(0,-r*d);g.lineTo(r*l,-r*(d+l*.8));g.stroke()}}
+ g.shadowBlur=0;g.fillStyle='#ffffff';g.beginPath();g.arc(0,0,r*.16,0,Math.PI*2);g.fill();g.restore()}
+function snowFx(a,b,done){const {c,g}=canvasLayer(),ox=a.left+a.width/2,oy=a.top+a.height/2,tx=b.left+b.width/2,ty=b.top+b.height/2,start=performance.now(),T0=380,T1=900,T2=1000,trail=[],burst=[];let arrived=false;
+ const frame=now=>{const e=now-start;g.clearRect(0,0,c.width,c.height);let x,y,ang,sc=1;
+  if(e<T0){const k=e/T0;x=ox;y=oy-30;sc=k*k*(3-2*k);ang=k*2.4}
+  else if(e<T0+T1){const k=(e-T0)/T1;x=ox+Math.sin(k*Math.PI*2)*28;y=oy-30+k*60;ang=2.4+k*1.6}
+  else{const k=Math.min(1,(e-T0-T1)/T2),ease=k*k*(3-2*k),sx=ox,sy=oy+30,spin=(1-ease)*Math.PI*2,rad=(1-ease)*55;x=sx+(tx-sx)*ease+Math.cos(spin*2)*rad;y=sy+(ty-sy)*ease+Math.sin(spin*2)*rad;ang=4+e/160;
+   if(Math.random()<.7)trail.push({x:x+(Math.random()-.5)*10,y:y+(Math.random()-.5)*10,life:1,r:1+Math.random()*2});
+   if(k>=1&&!arrived){arrived=true;for(let i=0;i<14;i++){const a2=i/14*Math.PI*2;burst.push({x:tx,y:ty,vx:Math.cos(a2)*(2+Math.random()*2),vy:Math.sin(a2)*(2+Math.random()*2),life:1})}done()}}
+  for(const p of trail){p.life-=.035;if(p.life>0){g.fillStyle=`rgba(225,245,255,${p.life*.8})`;g.beginPath();g.arc(p.x,p.y,p.r*p.life+.4,0,Math.PI*2);g.fill()}}
+  for(const p of burst){p.x+=p.vx;p.y+=p.vy;p.vx*=.93;p.vy*=.93;p.life-=.03;if(p.life>0)drawFlake(g,p.x,p.y,5*p.life,p.life*4,p.life)}
+  if(!arrived)drawFlake(g,x,y,16*sc,ang);
+  if(e<T0+T1+T2+900)requestAnimationFrame(frame);else c.remove()};requestAnimationFrame(frame)}
 function pulse(target,c='#7fd3ff'){target?.animate?.([{boxShadow:`0 0 0 0 ${c}00`},{boxShadow:`0 0 18px 6px ${c}aa`},{boxShadow:`0 0 0 0 ${c}00`}],{duration:900})}
 // Joue un effet entre deux rectangles (partie ou aperçu des Options).
-function play(style,a,b,target){if(reduced()||style==='star'||!a||!b){return false}if(style==='drop'||style==='droppink'){DP=style==='droppink'?DROP_PAL.pink:DROP_PAL.blue;const pc=DP.pulse;dropFx(a,b,()=>pulse(target,pc));return true}if(style==='spark'){sparkFx(a,b,()=>pulse(target));return true}if(style==='leaf'){leafFx(a,b,()=>pulse(target));return true}return false}
+function play(style,a,b,target){if(reduced()||style==='star'||!a||!b){return false}if(style==='drop'||style==='droppink'){DP=style==='droppink'?DROP_PAL.pink:DROP_PAL.blue;const pc=DP.pulse;dropFx(a,b,()=>pulse(target,pc));return true}if(style==='spark'){sparkFx(a,b,()=>pulse(target));return true}if(style==='leaf'){leafFx(a,b,()=>pulse(target));return true}if(style==='snow'){snowFx(a,b,()=>pulse(target,'#bfe9ff'));return true}return false}
 
 const A=window.HackeniaActions;let original=null;
 if(A?.bonusEarned){original=A.bonusEarned;A.bonusEarned=(camp,origin)=>{const style=current();if(style==='star')return original(camp,origin);const target=document.getElementById('bonus-counter-'+camp),a=origin||A.captureRollOrigin?.(),b=target?.getBoundingClientRect();if(!play(style,a,b&&b.width?b:null,target))return original(camp,origin)}}
