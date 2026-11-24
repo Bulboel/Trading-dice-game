@@ -28,14 +28,14 @@ URL de la politique de confidentialité (après fusion sur `main`) :
 >
 > Hackénia est un jeu de stratégie au tour par tour où tu collectionnes des dés magiques, composes tes decks et affrontes des adversaires sur des plateaux en 3D. Le jeu est né d'une vraie campagne de jeu de rôle entre ami(e)s.
 >
-> 🎲 PLUS DE 170 DÉS À COLLECTIONNER
-> Du commun au divin, en passant par les rares, les légendaires et les éclatants Crépitants. Chaque dé a sa figurine 3D, sa forme de dalles, son élément et parfois des synergies avec d'autres personnages.
+> 🎲 PLUS DE 230 DÉS À COLLECTIONNER
+> Du commun au divin, en passant par les rares, les légendaires et les éclatants Crépitants. Chaque dé a sa figurine 3D (ou sa figurine en papier !), sa forme de dalles, son élément et parfois des synergies avec d'autres personnages.
 >
 > ⚔️ DES COMBATS TACTIQUES
-> Place tes dés, relie tes dalles, déplace tes créatures et choisis le bon moment pour attaquer. Foudre, vent, terre, glace, eau et feu : chaque élément a ses affinités et chaque terrain change la donne.
+> Place tes dés, relie tes dalles, déplace tes créatures et choisis le bon moment pour attaquer. Foudre, vent, terre, glace, eau et feu : chaque personnage a son élément, chaque élément en domine un autre, et chaque terrain favorise certains éléments.
 >
-> 📖 UN MODE HISTOIRE EN QUATRE CHAPITRES
-> Suis une bande d'aventuriers hauts en couleur de Bois tendre jusqu'à la cité de Dassom, à travers des dizaines de scènes illustrées et de duels d'histoire.
+> 📖 UN MODE HISTOIRE EN CINQ CHAPITRES
+> Suis une bande d'aventuriers hauts en couleur de Bois tendre jusqu'à la route maudite de Mirrhol, à travers des dizaines de scènes illustrées, des personnages expressifs et des duels d'histoire… jusqu'au journal de Kala.
 >
 > 🗺️ DES TERRAINS VIVANTS
 > Lac rose et ses nénuphars, Terres embrasées, Île céleste, Vents de Hacko, Colisée, taverne du Griffon Doré… Chaque plateau a ses propres règles et surprises.
@@ -51,7 +51,7 @@ URL de la politique de confidentialité (après fusion sur `main`) :
 > • Boubourses à ouvrir et taux de chance affichés
 > • Propose ton propre dé : s'il est retenu, il rejoint le jeu avec ton nom !
 > • Les Contes de la Taverne : écris une scène de jeu de rôle
-> • Tutoriel en quatre petites leçons
+> • Tutoriel en petites leçons
 > • Jouable hors ligne, sauvegarde en ligne automatique sans compte ni email
 > • Aucune publicité
 >
@@ -77,14 +77,14 @@ Add these under « Traductions › Anglais ».
 >
 > Hackénia is a turn-based strategy game where you collect magical dice, build decks and face opponents on 3D boards. The game was born from a real tabletop role-playing campaign among friends.
 >
-> 🎲 OVER 170 DICE TO COLLECT
-> From common to divine, through rare, legendary and the dazzling Crackling dice. Each die has its own 3D figure, tile shape and element, and sometimes synergies with other characters.
+> 🎲 OVER 230 DICE TO COLLECT
+> From common to divine, through rare, legendary and the dazzling Crackling dice. Each die has its own 3D figure (or paper figure!), tile shape and element, and sometimes synergies with other characters.
 >
 > ⚔️ TACTICAL BATTLES
-> Place your dice, link your tiles, move your creatures and pick the right moment to strike. Lightning, wind, earth, ice, water and fire: each element has its affinities, and each terrain changes the game.
+> Place your dice, link your tiles, move your creatures and pick the right moment to strike. Lightning, wind, earth, ice, water and fire: each character has an element, each element dominates another, and each terrain favors certain elements.
 >
-> 📖 A FOUR-CHAPTER STORY MODE
-> Follow a colourful band of adventurers from Bois tendre to the city of Dassom, through dozens of illustrated scenes and story duels.
+> 📖 A FIVE-CHAPTER STORY MODE
+> Follow a colourful band of adventurers from Bois tendre to the cursed road of Mirrhol, through dozens of illustrated scenes, expressive characters and story duels… up to Kala's diary.
 >
 > 🗺️ LIVING TERRAINS
 > The Pink Lake and its water lilies, the Ember Lands, the Sky Island, the Winds of Hacko, the Colosseum, the Golden Griffin tavern… Each board has its own rules and surprises.
@@ -100,7 +100,7 @@ Add these under « Traductions › Anglais ».
 > • Pouches to open, with drop rates shown
 > • Suggest your own die: if it's picked, it joins the game with your name!
 > • Tavern Tales: write a role-playing scene
-> • Tutorial in four short lessons
+> • Tutorial in short lessons
 > • Playable offline, automatic cloud save with no account or email
 > • No ads
 >
@@ -143,7 +143,7 @@ Coller l'URL ci-dessus.
   - La taverne et ses boissons sont un décor ; si le formulaire demande précisément des références à l'alcool, répondre **oui, références légères**.
 - Les utilisateurs peuvent-ils interagir ou échanger du contenu ? **Oui** : PVP en ligne avec pseudo, Contes de la Taverne, propositions de dés.
 - Partage de la position : **Non**.
-- Achats numériques : **Non** pour l'instant. À mettre à jour quand les achats réels arriveront.
+- Achats numériques : **Non** pour l'instant (les packs s'achètent avec des Bubulles gagnées en jouant). À mettre à jour quand les achats en argent réel arriveront.
 - Résultat attendu : **PEGI 7** environ, éventuellement PEGI 12 à cause des interactions en ligne.
 
 ### Sécurité des données
