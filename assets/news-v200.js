@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v440',title:'Arbre de compétences apaisé',items:['Arbre de compétences : plus de grésillement quand on touche une compétence ou qu’on fait défiler l’écran (effets de flou et décor animé allégés).']},
  {id:'v439',title:'Rappel corrigé',items:['Correctif : le pouvoir Rappel ne retire plus la dalle sur laquelle se tient une créature adverse (elle ne se retrouve plus sans case, à puissance 1).']},
  {id:'v438',title:'Aide pour les téléphones anciens',items:['Téléphones anciens : si le composant Android System WebView est trop vieux pour afficher le plateau, le jeu l’explique clairement et propose le lien de mise à jour, au lieu d’un plateau blanc.']},
  {id:'v437',title:'Grimgors et les Sans-chiffres',items:['Histoire : Grimgors garde un air sérieux quand il ne sourit pas vraiment (il n’affiche plus un grand sourire sur les répliques neutres).','Chapitres IV et V : les Sans-chiffres affrontent maintenant le joueur dans tous les éléments (cinq nouvelles figurines en papier, réservées aux duels), à la place des mineurs.','Carte du chapitre V : les étapes sont placées au bon endroit sur la route.']},
