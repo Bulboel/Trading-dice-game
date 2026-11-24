@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hackénia · Mise à jour nécessaire</title>
+<!-- v437 — Page affichée par l'application Android quand le composant « Android System WebView » du téléphone est trop ancien
+     pour faire tourner le jeu (réglage android.minWebViewVersion de capacitor.config.json). HTML et CSS volontairement très simples :
+     elle doit s'afficher correctement sur un très vieux navigateur. -->
+<style>
+ html,body{margin:0;padding:0;background:#10211d;color:#f3ead2;font-family:Georgia,'Times New Roman',serif}
+ .box{max-width:460px;margin:0 auto;padding:40px 22px 30px;text-align:center}
+ img{width:110px;height:110px}
+ h1{color:#e8c987;font-size:26px;margin:16px 0 8px;letter-spacing:1px}
+ p{font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.5;margin:12px 0;color:#e6dfcc}
+ ol{font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;text-align:left;padding-left:22px;color:#e6dfcc}
+ li{margin:8px 0}
+ b{color:#ffe3a3}
+ a.btn{display:block;margin:22px 0 10px;padding:15px 12px;border-radius:12px;background:#e8c987;color:#1b1408;font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:17px;text-decoration:none}
+ a.alt{display:block;margin:8px 0;padding:12px;border:1px solid #e8c98799;border-radius:12px;color:#f3ead2;font-family:Arial,Helvetica,sans-serif;font-size:15px;text-decoration:none}
+ small{display:block;margin-top:22px;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#a8b5a8}
+</style>
+</head>
+<body>
+<div class="box">
+ <img src="assets/hackenia-app-v112-512.png" alt="">
+ <h1>Une petite mise à jour…</h1>
+ <p>Hackénia a besoin d’une version plus récente du composant <b>« Android System WebView »</b> de ton téléphone pour afficher le plateau et les dés.</p>
+ <ol>
+  <li>Appuie sur le bouton ci-dessous pour ouvrir le Play Store.</li>
+  <li>Mets à jour <b>Android System WebView</b> (et <b>Google Chrome</b> s’il te le propose).</li>
+  <li>Ferme complètement Hackénia, puis relance-le.</li>
+ </ol>
+ <a class="btn" href="https://play.google.com/store/apps/details?id=com.google.android.webview">Mettre à jour Android System WebView</a>
+ <a class="alt" href="https://play.google.com/store/apps/details?id=com.android.chrome">Mettre à jour Google Chrome</a>
+ <small>Ta progression est enregistrée sur le téléphone : tu la retrouveras après la mise à jour.</small>
+</div>
+</body>
+</html>

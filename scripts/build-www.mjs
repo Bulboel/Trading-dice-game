@@ -4,7 +4,8 @@ import {cpSync,rmSync,mkdirSync,existsSync,statSync,readdirSync} from 'node:fs';
 import {join} from 'node:path';
 const root=new URL('..',import.meta.url).pathname,out=join(root,'www');
 rmSync(out,{recursive:true,force:true});mkdirSync(out);
-for(const f of ['index.html','site.webmanifest'])cpSync(join(root,f),join(out,f));
+/* v437 — webview-ancien.html : page affichée par l'application quand le WebView du téléphone est trop ancien (capacitor.config.json) */
+for(const f of ['index.html','site.webmanifest','webview-ancien.html'])cpSync(join(root,f),join(out,f));
 const skip=p=>/(^|\/)assets\/(Models|characters\/cutouts)(\/|$)/.test(p)||/\.(md|py|psd|blend)$/i.test(p);
 cpSync(join(root,'assets'),join(out,'assets'),{recursive:true,filter:src=>!skip(src.slice(root.length))});
 let n=0,size=0;const walk=d=>{for(const e of readdirSync(d,{withFileTypes:true})){const p=join(d,e.name);if(e.isDirectory())walk(p);else{n++;size+=statSync(p).size}}};walk(out);
