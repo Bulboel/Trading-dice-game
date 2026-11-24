@@ -35,7 +35,12 @@ def beat(place, speaker, text, *cast, art=None):
     out = {'s': speaker, 't': text, 'l': l, 'c': c, 'bg': b, 'cast': []}
     if art:
         out['cast'].append({'art': art, 'alt': art.split('/')[-1]})
+    if speaker == JOURNAL and not art:
+        # Le journal : Kala prend des notes (illustration dédiée), les autres gardent leur humeur de la scène
+        out['cast'].append({'n': 'Kala', 'p': 'assets/story/kala-journal-chibi.webp', 'k': ['story-journal'], 'e': 'neutral'})
     for name, mood in cast:
+        if speaker == JOURNAL and name == 'Kala':
+            continue
         e = dict(TPL[name]); e['n'] = name; e['k'] = ['is-speaking'] if name == speaker else (['is-listener'] if speaker != JOURNAL else [])
         e['e'] = 'neutral'; e['mm'] = mood; out['cast'].append(e)
     return out
@@ -83,7 +88,7 @@ parts.append({'id': 'c5p3', 'chapter': 5, 'title': 'Partie 3 : L’embuscade des
             'cards': ['Les Sans-chiffres', 'Les Sans-chiffres', 'La dague des Sans-chiffres', 'Les Sans-chiffres', 'Les Sans-chiffres']}})
 parts.append({'id': 'c5p4', 'chapter': 5, 'title': 'Partie 4 : Kerzian appelle à l’aide', 'intro': [
     beat(ROAD, V, 'Pas le temps de souffler : Kerzian est attaqué ! Il faut nous dépêcher.', (V, 'neutral'), (K, 'scared')),
-    beat(ROAD, V, 'On parle de Loris et de Gliska, d’une tentative de prise de pouvoir… Mais ce ne sont que des soupçons : impossible d’alerter les sages.', (V, 'neutral'), (G, 'angry')),
+    beat(ROAD, V, 'On parle de Yoris et de Gliska, d’une tentative de prise de pouvoir… Mais ce ne sont que des soupçons : impossible d’alerter les sages.', (V, 'neutral'), (G, 'angry')),
     beat(ROAD, JOURNAL, 'En chemin, Velmarys m’a glissé que l’atmosphère était tendue avec Bulbalina. Elle était sur son cheval et pouvait très bien nous entendre.', (K, 'neutral'), (BU, 'neutral')),
     beat(ROAD, K, 'Bulbalina, je n’ai pas apprécié que tu essaies de kidnapper un canourson. Tu nous as tous mis en danger.', (K, 'neutral'), (BU, 'thinking')),
     beat(ROAD, JOURNAL, 'J’ai eu l’impression qu’elle commençait enfin à comprendre. Cette prise de conscience m’a rassurée.', (K, 'happy'), (BU, 'neutral')),
@@ -105,12 +110,12 @@ parts.append({'id': 'c5p5', 'chapter': 5, 'title': 'Partie 5 : La bête de Kerzi
             'cards': ['Morts-vivants de Kerzian', 'Morts-vivants de Kerzian', 'La bête de Kerzian', 'Morts-vivants de Kerzian', 'La bête de Kerzian']}})
 parts.append({'id': 'c5p6', 'chapter': 5, 'title': 'Partie 6 : Une victoire amère', 'intro': [
     beat(KERZ, JOURNAL, 'Seuls trois villageois ont survécu. L’un d’eux a reconnu Bolduc quand il a repris forme humaine : il était en lion pendant le combat.', (B, 'sad'), (K, 'sad')),
-    beat(KERZ, 'Un survivant', 'Ce matin, un régiment d’une trentaine de soldats était ici, avec Loris et Gliska. La légion de Lunargent. Ils sont partis vers Forfalla en laissant leurs tentes.', (K, 'scared'), (G, 'angry')),
+    beat(KERZ, 'Un survivant', 'Ce matin, un régiment d’une trentaine de soldats était ici, avec Yoris et Gliska. La légion de Lunargent. Ils sont partis vers Forfalla en laissant leurs tentes.', (K, 'scared'), (G, 'angry')),
     beat(KERZ, E, 'Mettons de l’ordre, mangeons un peu et reposons-nous. Nous en avons tous besoin.', (E, 'sad'), (K, 'sad')),
     beat(KERZ, JOURNAL, 'Velmarys est resté très discret. Je me suis promis d’aller lui parler cette nuit, pour savoir ce qui le préoccupe.', (K, 'neutral'), (V, 'neutral')),
     beat(KERZ, B, 'Au moins une bonne nouvelle : la guilde des cuisiniers avait la liste des ingrédients d’un fromage spécial… pour moi !', (B, 'happy'), (K, 'happy')),
     beat(KERZ, JOURNAL, 'En fouillant les tentes abandonnées, nous avons compris que le feu n’avait rien de naturel. Mais à l’intérieur, rien d’intéressant.', (G, 'neutral'), (E, 'neutral')),
-    beat(KERZ, JOURNAL, 'Cette journée a été éprouvante. Trop de morts, trop de questions sans réponses. Orcus, Loris, Gliska, la légion de Lunargent… Les pièces d’un puzzle inquiétant se mettent en place, et je crains ce que nous découvrirons ensuite.', art='assets/story/night-kala-courage.webp'),
+    beat(KERZ, JOURNAL, 'Cette journée a été éprouvante. Trop de morts, trop de questions sans réponses. Orcus, Yoris, Gliska, la légion de Lunargent… Les pièces d’un puzzle inquiétant se mettent en place, et je crains ce que nous découvrirons ensuite.', art='assets/story/night-kala-courage.webp'),
 ]})
 data.extend(parts)
 open(P, 'w', encoding='utf-8').write(head + '\n' + PRE + json.dumps(data, ensure_ascii=False, separators=(',', ':')) + ';' + ('\n' if rest.endswith('\n') else ''))

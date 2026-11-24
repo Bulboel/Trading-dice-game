@@ -23,4 +23,11 @@ function plan(profile,count,random=Math.random){if(count!==1&&count!==10&&count!
   pack.dice.forEach((id,j)=>{if(!(next.inventory[id]||0))pack.firstSeen.push(j);next.inventory[id]=(next.inventory[id]||0)+1});next.pouchQueue.push(pack)}
  next.pity=pity;next.gold-=price;next.boosters=(next.boosters||0)+count;
  return next}
-window.HackeniaPurchases={plan,WEIGHTS,CREP_SPLIT,PITY,pityLeft:profile=>({leg:Math.max(1,PITY.leg-(Math.floor(profile?.pity?.leg)||0)),div:Math.max(1,PITY.div-(Math.floor(profile?.pity?.div)||0))})};})();
+/* v433 — Boubourse garantie (Pack Aventurier) : 3 dés tirés normalement, dont un remplacé par un légendaire (ou un divin, 1 fois sur 8),
+   de préférence un dé que le joueur ne possède pas encore. Ne débite rien : c'est le pack qui fixe le prix. */
+function guaranteedPouch(profile,random=Math.random){const next=structuredClone(profile);next.pouchQueue=Array.isArray(next.pouchQueue)?next.pouchQueue.slice():[];
+ const rarityOf=id=>{const d=window.hackeniaGame?.monsters?.[id];return d?(d.rarity??d.lv):0},pack={dice:[],firstSeen:[],pity:'légendaire'};
+ for(let j=0;j<3;j++){let r=random()*WEIGHTS.reduce((x,y)=>x+y,0),l=0;while(l<WEIGHTS.length-1&&r>=WEIGHTS[l])r-=WEIGHTS[l++];const ids=l+1===8?pool(8,random()<CREP_SPLIT[1]/(CREP_SPLIT[1]+CREP_SPLIT[2])?1:2):pool(l+1);pack.dice.push(ids[Math.min(ids.length-1,Math.floor(random()*ids.length))])}
+ if(!pack.dice.some(id=>[5,6,8].includes(rarityOf(id)))){const rar=random()<1/8?6:5,ids=pool(rar),fresh=ids.filter(i=>!(next.inventory[i]||0)),from=fresh.length?fresh:ids;let slot=0,low=99;pack.dice.forEach((d,k)=>{if(rarityOf(d)<low){low=rarityOf(d);slot=k}});pack.dice[slot]=from[Math.floor(random()*from.length)];if(rar===6)pack.pity='divin'}
+ pack.dice.forEach((id,j)=>{if(!(next.inventory[id]||0))pack.firstSeen.push(j);next.inventory[id]=(next.inventory[id]||0)+1});next.pouchQueue.push(pack);next.boosters=(next.boosters||0)+1;return next}
+window.HackeniaPurchases={guaranteedPouch,plan,WEIGHTS,CREP_SPLIT,PITY,pityLeft:profile=>({leg:Math.max(1,PITY.leg-(Math.floor(profile?.pity?.leg)||0)),div:Math.max(1,PITY.div-(Math.floor(profile?.pity?.div)||0))})};})();
