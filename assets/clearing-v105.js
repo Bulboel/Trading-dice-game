@@ -1,23 +1,24 @@
 /* Presentation adapter. Game legality, turns, decks and combat stay in index.html. */
 import * as THREE from 'three';
-import { orientBoardModel } from './model-facing.js?v=20270102-v429';
-import { createEmberlands } from './ember-v239.js?v=20270102-v429';
-import { attachHeroParts } from './hero-parts.js?v=20270102-v429';
-import { applyLook } from './variant-look.js?v=20270102-v429';
-import { createLake } from './lake-v241.js?v=20270102-v429';
-import { createSkyIsland } from './sky-v231.js?v=20270102-v429';
-import { createWindHighlands } from './wind-v232.js?v=20270102-v429';
-import { createWoodland } from './woodland-v238.js?v=20270102-v429';
-import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20270102-v429';
-import { createFrostRoad } from './frost-v240.js?v=20270102-v429';
-import { createCity } from './city-v246.js?v=20270102-v429';
-import { createColosseum } from './colosseum-v364.js?v=20270102-v429';
-import { createTavern } from './tavern-v369.js?v=20270102-v429';
-import { createCave } from './cave-v246.js?v=20270102-v429';
-import { createAutumn } from './autumn-v253.js?v=20270102-v429';
-import { createFairyMists } from './fairy-v335.js?v=20270102-v429';
-import { createNoel } from './noel-v253.js?v=20270102-v429';
-import { createElementWheel } from './element-wheel-v252.js?v=20270102-v429';
+import { orientBoardModel } from './model-facing.js?v=20270102-v430';
+import { createEmberlands } from './ember-v239.js?v=20270102-v430';
+import { attachHeroParts } from './hero-parts.js?v=20270102-v430';
+import { applyLook } from './variant-look.js?v=20270102-v430';
+import { loadPaperTextures, buildPaperFigure } from './paper-figure.js?v=20270102-v430';
+import { createLake } from './lake-v241.js?v=20270102-v430';
+import { createSkyIsland } from './sky-v231.js?v=20270102-v430';
+import { createWindHighlands } from './wind-v232.js?v=20270102-v430';
+import { createWoodland } from './woodland-v238.js?v=20270102-v430';
+import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20270102-v430';
+import { createFrostRoad } from './frost-v240.js?v=20270102-v430';
+import { createCity } from './city-v246.js?v=20270102-v430';
+import { createColosseum } from './colosseum-v364.js?v=20270102-v430';
+import { createTavern } from './tavern-v369.js?v=20270102-v430';
+import { createCave } from './cave-v246.js?v=20270102-v430';
+import { createAutumn } from './autumn-v253.js?v=20270102-v430';
+import { createFairyMists } from './fairy-v335.js?v=20270102-v430';
+import { createNoel } from './noel-v253.js?v=20270102-v430';
+import { createElementWheel } from './element-wheel-v252.js?v=20270102-v430';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -484,18 +485,11 @@ async function attachCompositeModel(g,k,info){const mi=k.mi;const man=await (spa
 /* v429 — Personnages « en papier » (prototype) : une figurine plate, toujours tournée vers la caméra, animée en changeant d'image
    (poses des planches d'émotions). Chaque changement de pose fait pivoter la feuille sur elle-même, comme une carte qu'on retourne.
    manifest.creatures.<clé>.sprite = {idle, walk, attack, hit, ko, win} (chemins d'images dans assets/). */
-const paperTex=new Map(),texLoader=new THREE.TextureLoader();
-function paperTexture(path){const url='assets/'+path;if(!paperTex.has(url))paperTex.set(url,new Promise(ok=>texLoader.load(url,t=>{t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=4;ok(t)},undefined,()=>ok(null))));return paperTex.get(url)}
-async function attachPaperModel(g,k,info){const mi=k.mi;g.userData.modelId=mi;const S=info.sprite,keys=Object.keys(S),tex={};
- await Promise.all(keys.map(async q=>{tex[q]=await paperTexture(S[q])}));if(!tex.idle||!g.parent||g.userData.modelId!==mi)return;
- const H=1.35*(info.boardHeight||.95)*(game.monsters[mi]?.boardScale||1),aspect=t=>t.image.width/t.image.height,W=H*aspect(tex.idle);
- const mat=new THREE.MeshStandardMaterial({map:tex.idle,transparent:true,alphaTest:.45,side:THREE.DoubleSide,roughness:1,metalness:0,emissive:0xffffff,emissiveMap:tex.idle,emissiveIntensity:.35});
- if(game.monsters[mi]?.variant?.color){const c=new THREE.Color(game.monsters[mi].variant.color);mat.color.lerp(c,.35)}
- const mesh=new THREE.Mesh(new THREE.PlaneGeometry(1,1),mat);mesh.scale.set(W,H,1);mesh.position.y=H/2+.1;mesh.castShadow=true;
- mesh.customDepthMaterial=new THREE.MeshDepthMaterial({depthPacking:THREE.RGBADepthPacking,map:tex.idle,alphaTest:.45});
- const holder=new THREE.Group(),node=new THREE.Group(),flipper=new THREE.Group();holder.userData.imported=true;node.userData.imported=true;flipper.add(mesh);node.add(flipper);holder.add(node);
- mesh.userData.imported=true;flipper.userData.imported=true;g.children.forEach((o,i)=>{if(i>0)o.visible=false});g.add(holder);g.userData.model=holder;g.userData.animationInfo=info;
- g.userData.gest={node,kind:'paper',phase:Math.random()*6,paper:{mesh,flipper,tex,H,pose:'idle',want:'idle',flipT:1,face:1,lastX:null}};
+async function attachPaperModel(g,k,info){const mi=k.mi;g.userData.modelId=mi;const tex=await loadPaperTextures(info.sprite);if(!tex.idle||!g.parent||g.userData.modelId!==mi)return;
+ const H=1.35*(info.boardHeight||.95)*(game.monsters[mi]?.boardScale||1),fig=buildPaperFigure(tex.idle,H,{tint:game.monsters[mi]?.variant?.color||null});fig.object.position.y=.1;
+ const holder=new THREE.Group(),node=new THREE.Group(),flipper=new THREE.Group();holder.userData.imported=true;node.userData.imported=true;flipper.userData.imported=true;flipper.add(fig.object);node.add(flipper);holder.add(node);
+ g.children.forEach((o,i)=>{if(i>0)o.visible=false});g.add(holder);g.userData.model=holder;g.userData.animationInfo=info;
+ g.userData.gest={node,kind:'paper',phase:Math.random()*6,paper:{fig,flipper,tex,H,pose:'idle',want:'idle',flipT:1,face:1,lastX:null}};
  if(game.monsters[mi]?.shiny)addCrackle(g);if(game.rarity?.(game.monsters[mi]||{})===6)addDivineAura(g,game.monsters[mi])}
 const _pv=new THREE.Vector3(),_pd=new THREE.Vector3(),_pr=new THREE.Vector3();
 function animatePaper(g,k,f,combat,t,G){const P=G.paper,now=performance.now();let pose='idle',y=0,sq=0;
@@ -509,7 +503,7 @@ function animatePaper(g,k,f,combat,t,G){const P=G.paper,now=performance.now();le
  if(!P.tex[pose])pose='idle';
  /* changement de pose : la feuille pivote (demi-tour), on change d'image à mi-course */
  if(pose!==P.want){P.want=pose;P.flipT=0}
- if(P.flipT<1){P.flipT=Math.min(1,P.flipT+(moving?.16:1));if(P.flipT>=.5&&P.pose!==P.want){P.pose=P.want;const tx=P.tex[P.pose];P.mesh.material.map=tx;P.mesh.material.emissiveMap=tx;P.mesh.material.needsUpdate=true;P.mesh.customDepthMaterial.map=tx;P.mesh.customDepthMaterial.needsUpdate=true;P.mesh.scale.x=P.H*tx.image.width/tx.image.height}}
+ if(P.flipT<1){P.flipT=Math.min(1,P.flipT+(moving?.16:1));if(P.flipT>=.5&&P.pose!==P.want){P.pose=P.want;P.fig.setPose(P.tex[P.pose])}}
  /* regard vers la gauche ou la droite de l'écran selon le sens de la marche */
  g.getWorldPosition(_pv);camera.getWorldDirection(_pd);_pr.setFromMatrixColumn(camera.matrixWorld,0);
  if(P.lastX){const dx=_pv.clone().sub(P.lastX).dot(_pr);if(Math.abs(dx)>.004)P.face=dx>0?-1:1}P.lastX=_pv.clone();

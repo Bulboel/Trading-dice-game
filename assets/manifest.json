@@ -839,6 +839,308 @@
         "win": "story/emo/rat-a-forfalla-1.webp"
       },
       "paper": true
+    },
+    "krak": {
+      "nom": "Krak",
+      "boardHeight": 0.95,
+      "sprite": {
+        "idle": "story/emo/krak-2.webp",
+        "walk": "story/emo/krak-2.webp",
+        "attack": "story/emo/krak-3.webp",
+        "hit": "story/emo/krak-5.webp",
+        "ko": "story/emo/krak-6.webp",
+        "win": "story/emo/krak-1.webp"
+      },
+      "paper": true
+    },
+    "krek": {
+      "nom": "Krek",
+      "boardHeight": 0.95,
+      "sprite": {
+        "idle": "story/emo/krek-2.webp",
+        "walk": "story/emo/krek-2.webp",
+        "attack": "story/emo/krek-3.webp",
+        "hit": "story/emo/krek-5.webp",
+        "ko": "story/emo/krek-6.webp",
+        "win": "story/emo/krek-1.webp"
+      },
+      "paper": true
+    },
+    "soldat-de-lunargent": {
+      "nom": "Soldat de Lunargent",
+      "boardHeight": 0.95,
+      "sprite": {
+        "idle": "story/emo/soldat-de-lunargent-2.webp",
+        "walk": "story/emo/soldat-de-lunargent-2.webp",
+        "attack": "story/emo/soldat-de-lunargent-3.webp",
+        "hit": "story/emo/soldat-de-lunargent-5.webp",
+        "ko": "story/emo/soldat-de-lunargent-6.webp",
+        "win": "story/emo/soldat-de-lunargent-1.webp"
+      },
+      "paper": true
+    },
+    "velcan": {
+      "nom": "Velcan",
+      "boardHeight": 0.95,
+      "sprite": {
+        "idle": "story/emo/velcan-3.webp",
+        "walk": "story/emo/velcan-3.webp",
+        "attack": "story/emo/velcan-2.webp",
+        "hit": "story/emo/velcan-2.webp"
+      },
+      "paper": true
+    },
+    "transporteur": {
+      "nom": "Transporteur",
+      "boardHeight": 0.95,
+      "sprite": {
+        "idle": "story/emo/transporteur-2.webp",
+        "walk": "story/emo/transporteur-2.webp",
+        "attack": "story/emo/transporteur-3.webp",
+        "hit": "story/emo/transporteur-5.webp",
+        "ko": "story/emo/transporteur-6.webp",
+        "win": "story/emo/transporteur-1.webp"
+      },
+      "paper": true
+    },
+    "pelerin": {
+      "nom": "Pèlerin",
+      "boardHeight": 0.95,
+      "sprite": {
+        "idle": "story/emo/pelerin-1.webp",
+        "walk": "story/emo/pelerin-1.webp",
+        "ko": "story/emo/pelerin-3.webp",
+        "win": "story/emo/pelerin-1.webp"
+      },
+      "paper": true
+    },
+    "faux-enfants": {
+      "nom": "Faux enfants",
+      "boardHeight": 0.95,
+      "sprite": {
+        "idle": "story/emo/faux-enfants-1.webp",
+        "walk": "story/emo/faux-enfants-1.webp",
+        "attack": "story/emo/faux-enfants-2.webp"
+      },
+      "paper": true
+    },
+    "harpe-de-bulbalina": {
+      "nom": "Harpe de Bulbalina",
+      "boardHeight": 0.95,
+      "sprite": {
+        "idle": "story/emo/harpe-de-bulbalina-1.webp",
+        "walk": "story/emo/harpe-de-bulbalina-1.webp",
+        "attack": "story/emo/harpe-de-bulbalina-3.webp",
+        "hit": "story/emo/harpe-de-bulbalina-5.webp",
+        "ko": "story/emo/harpe-de-bulbalina-6.webp",
+        "win": "story/emo/harpe-de-bulbalina-1.webp"
+      },
+      "paper": true
+    },
+    "naia": {
+      "nom": "Naïa",
+      "boardHeight": 0.95,
+      "sprite": {
+        "idle": "story/emo/naia-2.webp",
+        "walk": "story/emo/naia-2.webp",
+        "attack": "story/emo/naia-3.webp",
+        "hit": "story/emo/naia-5.webp",
+        "ko": "story/emo/naia-6.webp",
+        "win": "story/emo/naia-1.webp"
+      },
+      "paper": true
+    },
+    "lamie": {
+      "nom": "Lamie",
+      "boardHeight": 0.95,
+      "sprite": {
+        "idle": "story/emo/lamie-1.webp",
+        "walk": "story/emo/lamie-1.webp",
+        "attack": "story/emo/lamie-3.webp",
+        "hit": "story/emo/lamie-5.webp",
+        "ko": "story/emo/lamie-6.webp",
+        "win": "story/emo/lamie-1.webp"
+      },
+      "paper": true
+    },
+    "drahul": {
+      "nom": "Drahul",
+      "boardHeight": 0.95,
+      "sprite": {
+        "idle": "story/emo/drahul-1.webp",
+        "walk": "story/emo/drahul-1.webp",
+        "attack": "story/emo/drahul-3.webp",
+        "hit": "story/emo/drahul-5.webp",
+        "ko": "story/emo/drahul-4.webp",
+        "win": "story/emo/drahul-1.webp"
+      },
+      "paper": true
+    },
+    "griselda": {
+      "nom": "Griselda",
+      "boardHeight": 0.95,
+      "sprite": {
+        "idle": "story/emo/griselda-2.webp",
+        "walk": "story/emo/griselda-2.webp",
+        "attack": "story/emo/griselda-3.webp",
+        "hit": "story/emo/griselda-5.webp",
+        "ko": "story/emo/griselda-6.webp",
+        "win": "story/emo/griselda-1.webp"
+      },
+      "paper": true
+    },
+    "sans-chiffre": {
+      "nom": "Le Sans-chiffre",
+      "boardHeight": 0.95,
+      "sprite": {
+        "idle": "story/emo/sans-chiffre-1.webp",
+        "walk": "story/emo/sans-chiffre-1.webp",
+        "attack": "story/emo/sans-chiffre-2.webp",
+        "ko": "story/emo/sans-chiffre-3.webp"
+      },
+      "paper": true
+    },
+    "golem-de-pierre": {
+      "nom": "Golem de pierre",
+      "boardHeight": 1.05,
+      "sprite": {
+        "idle": "story/emo/golem-de-pierre-1.webp",
+        "walk": "story/emo/golem-de-pierre-1.webp",
+        "attack": "story/emo/golem-de-pierre-3.webp",
+        "hit": "story/emo/golem-de-pierre-5.webp",
+        "ko": "story/emo/golem-de-pierre-4.webp"
+      },
+      "paper": true
+    },
+    "heaum": {
+      "nom": "Heaum",
+      "boardHeight": 1.05,
+      "sprite": {
+        "idle": "story/emo/heaum-2.webp",
+        "walk": "story/emo/heaum-2.webp",
+        "attack": "story/emo/heaum-3.webp",
+        "hit": "story/emo/heaum-5.webp",
+        "ko": "story/emo/heaum-6.webp",
+        "win": "story/emo/heaum-1.webp"
+      },
+      "paper": true
+    },
+    "licorne-enrage": {
+      "nom": "Licorne enragée",
+      "boardHeight": 1.05,
+      "sprite": {
+        "idle": "story/emo/licorne-enrage-1.webp",
+        "walk": "story/emo/licorne-enrage-1.webp",
+        "attack": "story/emo/licorne-enrage-3.webp",
+        "hit": "story/emo/licorne-enrage-5.webp",
+        "ko": "story/emo/licorne-enrage-6.webp",
+        "win": "story/emo/licorne-enrage-1.webp"
+      },
+      "paper": true
+    },
+    "bolduc-papier": {
+      "nom": "Bolduc de papier",
+      "boardHeight": 1.05,
+      "sprite": {
+        "idle": "story/emo/bolduc-1.webp",
+        "walk": "story/emo/bolduc-1.webp",
+        "attack": "story/emo/bolduc-3.webp",
+        "hit": "story/emo/bolduc-5.webp",
+        "ko": "story/emo/bolduc-4.webp",
+        "win": "story/emo/bolduc-1.webp"
+      },
+      "paper": true
+    },
+    "grimgors-papier": {
+      "nom": "Grimgors de papier",
+      "boardHeight": 1.05,
+      "sprite": {
+        "idle": "story/emo/grimgors-1.webp",
+        "walk": "story/emo/grimgors-1.webp",
+        "attack": "story/emo/grimgors-3.webp",
+        "hit": "story/emo/grimgors-5.webp",
+        "ko": "story/emo/grimgors-4.webp",
+        "win": "story/emo/grimgors-1.webp"
+      },
+      "paper": true
+    },
+    "eberien-papier": {
+      "nom": "Eberien de papier",
+      "boardHeight": 1.05,
+      "sprite": {
+        "idle": "story/emo/eberien-2.webp",
+        "walk": "story/emo/eberien-2.webp",
+        "attack": "story/emo/eberien-3.webp",
+        "hit": "story/emo/eberien-5.webp",
+        "ko": "story/emo/eberien-4.webp",
+        "win": "story/emo/eberien-1.webp"
+      },
+      "paper": true
+    },
+    "kala-papier": {
+      "nom": "Kala de papier",
+      "boardHeight": 1.05,
+      "sprite": {
+        "idle": "story/emo/kala-2.webp",
+        "walk": "story/emo/kala-2.webp",
+        "attack": "story/emo/kala-3.webp",
+        "hit": "story/emo/kala-5.webp",
+        "ko": "story/emo/kala-4.webp",
+        "win": "story/emo/kala-1.webp"
+      },
+      "paper": true
+    },
+    "jhimm-papier": {
+      "nom": "Jhimm de papier",
+      "boardHeight": 1.05,
+      "sprite": {
+        "idle": "story/emo/jhimm-2.webp",
+        "walk": "story/emo/jhimm-2.webp",
+        "attack": "story/emo/jhimm-3.webp",
+        "hit": "story/emo/jhimm-5.webp",
+        "ko": "story/emo/jhimm-4.webp",
+        "win": "story/emo/jhimm-1.webp"
+      },
+      "paper": true
+    },
+    "elementaire-feu-majeur": {
+      "nom": "Élémentaire de feu majeur",
+      "boardHeight": 1.05,
+      "sprite": {
+        "idle": "story/emo/elementaire-de-feu-majeur-1.webp",
+        "walk": "story/emo/elementaire-de-feu-majeur-1.webp",
+        "attack": "story/emo/elementaire-de-feu-majeur-3.webp",
+        "hit": "story/emo/elementaire-de-feu-majeur-5.webp",
+        "ko": "story/emo/elementaire-de-feu-majeur-4.webp",
+        "win": "story/emo/elementaire-de-feu-majeur-1.webp"
+      },
+      "paper": true
+    },
+    "elementaire-glace-majeur": {
+      "nom": "Élémentaire de glace majeur",
+      "boardHeight": 1.05,
+      "sprite": {
+        "idle": "story/emo/elementaire-de-glace-majeur-1.webp",
+        "walk": "story/emo/elementaire-de-glace-majeur-1.webp",
+        "attack": "story/emo/elementaire-de-glace-majeur-3.webp",
+        "hit": "story/emo/elementaire-de-glace-majeur-5.webp",
+        "ko": "story/emo/elementaire-de-glace-majeur-4.webp",
+        "win": "story/emo/elementaire-de-glace-majeur-1.webp"
+      },
+      "paper": true
+    },
+    "erevan": {
+      "nom": "Erevan",
+      "boardHeight": 1.05,
+      "sprite": {
+        "idle": "story/emo/erevan-2.webp",
+        "walk": "story/emo/erevan-2.webp",
+        "attack": "story/emo/erevan-3.webp",
+        "hit": "story/emo/erevan-5.webp",
+        "ko": "story/emo/erevan-6.webp",
+        "win": "story/emo/erevan-1.webp"
+      },
+      "paper": true
     }
   },
   "terrains": {
