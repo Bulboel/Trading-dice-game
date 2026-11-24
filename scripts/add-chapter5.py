@@ -27,7 +27,7 @@ def bg(img, tint):
     return f'linear-gradient({tint}), url("{img}")'
 FARM = ('La ferme des collines', ['cabin'], bg('assets/story/cabin-background.webp', 'rgba(20, 14, 8, 0.1), rgba(12, 8, 4, 0.45)'))
 ROAD = ('La route de Mirrhol', ['forest'], bg('assets/story/mirrhol-road-background.webp', 'rgba(14, 12, 18, 0.12), rgba(10, 8, 14, 0.5)'))
-KERZ = ('Kerzian', ['night'], bg('assets/story/berdesa-village-background.webp', 'rgba(70, 14, 4, 0.38), rgba(20, 4, 2, 0.72)'))
+KERZ = ('Kierzan', ['night'], bg('assets/story/berdesa-village-background.webp', 'rgba(70, 14, 4, 0.38), rgba(20, 4, 2, 0.72)'))
 JOURNAL = 'Journal de Kala'
 
 def beat(place, speaker, text, *cast, art=None):
@@ -58,7 +58,7 @@ parts.append({'id': 'c5p1', 'chapter': 5, 'title': 'Partie 1 : La prime de Maebr
     beat(FARM, MA, 'C’est… très aimable. Mais des dents auraient été préférables.', (MA, 'neutral'), (B, 'sad')),
     beat(FARM, JOURNAL, 'Nous nous en souviendrons pour la prochaine fois. Ébérien lui a parlé de notre route vers Mirrhol et des morphes que nous avions croisés. Pendant ce temps, le médaillon a commencé à se refermer.', (E, 'neutral'), (MA, 'neutral')),
     beat(FARM, J, 'Vite, Maebril ! Consultez la harpe de Bulbalina, elle en saura sûrement plus !', (J, 'neutral'), (MA, 'neutral')),
-    beat(FARM, B, 'Avant Mirrhol, passons par Kerzian ! Je veux voir la guilde des cuisiniers… et Grimgors y trouvera une nouvelle armure.', (B, 'happy'), (G, 'proud')),
+    beat(FARM, B, 'Avant Mirrhol, passons par Kierzan ! Je veux voir la guilde des cuisiniers… et Grimgors y trouvera une nouvelle armure.', (B, 'happy'), (G, 'proud')),
     beat(FARM, JOURNAL, 'Avant de partir, Bolduc a réclamé des rations à notre hôtesse. Jhimm lui a donné 2 pièces d’or ; Ébérien a complimenté sa cuisine, sans rien ajouter. 2 pièces d’or, c’est déjà une belle somme.', (J, 'happy'), (E, 'happy'), (B, 'happy')),
 ]})
 parts.append({'id': 'c5p2', 'chapter': 5, 'title': 'Partie 2 : Le hibou blessé', 'intro': [
@@ -86,17 +86,17 @@ parts.append({'id': 'c5p3', 'chapter': 5, 'title': 'Partie 3 : L’embuscade des
     beat(ROAD, JOURNAL, 'Ce furent ses derniers mots. Ces membres de la guilde des Sans-chiffres restent un mystère.', (K, 'neutral'), (G, 'neutral')),
 ], 'duel': {'foe': 'La guilde des Sans-chiffres', 'terrain': 'terre', 'level': 'moyen', 'dice': [293, 293, 119, 293, 57, 66, 293, 119, 92, 96],
             'cards': ['Les Sans-chiffres', 'Les Sans-chiffres', 'La dague des Sans-chiffres', 'Les Sans-chiffres', 'Les Sans-chiffres']}})
-parts.append({'id': 'c5p4', 'chapter': 5, 'title': 'Partie 4 : Kerzian appelle à l’aide', 'intro': [
-    beat(ROAD, V, 'Pas le temps de souffler : Kerzian est attaqué ! Il faut nous dépêcher.', (V, 'neutral'), (K, 'scared')),
+parts.append({'id': 'c5p4', 'chapter': 5, 'title': 'Partie 4 : Kierzan appelle à l’aide', 'intro': [
+    beat(ROAD, V, 'Pas le temps de souffler : Kierzan est attaqué ! Il faut nous dépêcher.', (V, 'neutral'), (K, 'scared')),
     beat(ROAD, V, 'On parle de Yoris et de Gliska, d’une tentative de prise de pouvoir… Mais ce ne sont que des soupçons : impossible d’alerter les sages.', (V, 'neutral'), (G, 'angry')),
     beat(ROAD, JOURNAL, 'En chemin, Velmarys m’a glissé que l’atmosphère était tendue avec Bulbalina. Elle était sur son cheval et pouvait très bien nous entendre.', (K, 'neutral'), (BU, 'neutral')),
     beat(ROAD, K, 'Bulbalina, je n’ai pas apprécié que tu essaies de kidnapper un canourson. Tu nous as tous mis en danger.', (K, 'neutral'), (BU, 'thinking')),
     beat(ROAD, JOURNAL, 'J’ai eu l’impression qu’elle commençait enfin à comprendre. Cette prise de conscience m’a rassurée.', (K, 'happy'), (BU, 'neutral')),
-    beat(KERZ, JOURNAL, 'Trois ou quatre heures plus tard, Kerzian est apparu. Murets détruits, du sang partout, de la fumée au centre du village… et des cris de bêtes que nous ne connaissions pas.', (K, 'scared'), (J, 'scared')),
+    beat(KERZ, JOURNAL, 'Trois ou quatre heures plus tard, Kierzan est apparu. Murets détruits, du sang partout, de la fumée au centre du village… et des cris de bêtes que nous ne connaissions pas.', (K, 'scared'), (J, 'scared')),
     beat(KERZ, G, 'J’ai une idée : crions « Les renforts de Zackarie arrivent ! »', (G, 'fight'), (K, 'neutral')),
     beat(KERZ, JOURNAL, 'Nous avons tous approuvé, et Bulbalina a fait naître l’illusion d’une foule de soldats accourant en renfort.', (BU, 'happy'), (G, 'proud')),
 ]})
-parts.append({'id': 'c5p5', 'chapter': 5, 'title': 'Partie 5 : La bête de Kerzian', 'intro': [
+parts.append({'id': 'c5p5', 'chapter': 5, 'title': 'Partie 5 : La bête de Kierzan', 'intro': [
     beat(KERZ, JOURNAL, 'La double porte de bois s’est ouverte, puis refermée. Un grondement sourd, un bruit de bête…', (K, 'scared')),
     beat(KERZ, JOURNAL, 'Nous sommes entrés : une énorme bête, des squelettes, des morts-vivants partout.', (K, 'fight'), (G, 'fight'), (B, 'fight')),
     beat(KERZ, V, 'Attention, il y a autre chose… Écoutez : des incantations !', (V, 'neutral'), (K, 'neutral')),
@@ -106,8 +106,8 @@ parts.append({'id': 'c5p5', 'chapter': 5, 'title': 'Partie 5 : La bête de Kerzi
 ], 'victory': [
     beat(KERZ, JOURNAL, 'Jhimm a lancé un sort qui a fait fuir la plupart des morts-vivants. Un soulagement… temporaire.', (J, 'fight'), (K, 'neutral')),
     beat(KERZ, JOURNAL, 'C’est ma flèche qui a achevé la dernière créature. Une victoire amère : beaucoup de villageois sont morts malgré nos efforts.', (K, 'sad')),
-], 'duel': {'foe': 'La horde de Kerzian', 'terrain': 'feu', 'level': 'difficile', 'dice': [263, 246, 252, 248, 250, 263, 249, 251, 247, 252],
-            'cards': ['Morts-vivants de Kerzian', 'Morts-vivants de Kerzian', 'La bête de Kerzian', 'Morts-vivants de Kerzian', 'La bête de Kerzian']}})
+], 'duel': {'foe': 'La horde de Kierzan', 'terrain': 'feu', 'level': 'difficile', 'dice': [263, 246, 252, 248, 250, 263, 249, 251, 247, 252],
+            'cards': ['Morts-vivants de Kierzan', 'Morts-vivants de Kierzan', 'La bête de Kierzan', 'Morts-vivants de Kierzan', 'La bête de Kierzan']}})
 parts.append({'id': 'c5p6', 'chapter': 5, 'title': 'Partie 6 : Une victoire amère', 'intro': [
     beat(KERZ, JOURNAL, 'Seuls trois villageois ont survécu. L’un d’eux a reconnu Bolduc quand il a repris forme humaine : il était en lion pendant le combat.', (B, 'sad'), (K, 'sad')),
     beat(KERZ, 'Un survivant', 'Ce matin, un régiment d’une trentaine de soldats était ici, avec Yoris et Gliska. La légion de Lunargent. Ils sont partis vers Forfalla en laissant leurs tentes.', (K, 'scared'), (G, 'angry')),

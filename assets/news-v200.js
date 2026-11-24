@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v435',title:'Chapitre V : L’attaque à Kierzan',items:['Le chapitre V s’appelle désormais « L’attaque à Kierzan ».','Correctif : le chapitre V apparaît aussi dans la vue en liste du mode Histoire, et son numéro s’affiche en chiffres romains sur la carte.']},
  {id:'v434',title:'Tenue de voyageur et carte de Mirrhol',items:['Pack Aventurier et Pack Élémentaire à 1 000 Bubulles chacun.','Le Pack Aventurier offre aussi la tenue de voyageur pour votre héros.','Chapitre V : nouvelle carte de la route de Mirrhol.']},
  {id:'v433',title:'Deux nouveaux packs',items:['Deux nouveaux packs spéciaux : le Pack Aventurier (une boubourse légendaire garantie et 500 Bubulles) et le Pack Élémentaire (choisissez l’élément de votre héros, recevez un dé de cet élément de chaque rareté et 500 Bubulles).','Chapitre V : le journal de Kala, illustré par Kala en train de prendre des notes.']},
  {id:'v432',title:'Dalles neutres et chapitre V',items:['Les dalles deviennent neutres : seuls les personnages (et certains terrains) ont un élément.','Bonus de terrain : une créature dont l’élément est favorisé par le terrain gagne +1, sur n’importe quelle dalle.','Bonus de voisin : +1 quand une créature combat un ennemi voisin d’un élément qu’elle domine.','Histoire, chapitre V « La route maudite de Mirrhol » : 6 parties racontées par Kala dans son journal, avec 2 duels.','Médaillons de la collection et objets portés parfaitement centrés.']},
