@@ -3,7 +3,7 @@
    copient les poids du sommet du corps le plus proche. La couleur se change avec la teinte du jeu (variant-look.js, kind « tint »). */
 import * as THREE from 'three';
 import {GLTFLoader} from './vendor/three/examples/jsm/loaders/GLTFLoader.js';
-import {applyLook} from './variant-look.js?v=20270102-v433';
+import {applyLook} from './variant-look.js?v=20270102-v434';
 export const PARTS={
  hair:{court:{label:'Courte',file:'hero-cheveux-court.glb',s:.84,xs:.85,zs:.96,rx:-.32,x:0,y:1.52,z:-.02,cap:'#2f8f2f'},
        longs:{label:'Longue',file:'hero-cheveux-longs.glb',s:.4,xs:1.02,zs:1,rx:-.24,x:0,y:1.465,z:-.025,cap:'#5a3a22'}},
@@ -16,7 +16,9 @@ export const PARTS={
        rayures:{label:'Combinaison rayée',gen:'suit',tex:'stripes',color:'#c4553f'},
        pois:{label:'Combinaison à pois',gen:'suit',tex:'dots',color:'#8a5cc8'},
        carreaux:{label:'Combinaison à carreaux',gen:'suit',tex:'checks',color:'#2f9e6a'},
-       camo:{label:'Combinaison camouflage',gen:'suit',tex:'camo',color:'#6a7a3a'}}};
+       camo:{label:'Combinaison camouflage',gen:'suit',tex:'camo',color:'#6a7a3a'},
+       /* v434 — Tenue de voyageur (Pack Aventurier) : combinaison en toile vert mousse, en attendant un modèle dédié */
+       voyageur:{label:'Tenue de voyageur',gen:'suit',tex:'cloth',color:'#4f5d32'}}};
 /* ——— Vêtements générés ———
    Peau du corps (mêmes sommets, mêmes poids) découpée en coupes nettes dans la pose de référence : chaque triangle est coupé
    le long de la ligne exacte (interpolation), puis gonflé le long des normales. Cols, manches et ourlets sont des champs de distance. */

@@ -4,7 +4,7 @@
    (commun, peu commun, rare, légendaire), de préférence des dés qu'il ne possède pas encore, plus 500 Bubulles.
    Les prix sont en Bubulles (achat dans le jeu) ; un achat en argent réel pourra se brancher sur billing, comme pour le Pack Sage. */
 (function(root){'use strict';
-const ADVENTURER={price:2500,gold:500},ELEMENTAL={price:3500,gold:500};
+const ADVENTURER={price:1000,gold:500},ELEMENTAL={price:1000,gold:500};
 const ELS=['foudre','vent','terre','glace','eau','feu'],RARITIES=[1,2,3,5];
 const defs=()=>root.hackeniaGame?.monsters||[];
 const owned=(p,i)=>(p.inventory?.[i]||0)>0;
