@@ -7,11 +7,22 @@
  /* humeur neutre : pose « calme » propre à certains personnages (sinon l'illustration d'origine reste affichée) */
  const CALM={grimgors:'proud','messire-balai':'happy',caleizis:'haughty','fee-pachie':'proud',orven:'haughty',yoris:'proud',lamie:'proud',erevan:'friendly'};
  const CHAIN={happy:['happy','friendly','proud'],friendly:['friendly','happy'],proud:['proud','haughty','happy'],haughty:['haughty','proud','neutral'],
-  'blasé':['haughty','neutral','thinking'],surprised:['surprised','scared'],shy:['shy','scared','sad'],embarrassed:['shy','scared','sad'],crying:['sad'],sad:['sad'],
+  'blasé':['haughty','neutral','thinking'],surprised:['surprised'],shy:['shy','scared','sad'],embarrassed:['shy','scared','sad'],crying:['sad'],sad:['sad'],
   angry:['angry','fight'],fight:['fight','angry'],scared:['scared','surprised'],ko:['ko','sad'],thinking:['thinking','neutral'],neutral:['neutral']};
  const slug=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
  function key(name){const n=String(name||'').toLowerCase().trim();if(ALIAS[n])return ALIAS[n];const k=slug(n);return POSES[k]?k:null}
  function pick(name,mood){const k=key(name);if(!k)return null;const P=POSES[k];mood=mood||'neutral';
   for(const m of CHAIN[mood]||[mood])if(P[m])return 'assets/story/emo/'+P[m]+'.webp';
   if(mood==='neutral'&&CALM[k]&&P[CALM[k]])return 'assets/story/emo/'+P[CALM[k]]+'.webp';return null}
- window.HackeniaEmo={pick,key,poses:POSES}})();
+ /* v431 — Taille réelle des personnages (1 = adulte humain ou elfe) : les illustrations sont mises à l'échelle d'après leur silhouette,
+    pour que les proportions soient justes entre eux (un nain arrive à mi-hauteur d'un humain). Personnage absent : 1. */
+ const STATURE={'bolduc':.56,'grimgors':1.12,'kala':1,'eberien':1.02,'jhimm':.98,'kayla':1,'hilam':1.02,'zackarie':1,'pennedra':1,'ven':1,'velmarys':1,
+  'soryan':1,'georges':1,'sameron':1,'violette':.95,'mirahel':.95,'maebril':.92,'frolgor':1.05,'le-nahakin':.9,'vieux-fermier':.8,
+  'messire-balai':.42,'dede-la-bricole':.5,'velcan':.58,'la-fee-pachie':.95,'fee-pachie':.95,'cheval-nain':.72,'buissons-de-baies':.55,
+  'les-soigneurs-myconides':.75,'les-myconides':.75,'myconide-infecte':.75,'bolduc-cheval':.9,
+  'drahul':.38,'naia':1,'lamie':1.05,'krak':1,'krek':.98,'griselda':.82,'heaum':1.12,'golem-de-pierre':1.45,'licorne-enrage':1.05,
+  'maestro':.42,'rat-a-forfalla':.4,'harpe-de-bulbalina':.5,'faux-enfants':.68,'soldat-de-lunargent':.95,'transporteur':1,'pelerin':1,
+  'sans-chiffre':1,'le-chef-des-sans-chiffres':1,'erevan':1,'elementaire-de-feu-majeur':1.25,'elementaire-de-glace-majeur':1.25,
+  'canours':1.25,'canourson':.6,'bosco':.7,'bulbalina':1,'orven':1,'yoris':1.05,'la-harpe':.5};
+ function stature(name){const k=slug(name);return STATURE[k]??STATURE[key(name)||'']??1}
+ window.HackeniaEmo={pick,key,poses:POSES,stature}})();

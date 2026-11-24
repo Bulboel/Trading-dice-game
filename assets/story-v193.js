@@ -25,15 +25,31 @@ function ensureScene(){if(scene)return scene;scene=document.createElement('secti
 let chooseHandler=null,skipHandler=null,skipLabel='';function choose(go){chooseHandler?.(go)}
 function play(beats,done,choice,skip=null,label='⏩ Passer au duel'){ensureScene();seq=beats;step=0;onDone=done;chooseHandler=choice||null;skipHandler=skip;skipLabel=label;if(!seq.length){done?.();return}scene.hidden=false;document.body.classList.add('story-open');draw()}
 function close(){if(scene){scene.hidden=true}document.body.classList.remove('story-open')}
-function preloadNext(){const b=seq[step+1];for(const x of b?.cast||[]){const u=x.p?null:window.HackeniaEmo?.pick(x.n,x.m||x.e);if(u)(new Image).src=u}}/* v429 — la pose suivante est déjà chargée */
+function preloadNext(){const b=seq[step+1];for(const x of b?.cast||[]){const u=x.p?null:window.HackeniaEmo?.pick(x.n,x.m||'neutral');if(u)(new Image).src=u}}/* v429 — la pose suivante est déjà chargée */
 function next(){if(step<seq.length-1){step++;draw()}else{const d=onDone;close();d?.()}}
+/* v431 — Proportions : chaque personnage est découpé sur sa silhouette (assets/story-sprites-v431.js) et affiché à sa taille réelle
+   (HackeniaEmo.stature : un nain fait environ la moitié d'un humain), pieds alignés. Les grands sprites (boss, jumeaux, pixies, cheval) gardent leur mise en page. */
+function spriteSpec(sp,x,emo){const B=window.HACKENIA_SPRITE_BOUNDS;if(!B||/ss-(boss|twins|pixie|equine)-sprite/.test(sp.className))return null;
+ let url=emo||x.p||'',cell=null;if(!url){const m=/url\("?([^")]+)"?\)/.exec(x.img||'');if(!m)return null;url=m[1];if(x.sz==='400% 300%'){const [px,py]=(x.pos||'').split(' ').map(parseFloat);cell=[Math.round(px/33.3333),Math.round(py/50)];if(cell[0]<0||cell[0]>3||cell[1]<0||cell[1]>2)return null}}
+ const b=B[url+(cell?'#'+cell[0]+','+cell[1]:'')];if(!b)return null;return {sp,url,cell,b,stat:window.HackeniaEmo?.stature?.(x.n)??1}}
+function fitCast(cast,specs){if(!specs.length)return;const Hb=Math.min(innerHeight*.36,340,innerWidth*.62),gap=6;
+ const dims=specs.map(s=>{const bh=s.b[3]-s.b[1],bw=(s.b[2]-s.b[0])*s.b[4],h=Hb*s.stat;return {h,w:h*bw/bh}});
+ const others=[...cast.children].filter(e=>!specs.some(s=>s.sp===e)).reduce((a,e)=>a+e.getBoundingClientRect().width,0),avail=(cast.clientWidth||innerWidth)-others-gap*(cast.children.length-1);
+ const k=Math.min(1,avail/dims.reduce((a,d)=>a+d.w,0));
+ specs.forEach((s,i)=>{const h=dims[i].h*k,w=dims[i].w*k,bh=s.b[3]-s.b[1],cellH=h/bh,cellW=cellH*s.b[4],sp=s.sp,st=sp.style;
+  sp.replaceChildren();sp.classList.add('ss-sized');st.setProperty('background-image','url("'+s.url+'")');
+  st.setProperty('width',w+'px','important');st.setProperty('height',h+'px','important');st.setProperty('flex','0 0 auto','important');st.setProperty('max-width','none','important');st.setProperty('aspect-ratio','auto','important');
+  st.setProperty('background-size',s.cell?(4*cellW)+'px '+(3*cellH)+'px':cellW+'px '+cellH+'px','important');
+  st.setProperty('background-position',-((s.cell?s.cell[0]:0)*cellW+s.b[0]*cellW)+'px '+(-((s.cell?s.cell[1]:0)*cellH+s.b[1]*cellH))+'px','important');
+  st.setProperty('margin','0 '+gap/2+'px')})}
 function draw(){const b=seq[step];scene.className='ss '+(b.c||[]).map(c=>'ss-'+c).join(' ')+(b.s==='Voix off'?' ss-narration':'');
  scene.querySelector('.ss-bg').style.backgroundImage=b.bg&&b.bg!=='none'?b.bg:'';scene.querySelector('.ss-bgb').style.backgroundImage=b.bgb||'';
  scene.querySelector('.ss-caption').textContent=b.l||'';const cast=scene.querySelector('.ss-cast');cast.replaceChildren();
- for(const x of b.cast||[]){if(x.art){const img=document.createElement('img');img.className='ss-art';img.src=x.art;img.alt=x.alt||'';cast.append(img);continue}
+ const sized=[];for(const x of b.cast||[]){if(x.art){const img=document.createElement('img');img.className='ss-art';img.src=x.art;img.alt=x.alt||'';cast.append(img);continue}
   const sp=document.createElement('div');sp.className='ss-sprite '+(x.k||[]).map(k=>'ss-'+k.replace(/^story-/,'').replace(/^is-/,'')).join(' ');sp.setAttribute('role','img');sp.setAttribute('aria-label',x.n||'');
-  const emo=x.p?null:window.HackeniaEmo?.pick(x.n,x.m||x.e);/* v429 — pose de la planche d’émotions qui correspond à l’humeur de la réplique */
-  if(x.p||emo){sp.style.backgroundImage='none';const im=document.createElement('img');im.src=x.p||emo;im.alt='';if(emo)sp.classList.add('ss-emo');sp.append(im)}else{sp.style.backgroundImage=x.img;sp.style.backgroundSize=x.sz||'contain';sp.style.backgroundPosition=x.pos||'center bottom'}cast.append(sp)}
+  const emo=x.p?null:window.HackeniaEmo?.pick(x.n,x.m||'neutral');/* v429 — pose de la planche d’émotions qui correspond à l’humeur de la réplique */
+  if(x.p||emo){sp.style.backgroundImage='none';const im=document.createElement('img');im.src=x.p||emo;im.alt='';if(emo)sp.classList.add('ss-emo');sp.append(im)}else{sp.style.backgroundImage=x.img;sp.style.backgroundSize=x.sz||'contain';sp.style.backgroundPosition=x.pos||'center bottom'}cast.append(sp);sized.push(spriteSpec(sp,x,emo))}
+ fitCast(cast,sized.filter(Boolean));
  preloadNext();scene.querySelector('.ss-speaker').textContent=b.s;scene.querySelector('.ss-text').textContent=b.t;
  const ch=scene.querySelector('.ss-choices');ch.innerHTML=(b.choices||[]).map((c,i)=>`<button type="button" data-ss="choice" data-i="${i}" class="${c.go==='duel'?'ss-primary':''}">${esc(c.label)}</button>`).join('');
  const nx=scene.querySelector('.ss-next');nx.hidden=!!b.choices;nx.textContent=step===seq.length-1?(b.next||'Continuer'):'Continuer';scene.querySelector('[data-ss="prev"]').disabled=step===0;scene.querySelector('.ss-progress').textContent=(step+1)+' / '+seq.length;const sk=scene.querySelector('.ss-skip');sk.hidden=!skipHandler;sk.textContent=skipLabel}

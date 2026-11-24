@@ -945,5 +945,11 @@
  "Élémentaire de glace majeur": "Major ice elemental",
  "Erevan": "Erevan",
  "Multi": "Multi",
- "1er décembre": "December 1st"
+ "1er décembre": "December 1st",
+ "Tutoriel débloqué et personnages à la bonne taille": "Tutorial unblocked and characters at the right size",
+ "Tutoriel : les boutons « Suivant » et « Recommencer » restent toujours visibles, même sur les petits écrans.": "Tutorial: the “Next” and “Restart” buttons always stay visible, even on small screens.",
+ "Histoire : chaque personnage est affiché à sa vraie taille (un nain arrive à mi-hauteur d’un humain).": "Story: every character is shown at their true size (a dwarf reaches half a human’s height).",
+ "Histoire : expressions corrigées (plus de mine apeurée quand le texte ne le dit pas).": "Story: expressions fixed (no more frightened faces when the text does not call for it).",
+ "Les pouvoirs ne s’affichent plus sur l’aperçu du terrain dans les menus.": "Powers no longer appear on the terrain preview in menus.",
+ "Une partie terminée ne propose plus « Reprendre la partie » sur l’accueil.": "A finished match no longer offers “Resume match” on the home screen."
 }

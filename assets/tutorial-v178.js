@@ -67,7 +67,7 @@ const LESSONS=[
  {title:'Avance sur ta route',kind:'action',
   setup(){reset();path(3,[11,10,9,8,7,6],0,[4,2,3,1,5,2]);unit(0,3,11,D.kala)},
   targets:()=>[[3,6]],
-  text:()=>`<p><b>À toi :</b> touche <b>Kala</b>, puis la <b>case dorée</b>, puis <b>« Confirmer »</b>.</p><p>Une créature avance aussi loin qu’elle veut, mais seulement sur des <b>dalles reliées</b>.</p>`,
+  text:()=>`<p><b>À toi :</b> touche <b>Kala</b>, puis la <b>case dorée</b>, puis <b>« Valider le déplacement »</b>.</p><p>Une créature avance aussi loin qu’elle veut, mais seulement sur des <b>dalles reliées</b>.</p>`,
   check:()=>moved&&idle()&&mine()[0]?.y===6,
   retry:()=>moved&&idle()&&mine()[0]?.y!==6,
   success:()=>`<p>✓ Bien avancé ! Mais ta route <b>s’arrête ici</b>…</p>`},
