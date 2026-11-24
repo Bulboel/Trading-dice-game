@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v436',title:'Des animations plus fluides',items:['Ouverture des boubourses plus fluide : moins d’étincelles en même temps et des effets lumineux beaucoup moins coûteux.','Cérémonie légendaire, divine et crépitante plus fluide sur téléphone, et découverte d’un nouveau dé en 3D plus légère.','Correctif : les chiffres posés sur les dalles ne grésillent plus (surtout visible sur téléphone).']},
  {id:'v435',title:'Chapitre V : L’attaque à Kierzan',items:['Le chapitre V s’appelle désormais « L’attaque à Kierzan ».','Correctif : le chapitre V apparaît aussi dans la vue en liste du mode Histoire, et son numéro s’affiche en chiffres romains sur la carte.']},
  {id:'v434',title:'Tenue de voyageur et carte de Mirrhol',items:['Pack Aventurier et Pack Élémentaire à 1 000 Bubulles chacun.','Le Pack Aventurier offre aussi la tenue de voyageur pour votre héros.','Chapitre V : nouvelle carte de la route de Mirrhol.']},
  {id:'v433',title:'Deux nouveaux packs',items:['Deux nouveaux packs spéciaux : le Pack Aventurier (une boubourse légendaire garantie et 500 Bubulles) et le Pack Élémentaire (choisissez l’élément de votre héros, recevez un dé de cet élément de chaque rareté et 500 Bubulles).','Chapitre V : le journal de Kala, illustré par Kala en train de prendre des notes.']},

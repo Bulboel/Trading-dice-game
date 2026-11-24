@@ -5,8 +5,8 @@
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
 function markup(o){
  const runes=Array.from({length:16},(_,i)=>`<text x="0" y="-${i%2?232:245}" transform="rotate(${i*22.5})" text-anchor="middle">${'✦✧☼✶'[i%4]}</text>`).join('');
- const feathers=Array.from({length:46},(_,i)=>{const x=(i*53)%100,d=2.4+(i%7)*.45,dl=1.1+(i%11)*.16,sz=10+(i%5)*5;return `<i style="--x:${x}%;--d:${d}s;--dl:${dl}s;--s:${sz}px;--sw:${(i%2?1:-1)*(14+i%6*6)}px">${'✦✧✹'[i%3]}</i>`}).join('');
- const stars=Array.from({length:60},(_,i)=>`<i style="left:${(i*37)%100}%;top:${(i*61)%100}%;--t:${1.4+(i%5)*.5}s;--o:${(i%9)*.12}s"></i>`).join('');
+ const feathers=Array.from({length:24},(_,i)=>{const x=(i*41+7)%100,d=2.4+(i%7)*.45,dl=1.1+(i%11)*.16,sz=10+(i%5)*5;return `<i style="--x:${x}%;--d:${d}s;--dl:${dl}s;--s:${sz}px;--sw:${(i%2?1:-1)*(14+i%6*6)}px">${'✦✧✹'[i%3]}</i>`}).join('');
+ const stars=Array.from({length:36},(_,i)=>`<i style="left:${(i*37)%100}%;top:${(i*61)%100}%;--t:${1.4+(i%5)*.5}s;--o:${(i%9)*.12}s"></i>`).join('');
  const letters=[...o.title].map((c,i)=>`<span style="--i:${i}">${esc(c)}</span>`).join('');
  return `<div class="dv-bg"></div><div class="dv-stars">${stars}</div><div class="dv-rays"></div><div class="dv-beam"></div><div class="dv-glow"></div>
  <svg class="dv-halo" viewBox="-300 -300 600 600" aria-hidden="true"><defs><linearGradient id="dvg" x1="0" y1="0" x2="1" y2="1">${o.theme==='legend'?'<stop offset="0" stop-color="#fff3c0"/><stop offset=".5" stop-color="#ffb12e"/><stop offset="1" stop-color="#e2541c"/>':'<stop offset="0" stop-color="#fff6c4"/><stop offset=".5" stop-color="#ffc94d"/><stop offset="1" stop-color="#ff9ad8"/>'}</linearGradient></defs>
@@ -28,7 +28,7 @@ function play(o){const T=window.HackeniaI18n?.t||(x=>x);o={...o};for(const k of[
  dlg.classList.add('dv-go');at(2350,()=>{try{set?.play?.('Divin')}catch{}dlg.classList.add('dv-shake')});at(o.portrait?(o.id!=null?6400:5600):4300,finish)})}
 async function addModel(dlg,id,reduced){const game=window.hackeniaGame;try{const info=await game?.modelInfo?.(id);if(!info?.glb||info.parts||!dlg.isConnected)return;
  game.loadModelViewer?.();const d=game.monsters?.[id]||{},mv=document.createElement('model-viewer');mv.className='dv-model';mv.setAttribute('src','assets/'+info.glb);mv.setAttribute('camera-orbit','0deg 80deg 105%');mv.setAttribute('interaction-prompt','none');mv.setAttribute('disable-zoom','');mv.setAttribute('bounds','tight');mv.setAttribute('shadow-intensity','0.6');mv.setAttribute('exposure','1.1');mv.setAttribute('alt','');
- if(!reduced){mv.setAttribute('autoplay','');/* v347 — toujours de face : plus de rotation complète, seulement un léger balancement de caméra (±14°) */const t0=performance.now(),sway=now=>{if(!mv.isConnected)return;mv.setAttribute('camera-orbit',(14*Math.sin((now-t0)/1400)).toFixed(1)+'deg 80deg 105%');requestAnimationFrame(sway)};requestAnimationFrame(sway)}if(info.gesture)mv.classList.add('gesture-'+info.gesture);if(d.variant)window.HackeniaVariantMV?.apply(mv,d.variant);
+ if(!reduced){mv.setAttribute('autoplay','');/* v347 — toujours de face : plus de rotation complète, seulement un léger balancement de caméra (±14°) *//* v436 — balancement confié à model-viewer (interpolation interne) : deux positions de caméra alternées toutes les 2,8 s au lieu de 60 changements par seconde */let side=1;const sway=()=>{if(!mv.isConnected)return;mv.setAttribute('camera-orbit',(side*12)+'deg 80deg 105%');side=-side;setTimeout(sway,2800)};mv.setAttribute('interpolation-decay','900');sway()}if(info.gesture)mv.classList.add('gesture-'+info.gesture);if(d.variant)window.HackeniaVariantMV?.apply(mv,d.variant);
  mv.addEventListener('load',()=>mv.classList.add('ready'));dlg.querySelector('.dv-hero')?.append(mv)}catch(e){console.warn('dv-model',e)}}
 window.HackeniaDivine={play};
 })();

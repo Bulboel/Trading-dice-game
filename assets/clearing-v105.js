@@ -1,24 +1,24 @@
 /* Presentation adapter. Game legality, turns, decks and combat stay in index.html. */
 import * as THREE from 'three';
-import { orientBoardModel } from './model-facing.js?v=20270102-v435';
-import { createEmberlands } from './ember-v239.js?v=20270102-v435';
-import { attachHeroParts } from './hero-parts.js?v=20270102-v435';
-import { applyLook } from './variant-look.js?v=20270102-v435';
-import { loadPaperTextures, buildPaperFigure } from './paper-figure.js?v=20270102-v435';
-import { createLake } from './lake-v241.js?v=20270102-v435';
-import { createSkyIsland } from './sky-v231.js?v=20270102-v435';
-import { createWindHighlands } from './wind-v232.js?v=20270102-v435';
-import { createWoodland } from './woodland-v238.js?v=20270102-v435';
-import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20270102-v435';
-import { createFrostRoad } from './frost-v240.js?v=20270102-v435';
-import { createCity } from './city-v246.js?v=20270102-v435';
-import { createColosseum } from './colosseum-v364.js?v=20270102-v435';
-import { createTavern } from './tavern-v369.js?v=20270102-v435';
-import { createCave } from './cave-v246.js?v=20270102-v435';
-import { createAutumn } from './autumn-v253.js?v=20270102-v435';
-import { createFairyMists } from './fairy-v335.js?v=20270102-v435';
-import { createNoel } from './noel-v253.js?v=20270102-v435';
-import { createElementWheel } from './element-wheel-v252.js?v=20270102-v435';
+import { orientBoardModel } from './model-facing.js?v=20270102-v436';
+import { createEmberlands } from './ember-v239.js?v=20270102-v436';
+import { attachHeroParts } from './hero-parts.js?v=20270102-v436';
+import { applyLook } from './variant-look.js?v=20270102-v436';
+import { loadPaperTextures, buildPaperFigure } from './paper-figure.js?v=20270102-v436';
+import { createLake } from './lake-v241.js?v=20270102-v436';
+import { createSkyIsland } from './sky-v231.js?v=20270102-v436';
+import { createWindHighlands } from './wind-v232.js?v=20270102-v436';
+import { createWoodland } from './woodland-v238.js?v=20270102-v436';
+import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20270102-v436';
+import { createFrostRoad } from './frost-v240.js?v=20270102-v436';
+import { createCity } from './city-v246.js?v=20270102-v436';
+import { createColosseum } from './colosseum-v364.js?v=20270102-v436';
+import { createTavern } from './tavern-v369.js?v=20270102-v436';
+import { createCave } from './cave-v246.js?v=20270102-v436';
+import { createAutumn } from './autumn-v253.js?v=20270102-v436';
+import { createFairyMists } from './fairy-v335.js?v=20270102-v436';
+import { createNoel } from './noel-v253.js?v=20270102-v436';
+import { createElementWheel } from './element-wheel-v252.js?v=20270102-v436';
 
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
@@ -282,7 +282,7 @@ function label(value,element,bonus=0,camp=-1){const campHex=camp<0?'':(camp?oran
  ctx.font='bold 116px Georgia, serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.lineWidth=9;ctx.strokeStyle='#120c06';ctx.strokeText(value,mx,my+7);ctx.fillStyle='#fff4d3';ctx.fillText(value,mx,my+7);
  if(element||camp>=0){ctx.beginPath();ctx.arc(56,56,40,0,Math.PI*2);ctx.fillStyle=multi?'#7b5cc4':ec;ctx.fill();ctx.lineWidth=6;ctx.strokeStyle='#fff6dc';ctx.stroke();elementGlyph(ctx,multi?'':element,56,56,46)}
  if(bonus){roundRect(ctx,S-122,S-84,108,70,35);ctx.fillStyle='#f6d36b';ctx.shadowColor='#ffd76a';ctx.shadowBlur=14;ctx.fill();ctx.shadowBlur=0;ctx.lineWidth=6;ctx.strokeStyle='#6b4a12';ctx.stroke();ctx.font='bold 50px system-ui, sans-serif';ctx.fillStyle='#3a2606';ctx.fillText('+'+bonus,S-68,S-47)}
- const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=4;const material=new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false});textures.set(key,material);return material}
+ const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=4;/* v436 — décalage de profondeur : l’étiquette ne « grésille » plus contre le dessus de la dalle (z-fighting, surtout sur téléphone) */const material=new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-8});textures.set(key,material);return material}
 
 // Project DOM captions through the same camera so both renderers keep them legible.
 const boardCaptions=document.createElement('div');boardCaptions.className='board-objectives';boardCaptions.innerHTML='<span class="zone-caption zone-north"></span><span class="zone-caption zone-south"></span><span class="board-destination-arrow" aria-label="Case de destination choisie"><svg viewBox="0 0 128 128" aria-hidden="true"><path d="M45 8h38v59h29l-48 52L16 67h29Z"/></svg></span>';host.append(boardCaptions);
@@ -555,7 +555,7 @@ function updateCombatFX(combat){combatFX.visible=!!combat&&combat.kind!=='passag
  const shock=Math.max(0,(p-.44)/.21);impactRing.visible=p>.44&&p<.65;impactRing.position.set(d.x-3.5,.54,d.y-HZ);impactRing.material.color.set(col);impactRing.scale.setScalar(combat.reduced?1:1+shock*2.5);impactRing.material.opacity=1-Math.min(1,shock);
 }
 function disposeHighlights(){for(const m of [...highlights.children]){highlights.remove(m);if(!m.userData.cachedLabel)m.material.dispose()}}
-function highlight(x,y,color,level=.235,opacity=.36){const m=new THREE.Mesh(highlightGeo,new THREE.MeshBasicMaterial({color,transparent:true,opacity,side:THREE.DoubleSide,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.set(x-3.5,level,y-HZ);highlights.add(m)}
+function highlight(x,y,color,level=.235,opacity=.36){const m=new THREE.Mesh(highlightGeo,new THREE.MeshBasicMaterial({color,transparent:true,opacity,side:THREE.DoubleSide,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-8}));m.rotation.x=-Math.PI/2;m.position.set(x-3.5,level,y-HZ);highlights.add(m)}
 function creature(k){const g=new THREE.Group(),col=game.elementColors[game.monsters[k.mi]?.el]||'#b5c793';let material=creatureMats.get(col);if(!material){material=mat(col,{roughness:.48});creatureMats.set(col,material)}
 const foot=mesh(new THREE.CylinderGeometry(.29,.33,.1,16),k.o?orange:green,g);foot.position.y=.05;
 const body=mesh(sphere,material,g);body.position.y=.35;body.scale.set(.24,.26,.21);
@@ -584,7 +584,7 @@ function updateLayout(){const terrain=previewMode?previewTerrain:state.terrain,c
 function fadeObject(object,opacity){const bindings=object.userData.fadeBindings??=new Map(),materials=object.userData.fadeMaterials??=[];object.traverse(node=>{if(!node.material)return;let binding=bindings.get(node);if(!binding){const clone=material=>{const copy=material.clone();if(material.onBeforeCompile&&material.userData.hkLook){copy.onBeforeCompile=material.onBeforeCompile;copy.customProgramCacheKey=material.customProgramCacheKey;copy.userData.hkLook=true}/* v215 — garde l'effet de variante (statue, métal, teinte) */copy.transparent=true;copy.depthWrite=false;copy.userData.fadeOpacity=material.opacity;materials.push(copy);return copy};binding=Array.isArray(node.material)?node.material.map(clone):clone(node.material);bindings.set(node,binding)}node.material=binding});for(const material of materials)material.opacity=material.userData.fadeOpacity*opacity}
 function sync(){state=game.snapshot();updateLayout();const type=previewMode?previewTerrain:state.terrain;setActive(['terre','feu','glace','eau','vent','foudre','ville','grotte','automne','noel','brumes','colisee','taverne'].includes(type),type);if(!active)return;updateFoliage();
  const live=new Set();for(let y=0;y<BH;y++)for(let x=0;x<8;x++){const c=state.b[y][x],key=x+','+y;if(!c)continue;live.add(key);let t=tiles.get(key);if(!t){const pivot=new THREE.Group();pieces.add(pivot);const solid=mesh(tileGeo,c.o?orange:green,pivot),top=new THREE.Mesh(topGeo,label(c.v,c.mu?'multi':c.el,0,c.o?1:0));top.rotation.x=-Math.PI/2;pivot.add(top);t={pivot,solid,top};tiles.set(key,t)}
- const h=c.f?.035:.28;t.pivot.position.set(x-3.5,.22,y-HZ);t.pivot.rotation.set(0,0,0);t.solid.scale.y=h;t.solid.position.set(0,h/2,0);t.solid.material=c.o?orange:green;t.top.position.set(0,h+.004,0);t.top.visible=!c.f;t.top.material=label(c.v,c.mu?'multi':c.el,Math.max(0,game.power(x,y)-c.v),c.o?1:0);t.c=c;t.x=x;t.y=y;t.an=state.anim?.o[key];}
+ const h=c.f?.035:.28;t.pivot.position.set(x-3.5,.22,y-HZ);t.pivot.rotation.set(0,0,0);t.solid.scale.y=h;t.solid.position.set(0,h/2,0);t.solid.material=c.o?orange:green;t.top.position.set(0,h+.012,0);t.top.visible=!c.f;t.top.material=label(c.v,c.mu?'multi':c.el,Math.max(0,game.power(x,y)-c.v),c.o?1:0);t.c=c;t.x=x;t.y=y;t.an=state.anim?.o[key];}
  for(const[key,t]of tiles)if(!live.has(key)){pieces.remove(t.pivot);t.pivot.userData.fadeMaterials?.forEach(m=>m.dispose());tiles.delete(key)}
  const liveCr=new Set();for(const k of state.cr){const key=k.id;liveCr.add(key);let g=creatures.get(key);if(!g){g=creature(k);g.position.set(k.x-3.5,.23,k.y-HZ);creatures.set(key,g)}if(g.userData.modelId!==k.mi){g.userData.mixer?.stopAllAction();if(g.userData.model){g.remove(g.userData.model);g.userData.model=null}g.userData.mixer=null;g.children.forEach(o=>o.visible=true);attachCreatureModel(g,k)}g.userData.k=k;const c=state.b[k.y][k.x];g.userData.target=new THREE.Vector3(k.x-3.5,.23+(c&&!c.f?.28:0),k.y-HZ);}
  for(const[key,g]of creatures)if(!liveCr.has(key)){pieces.remove(g);g.userData.fadeMaterials?.forEach(m=>m.dispose());g.userData.mixer?.stopAllAction();g.traverse(o=>{if(o.isMesh&&!o.userData.imported&&o.geometry!==sphere)o.geometry.dispose()});creatures.delete(key)}
