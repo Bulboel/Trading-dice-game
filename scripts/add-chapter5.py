@@ -84,7 +84,7 @@ parts.append({'id': 'c5p3', 'chapter': 5, 'title': 'Partie 3 : L’embuscade des
     beat(ROAD, JOURNAL, 'J’ai enchanté mes flèches de mon élément, la terre, pour immobiliser mes cibles. Quand il n’en resta que deux, Grimgors en acheva un.', (K, 'fight'), (G, 'fight')),
     beat(ROAD, SC, 'Vingt… et un…', (SC, 'ko')),
     beat(ROAD, JOURNAL, 'Ce furent ses derniers mots. Ces membres de la guilde des Sans-chiffres restent un mystère.', (K, 'neutral'), (G, 'neutral')),
-], 'duel': {'foe': 'La guilde des Sans-chiffres', 'terrain': 'terre', 'level': 'moyen', 'dice': [293, 293, 119, 293, 57, 66, 293, 119, 92, 96],
+], 'duel': {'foe': 'La guilde des Sans-chiffres', 'terrain': 'terre', 'level': 'moyen', 'dice': [293, 293, 119, 293, 57, 66, 293, 119, 293, 293],
             'cards': ['Les Sans-chiffres', 'Les Sans-chiffres', 'La dague des Sans-chiffres', 'Les Sans-chiffres', 'Les Sans-chiffres']}})
 parts.append({'id': 'c5p4', 'chapter': 5, 'title': 'Partie 4 : Kierzan appelle à l’aide', 'intro': [
     beat(ROAD, V, 'Pas le temps de souffler : Kierzan est attaqué ! Il faut nous dépêcher.', (V, 'neutral'), (K, 'scared')),
