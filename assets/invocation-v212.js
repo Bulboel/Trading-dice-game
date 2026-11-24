@@ -18,8 +18,8 @@ const TIERS={
 export function invocationTier(definition,rarity){if(definition?.pure===3)return'energie';return({1:'commun',2:'peu',3:'rare',4:'rare',5:'legend',6:'divin',7:'energie',8:'crep'})[rarity]||'commun'}
 export async function createInvocation(stage,{info,definition,reduced,isCurrent,onComplete,onReady,onReveal,rarity}){
 const theme=invocationPalette(definition?.el),tierName=invocationTier(definition,rarity),T=TIERS[tierName];stage.dataset.tier=tierName;
-const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(38,1,.05,100),renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
-/* v436 — 1,5 pixel max par point : rendu plein écran deux fois moins lourd sur les téléphones à écran très dense */renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;stage.appendChild(renderer.domElement);
+const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(38,1,.05,100),FLUID=!!window.HackeniaSettings?.get().fluid,renderer=new THREE.WebGLRenderer({antialias:!FLUID,alpha:true});
+/* v436 — 1,5 pixel max par point : rendu plein écran deux fois moins lourd sur les téléphones à écran très dense */renderer.setPixelRatio(Math.min(devicePixelRatio||1,FLUID?1.25:1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;stage.appendChild(renderer.domElement);
 camera.position.set(4.3,3.5,7.5);const orbit=new OrbitControls(camera,renderer.domElement);orbit.target.set(0,1.1,0);orbit.enableDamping=true;orbit.minDistance=3;orbit.maxDistance=13;orbit.update();
 scene.add(new THREE.HemisphereLight(0xdce9ff,0x242139,2.3));
 const sun=new THREE.DirectionalLight(0xffe3ae,3);sun.position.set(3,6,5);scene.add(sun);
