@@ -1011,5 +1011,10 @@
  "Mode compatibilité · 3D simplifiée": "Compatibility mode · simplified 3D",
  "Affichage de secours · 3D indisponible": "Fallback display · 3D unavailable",
  "Options mieux rangées": "Tidier options",
- "Options sur téléphone : les boutons de « Votre aventure » ne se chevauchent plus (rangés sur deux colonnes).": "Options on phones: the “Your adventure” buttons no longer overlap (arranged in two columns)."
+ "Options sur téléphone : les boutons de « Votre aventure » ne se chevauchent plus (rangés sur deux colonnes).": "Options on phones: the “Your adventure” buttons no longer overlap (arranged in two columns).",
+ "Arbre de compétences fluide": "Smooth skill tree",
+ "Arbre de compétences sur téléphone : version allégée (plus d’animations permanentes ni d’effets lumineux coûteux), l’arbre défile sans ralentir et la fiche d’une compétence s’ouvre tout de suite.": "Skill tree on phones: lighter version (no constant animations or costly glow effects); the tree scrolls without slowing down and a skill’s card opens right away.",
+ "Un jeu plus fluide": "A smoother game",
+ "Nouveau « mode fluide » (Options › Affichage), activé par défaut sur téléphone : plus de flou d’arrière-plan ni d’animations décoratives en boucle, plateau 3D allégé. Le jeu est moins chargé mais beaucoup plus fluide.": "New “smooth mode” (Options › Display), on by default on phones: no background blur or looping decorative animations, lighter 3D board. The game looks a little plainer but runs much more smoothly.",
+ "Mode fluide : moins d’effets visuels, jeu plus rapide (recommandé sur téléphone)": "Smooth mode: fewer visual effects, faster game (recommended on phones)"
 }

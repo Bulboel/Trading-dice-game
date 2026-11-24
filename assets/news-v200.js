@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v444',title:'Un jeu plus fluide',items:['Nouveau « mode fluide » (Options › Affichage), activé par défaut sur téléphone : plus de flou d’arrière-plan ni d’animations décoratives en boucle, plateau 3D allégé. Le jeu est moins chargé mais beaucoup plus fluide.','Arbre de compétences sur téléphone : version allégée (plus d’animations permanentes ni d’effets lumineux coûteux), l’arbre défile sans ralentir et la fiche d’une compétence s’ouvre tout de suite.']},
  {id:'v443',title:'Options mieux rangées',items:['Options sur téléphone : les boutons de « Votre aventure » ne se chevauchent plus (rangés sur deux colonnes).']},
  {id:'v442',title:'Mode compatibilité du plateau',items:['Plateau : sur les téléphones où la 3D complète ne démarre pas (certains modèles récents), le jeu passe tout seul en mode compatibilité, avec le vrai plateau, et affiche la cause du problème.']},
  {id:'v441',title:'Boutique plus lisible',items:['Boutique sur téléphone : les boutons tiennent sur une seule ligne et la boubourse garde toute sa place, même avec le Pack Sage et une fois les dés révélés.']},
