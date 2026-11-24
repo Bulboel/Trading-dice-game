@@ -989,5 +989,8 @@
  "Correctif : le chapitre V apparaît aussi dans la vue en liste du mode Histoire, et son numéro s’affiche en chiffres romains sur la carte.": "Fix: chapter V now also appears in the Story list view, and its number shows in Roman numerals on the map.",
  "L’attaque à Kierzan": "The Attack on Kierzan",
  "Des dalles bien nettes": "Crisp tiles",
- "Correctif : les chiffres posés sur les dalles ne grésillent plus (surtout visible sur téléphone).": "Fix: the numbers on the tiles no longer flicker (mostly visible on phones)."
+ "Correctif : les chiffres posés sur les dalles ne grésillent plus (surtout visible sur téléphone).": "Fix: the numbers on the tiles no longer flicker (mostly visible on phones).",
+ "Des animations plus fluides": "Smoother animations",
+ "Ouverture des boubourses plus fluide : moins d’étincelles en même temps et des effets lumineux beaucoup moins coûteux.": "Smoother pouch opening: fewer sparkles at once and much lighter glow effects.",
+ "Cérémonie légendaire, divine et crépitante plus fluide sur téléphone, et découverte d’un nouveau dé en 3D plus légère.": "Smoother legendary, divine and crackling ceremony on phones, and a lighter 3D discovery of new dice."
 }

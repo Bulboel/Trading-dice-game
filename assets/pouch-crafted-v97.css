@@ -36,8 +36,8 @@ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre .pouch-prop{top
 .pouch-glints .die-trail-particle{position:absolute;display:block;width:var(--trail-size);height:var(--trail-size);padding:0;margin:0;z-index:8;pointer-events:none;font:700 var(--trail-size)/1 Georgia,serif;text-align:center;text-shadow:0 0 5px currentColor,0 0 11px currentColor;animation:die-trail-fade var(--trail-life) ease-out both}
 .pouch-glints .trail-rare{color:#ffd36d}
 .pouch-glints .trail-legendary{color:transparent;background:linear-gradient(110deg,#ff6a77,#ffe26d,#61f2a7,#71baff,#e27dff);background-clip:text;-webkit-background-clip:text}
-.pouch-glints .trail-divine{color:#fff;background:conic-gradient(#fff1a6,#ff7b77,#86ffd4,#9b9bff,#ffb9f3,#fff1a6);background-clip:text;-webkit-background-clip:text;filter:hue-rotate(var(--trail-hue)) drop-shadow(0 0 7px #fff)}
-.pouch-glints .trail-divine:before{content:"";position:absolute;left:50%;top:50%;width:clamp(16px,5vw,28px);height:3px;border-radius:50%;background:linear-gradient(90deg,transparent,#fff 35%,#a8fff0 65%,transparent);filter:blur(1px);transform:translate(-50%,-50%) rotate(var(--trail-angle));box-shadow:0 0 8px #dffcff}
+.pouch-glints .trail-divine{color:#fff}
+.pouch-glints .trail-divine:before{content:"";position:absolute;left:50%;top:50%;width:clamp(16px,5vw,28px);height:3px;border-radius:50%;background:linear-gradient(90deg,transparent,#fff 35%,#a8fff0 65%,transparent);transform:translate(-50%,-50%) rotate(var(--trail-angle));box-shadow:0 0 8px #dffcff}
 @keyframes die-trail-fade{0%{opacity:0;transform:translate(-50%,-50%) scale(.45)}16%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--trail-dx)),calc(-50% + var(--trail-dy))) scale(.05);filter:blur(1px)}}
 
 /* v80: responsive launch height, compact rarity and element tags. */
@@ -84,7 +84,7 @@ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre.pouch-compact-l
 /* v91: anneau prismatique serré autour de la silhouette, traînées renforcées. */
 #portal .pouch-theatre .pouch-rarity-aura{position:absolute;z-index:6;left:var(--pouch-x,50%);top:calc(var(--pouch-top,12px) - 19px);width:calc(var(--pouch-w,180px) + 38px);aspect-ratio:320/350;transform:translateX(-50%);border-radius:50%;pointer-events:none;opacity:0;background:radial-gradient(ellipse at 50% 50%,transparent 70%,#ff7acb00 75%,#ff7acb80 79%,#ffd96f99 83%,#82ffd799 87%,#71d8ffa3 91%,#bc87ff95 95%,#fff0 99%);filter:drop-shadow(0 0 6px #ff93dc) drop-shadow(0 0 10px #80eaff)}
 #portal .pouch-theatre.pouch-prismatic-halo .pouch-rarity-aura{opacity:1;animation:pouch-spectrum-breathe 1.25s ease-in-out infinite alternate}
-#portal .pouch-theatre.pouch-divine-halo .pouch-rarity-aura{filter:drop-shadow(0 0 9px #ff93dc) drop-shadow(0 0 15px #80eaff) drop-shadow(0 0 20px #fff08a);animation-duration:.8s}
+#portal .pouch-theatre.pouch-divine-halo .pouch-rarity-aura{filter:drop-shadow(0 0 14px #ff93dc);animation-duration:.8s}
 #portal .pouch-theatre.pouch-prismatic-halo .pouch-prop .dice-pouch{filter:none!important}
 #portal .pouch-theatre.pouch-prismatic-halo .pouch-prop .dice-pouch>svg{filter:drop-shadow(0 13px 12px #0005) drop-shadow(0 0 5px #ff8bd7) drop-shadow(0 0 10px #83eaff) drop-shadow(0 0 14px #ffe28a)}
 #portal .pouch-theatre .pouch-rainbow-spark{position:absolute;left:50%;top:50%;z-index:1;display:block;padding:0;margin:0;color:hsl(var(--spark-hue),100%,77%);font:700 var(--spark-size)/1 Georgia,serif;font-style:normal;text-shadow:0 0 6px currentColor,0 0 12px currentColor,0 0 20px #fff;pointer-events:none;opacity:0;animation:pouch-rainbow-spark 1.25s cubic-bezier(.15,.72,.2,1) var(--spark-delay) infinite}
@@ -97,12 +97,13 @@ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre.pouch-compact-l
 @media(prefers-reduced-motion:reduce){#portal .pouch-theatre.pouch-prismatic-halo .pouch-rarity-aura{animation:none!important}#portal .pouch-theatre .pouch-rainbow-spark{display:none!important}}
 /* More visible star trails: gold, prismatic and divine light. */
 .pouch-glints .die-trail-particle{text-shadow:0 0 7px currentColor,0 0 14px currentColor,0 0 24px currentColor,0 0 32px #fff;-webkit-text-stroke:.35px #fff9}
-.pouch-glints .trail-rare{color:#ffd36d;filter:drop-shadow(0 0 4px #ffce4a) drop-shadow(0 0 9px #ffeab0)}
-.pouch-glints .trail-legendary{color:transparent;background:linear-gradient(110deg,#ff6a77,#ffe26d,#61f2a7,#71baff,#e27dff);background-clip:text;-webkit-background-clip:text;filter:drop-shadow(0 0 5px #ff8aee) drop-shadow(0 0 9px #81e6ff)}
-.pouch-glints .trail-divine{color:#fff;background:conic-gradient(#fff1a6,#ff7b77,#86ffd4,#9b9bff,#ffb9f3,#fff1a6);background-clip:text;-webkit-background-clip:text;filter:hue-rotate(var(--trail-hue)) drop-shadow(0 0 10px #fff) drop-shadow(0 0 14px #ba8cff)}
-.pouch-glints .trail-divine:before{height:4px;filter:blur(1.3px);box-shadow:0 0 12px #dffcff,0 0 20px #fff}
+/* v436 — étincelles : halo de texte au lieu de filtres (des centaines d’étincelles à la fois pendant l’ouverture) */.pouch-glints .trail-rare{color:#ffd36d;filter:none;text-shadow:0 0 4px #ffce4a,0 0 9px #ffeab0}
+.pouch-glints .trail-legendary{color:var(--trail-col,#ffe26d);background:none;filter:none;text-shadow:0 0 5px #ff8aee,0 0 9px #81e6ff}
+.pouch-glints .trail-divine{color:var(--trail-col,#fff1a6);background:none;filter:none;text-shadow:0 0 8px #fff,0 0 14px #ba8cff}
+.pouch-glints .trail-divine:before{height:4px;filter:none;box-shadow:0 0 12px #dffcff,0 0 20px #fff}
 
 /* v96: broad, asymmetrical aurora clouds with independent, gentle flicker. */
+/* v436 — le flou des aurores ne varie plus pendant l’animation (il était recalculé à chaque image) : seuls la position et l’opacité bougent. */
 #portal .pouch-theatre .pouch-rarity-aura{
  position:absolute!important;z-index:1!important;left:var(--pouch-x,50%)!important;
  top:calc(var(--pouch-top,12px) - 52px)!important;
@@ -117,7 +118,7 @@ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre.pouch-compact-l
 #portal .pouch-theatre .pouch-rarity-aura::before,
 #portal .pouch-theatre .pouch-rarity-aura::after{
  content:"";position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;
- will-change:transform,opacity,filter
+ will-change:transform,opacity
 }
 #portal .pouch-theatre .pouch-rarity-aura::before{
  background:
@@ -126,7 +127,7 @@ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre.pouch-compact-l
   radial-gradient(ellipse 27% 36% at 70% 43%,rgba(104,225,255,.48),transparent 100%),
   radial-gradient(ellipse 22% 32% at 58% 27%,rgba(255,204,102,.4),transparent 100%),
   radial-gradient(ellipse 20% 29% at 42% 75%,rgba(171,119,255,.36),transparent 100%);
- filter:blur(22px);opacity:.75;animation:pouch-aurora-drift-a 2.4s ease-in-out infinite
+ filter:blur(22px);will-change:transform,opacity;opacity:.75;animation:pouch-aurora-drift-a 2.4s ease-in-out infinite
 }
 #portal .pouch-theatre .pouch-rarity-aura::after{
  background:
@@ -134,19 +135,19 @@ body.portal-open[data-portal-view="shop"] #portal .pouch-theatre.pouch-compact-l
   radial-gradient(ellipse 27% 34% at 67% 60%,rgba(103,255,205,.42),transparent 100%),
   radial-gradient(ellipse 21% 29% at 53% 78%,rgba(111,173,255,.4),transparent 100%),
   radial-gradient(ellipse 18% 25% at 78% 35%,rgba(255,188,115,.3),transparent 100%);
- filter:blur(27px);opacity:.58;animation:pouch-aurora-drift-b 3.2s ease-in-out -1.15s infinite
+ filter:blur(24px);will-change:transform,opacity;opacity:.58;animation:pouch-aurora-drift-b 3.2s ease-in-out -1.15s infinite
 }
 #portal .pouch-theatre.pouch-divine-halo .pouch-rarity-aura::before,
 #portal .pouch-theatre.pouch-divine-halo .pouch-rarity-aura::after{filter:blur(26px) brightness(1.24)}
 @keyframes pouch-aurora-drift-a{
- 0%,100%{opacity:.48;transform:translate(-1%,1%) scale(.96) rotate(-2deg);filter:blur(25px)}
- 38%{opacity:.88;transform:translate(1%,-1%) scale(1.04) rotate(2deg);filter:blur(19px)}
- 72%{opacity:.62;transform:translate(0,1%) scale(1) rotate(0deg);filter:blur(23px)}
+ 0%,100%{opacity:.48;transform:translate(-1%,1%) scale(.96) rotate(-2deg)}
+ 38%{opacity:.88;transform:translate(1%,-1%) scale(1.04) rotate(2deg)}
+ 72%{opacity:.62;transform:translate(0,1%) scale(1) rotate(0deg)}
 }
 @keyframes pouch-aurora-drift-b{
- 0%,100%{opacity:.4;transform:translate(1%,0) scale(1.02) rotate(3deg);filter:blur(29px)}
- 44%{opacity:.78;transform:translate(-1%,1%) scale(.95) rotate(-2deg);filter:blur(20px)}
- 78%{opacity:.52;transform:translate(1%,-1%) scale(1.04) rotate(1deg);filter:blur(26px)}
+ 0%,100%{opacity:.4;transform:translate(1%,0) scale(1.02) rotate(3deg)}
+ 44%{opacity:.78;transform:translate(-1%,1%) scale(.95) rotate(-2deg)}
+ 78%{opacity:.52;transform:translate(1%,-1%) scale(1.04) rotate(1deg)}
 }
 #portal .pouch-theatre.pouch-prismatic-halo .pouch-prop .dice-pouch>svg{filter:none!important}
 @media(prefers-reduced-motion:reduce){
