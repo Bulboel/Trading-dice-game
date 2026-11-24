@@ -1003,5 +1003,7 @@
  "Rappel corrigé": "Recall fixed",
  "Correctif : le pouvoir Rappel ne retire plus la dalle sur laquelle se tient une créature adverse (elle ne se retrouve plus sans case, à puissance 1).": "Fix: the Recall power no longer removes the tile an enemy creature is standing on (it no longer ends up with no tile, at power 1).",
  "Arbre de compétences apaisé": "Calmer skill tree",
- "Arbre de compétences : plus de grésillement quand on touche une compétence ou qu’on fait défiler l’écran (effets de flou et décor animé allégés).": "Skill tree: no more flickering when tapping a skill or scrolling (lighter blur effects and animated background)."
+ "Arbre de compétences : plus de grésillement quand on touche une compétence ou qu’on fait défiler l’écran (effets de flou et décor animé allégés).": "Skill tree: no more flickering when tapping a skill or scrolling (lighter blur effects and animated background).",
+ "Boutique plus lisible": "Clearer shop",
+ "Boutique sur téléphone : les boutons tiennent sur une seule ligne et la boubourse garde toute sa place, même avec le Pack Sage et une fois les dés révélés.": "Shop on phones: the buttons fit on a single row and the pouch keeps its full space, even with the Sage Pack and once the dice are revealed."
 }

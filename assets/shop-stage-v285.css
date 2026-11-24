@@ -13,3 +13,22 @@
  html body.portal-open[data-portal-view="shop"] #portal .pouch-theatre{height:clamp(440px,calc(100dvh - 285px),780px)!important;min-height:0!important;margin:0 0 4px!important}
  html body.portal-open[data-portal-view="shop"] #portal .pouch-open-hint{margin:2px 0 6px!important}
 }
+
+/* v441 — Boutique sur téléphone : les boutons secondaires tenaient sur deux ou trois lignes (surtout avec le ×100 du Pack Sage)
+   et la scène de la boubourse, qui prend « la place qui reste », se retrouvait écrasée (dés révélés qui débordent).
+   Désormais : une seule ligne compacte (Packs et Historique en icône), une hauteur minimale pour la scène, et la page défile
+   si l’écran est vraiment trop petit. */
+html body.portal-open[data-portal-view="shop"] #portal .shop-actions{display:flex!important;flex-wrap:wrap!important;gap:6px!important}
+html body.portal-open[data-portal-view="shop"] #portal .shop-actions>.portal-primary,html body.portal-open[data-portal-view="shop"] #portal .shop-actions>[data-action="open-all"]{flex:1 0 100%!important}
+html body.portal-open[data-portal-view="shop"] #portal .shop-actions>button:not(.portal-primary):not([data-action="open-all"]){flex:1 1 0!important;min-width:0!important;height:36px!important;min-height:36px!important;padding:0 6px!important;font-size:12.5px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+html body.portal-open[data-portal-view="shop"] #portal .shop-actions>button.shop-packs:not(.portal-primary):not([data-action="open-all"]){flex:0 0 44px!important;padding:0!important;font-size:17px!important}
+html body.portal-open[data-portal-view="shop"] #portal .shop-actions>.shop-packs .sh-long,html body.portal-open[data-portal-view="shop"] #portal .shop-actions>.shop-packs .sh-short{display:none!important}
+@media(max-width:700px){
+ html body.portal-open[data-portal-view="shop"] #portal .shop-actions .sh-long{display:none!important}
+ html body.portal-open[data-portal-view="shop"] #portal .shop-actions .sh-short{display:inline!important}
+ html body.portal-open[data-portal-view="shop"] #portal .shop-actions .sh-word{display:none!important}
+ html body.portal-open[data-portal-view="shop"] #portal #portal-content{overflow-y:auto!important}
+ html body.portal-open[data-portal-view="shop"] #portal .portal-section{overflow:visible!important}
+ html body.portal-open[data-portal-view="shop"] #portal .pouch-theatre{min-height:250px!important;flex-shrink:0!important}
+ html body.portal-open[data-portal-view="shop"] #portal .pouch-theatre:not(.pouch-revealed){flex-shrink:1!important;min-height:210px!important}
+}
