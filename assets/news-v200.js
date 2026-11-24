@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v443',title:'Options mieux rangées',items:['Options sur téléphone : les boutons de « Votre aventure » ne se chevauchent plus (rangés sur deux colonnes).']},
  {id:'v442',title:'Mode compatibilité du plateau',items:['Plateau : sur les téléphones où la 3D complète ne démarre pas (certains modèles récents), le jeu passe tout seul en mode compatibilité, avec le vrai plateau, et affiche la cause du problème.']},
  {id:'v441',title:'Boutique plus lisible',items:['Boutique sur téléphone : les boutons tiennent sur une seule ligne et la boubourse garde toute sa place, même avec le Pack Sage et une fois les dés révélés.']},
  {id:'v440',title:'Arbre de compétences apaisé',items:['Arbre de compétences : plus de grésillement quand on touche une compétence ou qu’on fait défiler l’écran (effets de flou et décor animé allégés).']},
