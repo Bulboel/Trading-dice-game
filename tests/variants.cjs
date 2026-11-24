@@ -8,7 +8,7 @@ const g=c.window.hackeniaGame,defs=g.monsters,variants=defs.map((d,i)=>[i,d]).fi
 assert.equal(variants.length-defs.filter(d=>d.foe&&d.variant).length,46,'v342 : teintes des créatures d’Histoire à part ; v267 : six dés à teinte remplacés par les bébémentaires ; v258 Kayla sacrée + 18 generic dice replaced + 3 new dice + 6 Hydrelithes + 10 Bosco/Myconide + 4 alternative rarities + 5 Mineurs + 6 Araignées (v248)');
 const names=new Set();
 for(const [i,d] of variants){const r=g.rarity(d),v=d.variant;
- assert.ok(manifest.creatures[d.modelKey]?.glb,d.cn+' reuses an existing 3D model');assert.ok(!names.has(d.cn),d.cn+' has a unique name');names.add(d.cn);
+ assert.ok(manifest.creatures[d.modelKey]?.glb||(d.paper&&manifest.creatures[d.modelKey]?.sprite),d.cn+' reuses an existing 3D model (ou, v437, une figurine en papier existante)');assert.ok(!names.has(d.cn),d.cn+' has a unique name');names.add(d.cn);
  assert.ok(['tint','stone','metal'].includes(v.kind)&&/^#[0-9a-f]{6}$/i.test(v.color),d.cn+' has a valid look');
  for(const s of[128,512]){const f=path.join(root,`assets/characters/${d.portrait}-${s}.webp`);assert.ok(fs.existsSync(f),d.cn+' portrait '+s);assert.ok(fs.statSync(f).size<150000)}
  if(r===3)assert.ok(v.kind==='metal'&&v.color.toLowerCase()>'#d0','Rares are silver automatons ('+d.cn+')');
