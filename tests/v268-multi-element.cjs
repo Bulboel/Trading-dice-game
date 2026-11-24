@@ -19,7 +19,7 @@ for(const [i,d] of multi){const r=g.rarity(d),n=d.els.length;
  for(const s of[128,512])assert.ok(fs.existsSync(path.join(root,`assets/characters/${d.portrait}-${s}.webp`)),d.cn+' médaillon '+s)}
 // Règles de bonus sur le plateau : duo eau + feu
 const setup=ter=>run(`TER=TL.indexOf('${ter}');b=Array.from({length:H},()=>Array(W).fill(null));cr=[];lotus=[]`);
-const mk=(x,y,o,v,m)=>run(`b[${y}][${x}]={o:${o},el:M[${m}].el,v:${v},lv:M[${m}].lv,id:${100+x*10+y}${M[m].els?`,ex:${JSON.stringify(M[m].els.slice(1))}`:''}}`);
+const mk=(x,y,o,v,m)=>run(`b[${y}][${x}]={o:${o},el:'',v:${v},lv:M[${m}].lv,id:${100+x*10+y}};cr.push({o:${o},x:${x},y:${y},mi:${m},id:${100+x*10+y},em:'d'})`);/* v432 : dalle neutre, l’élément vient de la créature */
 const bonus=(x,y)=>JSON.parse(run(`JSON.stringify(tileBonuses(${x},${y}))`));
 const idx=n=>M.findIndex(d=>d.cn===n);
 const duo=idx('Duo de la Vapeur'),trio=idx('Trio du Brasier'),plain=idx('Bébémentaire de glace');

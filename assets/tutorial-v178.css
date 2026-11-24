@@ -109,3 +109,11 @@ body.tutorial-mode #bw>#tuto-coach,body.tutorial-mode #bw>#tuto-coach h2,body.tu
 body.tutorial-mode #bw>#tuto-coach footer{display:flex!important;flex-wrap:nowrap!important;gap:5px}
 body.tutorial-mode #bw>#tuto-coach footer button{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 2px 6px #0008}
 @media(max-width:700px){body.tutorial-mode #bw>#tuto-coach{max-height:min(38%,300px)!important}body.tutorial-mode #bw>#tuto-coach footer button{min-height:30px!important;padding:4px 7px!important;font-size:11px!important}}
+/* v431 — Les boutons du tutoriel (Suivant, Recommencer…) restent toujours visibles : sur un petit écran, c'est le texte qui
+   défile, jamais le pied du panneau. Le titre de la leçon tient sur une ligne, et le panneau peut grandir un peu plus. */
+body.tutorial-mode #bw>#tuto-coach{overflow-y:auto!important;max-height:min(62%,420px)!important}
+body.tutorial-mode #bw>#tuto-coach>footer{flex:0 0 auto;position:sticky;bottom:-8px;margin-bottom:-8px;padding-bottom:8px;background:linear-gradient(transparent,#14251ef2 30%);z-index:2}
+body.tutorial-mode #bw>#tuto-coach>header,body.tutorial-mode #bw>#tuto-coach>.tuto-dots,body.tutorial-mode #bw>#tuto-coach>h2,body.tutorial-mode #bw>#tuto-coach>.tuto-goal{flex:0 0 auto}
+body.tutorial-mode #bw>#tuto-coach .tuto-kicker{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1 1 auto}
+body.tutorial-mode #bw>#tuto-coach>header{display:flex;align-items:center;gap:6px;min-width:0}
+body.tutorial-mode #bw>#tuto-coach>.tuto-text{flex:1 1 auto;min-height:1.4em}

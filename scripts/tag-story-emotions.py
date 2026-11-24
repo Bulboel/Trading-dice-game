@@ -18,6 +18,8 @@ CUES=[('ko',r"assomm|inconscien|évanoui|k\.-?o\b|perd connaissance|est étourdi
  ('thinking',r"réfléchi|\bhmm|je me demande|perplexe|intrigu|songeu|pensif|pensive")]
 GROUP_MOODS={'fight','happy','surprised','thinking','scared'}
 GROUP=r"\bils\b|la compagnie|les aventuriers|le groupe|tout le monde|ses amis|nos héros|nos aventuriers"
+# Réglages à la main (partie, séquence, n° de réplique, personnage) → humeur, prioritaires sur les mots-clés.
+OVERRIDES={('c1p5','intro',1,'Jhimm'):'neutral',('c1p5','intro',2,'Jhimm'):'fight',('c1p5','intro',3,'Jhimm'):'fight',('c1p5','intro',4,'Jhimm'):'neutral'}
 KEEP={'happy','proud','haughty','blasé','friendly','crying','embarrassed'}
 def mood(text):
     t=text.lower()
@@ -29,7 +31,7 @@ s=open(P,encoding='utf-8').read();head,rest=s.split('\n',1);pre='window.HACKENIA
 data=json.loads(rest[len(pre):].rstrip('\n')[:-1]);stats=collections.Counter()
 for part in data:
     for k in ('intro','victory','lose','silence'):
-        for b in part.get(k) or []:
+        for bi,b in enumerate(part.get(k) or []):
             cast=[c for c in b.get('cast',[]) if c.get('n') and not c.get('art')];text=b.get('t','');sp=b.get('s','')
             for c in cast:c.pop('m',None)
             if not cast:continue
@@ -47,7 +49,7 @@ for part in data:
                     if not named and m in GROUP_MOODS and re.search(GROUP,sent.lower()):
                         for c in cast:found.setdefault(c['n'],m)
             for c in cast:
-                m=found.get(c['n']) or (c.get('e') if c.get('e') in KEEP else 'neutral')
+                m=OVERRIDES.get((part['id'],k,bi,c['n'])) or c.get('mm') or found.get(c['n']) or (c.get('e') if c.get('e') in KEEP else 'neutral')
                 if m=='crying':m='sad'
                 if m=='embarrassed':m='shy'
                 if m!='neutral':c['m']=m

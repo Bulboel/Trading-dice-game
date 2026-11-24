@@ -145,3 +145,6 @@
 #story-scene .ss-skip:hover,#story-scene .ss-skip:focus-visible{filter:brightness(1.15);outline:2px solid #ffe3a3;outline-offset:2px}
 #story-scene .ss-skip[hidden]{display:none}
 @media (max-width:700px){#story-scene .ss-skip{bottom:calc(100% + 10px);right:2px;padding:7px 13px;font-size:13px}}
+/* v432 — Chapitre V : le journal de Kala (texte manuscrit, plume) */
+#story-scene.ss-diary .ss-speaker::before{content:'✒️ ';font-style:normal}
+#story-scene.ss-diary .ss-text{font-style:italic;letter-spacing:.01em}

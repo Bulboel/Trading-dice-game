@@ -14,9 +14,9 @@ assert.ok(yo.c.reduce((a,t)=>a+t[2],0)<my.c.reduce((a,t)=>a+t[2],0),'Yoris est u
 for(const k of['hydrelithe','myconide','yoris']){const i=manifest.creatures[k];assert.ok(i.glb.startsWith('models-web/'));assert.deepEqual(Object.keys(i.animations).sort(),['spell','victory','walk']);
  for(const f of Object.values(i.animations))assert.ok(fs.existsSync(path.join(root,'assets',f)));for(const s of[128,512])assert.ok(fs.existsSync(path.join(root,`assets/characters/${k}-${s}.webp`)))}
 // Règle sur le plateau : une case multi-élément a +1 de terrain quel que soit le terrain, et jamais +1 de voisin.
-run(`b=Array.from({length:H},()=>Array(7).fill(null));b[5][3]={o:0,el:'',v:2,lv:1,id:1,mu:1};b[5][4]={o:1,el:'foudre',v:2,lv:1,id:2};b[5][2]={o:0,el:'eau',v:2,lv:1,id:3}`);
+run(`b=Array.from({length:H},()=>Array(7).fill(null));b[5][3]={o:0,el:'',v:2,lv:1,id:1,mu:1};b[5][4]={o:1,el:'foudre',v:2,lv:1,id:2};b[5][2]={o:0,el:'eau',v:2,lv:1,id:3};/* v432 : l’élément vient de la créature posée sur la dalle */cr=[{id:1,o:0,x:3,y:5,mi:M.findIndex(d=>d.multi),em:'m'}]`);
 for(let t=0;t<6;t++){run('TER='+t);const r=JSON.parse(run('JSON.stringify(tileBonuses(3,5))'));assert.deepEqual(r,{terrainBonus:1,neighborBonus:0},'terrain '+t)}
 // Une case multi-élément ne donne pas non plus de bonus de voisin aux autres (elle n'a pas d'élément).
-run(`b[5][2]={o:0,el:'vent',v:2,lv:1,id:3}`);assert.equal(JSON.parse(run('JSON.stringify(tileBonuses(2,5))')).neighborBonus,0);
+run(`b[5][2]={o:0,el:'',v:2,lv:1,id:3};cr.push({id:3,o:1,x:2,y:5,mi:M.findIndex(d=>d.el==='vent'&&!d.multi&&!d.els&&!d.pure),em:'v'})`);assert.equal(JSON.parse(run('JSON.stringify(tileBonuses(2,5))')).neighborBonus,0);
 const portal=fs.readFileSync(path.join(root,'assets/portal-v159.js'),'utf8');assert.ok(portal.includes("'Multi-élément'"),'Shown as Multi-élément in the collection');
 console.log('PASS: Hydrelithe (commun 1-1-2), Myconide (peu commun Terre), Yoris (peu commun, plus faible) ; multi-élément = +1 de terrain partout, aucun bonus de voisin, modèles allégés et clips présents.');

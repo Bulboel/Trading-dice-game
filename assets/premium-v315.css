@@ -15,3 +15,19 @@
 .lang-switch button{min-height:36px;padding:6px 16px;border:1px solid #b79e6b66;border-radius:999px;background:#ffffff0d;color:#e8dcc0;font:600 13px system-ui,sans-serif;cursor:pointer}
 .lang-switch button[aria-pressed=true]{background:#b79e6b33;border-color:#e3c987;color:#fff}
 #start-menu .lang-switch{margin-top:14px}
+/* v433 — Pack Aventurier et Pack Élémentaire : même carte que le Pack Sage, sélecteur d'élément en grille régulière */
+.pack-card .pack-ico{display:grid;place-items:center;width:72px;height:72px;border-radius:50%;font-size:38px;background:radial-gradient(circle at 40% 35%,#ffffff22,#0b1410 75%);box-shadow:inset 0 0 0 1px #c9a24a66}
+.pack-adv{background:linear-gradient(135deg,#3a2a12,#17242a)}
+.pack-el{background:linear-gradient(135deg,#123a34,#1a1d3a)}
+.pack-els{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:10px}
+.pack-el-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:68px;padding:6px 4px;border-radius:12px;border:1px solid #d6b26a3a;background:#0a0e16a0;color:#efe7d2;font-size:11px;cursor:pointer}
+.pack-el-btn[aria-checked="true"]{border-color:#d6b26a;box-shadow:0 0 0 1px #d6b26a inset;background:linear-gradient(135deg,#d6b26a33,#0a0e16a0)}
+.pack-el-btn small{font-size:8.5px;color:#9fe0b4;text-transform:uppercase;letter-spacing:.04em}
+.pack-el-ico{width:30px;height:30px;object-fit:contain}
+.pack-card>.portal-primary{grid-column:1/-1}
+@media(max-width:600px){.pack-card .pack-ico{width:56px;height:56px;font-size:30px}}
+#portal .pack-card .pack-els{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important}
+#portal .pack-card .pack-el-btn{grid-column:auto!important;width:auto!important;min-width:0!important;margin:0!important;min-height:64px!important;padding:6px 4px!important;background:#0a0e16a0!important;color:#efe7d2!important;border:1px solid #d6b26a3a!important;box-shadow:none!important}
+#portal .pack-card .pack-el-btn[aria-checked="true"]{border-color:#d6b26a!important;box-shadow:0 0 0 1px #d6b26a inset!important;background:linear-gradient(135deg,#d6b26a33,#0a0e16a0)!important}
+#portal .pack-card .pack-el-btn:hover{border-color:#d6b26a99!important}
+#portal .pack-card{align-items:start}
