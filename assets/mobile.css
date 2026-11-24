@@ -130,3 +130,8 @@
  body.portal-open #portal .portal-brand small{font-size:7px!important;letter-spacing:.2px!important}
 }
 @media(max-width:350px){body.portal-open #portal .hackenia-logo{width:29px!important;height:29px!important}body.portal-open #portal .portal-brand h1{font-size:15px!important}}
+/* v443 — Options › « Votre aventure » : les quatre boutons étaient forcés sur une ligne et se chevauchaient sur téléphone.
+   Grille de deux colonnes (une seule sous 330 px), texte qui passe à la ligne et légèrement réduit. */
+html body #portal #portal-content .first-visit-options .deck-actions{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(min(128px,100%),1fr))!important;gap:8px!important;width:100%!important}
+html body #portal #portal-content .first-visit-options .deck-actions>button{width:100%!important;min-width:0!important;max-width:none!important;height:auto!important;min-height:42px!important;padding:8px 10px!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;line-height:1.2!important;font-size:clamp(12px,3.4vw,14px)!important;text-align:center!important;overflow-wrap:break-word!important;flex:none!important}
+@media(max-width:330px){html body #portal #portal-content .first-visit-options .deck-actions{grid-template-columns:1fr!important}}

@@ -1009,5 +1009,7 @@
  "Mode compatibilité du plateau": "Board compatibility mode",
  "Plateau : sur les téléphones où la 3D complète ne démarre pas (certains modèles récents), le jeu passe tout seul en mode compatibilité, avec le vrai plateau, et affiche la cause du problème.": "Board: on phones where full 3D cannot start (some recent models), the game switches to compatibility mode on its own, with the real board, and shows the cause of the problem.",
  "Mode compatibilité · 3D simplifiée": "Compatibility mode · simplified 3D",
- "Affichage de secours · 3D indisponible": "Fallback display · 3D unavailable"
+ "Affichage de secours · 3D indisponible": "Fallback display · 3D unavailable",
+ "Options mieux rangées": "Tidier options",
+ "Options sur téléphone : les boutons de « Votre aventure » ne se chevauchent plus (rangés sur deux colonnes).": "Options on phones: the “Your adventure” buttons no longer overlap (arranged in two columns)."
 }
