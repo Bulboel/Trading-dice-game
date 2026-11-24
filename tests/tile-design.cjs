@@ -5,6 +5,7 @@ assert.ok(src.includes("label(c.v,c.mu?'multi':c.el,Math.max(0,game.power(x,y)-c
 for(const el of['foudre','vent','terre','glace','eau','feu'])assert.ok(src.includes(`el==='${el}'`),'Glyph for '+el);
 assert.ok(src.includes("ctx.fillText('+'+bonus"),'Bonus pill');assert.ok(src.includes('ExtrudeGeometry(sh'),'Rounded tile body');
 assert.ok(/textures\.delete\(k\)/.test(src),'Tile tops are redrawn when camp colours change');
+assert.ok(src.includes('depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-8});textures.set(key,material)')&&src.includes('t.top.position.set(0,h+.012,0)'),'v436 — tile numbers drawn above the tile top without flickering');
 const mv=fs.readFileSync(path.join(__dirname,'../assets/variant-mv-v221.js'),'utf8'),portal=fs.readFileSync(path.join(__dirname,'../assets/portal-v159.js'),'utf8'),html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8');
 assert.ok(mv.includes("description==='scene'")&&mv.includes('#include <map_fragment>'),'Variant shader applied inside model-viewer');
 assert.ok(portal.includes('HackeniaVariantMV?.apply(mv,defs[i].variant)')&&html.includes('if(D.variant)window.HackeniaVariantMV?.apply(mv,D.variant)'),'Collection and in-game sheets use the real variant look');

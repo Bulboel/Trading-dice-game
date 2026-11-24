@@ -987,5 +987,7 @@
  "Chapitre V : L’attaque à Kierzan": "Chapter V: The Attack on Kierzan",
  "Le chapitre V s’appelle désormais « L’attaque à Kierzan ».": "Chapter V is now called “The Attack on Kierzan”.",
  "Correctif : le chapitre V apparaît aussi dans la vue en liste du mode Histoire, et son numéro s’affiche en chiffres romains sur la carte.": "Fix: chapter V now also appears in the Story list view, and its number shows in Roman numerals on the map.",
- "L’attaque à Kierzan": "The Attack on Kierzan"
+ "L’attaque à Kierzan": "The Attack on Kierzan",
+ "Des dalles bien nettes": "Crisp tiles",
+ "Correctif : les chiffres posés sur les dalles ne grésillent plus (surtout visible sur téléphone).": "Fix: the numbers on the tiles no longer flicker (mostly visible on phones)."
 }
