@@ -35,8 +35,8 @@ function topAnchors(m,n=1){const out=[];for(let y=0;y<H;y++)for(let x=0;x<W;x++)
 function progress(){try{return JSON.parse(localStorage.getItem(KEY)||'{}').done||[]}catch{return[]}}
 function markDone(id){try{const d=new Set(progress());d.add(id);localStorage.setItem(KEY,JSON.stringify({done:[...d]}))}catch{}}
 // Scène de duel commune aux leçons 3 et 4 : une route verticale, deux cases d'attaque (2,6) et (4,6) autour d'un ennemi posé en (3,6).
-function duelBoard(a,bT,enemyV,enemyEl=''){reset();path(3,[11,10,9,8],0,[2,3,2,3]);tile(2,8,0,2);tile(4,8,0,2);tile(2,7,0,2);tile(4,7,0,2);
- tile(2,6,0,a.v,a.el);tile(4,6,0,bT.v,bT.el);tile(3,6,1,enemyV,enemyEl);tile(3,5,1,enemyV,enemyEl);unit(0,3,11,D.kala);unit(1,3,6,D.grimgors)}
+function duelBoard(a,bT,enemyV,enemyEl='',enemyMi=D.grimgors){/* v432 — dalles neutres : seul l’élément des créatures compte */reset();path(3,[11,10,9,8],0,[2,3,2,3]);tile(2,8,0,2);tile(4,8,0,2);tile(2,7,0,2);tile(4,7,0,2);
+ tile(2,6,0,a.v,'');tile(4,6,0,bT.v,'');tile(3,6,1,enemyV,'');tile(3,5,1,enemyV,'');unit(0,3,11,D.kala);unit(1,3,6,enemyMi)}
 
 // ——— Les leçons ———
 const LESSONS=[
@@ -107,22 +107,22 @@ const LESSONS=[
   text:()=>`<p>🏆 Tu sais <b>poser, avancer et combattre</b> : tu peux déjà tenter une <b>partie contre un adversaire facile</b> !</p><p>Prochaine leçon (au choix) : <b>les affinités</b>, pour gagner encore plus de duels.</p>`}]},
 {id:'affinity',terrain:'terre',title:'Les affinités',goal:'Utiliser les bonus de terrain et d’élément pour gagner un duel.',steps:[
  {title:'Le bonus de terrain',kind:'action',
-  setup(){duelBoard({v:3,el:'vent'},{v:3,el:'terre'},3)},
+  setup(){duelBoard({v:3},{v:3},3)},
   targets:()=>[[2,6],[4,6]],
-  text:()=>`<p>Nous sommes maintenant dans <b>Le Bois tendre</b>, un terrain de <b>terre</b> : chaque terrain favorise un élément, et ses dalles de <b>terre</b> gagnent <b>+1</b>. L’ennemi a <b>3</b> d’attaque.</p><p><b>À toi :</b> deux cases permettent d’attaquer (vent ou terre, toutes deux à 3). <b>Choisis la bonne</b> !</p>`,
+  text:()=>`<p>Nous sommes dans <b>Le Bois tendre</b>, un terrain de <b>terre</b> : chaque terrain favorise un élément, et les <b>créatures</b> de cet élément gagnent <b>+1</b>, où qu’elles soient. Les dalles, elles, sont <b>neutres</b>.</p><p><b>Kala est de terre</b>. L’ennemi a <b>3</b> d’attaque. <b>À toi :</b> attaque-le depuis une case dorée (dalle de 3).</p>`,
   check:()=>kills[0]>=1&&mine().length>0&&idle(),
   retry:()=>moved&&idle()&&!(kills[0]>=1&&mine().length>0),
-  success:()=>`<p>✓ <b>Duel gagné !</b> Sur la dalle de <b>terre</b>, 3 + 1 = <b>4</b> contre 3.</p><p>Sur la dalle de vent, c’était une égalité.</p>`},
+  success:()=>`<p>✓ <b>Duel gagné !</b> Kala : 3 + 1 (terrain de terre) = <b>4</b> contre 3.</p><p>Une créature d’un autre élément aurait fait égalité.</p>`},
  {title:'Le bonus de voisin',kind:'action',
-  setup(){duelBoard({v:3,el:'terre'},{v:3,el:'terre'},4);tile(1,6,1,1,'vent')},
+  setup(){duelBoard({v:3},{v:3},4,'',11)},
   targets:()=>[[2,6],[4,6]],
-  text:()=>`<p>L’ennemi a <b>4</b>. Les deux dalles sont de <b>terre</b> (+1 terrain), mais l’une a une dalle de <b>vent</b> pour voisine : la terre <b>domine</b> le vent, <b>+1 de plus</b>. <b>Choisis-la !</b></p>`,
+  text:()=>`<p>L’ennemi a <b>4</b>, et il est de <b>vent</b>. La <b>terre domine le vent</b> : quand Kala se bat contre une créature qu’elle domine, juste à côté d’elle, elle gagne <b>+1 de plus</b>.</p><p><b>À toi :</b> attaque-le !</p>`,
   check:()=>kills[0]>=1&&mine().length>0&&idle(),
   retry:()=>moved&&idle()&&!(kills[0]>=1&&mine().length>0),
-  success:()=>`<p>✓ <b>Duel gagné !</b> 3 + 1 (terrain) + 1 (voisin) = <b>5</b> contre 4.</p><p>Chaque élément domine le suivant : <b>${cycle}</b>.</p>`},
+  success:()=>`<p>✓ <b>Duel gagné !</b> 3 + 1 (terrain) + 1 (elle domine le vent) = <b>5</b> contre 4.</p><p>Chaque élément domine le suivant : <b>${cycle}</b>.</p>`},
  {title:'Leçon 4 réussie !',kind:'final',lessonEnd:true,
   setup(){reset()},
-  text:()=>`<p>🏆 Tu connais les <b>affinités</b> : bonus de <b>terrain</b> (+1) et bonus de <b>voisin</b> (+1).</p><p>En partie, la <b>roue des éléments</b> à droite du plateau te rappelle qui domine qui.</p>`}]},
+  text:()=>`<p>🏆 Tu connais les <b>affinités</b> : bonus de <b>terrain</b> (+1, l’élément de la créature) et bonus de <b>voisin</b> (+1 contre un ennemi dominé).</p><p>En partie, la <b>roue des éléments</b> à droite du plateau te rappelle qui domine qui.</p>`}]},
 {id:'more',title:'Pour aller plus loin',optional:true,goal:'Se défendre et maîtriser les petits plus.',steps:[
  {title:'Attention aux ripostes',kind:'demo',demoLabel:'Voir le tour adverse',
   setup(){reset();path(4,[8,7,6],0,[2,2,2],'vent');unit(0,4,6,D.kala);path(4,[3,4,5],1,[6,6,6],'vent');unit(1,4,3,D.grimgors)},

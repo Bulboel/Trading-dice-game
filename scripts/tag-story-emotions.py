@@ -49,7 +49,7 @@ for part in data:
                     if not named and m in GROUP_MOODS and re.search(GROUP,sent.lower()):
                         for c in cast:found.setdefault(c['n'],m)
             for c in cast:
-                m=OVERRIDES.get((part['id'],k,bi,c['n'])) or found.get(c['n']) or (c.get('e') if c.get('e') in KEEP else 'neutral')
+                m=OVERRIDES.get((part['id'],k,bi,c['n'])) or c.get('mm') or found.get(c['n']) or (c.get('e') if c.get('e') in KEEP else 'neutral')
                 if m=='crying':m='sad'
                 if m=='embarrassed':m='shy'
                 if m!='neutral':c['m']=m

@@ -21,3 +21,6 @@ body:not(.portal-open) #app #hand .dc .dice-visuals .dice-art .character-portrai
 #portal .collect-card .card-kind,#portal .collect-card .card-rarity,#portal .collect-card .card-stats{position:relative;flex-shrink:0}
 #portal .collect-card h3{position:relative;display:block!important;flex:0 0 auto;min-height:2.4em;line-height:1.2!important;max-height:none!important;white-space:normal!important;overflow:visible!important;margin:6px 0!important;z-index:1}
 @media(max-width:650px){#portal .collect-card .collect-art{flex-basis:72px!important;height:72px!important;min-height:72px!important;max-height:72px!important}#portal .collect-card .collect-art>img.character-portrait{width:62px!important;height:62px!important;max-width:62px!important;max-height:62px!important}}
+/* v432 — La miniature remplit exactement son médaillon, quelle que soit sa taille (54 px sur téléphone, 68 px sinon) :
+   une image de 72 px dans un rond de 54 px débordait à droite et en bas, d'où les médaillons décalés. */
+#portal .collect-card .collect-art.cc-art>img.character-portrait,#portal .cc2 .collect-art.cc-art>img.character-portrait{width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;justify-self:center;align-self:center}

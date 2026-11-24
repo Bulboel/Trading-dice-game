@@ -10,7 +10,7 @@ const footprint=cells();if(footprint.length!==5)throw Error('Gardienne must depl
 b[6][4]={o:1,el:BT[M[die].el],v:1};b[6][6]={o:1,el:BT[M[die].el],v:1};
 const bonuses=footprint.map(([x,y])=>previewBonus(x,y));
 for(const [x,y,v]of footprint)b[y][x]={o:0,el:M[die].el,v};
-for(let i=0;i<footprint.length;i++){const [x,y,v]=footprint[i];if(pw(x,y)!==v+bonuses[i])throw Error('Preview power differs from deployed power')}
+for(let i=0;i<footprint.length;i++){const [x,y,v]=footprint[i];if(pw(x,y,b,{o:0,mi:die,x,y})!==v+bonuses[i])/* v432 : le bonus vient de la créature à poser (dalles neutres) */throw Error('Preview power differs from deployed power')}
 if(!handNet(41,2).includes('>+1</tspan>'))throw Error('Hand must show the water terrain bonus');
 const stable=window.hackeniaGame.fireVents;if(stable.length!==6)throw Error('Fire vents are available before entering fire terrain');
 TER=0;if(window.hackeniaGame.snapshot().blocked.length!==0||window.hackeniaGame.fireVents!==stable)throw Error('Scenery preview must not depend on current blocked cells');

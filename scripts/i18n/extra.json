@@ -951,5 +951,16 @@
  "Histoire : chaque personnage est affiché à sa vraie taille (un nain arrive à mi-hauteur d’un humain).": "Story: every character is shown at their true size (a dwarf reaches half a human’s height).",
  "Histoire : expressions corrigées (plus de mine apeurée quand le texte ne le dit pas).": "Story: expressions fixed (no more frightened faces when the text does not call for it).",
  "Les pouvoirs ne s’affichent plus sur l’aperçu du terrain dans les menus.": "Powers no longer appear on the terrain preview in menus.",
- "Une partie terminée ne propose plus « Reprendre la partie » sur l’accueil.": "A finished match no longer offers “Resume match” on the home screen."
+ "Une partie terminée ne propose plus « Reprendre la partie » sur l’accueil.": "A finished match no longer offers “Resume match” on the home screen.",
+ "Forme déployée de {0}, {1} dalles. Dalles neutres : valeurs de base, et bonus de terrain de la créature.": "Unfolded shape of {0}, {1} tiles. Neutral tiles: base values, plus the creature’s terrain bonus.",
+ "Bonus de voisin : une créature gagne +1 en combattant un ennemi voisin d’un élément qu’elle domine. Les dalles, elles, sont neutres.": "Neighbor bonus: a creature gains +1 when fighting an adjacent enemy of an element it dominates. Tiles themselves are neutral.",
+ "Dalles neutres et chapitre V": "Neutral tiles and chapter V",
+ "Les dalles deviennent neutres : seuls les personnages (et certains terrains) ont un élément.": "Tiles are now neutral: only characters (and some terrains) have an element.",
+ "Bonus de terrain : une créature dont l’élément est favorisé par le terrain gagne +1, sur n’importe quelle dalle.": "Terrain bonus: a creature whose element the terrain favors gains +1, on any tile.",
+ "Bonus de voisin : +1 quand une créature combat un ennemi voisin d’un élément qu’elle domine.": "Neighbor bonus: +1 when a creature fights an adjacent enemy of an element it dominates.",
+ "Histoire, chapitre V « La route maudite de Mirrhol » : 6 parties racontées par Kala dans son journal, avec 2 duels.": "Story, chapter V “The Cursed Road to Mirrhol”: 6 parts told by Kala in her diary, with 2 duels.",
+ "Médaillons de la collection et objets portés parfaitement centrés.": "Collection medallions and worn items perfectly centered.",
+ "Journal de Kala": "Kala’s diary",
+ "La route maudite de Mirrhol": "The Cursed Road to Mirrhol",
+ "Un survivant": "A survivor"
 }

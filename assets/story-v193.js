@@ -42,7 +42,7 @@ function fitCast(cast,specs){if(!specs.length)return;const Hb=Math.min(innerHeig
   st.setProperty('background-size',s.cell?(4*cellW)+'px '+(3*cellH)+'px':cellW+'px '+cellH+'px','important');
   st.setProperty('background-position',-((s.cell?s.cell[0]:0)*cellW+s.b[0]*cellW)+'px '+(-((s.cell?s.cell[1]:0)*cellH+s.b[1]*cellH))+'px','important');
   st.setProperty('margin','0 '+gap/2+'px')})}
-function draw(){const b=seq[step];scene.className='ss '+(b.c||[]).map(c=>'ss-'+c).join(' ')+(b.s==='Voix off'?' ss-narration':'');
+function draw(){const b=seq[step];scene.className='ss '+(b.c||[]).map(c=>'ss-'+c).join(' ')+(b.s==='Voix off'?' ss-narration':b.s==='Journal de Kala'?' ss-narration ss-diary':'');
  scene.querySelector('.ss-bg').style.backgroundImage=b.bg&&b.bg!=='none'?b.bg:'';scene.querySelector('.ss-bgb').style.backgroundImage=b.bgb||'';
  scene.querySelector('.ss-caption').textContent=b.l||'';const cast=scene.querySelector('.ss-cast');cast.replaceChildren();
  const sized=[];for(const x of b.cast||[]){if(x.art){const img=document.createElement('img');img.className='ss-art';img.src=x.art;img.alt=x.alt||'';cast.append(img);continue}
@@ -86,7 +86,7 @@ window.addEventListener('hackenia:foe-reveal',e=>{if(!pending)return;const k=REV
  document.body.append(el);setTimeout(close,2900)});
 
 // ——— Menu des chapitres ———
-const CHAPTERS={1:{n:'I',t:'Les jumeaux de Dassom',img:'assets/story/twins-temple-background.webp'},2:{n:'II',t:'Les mystères de Dassom',img:'assets/story/dassom-council-background.webp'},3:{n:'III',t:'Le tournoi des apprenti(e)s',img:'assets/story/cards/p92.webp'},4:{n:'IV',t:'Entre primes et barde téméraire',img:'assets/story/cards/p88.webp'}};/* v368 — chapitres renommés ; le III s'affiche dès qu'il a une partie */
+const CHAPTERS={1:{n:'I',t:'Les jumeaux de Dassom',img:'assets/story/twins-temple-background.webp'},2:{n:'II',t:'Les mystères de Dassom',img:'assets/story/dassom-council-background.webp'},3:{n:'III',t:'Le tournoi des apprenti(e)s',img:'assets/story/cards/p92.webp'},4:{n:'IV',t:'Entre primes et barde téméraire',img:'assets/story/cards/p88.webp'},5:{n:'V',t:'La route maudite de Mirrhol',img:'assets/story/mirrhol-road-background.webp'}};/* v432 — chapitre V, raconté par Kala *//* v368 — chapitres renommés ; le III s'affiche dès qu'il a une partie */
 const thumb=p=>{const beats=[...(p.intro||[]),...(p.victory||[])];for(const b of beats){const m=/url\((?:\\?["'])?([^"')\\]+)/.exec(b.bg||'');if(m)return m[1]}for(const b of beats)for(const x of b.cast||[]){const a=x.art||x.p;if(a&&a.startsWith('assets/story/'))return a}return CHAPTERS[p.chapter]?.img||''};
 const splitTitle=t=>{const m=/^(.*?)\s*:\s*(.+)$/.exec(t);return m?[m[1],m[2]]:['',t]};
 /* v337 — vue « carte » par défaut (assets/story-map-v337.js) ; la liste reste accessible */

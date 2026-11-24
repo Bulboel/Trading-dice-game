@@ -7,7 +7,7 @@ const c=vm.createContext({window:{dispatchEvent(){},HackeniaPortal:{profile:()=>
 vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/init\(\);\s*$/,''),c);const run=s=>vm.runInContext(s,c);run('render=function(){};rBoard=function(){};');const fresh=()=>run('b=Array.from({length:H},()=>Array(W).fill(null));cr=[];placeHero()');
 const heroes=()=>run('cr.filter(k=>k.hero).map(k=>({x:k.x,y:k.y,o:k.o,mn:k.mn,v:b[k.y][k.x].v,el:b[k.y][k.x].el,lv:k.lv}))');
 run('ai=true;ONLINE=null;TEAM2=false;rewardMode="quick"');fresh();
-let h=heroes();assert.equal(h.length,1,'un héros posé');assert.deepEqual([h[0].o,h[0].y,h[0].v,h[0].el,h[0].mn,h[0].lv],[0,11,0,'feu','Aria',1],'zone à protéger, dalle 0, élément feu');
+let h=heroes();assert.equal(h.length,1,'un héros posé');assert.deepEqual([h[0].o,h[0].y,h[0].v,h[0].el,h[0].mn,h[0].lv],[0,11,0,'','Aria',1],'zone à protéger, dalle 0 neutre (v432 : l’élément feu est porté par le héros)');
 for(const [level,v,lv] of [[9,0,1],[10,1,1],[19,1,1],[20,2,2],[39,3,3],[40,4,4],[50,4,4],[60,4,4],[99,4,4]]){prof.xp=(level-1)*100;fresh();assert.equal(heroes()[0].v,v,`niveau ${level} → dalle ${v}`);assert.equal(heroes()[0].lv,lv,`niveau ${level} → dé de niveau ${lv}`)}
 run('ai=false');fresh();assert.equal(heroes().length,0,'pas de héros hors partie contre l’IA');
 run('ai=true;rewardMode="tutorial"');fresh();assert.equal(heroes().length,0,'pas de héros au tutoriel');

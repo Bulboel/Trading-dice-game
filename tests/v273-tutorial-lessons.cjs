@@ -41,10 +41,9 @@ L.forEach((lesson,li)=>{X.begin(li);const last=lesson.steps.length-1;
  X.go(last);assert.ok(X.progress().includes(lesson.id),lesson.title+' : progression enregistrée');
 });
 // Mauvais choix des leçons 4 : la bonne case est à choisir, l'autre déclenche « Recommencer »
-X.begin(3);X.go(0);move(0,2,6);X.tick();assert.ok(!X.T.done&&X.T.retry,'affinités 1 : la dalle de vent donne une égalité → recommencer');
-X.go(0);move(0,4,6);X.tick();assert.ok(X.T.done,'affinités 1 : la dalle de terre gagne');
-X.go(1);move(0,4,6);X.tick();assert.ok(!X.T.done&&X.T.retry,'affinités 2 : sans le voisin de vent, égalité → recommencer');
-X.go(1);move(0,2,6);X.tick();assert.ok(X.T.done,'affinités 2 : la dalle voisine du vent gagne');
+/* v432 — dalles neutres : Kala (terre) gagne grâce au terrain, puis en dominant l’ennemi de vent */X.begin(3);X.go(0);move(0,2,6);X.tick();assert.ok(X.T.done,'affinités 1 : Kala de terre gagne +1 sur le Bois tendre (4 contre 3)');
+X.go(0);move(0,4,6);X.tick();assert.ok(X.T.done,'affinités 1 : quelle que soit la dalle');
+X.go(1);move(0,4,6);X.tick();assert.ok(X.T.done,'affinités 2 : terrain + domination du vent = 5 contre 4');
 // Enchaîner : « Leçon suivante » depuis la carte de fin d'une leçon encore active (régression : l'étape courante doit repartir de 0)
 L.forEach((l,k)=>{X.begin(k);X.go(l.steps.length-1);if(k+1<L.length){X.begin(k+1);assert.equal(X.T.i,0,'leçon '+(k+2)+' repart de la première étape');assert.equal(X.T.l,k+1)}});
 // Menu des leçons et vues

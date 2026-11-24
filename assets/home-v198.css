@@ -68,3 +68,9 @@ body.portal-open[data-portal-view="home"] #portal>#portal-content.home-resume>.p
 #portal .bonusfx-star::before{content:"✦";font-size:24px;color:#fff0b7;text-shadow:0 0 8px #eebd57}
 #portal .bonusfx-drop::before{content:"";width:16px;height:22px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:radial-gradient(circle at 35% 35%,#e9fbff,#7fd3ff 40%,#1f6fc4);box-shadow:0 0 10px #6fc8ffcc;transform:rotate(0deg);clip-path:polygon(50% 0,100% 62%,92% 85%,70% 100%,30% 100%,8% 85%,0 62%)}
 #portal .bonusfx-locked::before{content:"?";font:700 20px Georgia,serif;color:#8f9bb0}
+/* v432 — Objets portés : l'image (ou le modèle 3D) remplit exactement son rond, centrée, sans déborder ni glisser d'un côté ;
+   plus de barre de chargement du modèle 3D au-dessus de l'objet. */
+#portal .gear-art{position:relative;overflow:hidden;isolation:isolate}
+#portal .gear-art>img,#portal .gear-art>.gear-model{position:absolute;inset:0;width:100%;height:100%;margin:0;transform:none;border-radius:50%;--progress-bar-height:0px;--progress-bar-color:transparent}
+#portal .gear-art>img{object-fit:contain;padding:6px;box-sizing:border-box}
+#portal .gear-art>.gear-none{position:static}
