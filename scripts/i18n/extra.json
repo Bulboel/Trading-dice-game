@@ -1005,5 +1005,9 @@
  "Arbre de compétences apaisé": "Calmer skill tree",
  "Arbre de compétences : plus de grésillement quand on touche une compétence ou qu’on fait défiler l’écran (effets de flou et décor animé allégés).": "Skill tree: no more flickering when tapping a skill or scrolling (lighter blur effects and animated background).",
  "Boutique plus lisible": "Clearer shop",
- "Boutique sur téléphone : les boutons tiennent sur une seule ligne et la boubourse garde toute sa place, même avec le Pack Sage et une fois les dés révélés.": "Shop on phones: the buttons fit on a single row and the pouch keeps its full space, even with the Sage Pack and once the dice are revealed."
+ "Boutique sur téléphone : les boutons tiennent sur une seule ligne et la boubourse garde toute sa place, même avec le Pack Sage et une fois les dés révélés.": "Shop on phones: the buttons fit on a single row and the pouch keeps its full space, even with the Sage Pack and once the dice are revealed.",
+ "Mode compatibilité du plateau": "Board compatibility mode",
+ "Plateau : sur les téléphones où la 3D complète ne démarre pas (certains modèles récents), le jeu passe tout seul en mode compatibilité, avec le vrai plateau, et affiche la cause du problème.": "Board: on phones where full 3D cannot start (some recent models), the game switches to compatibility mode on its own, with the real board, and shows the cause of the problem.",
+ "Mode compatibilité · 3D simplifiée": "Compatibility mode · simplified 3D",
+ "Affichage de secours · 3D indisponible": "Fallback display · 3D unavailable"
 }

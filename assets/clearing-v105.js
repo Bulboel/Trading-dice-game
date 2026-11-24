@@ -1,36 +1,60 @@
 /* Presentation adapter. Game legality, turns, decks and combat stay in index.html. */
 import * as THREE from 'three';
-import { orientBoardModel } from './model-facing.js?v=20270102-v441';
-import { createEmberlands } from './ember-v239.js?v=20270102-v441';
-import { attachHeroParts } from './hero-parts.js?v=20270102-v441';
-import { applyLook } from './variant-look.js?v=20270102-v441';
-import { loadPaperTextures, buildPaperFigure } from './paper-figure.js?v=20270102-v441';
-import { createLake } from './lake-v241.js?v=20270102-v441';
-import { createSkyIsland } from './sky-v231.js?v=20270102-v441';
-import { createWindHighlands } from './wind-v232.js?v=20270102-v441';
-import { createWoodland } from './woodland-v238.js?v=20270102-v441';
-import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20270102-v441';
-import { createFrostRoad } from './frost-v240.js?v=20270102-v441';
-import { createCity } from './city-v246.js?v=20270102-v441';
-import { createColosseum } from './colosseum-v364.js?v=20270102-v441';
-import { createTavern } from './tavern-v369.js?v=20270102-v441';
-import { createCave } from './cave-v246.js?v=20270102-v441';
-import { createAutumn } from './autumn-v253.js?v=20270102-v441';
-import { createFairyMists } from './fairy-v335.js?v=20270102-v441';
-import { createNoel } from './noel-v253.js?v=20270102-v441';
-import { createElementWheel } from './element-wheel-v252.js?v=20270102-v441';
+import { orientBoardModel } from './model-facing.js?v=20270102-v442';
+import { createEmberlands } from './ember-v239.js?v=20270102-v442';
+import { attachHeroParts } from './hero-parts.js?v=20270102-v442';
+import { applyLook } from './variant-look.js?v=20270102-v442';
+import { loadPaperTextures, buildPaperFigure } from './paper-figure.js?v=20270102-v442';
+import { createLake } from './lake-v241.js?v=20270102-v442';
+import { createSkyIsland } from './sky-v231.js?v=20270102-v442';
+import { createWindHighlands } from './wind-v232.js?v=20270102-v442';
+import { createWoodland } from './woodland-v238.js?v=20270102-v442';
+import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20270102-v442';
+import { createFrostRoad } from './frost-v240.js?v=20270102-v442';
+import { createCity } from './city-v246.js?v=20270102-v442';
+import { createColosseum } from './colosseum-v364.js?v=20270102-v442';
+import { createTavern } from './tavern-v369.js?v=20270102-v442';
+import { createCave } from './cave-v246.js?v=20270102-v442';
+import { createAutumn } from './autumn-v253.js?v=20270102-v442';
+import { createFairyMists } from './fairy-v335.js?v=20270102-v442';
+import { createNoel } from './noel-v253.js?v=20270102-v442';
+import { createElementWheel } from './element-wheel-v252.js?v=20270102-v442';
 
+window.__clearingStarted=true;
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
 let previewMode=false,previewTerrain=null;
-try { initClearing(); } catch(error) {
-  console.warn('Clairière 3D indisponible, affichage de secours conservé.',error);
-  host.classList.remove('view3d');
-  document.getElementById('terrain-status').textContent='Affichage de secours · terre +1';
+/* v442 — Démarrage robuste. Sur certains téléphones (ex. Pixel 10, nouvelle puce graphique), la WebGL existe mais la 3D plante
+   au démarrage : on réessaie alors avec le rendu de compatibilité (dessiné en 2D, le vrai plateau en plus simple), on retient ce
+   choix jusqu’à la prochaine version du jeu, et on affiche l’erreur exacte pour pouvoir la corriger. */
+const SAFE_KEY='hackenia-3d-safe',BUILD=(document.getElementById('portal-build')?.dataset.build)||(new URL(import.meta.url).searchParams.get('v')||'');
+const errText=e=>String(e&&(e.message||e)||'inconnue').slice(0,160);
+function clearingNotice(text){try{const n=document.createElement('div');n.className='clearing-notice';n.setAttribute('role','status');
+ n.style.cssText='position:absolute;left:8px;right:8px;bottom:8px;z-index:60;padding:8px 34px 8px 10px;border-radius:10px;background:#0d1712ee;border:1px solid #e8c98799;color:#f3ead2;font:12px/1.35 system-ui,sans-serif';
+ n.innerHTML=text+'<button type="button" aria-label="Fermer" style="position:absolute;right:6px;top:6px;width:24px;height:24px;min-height:0;padding:0;border-radius:50%;border:0;background:#ffffff22;color:#fff">×</button>';
+ n.querySelector('button').onclick=()=>n.remove();host.append(n);setTimeout(()=>n.remove(),15000)}catch{}}
+function cleanupClearing(){host.querySelectorAll('#landscape,#board-navigation,.board-objectives,.storm-flash,.wind-veil').forEach(e=>e.remove());document.getElementById('placement-lens')?.remove()}
+let safeSaved='';try{safeSaved=localStorage.getItem(SAFE_KEY)||''}catch{}
+const startSoft=!!safeSaved&&safeSaved.split('|')[0]===BUILD;
+try { initClearing({software:startSoft}); if(startSoft)document.getElementById('terrain-status').textContent='Mode compatibilité · 3D simplifiée'; } catch(error) {
+  console.warn('Clairière 3D indisponible, essai du rendu de compatibilité.',error);
+  const first=errText(error);
+  try{
+    cleanupClearing();initClearing({software:true});
+    try{localStorage.setItem(SAFE_KEY,BUILD+'|'+first)}catch{}
+    document.getElementById('terrain-status').textContent='Mode compatibilité · 3D simplifiée';
+    clearingNotice('La 3D complète n’a pas pu démarrer sur cet appareil : le plateau passe en <b>mode compatibilité</b>.<br><small style="opacity:.75">Détail : '+first.replace(/[<>&]/g,'')+'</small>');
+  }catch(error2){
+    console.warn('Rendu de compatibilité indisponible, affichage de secours conservé.',error2);
+    cleanupClearing();host.classList.remove('view3d');
+    document.getElementById('terrain-status').textContent='Affichage de secours · 3D indisponible';
+    clearingNotice('Le plateau 3D n’a pas pu démarrer sur cet appareil.<br><small style="opacity:.75">Détail : '+first.replace(/[<>&]/g,'')+' / '+errText(error2).replace(/[<>&]/g,'')+'</small>');
+  }
 }
-function initClearing(){
+function initClearing({software=false}={}){
 const canvas=document.createElement('canvas');canvas.id='landscape';canvas.setAttribute('aria-label','Plateau 3D du Bois tendre, huit colonnes et douze lignes');
 let renderer;
-try{renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});}catch{renderer=new LandscapeCanvasRenderer(canvas);}
+if(!software&&window.__hkFailWebGLInit)throw new Error(String(window.__hkFailWebGLInit));/* interrupteur de test (tests/v442-safe-render.cjs) */
+if(software)renderer=new LandscapeCanvasRenderer(canvas);else try{renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});}catch{renderer=new LandscapeCanvasRenderer(canvas);}
 renderer.setClearColor(0x172c25,1);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;host.prepend(canvas);
 // Copy the freshly rendered placement to a separate overlay, above the finger.
