@@ -21,7 +21,7 @@
  background:radial-gradient(120% 90% at 50% 45%,#140c2e 0%,#07051a 55%,#020108 100%);border:1px solid #ffe6a033;box-shadow:0 18px 50px #000a,inset 0 0 60px #000c,inset 0 0 0 1px #ffffff08}
 .skg-sky,.skg-sky i{position:absolute;inset:0;pointer-events:none}
 .skg-sky{z-index:-1}
-.skg-neb{filter:blur(18px);opacity:.75;mix-blend-mode:screen}
+.skg-neb{filter:blur(18px);opacity:.75}
 .skg-neb.n1{background:radial-gradient(42% 30% at 30% 30%,#6a2fd0aa,transparent 70%);animation:skg-drift 26s ease-in-out infinite alternate}
 .skg-neb.n2{background:radial-gradient(38% 28% at 72% 66%,#1c8fb588,transparent 70%);animation:skg-drift 32s ease-in-out infinite alternate-reverse}
 .skg-neb.n3{background:radial-gradient(30% 24% at 52% 48%,#ffc84a55,transparent 70%),radial-gradient(26% 20% at 80% 22%,#ff5fa855,transparent 70%)}
@@ -51,7 +51,7 @@
 .sk-orbit.o1{animation:skg-spin 60s linear infinite}.sk-orbit.o2{animation:skg-spin 110s linear infinite reverse}
 .sk-orbit.o2 circle{stroke:#ffe6a0;stroke-opacity:.14;stroke-dasharray:1 9}
 .sk-link{stroke:#ffffff;stroke-opacity:.1;stroke-width:1.6;stroke-linecap:round;stroke-dasharray:1 5}
-.sk-link.open{stroke:var(--c);stroke-opacity:.75;stroke-width:2;stroke-dasharray:5 7;animation:sk-flow 1.2s linear infinite;filter:drop-shadow(0 0 3px var(--c))}
+.sk-link.open{stroke:var(--c);stroke-opacity:.75;stroke-width:2;stroke-dasharray:5 7;animation:sk-flow 1.2s linear infinite}
 .sk-link.owned{stroke:var(--c);stroke-opacity:1;stroke-width:2.6;stroke-dasharray:none;filter:drop-shadow(0 0 5px var(--c)) drop-shadow(0 0 10px var(--c))}
 .sk-link.sk-lit{animation:sk-lit 1.4s ease-out}
 @keyframes sk-flow{to{stroke-dashoffset:-12}}
@@ -102,7 +102,7 @@
 
 /* --- Fiche d'un pouvoir --- */
 .skill-dialog{overflow:hidden;max-width:min(92vw,400px);border:1px solid color-mix(in srgb,var(--c) 70%,transparent);border-radius:22px;background:radial-gradient(120% 80% at 50% 0%,color-mix(in srgb,var(--c) 22%,#0c0820),#07051a 60%);color:#f2ecff;text-align:center;padding:22px 20px 18px;box-shadow:0 0 40px color-mix(in srgb,var(--c) 35%,transparent),0 20px 60px #000c}
-.skill-dialog::backdrop{background:#04020ccc;backdrop-filter:blur(3px)}
+.skill-dialog::backdrop{background:#04020ce0}
 .skd-stars{position:absolute;inset:0;pointer-events:none;z-index:-1;opacity:.8;background-image:radial-gradient(circle at 15% 25%,#fff 0 .6px,transparent 1.3px),radial-gradient(circle at 70% 60%,#fff 0 .5px,transparent 1.1px),radial-gradient(circle at 40% 85%,#ffe6a0 0 .7px,transparent 1.5px),radial-gradient(circle at 85% 15%,#cfe6ff 0 .5px,transparent 1.2px);background-size:97px 89px,151px 137px,233px 211px,61px 173px;animation:skg-twinkle 4s ease-in-out infinite}
 .skd-orb{position:relative;width:96px;height:96px;margin:0 auto 4px}
 .skd-orb .cd-svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 0 14px var(--c)) drop-shadow(0 5px 7px #000b)}
@@ -235,3 +235,14 @@
 .tp-item small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:8px;letter-spacing:.03em}
 /* v431 — Les pouvoirs ne s'affichent qu'en partie, jamais sur l'aperçu du terrain des menus. */
 body.portal-open #power-bar{display:none!important}
+
+/* v439 — L’arbre « grésillait » au toucher et au défilement : l’en-tête et la barre de navigation (fixés en haut, floutés) et la fenêtre
+   d’une compétence recalculaient sans cesse le flou de la galaxie animée qui passait dessous. Sur cet écran : plus de flou par-dessus,
+   un fond de galaxie immobile (nébuleuses, spirale), des étoiles d’au moins un pixel, et les animations du décor en pause
+   pendant qu’une fenêtre de compétence est ouverte. Les dés de compétence gardent leurs effets. */
+body[data-portal-view="skills"] #portal .portal-head,body[data-portal-view="skills"] #portal #portal-nav{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:#0c0a1cf2!important}
+.sk-galaxy .skg-neb,.sk-galaxy .skg-spiral{animation:none!important}
+.sk-galaxy .skg-stars,.sk-galaxy .sk-orbit,.sk-galaxy .sk-core-ring,.sk-galaxy .sk-spark{will-change:transform,opacity}
+.sk-galaxy .sk-link.open{filter:none}
+.skg-stars.s1{background-image:radial-gradient(circle at 12% 18%,#fff 0 1px,transparent 1.6px),radial-gradient(circle at 63% 41%,#fff 0 1px,transparent 1.6px),radial-gradient(circle at 37% 77%,#dfe9ff 0 1px,transparent 1.6px),radial-gradient(circle at 85% 88%,#fff 0 1px,transparent 1.6px)}
+body:has(.skill-dialog[open]) .sk-galaxy *,body:has(.skill-dialog[open]) .sk-galaxy *::before,body:has(.skill-dialog[open]) .sk-galaxy *::after{animation-play-state:paused!important}
