@@ -246,3 +246,18 @@ body[data-portal-view="skills"] #portal .portal-head,body[data-portal-view="skil
 .sk-galaxy .sk-link.open{filter:none}
 .skg-stars.s1{background-image:radial-gradient(circle at 12% 18%,#fff 0 1px,transparent 1.6px),radial-gradient(circle at 63% 41%,#fff 0 1px,transparent 1.6px),radial-gradient(circle at 37% 77%,#dfe9ff 0 1px,transparent 1.6px),radial-gradient(circle at 85% 88%,#fff 0 1px,transparent 1.6px)}
 body:has(.skill-dialog[open]) .sk-galaxy *,body:has(.skill-dialog[open]) .sk-galaxy *::before,body:has(.skill-dialog[open]) .sk-galaxy *::after{animation-play-state:paused!important}
+
+/* v444 — Arbre de compétences « léger » sur téléphone (application et site) : l’arbre ralentissait fortement et la fiche d’une
+   compétence s’ouvrait en retard, le téléphone étant occupé à redessiner sans cesse ~25 dés à plusieurs ombres lumineuses,
+   des halos qui pulsent, des étincelles, des liens animés et un fond de galaxie à plusieurs couches.
+   Ici : fond de galaxie peint une seule fois (dégradés fixes + une couche d’étoiles), aucune animation permanente, aucun filtre ;
+   les halos colorés restent, immobiles, pour distinguer les compétences ouvertes et apprises. L’animation « appris ! » est gardée. */
+@media (pointer:coarse),(max-width:700px){
+ .sk-galaxy .skg-neb,.sk-galaxy .skg-spiral,.sk-galaxy .skg-stars.s2,.sk-galaxy .skg-stars.s3,.sk-galaxy .skg-comet,.sk-galaxy .sk-spark,.skill-dialog .skd-stars{display:none!important}
+ .sk-galaxy{background:radial-gradient(42% 30% at 30% 22%,#6a2fd055,transparent 70%),radial-gradient(38% 28% at 72% 60%,#1c8fb544,transparent 70%),radial-gradient(120% 90% at 50% 45%,#140c2e 0%,#07051a 55%,#020108 100%)!important}
+ .sk-galaxy *,.sk-galaxy *::before,.sk-galaxy *::after,.skill-dialog *,.skill-dialog *::before,.skill-dialog *::after,.sde-die::before,.sde-badge,.skg-points{animation:none!important;will-change:auto!important}
+ .sk-galaxy .cd-svg,.sk-galaxy .cd-sym,.sk-galaxy .sk-glyph,.sk-galaxy .sk-link,.sk-galaxy .skg-head h2,.sk-galaxy .sk-const.sealed .sk-sphere,.skill-dialog .cd-svg,.skill-dialog .cd-sym,.skill-dialog .skd-icon,.sde-die .cd-svg{filter:none!important}
+ .sk-galaxy .sk-node.open .sk-halo{opacity:.85!important;transform:translate(-50%,-50%) scale(1)!important}
+ .sk-galaxy .sk-node.owned .sk-halo{background:radial-gradient(circle,color-mix(in srgb,var(--c) 55%,transparent),transparent 66%)!important}
+ .sk-galaxy .sk-node.sk-new .sk-die{animation:sk-whirl 1.1s cubic-bezier(.2,.8,.2,1)!important}
+}
