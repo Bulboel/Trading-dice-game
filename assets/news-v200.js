@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v439',title:'Rappel corrigé',items:['Correctif : le pouvoir Rappel ne retire plus la dalle sur laquelle se tient une créature adverse (elle ne se retrouve plus sans case, à puissance 1).']},
  {id:'v438',title:'Aide pour les téléphones anciens',items:['Téléphones anciens : si le composant Android System WebView est trop vieux pour afficher le plateau, le jeu l’explique clairement et propose le lien de mise à jour, au lieu d’un plateau blanc.']},
  {id:'v437',title:'Grimgors et les Sans-chiffres',items:['Histoire : Grimgors garde un air sérieux quand il ne sourit pas vraiment (il n’affiche plus un grand sourire sur les répliques neutres).','Chapitres IV et V : les Sans-chiffres affrontent maintenant le joueur dans tous les éléments (cinq nouvelles figurines en papier, réservées aux duels), à la place des mineurs.','Carte du chapitre V : les étapes sont placées au bon endroit sur la route.']},
  {id:'v436',title:'Des animations plus fluides',items:['Ouverture des boubourses plus fluide : moins d’étincelles en même temps et des effets lumineux beaucoup moins coûteux.','Cérémonie légendaire, divine et crépitante plus fluide sur téléphone, et découverte d’un nouveau dé en 3D plus légère.','Correctif : les chiffres posés sur les dalles ne grésillent plus (surtout visible sur téléphone).']},

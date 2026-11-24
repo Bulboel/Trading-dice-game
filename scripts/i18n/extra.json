@@ -999,5 +999,7 @@
  "Chapitres IV et V : les Sans-chiffres affrontent maintenant le joueur dans tous les éléments (cinq nouvelles figurines en papier, réservées aux duels), à la place des mineurs.": "Chapters IV and V: the Numberless now face the player in every element (five new paper figures, duel-only), replacing the miners.",
  "Carte du chapitre V : les étapes sont placées au bon endroit sur la route.": "Chapter V map: the steps are now placed at the right spots along the road.",
  "Aide pour les téléphones anciens": "Help for older phones",
- "Téléphones anciens : si le composant Android System WebView est trop vieux pour afficher le plateau, le jeu l’explique clairement et propose le lien de mise à jour, au lieu d’un plateau blanc.": "Older phones: if the Android System WebView component is too old to display the board, the game now says so clearly and offers the update link, instead of showing a blank board."
+ "Téléphones anciens : si le composant Android System WebView est trop vieux pour afficher le plateau, le jeu l’explique clairement et propose le lien de mise à jour, au lieu d’un plateau blanc.": "Older phones: if the Android System WebView component is too old to display the board, the game now says so clearly and offers the update link, instead of showing a blank board.",
+ "Rappel corrigé": "Recall fixed",
+ "Correctif : le pouvoir Rappel ne retire plus la dalle sur laquelle se tient une créature adverse (elle ne se retrouve plus sans case, à puissance 1).": "Fix: the Recall power no longer removes the tile an enemy creature is standing on (it no longer ends up with no tile, at power 1)."
 }
