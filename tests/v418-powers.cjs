@@ -14,6 +14,8 @@ fresh({impact:3});run(`choose=(t,o,cb)=>cb('heavy')`);const f0=run('pwc(foe)');r
 fresh({bind:1});run("usePower('bind')");run('tap(3,3)');run('turnNumber=4');assert.equal(Object.keys(run('bfs(foe)')).length,1);run('turnNumber=6');assert.ok(Object.keys(run('bfs(foe)')).length>1);
 // Rappel v.1 : la créature et ses dalles quittent le plateau, le dé revient en main
 fresh({recall:1});run("usePower('recall')");run('tap(3,7)');assert.equal(run('cr.includes(me)'),false);assert.equal(run('b[7][3]'),null);assert.deepEqual([...run('pl[0].h')],[0,1,1]);
+// v438 — Rappel v.1 : une dalle du dé rappelé où se tient un ennemi reste en place (l’ennemi ne flotte pas sans case)
+fresh({recall:1});run('b[7][4].id=8;foe2.x=4;foe2.y=7');run("usePower('recall')");run('tap(3,7)');assert.equal(run('b[7][3]'),null,'dalle libre retirée');assert.ok(run('b[7][4]&&b[7][4].id===8'),'dalle occupée par l’ennemi conservée');assert.equal(run('pwc(foe2)'),run('pwc(foe)'),'l’ennemi garde sa vraie puissance');
 // Sabotage v.2 : deux dalles adverses libres détruites
 fresh({sabotage:2});run("usePower('sabotage')");run('tap(1,1);tap(2,1)');assert.equal(run('b[1][1]'),null);assert.equal(run('b[1][2]'),null);
 // Portail : téléportation dans ma moitié, avec la dalle
