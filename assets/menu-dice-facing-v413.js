@@ -9,11 +9,17 @@ const FACES=':scope>.md-face,:scope>i';
 let cubes=[],raf=0,last=0;
 const mat=el=>{const t=getComputedStyle(el).transform;if(!t||t==='none')return null;const m=t.match(/matrix(3d)?\(([^)]+)\)/);if(!m)return null;const v=m[2].split(',').map(Number);
  if(m[1])return v;return [v[0],v[1],0,0,v[2],v[3],0,0,0,0,1,0,v[4],v[5],0,1]};
-function collect(){cubes=[...document.querySelectorAll(SEL)].map(c=>({c,faces:[...c.querySelectorAll(FACES)].map(f=>({f,n:null,v:-1}))})).filter(x=>x.faces.length)}
+function collect(){calmDone=false;cubes=[...document.querySelectorAll(SEL)].map(c=>({c,faces:[...c.querySelectorAll(FACES)].map(f=>({f,n:null,v:-1}))})).filter(x=>x.faces.length)}
 const smooth=z=>{const t=Math.min(1,Math.max(0,(z-.04)/.3));return t*t*(3-2*t)};
-function frame(now){raf=requestAnimationFrame(frame);if(now-last<30)return;last=now;
+/* v446 — Cette boucle interrogeait la position des dés (getComputedStyle + offsetParent) toutes les 30 ms, même hors de l’accueil :
+   recalcul complet de la page ~60 fois par seconde. Désormais : uniquement sur l’accueil, 15 fois par seconde, et en mode fluide
+   (dés immobiles) une seule fois après chaque changement de la page. */
+let calmDone=false;
+function frame(now){raf=requestAnimationFrame(frame);if(now-last<66)return;last=now;
  if(document.hidden||document.body.classList.contains('hk-busy-3d'))return;
- for(const {c,faces} of cubes){if(!c.isConnected||!c.offsetParent)continue;const m=mat(c);if(!m)continue;
+ if(document.body.classList.contains('portal-open')&&document.body.dataset.portalView&&document.body.dataset.portalView!=='home')return;
+ const fluid=document.documentElement.classList.contains('hk-fluid');if(fluid&&calmDone)return;calmDone=fluid;
+ for(const {c,faces} of cubes){if(!c.isConnected)continue;const m=mat(c);if(!m)continue;
   for(const o of faces){if(!o.n){const fm=mat(o.f);if(!fm)continue;o.n=[fm[8],fm[9],fm[10]]}const z=m[2]*o.n[0]+m[6]*o.n[1]+m[10]*o.n[2];const v=Math.round(smooth(z)*40)/40;if(v!==o.v){o.v=v;o.f.style.setProperty('--f',v)}}}}
 function start(){collect();if(!raf)raf=requestAnimationFrame(frame)}
 let pending=0;new MutationObserver(()=>{clearTimeout(pending);pending=setTimeout(collect,120)}).observe(document.documentElement,{childList:true,subtree:true});
