@@ -10,7 +10,7 @@ const OK_KEY='hackenia-premium-ok',GRACE=14*864e5;let okMem=0;
 const lsGet=()=>{try{return +root.localStorage.getItem(OK_KEY)||0}catch{return okMem}};
 const confirm=(ts=Date.now())=>{okMem=ts;try{root.localStorage.setItem(OK_KEY,String(ts))}catch{}},unconfirm=()=>{okMem=0;try{root.localStorage.removeItem(OK_KEY)}catch{}};
 const confirmed=()=>{const t=Math.max(okMem,lsGet());return t>0&&Date.now()-t<GRACE};
-/* v447 — le Pack Sage offert aux testeurs (source « cadeau ») est valable sans serveur, comme celui acquis avec des Bubulles */const active=p=>!!p?.premium?.sage&&(p.premium.source==='bubulles'||p.premium.source==='cadeau'||confirmed()),adsFree=p=>!!p?.premium?.noAds&&active(p);
+/* v448 — plus de Pack Sage automatique : seuls l’achat en Bubulles et l’attribution par l’administrateur (confirmée par le serveur) comptent */const active=p=>!!p?.premium?.sage&&(p.premium.source==='bubulles'||confirmed()),adsFree=p=>!!p?.premium?.noAds&&active(p);
 /* Active le pack sur un profil (renvoie un nouveau profil). Les 1 000 Bubulles ne sont versées qu'une fois. */
 function activate(profile,source='purchase'){const next=structuredClone(profile),prem=next.premium||{};const first=!prem.goldPaid;
  next.premium={...prem,sage:true,noAds:true,goldPaid:true,source:prem.source||source,since:prem.since||new Date().toISOString()};

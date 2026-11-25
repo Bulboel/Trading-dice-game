@@ -1,5 +1,5 @@
 /* One-time, responsive opening. The SVG layers are the same artwork as the menu logo. */
-(()=>{'use strict';const KEY='hackenia-intro-v1',LOGO='assets/hackenia-logo-v112.svg?v=20270102-v447';let active=null,logoPromise;
+(()=>{'use strict';const KEY='hackenia-intro-v1',LOGO='assets/hackenia-logo-v112.svg?v=20270102-v448';let active=null,logoPromise;
 function logo(){return logoPromise??=fetch(LOGO).then(r=>{if(!r.ok)throw Error('logo');return r.text()})}
 function createSmoke(canvas){
  let gl;try{gl=canvas.getContext('webgl',{alpha:true,antialias:false,depth:false,premultipliedAlpha:false,failIfMajorPerformanceCaveat:true,powerPreference:'low-power'})}catch{}if(!gl)return null;
