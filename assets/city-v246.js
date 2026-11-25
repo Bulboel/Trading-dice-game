@@ -4,7 +4,7 @@
    bannières bleu et or de Dassom, et au fond les remparts et le donjon. Aucun élément n'est favorisé (règles : moteur du jeu).
    Coordonnées réelles des cases (root.scale.z = 1/ZS appliqué par clearing-v105.js). */
 import * as THREE from 'three';
-import { bakeStatic } from './bake-static.js?v=20270102-v448';
+import { bakeStatic } from './bake-static.js?v=20270102-v449';
 export function createCity(world,software=false,rows=10,helpers={}){
 const root=new THREE.Group();world.add(root);root.visible=false;
 let seed=1789;const rnd=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296};
