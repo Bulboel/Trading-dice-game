@@ -3,7 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. v447 — annonces condensées : l’essentiel seulement.
 const NEWS=[
- {id:'v447',title:'Merci à nos testeurs ! 🎁',items:['Merci à toutes et à tous pour vos retours : ils font avancer Hackénia chaque jour.','Pour profiter pleinement de votre première expérience, le Pack Sage vous est offert : bague de sage, boubourses par 100, recyclage automatique des doublons, 1 000 Bubulles et jeu sans publicité.','Nous sommes désolés pour les problèmes de fluidité : le jeu a été profondément optimisé, et le mode fluide (Options › Affichage) est activé d’office sur téléphone.']},
+ {id:'v448',title:'Merci à nos testeurs ! 🎁',items:['Merci à toutes et à tous pour vos retours : ils font avancer Hackénia chaque jour.','Pour profiter pleinement de votre première expérience, le Pack Sage vous est offert (bague de sage, boubourses par 100, recyclage automatique, 1 000 Bubulles, sans publicité) : il est ajouté à votre compte par l’équipe dans les prochains jours.','Nous sommes désolés pour les problèmes de fluidité : le jeu a été profondément optimisé, et le mode fluide (Options › Affichage) est activé d’office sur téléphone.']},
  {id:'v445',title:'Un jeu bien plus fluide',items:['Menus et plateau 3D allégés sans rien perdre des graphismes.','Téléphones où la 3D ne démarre pas : mode compatibilité automatique.']},
  {id:'v441',title:'Corrections',items:['Boutique, options et arbre de compétences mieux adaptés aux téléphones.','Pouvoir Rappel corrigé, textes du plateau plus clairs.']},
  {id:'v435',title:'Chapitre V : L’attaque à Kierzan',items:['Un nouveau chapitre de l’Histoire, raconté dans le journal de Kala.','Les Sans-chiffres affrontent les héros dans tous les éléments.']},
