@@ -11,4 +11,5 @@ const out=c.revokeAutoSage({gold:1200,premium:{sage:true,noAds:true,goldPaid:tru
 assert.equal(P.active(out),false);assert.equal(out.gold,1200,'Bubulles déjà reçues gardées');assert.equal(out.equipped,'');assert.equal(out.premium.goldPaid,true,'pas de second versement si l’admin attribue le pack ensuite');
 assert.equal(P.activate(out,'admin').gold,1200,'attribution admin ultérieure : pas de 1 000 Bubulles en double');
 assert.ok(news.includes('Merci à nos testeurs')&&news.includes('ajouté à votre compte par l’équipe'),'annonce : pack ajouté par l’équipe');
-console.log('PASS: v448 — Pack Sage attribué par l’admin seulement ; packs automatiques de la v447 désactivés (Bubulles gardées, pas de double versement).');
+const cl=r('assets/cloud-v204.js');assert.ok(cl.includes('cloud-player-id')&&cl.includes('String(S.uid).slice(0,8)')&&cl.includes("a==='copy-id'"),'identifiant joueur (8 caractères, comme dans la liste admin) affiché dans Options › Sauvegarde');
+console.log('PASS: v448 — identifiant joueur dans Options › Sauvegarde ;  — Pack Sage attribué par l’admin seulement ; packs automatiques de la v447 désactivés (Bubulles gardées, pas de double versement).');
