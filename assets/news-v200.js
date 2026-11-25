@@ -3,6 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. On reste général : pas de nom de personnage.
 const NEWS=[
+ {id:'v446',title:'Petites corrections de texte',items:['Fiches et infos du plateau mieux écrites : « ta dalle », « dalle adverse », « Ta case », « Début de ton tour » au lieu de « dalle de Toi »…']},
  {id:'v445',title:'Un jeu bien plus fluide',items:['Diagnostic complet des ralentissements : les menus (arbre de compétences, défis, accueil) ne recalculent plus toute la page des dizaines de fois par seconde — jusqu’à 30 fois moins de calcul au repos.','Plateau 3D : le décor immobile de chaque terrain est regroupé (jusqu’à 7 fois moins d’objets à dessiner à chaque image), sans rien changer à son apparence ; résolution, lissage et ombres conservés pour que tout reste net.']},
  {id:'v444',title:'Un jeu plus fluide',items:['Nouveau « mode fluide » (Options › Affichage), activé par défaut sur téléphone : plus de flou d’arrière-plan ni d’animations décoratives en boucle, plateau 3D allégé. Le jeu est moins chargé mais beaucoup plus fluide.','Arbre de compétences sur téléphone : version allégée (plus d’animations permanentes ni d’effets lumineux coûteux), l’arbre défile sans ralentir et la fiche d’une compétence s’ouvre tout de suite.']},
  {id:'v443',title:'Options mieux rangées',items:['Options sur téléphone : les boutons de « Votre aventure » ne se chevauchent plus (rangés sur deux colonnes).']},
