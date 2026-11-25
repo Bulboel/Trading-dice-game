@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""v432 — Chapitre V « La route maudite de Mirrhol », raconté par Kala (son journal) : 6 parties, 2 duels.
-Écrit les parties c5p1 à c5p6 dans assets/story-data-v193.js (les remplace si elles existent déjà).
+"""v432 — Chapitre V « Les fidèles d’Orcus » (v450, ex-« L’attaque à Kierzan ») : parties 1 à 6 racontées par Kala (son journal),
+parties 7 à 12 par Jhimm (v450, d’après son récit). Écrit les parties c5p1 à c5p12 dans assets/story-data-v193.js (les remplace si elles existent déjà).
 Chaque personnage d'une réplique porte son humeur choisie à la main (« mm ») ; scripts/tag-story-emotions.py la respecte.
 Relancer ensuite : python3 scripts/tag-story-emotions.py && python3 scripts/story-sprite-bounds.py"""
 import json
@@ -116,6 +116,92 @@ parts.append({'id': 'c5p6', 'chapter': 5, 'title': 'Partie 6 : Une victoire amè
     beat(KERZ, B, 'Au moins une bonne nouvelle : la guilde des cuisiniers avait la liste des ingrédients d’un fromage spécial… pour moi !', (B, 'happy'), (K, 'happy')),
     beat(KERZ, JOURNAL, 'En fouillant les tentes abandonnées, nous avons compris que le feu n’avait rien de naturel. Mais à l’intérieur, rien d’intéressant.', (G, 'neutral'), (E, 'neutral')),
     beat(KERZ, JOURNAL, 'Cette journée a été éprouvante. Trop de morts, trop de questions sans réponses. Orcus, Yoris, Gliska, la légion de Lunargent… Les pièces d’un puzzle inquiétant se mettent en place, et je crains ce que nous découvrirons ensuite.', art='assets/story/night-kala-courage.webp'),
+]})
+
+# ——— v450 — La suite, racontée par Jhimm (d’après son récit) ———
+JJ = 'Journal de Jhimm'
+TPL['Orven'] = {'img': 'url("assets/story/emo/orven-2.webp")', 'sz': 'contain', 'pos': 'center bottom'}
+TPL['La licorne corrompue'] = {'img': 'url("assets/story/emo/licorne-enrage-2.webp")', 'sz': 'contain', 'pos': 'center bottom'}
+KERZ_DAWN = ('Kierzan, à l’aube', ['night'], bg('assets/story/berdesa-village-background.webp', 'rgba(120, 70, 30, 0.18), rgba(40, 20, 8, 0.42)'))
+WOODS = ('Les bois de la route de Mirrhol', ['forest'], bg('assets/story/forest-background.webp', 'rgba(14, 16, 10, 0.2), rgba(8, 10, 6, 0.55)'))
+OR, MB, LC = 'Orven', 'Messire Balai', 'La licorne corrompue'
+def jb(place, speaker, text, *cast, art=None):
+    """Réplique du récit de Jhimm : quand il raconte, il est à l’image avec l’humeur de la scène (sinon calme)."""
+    if speaker == JJ and not art and J not in [n for n, _ in cast]:
+        cast = ((J, 'neutral'),) + cast
+    out = beat(place, speaker, text, *cast, art=art)
+    if speaker == JJ:
+        for c in out['cast']:
+            if c.get('n') == J:
+                c['k'] = ['is-speaking']
+    return out
+parts.append({'id': 'c5p7', 'chapter': 5, 'title': 'Partie 7 : Le réveil de Jhimm', 'intro': [
+    jb(KERZ, JJ, 'Après la bataille, je me suis éclipsé sans un mot. Je n’avais aucune envie de feindre la bonne humeur près du feu : je me suis écroulé tout habillé dans une tente à l’écart.', (J, 'sad')),
+    jb(KERZ, JJ, 'Les soins de mes compagnons avaient beau être irréprochables, cette mort frôlée de trop près me secouait encore. Égide enseigne que la mort nourrit la vie… mais je suis encore au matin de la mienne.', (J, 'sad')),
+    jb(KERZ, G, 'Debout ! Tout le monde debout ! Ils reviennent !', (G, 'fight'), (J, 'scared')),
+    jb(KERZ, JJ, 'Les cris de Grimgors m’ont arraché au sommeil, avec une douleur nouvelle dans les côtes. Je ne me souvenais pas d’avoir été touché à cet endroit… rien de rassurant.', (J, 'scared')),
+    jb(KERZ, JJ, 'À la lueur vacillante du feu, j’ai compris : encore ces maudits morts-vivants. Pas de Kala ni de Velmarys en vue.', (J, 'fight')),
+    jb(KERZ, JJ, 'Bolduc cognait un zombie avec son éternel enthousiasme et son gourdin magique. Grimgors fonçait vers Ébérien, aux prises avec trois créatures… Bulbalina et Messire Balai gisaient inanimés à ses pieds.', (B, 'fight'), (E, 'fight'), (G, 'fight')),
+], 'victory': [
+    jb(KERZ, JJ, 'Ces créatures impies n’étaient pas de taille : nous les avons balayées sans trop de difficulté.', (J, 'fight'), (G, 'proud')),
+    jb(KERZ, K, 'Il y en avait d’autres de notre côté du village. Velmarys et moi nous en sommes chargés.', (K, 'neutral'), (V, 'neutral')),
+    jb(KERZ, JJ, 'Il semble qu’il y ait eu bien des conciliabules pendant mon sommeil, mais je n’avais plus la force de m’y intéresser. L’adrénaline retombée, l’épuisement m’a submergé.', (J, 'sad')),
+    jb(KERZ, E, 'Finissons la nuit dans les maisons encore debout. Un zombie éventre une tente bien trop facilement.', (E, 'neutral'), (J, 'sad')),
+    jb(KERZ, JJ, 'J’ai vaguement entendu parler d’une prophétie qui aurait fait s’évanouir Bulbalina et Messire Balai… puis je me suis écroulé dans un coin, incapable de penser davantage.', (BU, 'neutral'), (MB, 'sad')),
+], 'duel': {'foe': 'Les morts-vivants de la nuit', 'terrain': 'ville', 'level': 'moyen', 'dice': [246, 252, 249, 247, 255, 250, 246, 248, 251, 252],
+            'cards': ['Morts-vivants de Kierzan', 'Morts-vivants de Kierzan', 'Morts-vivants de Kierzan', 'Morts-vivants de Kierzan', 'Morts-vivants de Kierzan']}})
+parts.append({'id': 'c5p8', 'chapter': 5, 'title': 'Partie 8 : La lumière de l’aube', 'intro': [
+    jb(KERZ_DAWN, JJ, 'À l’aube, par habitude, je me suis levé pour prier face au soleil levant. J’étais encore accablé…', (J, 'sad')),
+    jb(KERZ_DAWN, JJ, '… mais Égide n’abandonne pas ses fidèles. Au fil de mes prières, mes angoisses se sont dissipées, remplacées par une force neuve, presque tangible.', (J, 'happy')),
+    jb(KERZ_DAWN, JJ, 'La matinée a été consacrée à organiser la suite… jusqu’à ce que Maebril surgisse, toujours aussi peu vêtu.', (MA, 'neutral'), (J, 'surprised'), (B, 'happy')),
+    jb(KERZ_DAWN, J, 'Bulbalina a prononcé une prophétie cette nuit, juste avant de s’évanouir. Cela vous évoque-t-il quelque chose ?', (J, 'neutral'), (MA, 'neutral')),
+    jb(KERZ_DAWN, MA, 'Rien du tout, je le crains. En revanche, j’ai beaucoup à vous apprendre sur Gliska.', (MA, 'neutral'), (G, 'angry')),
+    jb(KERZ_DAWN, MA, 'Et sur la dague maudite que vous transportez : il n’existe qu’une manière de la détruire… l’utiliser, et s’y lier.', (MA, 'neutral'), (E, 'scared'), (J, 'scared')),
+    jb(KERZ_DAWN, MA, 'Une dernière chose : Orven, de la guilde, est parti hier vers la route maudite de Mirrhol.', (MA, 'neutral'), (K, 'neutral')),
+    jb(KERZ_DAWN, JJ, 'Nous avons aussi fait notre rapport aux jumeaux. Leur réponse fut… concise. Trop occupés pour intervenir, ils promettaient d’envoyer quelqu’un au village.', (J, 'neutral'), (G, 'angry')),
+    jb(KERZ_DAWN, V, 'Je serai franc : j’ai l’intention d’assassiner Yoris.', (V, 'neutral'), (K, 'neutral'), (J, 'surprised')),
+    jb(KERZ_DAWN, G, 'Nous manquons de preuves sur ses agissements. Et nous ne le connaissons pas aussi bien que Kala et toi.', (G, 'neutral'), (V, 'neutral')),
+    jb(KERZ_DAWN, JJ, 'Je partageais les réticences de Grimgors. Nous avons fini par convenir de nous retrouver dans deux ou trois jours à la Taverne d’Argile, à Forfalla, pour aviser ensemble.', (J, 'neutral'), (G, 'neutral'), (V, 'neutral')),
+]})
+parts.append({'id': 'c5p9', 'chapter': 5, 'title': 'Partie 9 : Orven, sur la route maudite', 'intro': [
+    jb(ROAD, JJ, 'Velmarys a escorté Bulbalina jusqu’à Dassom. Nous, nous avons pris la route pour la mission de la guilde : enquêter sur la route maudite de Mirrhol.', (V, 'neutral'), (BU, 'neutral')),
+    jb(ROAD, JJ, 'Grimgors nous a surpris en faisant apparaître une monture impressionnante. Je l’ai senti soulagé de ne plus devoir traîner Bol… pauvre pépère.', (G, 'proud'), (J, 'happy')),
+    jb(ROAD, B, 'Psst… On nous observe. Là, entre les arbres.', (B, 'fight'), (K, 'neutral')),
+    jb(ROAD, JJ, 'Avec Kala et Grimgors, Bolduc a repéré un homme-chien : c’était Orven, amaigri mais vivant.', (OR, 'friendly'), (K, 'surprised'), (G, 'surprised')),
+    jb(ROAD, OR, 'Aidez-moi, je vous en prie. Des ogres ont capturé deux licornes. Je ne peux pas les sauver seul.', (OR, 'friendly'), (J, 'neutral')),
+    jb(ROAD, JJ, 'Malgré nos tâches déjà innombrables, refuser aurait été indigne.', (J, 'neutral')),
+    jb(ROAD, G, 'Jhimm et moi, nous attirons les ogres. Les plus discrets libéreront la licorne.', (G, 'fight'), (J, 'fight'), (K, 'neutral')),
+    jb(ROAD, JJ, 'Car une seule licorne était visible. Où pouvait bien être la seconde ?', (J, 'neutral'), (OR, 'haughty')),
+]})
+parts.append({'id': 'c5p10', 'chapter': 5, 'title': 'Partie 10 : Les ogres et l’ombre', 'intro': [
+    jb(WOODS, JJ, 'Deux tentatives de Grimgors pour communiquer — ou pour provoquer, difficile à dire — grâce à son collier de dents d’ogre…', (G, 'fight'), (J, 'neutral')),
+    jb(WOODS, JJ, '… et les ogres se sont mis en marche vers nous. C’est Ébérien qui a ouvert les hostilités : une énorme boule de feu a éclaté sur les deux créatures.', (E, 'fight'), (G, 'fight')),
+    jb(WOODS, JJ, 'Malgré cela, une inquiétude sourde me tenaillait. Je sentais une autre présence.', (J, 'scared')),
+    jb(WOODS, JJ, 'Je ne me trompais pas : une silhouette sombre est apparue et m’a lancé une dague. La blessure était superficielle, mais la sensation… étrange.', (J, 'scared')),
+    jb(WOODS, J, 'Une nécromancienne ! Elle est avec eux !', (J, 'fight'), (K, 'fight')),
+], 'victory': [
+    jb(WOODS, JJ, 'La puissance décuplée du groupe a rapidement fait plier les ogres et mis la nécromancienne en fuite.', (J, 'fight'), (B, 'fight')),
+    jb(WOODS, JJ, 'Kala et Grimgors semblaient encore plus rapides et efficaces que lors de nos précédents combats.', (K, 'fight'), (G, 'proud')),
+    jb(WOODS, JJ, 'C’est alors que la seconde licorne est apparue. Mais au lieu de me rassurer, une angoisse glacée m’a saisi : elle était corrompue, pervertie par une magie impie.', (LC, 'angry'), (J, 'scared')),
+], 'duel': {'foe': 'Les ogres et la nécromancienne', 'terrain': 'terre', 'level': 'difficile', 'dice': [294, 246, 252, 294, 249, 250, 294, 247, 251, 248],
+            'cards': ['Les ogres des collines', 'La nécromancienne', 'Les ogres des collines', 'Morts-vivants', 'La nécromancienne'], 'boss': 'ogre'}})
+parts.append({'id': 'c5p11', 'chapter': 5, 'title': 'Partie 11 : La licorne corrompue', 'intro': [
+    jb(WOODS, LC, 'Hiiiiii !', (LC, 'fight'), (J, 'scared')),
+    jb(WOODS, JJ, 'La nécromancienne était revenue, et la licorne corrompue chargeait à ses côtés.', (LC, 'fight'), (G, 'fight'), (K, 'fight')),
+    jb(WOODS, JJ, 'Orven et la première licorne, affolée et blessée, étaient en plein milieu.', (OR, 'fight'), (J, 'fight')),
+], 'victory': [
+    jb(WOODS, JJ, 'J’ai vu Grimgors fondre sur la magicienne, sans comprendre comment il l’avait arrêtée.', (G, 'fight')),
+    jb(WOODS, JJ, 'Je me suis précipité vers Orven et la licorne blessée. Je faisais confiance à mes compagnons pour terminer le combat : je me suis tourné vers Égide et j’ai prié de toutes mes forces.', (J, 'fight'), (OR, 'friendly')),
+    jb(WOODS, JJ, 'Peu à peu, la licorne a retrouvé son souffle, apaisée.', (J, 'happy'), (OR, 'friendly')),
+    jb(WOODS, JJ, 'Bolduc, Ébérien, Kala et Grimgors nous ont rejoints. La nécromancienne gisait sans vie. Quant à la licorne corrompue, elle s’était enfuie en se téléportant…', (B, 'neutral'), (E, 'neutral'), (K, 'neutral'), (G, 'neutral')),
+], 'duel': {'foe': 'La licorne corrompue', 'terrain': 'vent', 'level': 'difficile', 'dice': [297, 246, 297, 248, 250, 297, 249, 252, 297, 251],
+            'cards': ['La licorne corrompue', 'La nécromancienne', 'La licorne corrompue', 'Morts-vivants', 'La licorne corrompue']}})
+parts.append({'id': 'c5p12', 'chapter': 5, 'title': 'Partie 12 : Une blessure de trop ?', 'intro': [
+    jb(WOODS, JJ, 'En examinant la licorne blessée, j’ai remarqué de nombreuses coupures, toutes identiques à celle que m’avait faite la dague de la nécromancienne.', (J, 'neutral'), (OR, 'friendly')),
+    jb(WOODS, K, 'Sa dague n’est plus là. Je l’ai cherchée partout.', (K, 'neutral'), (J, 'scared')),
+    jb(WOODS, JJ, 'Disparue, étrangement. Peut-être pas si insignifiante que cela, cette blessure, finalement…', (J, 'scared')),
+    jb(WOODS, JJ, 'Et la liste de nos problèmes continue de s’allonger. Les jumeaux et leurs secrets, le retour de Caleïzis, les complots de Gliska ou de Yoris, la dague maudite, la secte des Sans-chiffres, l’ombre d’Orcus…', (J, 'sad'), (G, 'angry'), (K, 'sad')),
+    jb(WOODS, JJ, '… et maintenant, une blessure peut-être maudite. À ce rythme, la compagnie finira par rêver de repos plus que d’aventure.', art='assets/story/night-jhimm-message.webp'),
 ]})
 data.extend(parts)
 open(P, 'w', encoding='utf-8').write(head + '\n' + PRE + json.dumps(data, ensure_ascii=False, separators=(',', ':')) + ';' + ('\n' if rest.endswith('\n') else ''))
