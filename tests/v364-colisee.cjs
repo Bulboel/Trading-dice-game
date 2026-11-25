@@ -3,7 +3,7 @@ const fs=require('fs'),path=require('path'),assert=require('assert');const root=
 const html=read('index.html'),cl=read('assets/clearing-v105.js'),portal=read('assets/portal-v159.js'),coli=read('assets/colosseum-v364.js'),ch=read('assets/challenges-v180.js'),pvp=read('assets/pvp-online.js');
 assert.ok(html.includes("NEUTRAL=['ville','grotte','colisee','taverne']")&&html.includes("colisee:{n:'Le Colisée'"),'terrain neutre déclaré');
 assert.ok(html.includes("new CustomEvent('hackenia:roll-result',{detail:{seat:k,mine:k===(ONLINE?ONLINE.camp:0),name:P[k],success:!!outcome.success"),'résultat de chaque lancer annoncé');
-assert.ok(cl.includes("import { createColosseum } from './colosseum-v364.js")&&cl.includes("coliScene=createColosseum(decor,!!renderer.isSoftware,BH)")&&cl.includes("coliScene.update(t,light,moving)")&&cl.includes("type==='colisee'"),'scène 3D, mise à jour et obstacle branchés');
+assert.ok(cl.includes("import { createColosseum } from './colosseum-v364.js")&&cl.includes("coliScene=tuned(createColosseum(decor,!!renderer.isSoftware,BH))")&&cl.includes("coliScene.update(t,light,moving)")&&cl.includes("type==='colisee'"),'scène 3D, mise à jour et obstacle branchés');
 assert.ok(portal.includes("['colisee','🏟️','Le Colisée")&&portal.includes("colisee:{text:")&&portal.includes("['ville','grotte','colisee','taverne'].includes(id)"),'proposé dans Jouer');
 assert.ok(pvp.includes("['colisee','🏟️','Le Colisée']"),'proposé en ligne');
 assert.ok(ch.includes("{id:'arena'")&&ch.includes("terrain:'colisee'"),'défi Héros de l’arène');
@@ -14,7 +14,7 @@ assert.ok(city.includes("house(x,-FZ+1.2,w,1.1,.95+rnd()*.4,0)")&&city.includes(
 assert.ok(lake.includes('vraie barque')&&!lake.includes('hull.scale.set(.62,.2,.24)'),'barque refaite');
 assert.ok(ember.includes('volcanoFeet')&&ember.includes('function fissure(')&&ember.includes("ribcage(g,s,pose===2?5:6)"),'coulées refaites, squelettes à 6 paires de côtes');
 const tav=read('assets/tavern-v369.js'),story=read('assets/story-data-v193.js');
-assert.ok(html.includes("taverne:{n:'La taverne du Griffon Doré'")&&cl.includes("import { createTavern } from './tavern-v369.js")&&cl.includes("tavernScene=createTavern(decor,!!renderer.isSoftware,BH,{spawnWalker,spawnFighter})")&&portal.includes("['taverne','🍺','La taverne du Griffon Doré"),'v368 — taverne branchée');
+assert.ok(html.includes("taverne:{n:'La taverne du Griffon Doré'")&&cl.includes("import { createTavern } from './tavern-v369.js")&&cl.includes("tavernScene=tuned(createTavern(decor,!!renderer.isSoftware,BH,{spawnWalker,spawnFighter}))")&&portal.includes("['taverne','🍺','La taverne du Griffon Doré"),'v368 — taverne branchée');
 assert.ok(tav.includes('panneau d\'affichage magique')&&tav.includes('drawRunes')&&tav.includes("helpers.spawnFighter"),'taverne : panneau magique, habitués');
 assert.ok(story.includes('"foe":"Maebril","terrain":"taverne"'),'duel de Maebril à la taverne');
 const C=require('../assets/challenges-v180.js');for(const t of['brumes','colisee','taverne'])assert.ok(C.TERRAINS.includes(t),'victoires comptées sur '+t);

@@ -25,7 +25,11 @@ assert.equal(Object.keys(run('bfs(cr[0])')).length,1,'Freshly summoned creature 
 const ctx=new Proxy({},{get:(t,k)=>k==='createRadialGradient'||k==='createLinearGradient'?()=>({addColorStop(){}}):k==='createImageData'?(w,h)=>({data:new Uint8ClampedArray(w*h*4)}):k==='getImageData'?()=>({data:[]}):()=>{},set:()=>true});
 globalThis.document={createElement:()=>({width:0,height:0,getContext:()=>ctx})};
 const three=pathToFileURL(path.join(root,'assets/vendor/three/build/three.module.min.js')).href,tmp=fs.mkdtempSync(path.join(os.tmpdir(),'hk-246-'));
-(async()=>{const THREE=await import(three);for(const [f,fn] of[['city-v246.js','createCity'],['cave-v246.js','createCave']]){const file=path.join(tmp,f.replace('.js','.mjs'));fs.writeFileSync(file,read('assets/'+f).replace("from 'three'","from '"+three+"'"));const mod=await import(pathToFileURL(file).href);
+(async()=>{const THREE=await import(three);
+ /* v446 — la ville importe l'outil de fusion du décor (bake-static.js), lui-même appuyé sur BufferGeometryUtils */
+ const bgu=path.join(tmp,'BufferGeometryUtils.mjs');fs.writeFileSync(bgu,read('assets/vendor/three/examples/jsm/utils/BufferGeometryUtils.js').replace(/from 'three'/g,"from '"+three+"'"));
+ fs.writeFileSync(path.join(tmp,'bake-static.mjs'),read('assets/bake-static.js').replace("from 'three'","from '"+three+"'").replace(/from '\.\/vendor\/three\/examples\/jsm\/utils\/BufferGeometryUtils\.js'/,"from '"+pathToFileURL(bgu).href+"'"));
+ for(const [f,fn] of[['city-v246.js','createCity'],['cave-v246.js','createCave']]){const file=path.join(tmp,f.replace('.js','.mjs'));fs.writeFileSync(file,read('assets/'+f).replace("from 'three'","from '"+three+"'").replace(/from '\.\/bake-static\.js[^']*'/,"from './bake-static.mjs'"));const mod=await import(pathToFileURL(file).href);
  for(const sw of[false,true]){const w=new THREE.Group(),s=mod[fn](w,sw,12);w.updateMatrixWorld(true);const slabs=s.root.children.find(o=>o.isInstancedMesh&&o.count===96);assert.ok(slabs,f+' one slab per cell');for(const t of[0,1.5])s.update(t,false,true);s.update(1,true,false)}}
  fs.rmSync(tmp,{recursive:true,force:true});console.log('PASS: Dassom city and underground cave (neutral, one slab per cell), chapter 1 terrains, 5 symmetric board shapes (Jouer only), sudden death on three 6s, freshly summoned creatures wait a turn.');
 })().catch(e=>{console.error(e);process.exit(1)});

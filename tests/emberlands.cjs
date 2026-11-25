@@ -1,7 +1,7 @@
 // v239 — Les Terres embrasées repensées : un damier de dalles parfaitement lisible, la lave autour et dans les joints seulement.
 const fs=require('fs'),path=require('path'),os=require('os'),assert=require('assert'),{pathToFileURL}=require('url');
 const root=path.join(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8'),src=read('assets/ember-v239.js'),cl=read('assets/clearing-v105.js');
-assert.ok(cl.includes("import { createEmberlands } from './ember-v239.js")&&cl.includes('crater=createEmberlands(decor,game.fireVents,!!renderer.isSoftware,BH);crater.root.scale.z=1/ZS'),'New fire terrain wired, real cell coordinates');
+assert.ok(cl.includes("import { createEmberlands } from './ember-v239.js")&&cl.includes('crater=tuned(createEmberlands(decor,game.fireVents,!!renderer.isSoftware,BH));crater.root.scale.z=1/ZS'),'New fire terrain wired, real cell coordinates');
 assert.ok(!cl.includes('crater-v135')&&!fs.existsSync(path.join(root,'assets/crater-v135.js'))&&!fs.existsSync(path.join(root,'assets/basalt-field.js')),'Old busy lava field removed');
 for(const k of['Lave des douves','Rive cendrée','dalles nettes','Évents','Volcans','obsidienne','Braseros','Braises qui montent'])assert.ok(src.includes(k),'Ember lands has '+k);
 const ctx=new Proxy({},{get:(t,k)=>k==='createRadialGradient'||k==='createLinearGradient'?()=>({addColorStop(){}}):k==='createImageData'?(w,h)=>({data:new Uint8ClampedArray(w*h*4)}):k==='getImageData'?()=>({data:[]}):()=>{},set:()=>true});
