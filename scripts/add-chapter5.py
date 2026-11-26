@@ -203,6 +203,7 @@ parts.append({'id': 'c5p12', 'chapter': 5, 'title': 'Partie 12 : Une blessure de
     jb(WOODS, JJ, 'Et la liste de nos problèmes continue de s’allonger. Les jumeaux et leurs secrets, le retour de Caleïzis, les complots de Gliska ou de Yoris, la dague maudite, la secte des Sans-chiffres, l’ombre d’Orcus…', (J, 'sad'), (G, 'angry'), (K, 'sad')),
     jb(WOODS, JJ, '… et maintenant, une blessure peut-être maudite. À ce rythme, la compagnie finira par rêver de repos plus que d’aventure.', art='assets/story/night-jhimm-message.webp'),
 ]})
-data.extend(parts)
+at = next((i for i, p in enumerate(data) if p['chapter'] > 5), len(data))  # v451 — avant le chapitre VI
+data[at:at] = parts
 open(P, 'w', encoding='utf-8').write(head + '\n' + PRE + json.dumps(data, ensure_ascii=False, separators=(',', ':')) + ';' + ('\n' if rest.endswith('\n') else ''))
 print('chapitre V :', len(parts), 'parties,', sum(len(p.get('intro', [])) + len(p.get('victory', [])) for p in parts), 'répliques')
