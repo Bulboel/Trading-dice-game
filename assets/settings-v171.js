@@ -10,7 +10,7 @@ function normalize(s){return{sound:!!s.sound,volume:Math.max(0,Math.min(1,Number
 /* v445 — Mode fluide (par défaut sur téléphone) : plus de flou d’arrière-plan (CSS, html.hk-fluid) et plus d’animations décoratives
    en boucle. Les animations CSS « infinies » sont arrêtées au fur et à mesure qu’elles apparaissent, sauf celles qui guident le joueur
    (tutoriel, aperçu de pose, étape actuelle de la carte, flèche de destination, notifications). Les animations ponctuelles restent. */
-const KEEP_LOOP=/^(tuto-|placement-preview|guide-pulse|onb-|sm-|destination-float|spin$|spin3|daily-ping|hk-ping-lite|hk-medal-lite|pls$|pinp$)/;let calmTimer=0,calmObserver=null;
+const KEEP_LOOP=/^(tuto-|placement-preview|guide-pulse|onb-|sm-|destination-float|spin$|spin3|daily-ping|hk-ping-lite|hk-medal-lite|paper-breathe|pls$|pinp$)/;let calmTimer=0,calmObserver=null;
 function calmNow(){calmTimer=0;if(!settings.fluid||!document.getAnimations)return;for(const a of document.getAnimations()){try{if(typeof CSSAnimation!=='undefined'&&!(a instanceof CSSAnimation))continue;if(a.effect?.getTiming?.().iterations!==Infinity)continue;if(KEEP_LOOP.test(a.animationName||''))continue;a.cancel()}catch{}}}
 function calmLoops(){if(!settings.fluid){calmObserver?.disconnect();calmObserver=null;return}if(!calmTimer)calmTimer=setTimeout(calmNow,250);
  if(!calmObserver&&typeof MutationObserver!=='undefined'&&document.body){calmObserver=new MutationObserver(()=>{if(!calmTimer)calmTimer=setTimeout(calmNow,300)});calmObserver.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','open']})}}
