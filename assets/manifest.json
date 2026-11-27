@@ -1141,6 +1141,90 @@
         "win": "story/emo/erevan-1.webp"
       },
       "paper": true
+    },
+    "squelette": {
+      "nom": "Squelette",
+      "boardHeight": 0.95,
+      "sprite": {
+        "idle": "story/emo/squelette-2.webp",
+        "walk": "story/emo/squelette-2.webp",
+        "attack": "story/emo/squelette-1.webp",
+        "hit": "story/emo/squelette-2.webp",
+        "win": "story/emo/squelette-1.webp"
+      },
+      "paper": true
+    },
+    "drone-pentagone": {
+      "nom": "Drone pentagone",
+      "boardHeight": 0.8,
+      "sprite": {
+        "idle": "story/emo/drone-pentagone-2.webp",
+        "walk": "story/emo/drone-pentagone-2.webp",
+        "attack": "story/emo/drone-pentagone-1.webp",
+        "hit": "story/emo/drone-pentagone-2.webp",
+        "win": "story/emo/drone-pentagone-1.webp"
+      },
+      "paper": true
+    },
+    "momie": {
+      "nom": "Auguste la momie",
+      "boardHeight": 0.95,
+      "sprite": {
+        "idle": "story/emo/momie-2.webp",
+        "walk": "story/emo/momie-2.webp",
+        "attack": "story/emo/momie-1.webp",
+        "hit": "story/emo/momie-2.webp",
+        "win": "story/emo/momie-1.webp"
+      },
+      "paper": true
+    },
+    "chevalier-d-egide": {
+      "nom": "Chevalier d’Égide",
+      "boardHeight": 0.95,
+      "sprite": {
+        "idle": "story/emo/chevalier-d-egide-2.webp",
+        "walk": "story/emo/chevalier-d-egide-2.webp",
+        "attack": "story/emo/chevalier-d-egide-1.webp",
+        "hit": "story/emo/chevalier-d-egide-2.webp",
+        "win": "story/emo/chevalier-d-egide-1.webp"
+      },
+      "paper": true
+    },
+    "maitre-d-armes": {
+      "nom": "Le vieux maître d’armes",
+      "boardHeight": 0.95,
+      "sprite": {
+        "idle": "story/emo/maitre-d-armes-2.webp",
+        "walk": "story/emo/maitre-d-armes-2.webp",
+        "attack": "story/emo/maitre-d-armes-1.webp",
+        "hit": "story/emo/maitre-d-armes-2.webp",
+        "win": "story/emo/maitre-d-armes-1.webp"
+      },
+      "paper": true
+    },
+    "minotaure": {
+      "nom": "Minotaure",
+      "boardHeight": 1.15,
+      "sprite": {
+        "idle": "story/emo/minotaure-2.webp",
+        "walk": "story/emo/minotaure-2.webp",
+        "attack": "story/emo/minotaure-1.webp",
+        "hit": "story/emo/minotaure-2.webp",
+        "win": "story/emo/minotaure-1.webp"
+      },
+      "paper": true
+    },
+    "necromancienne": {
+      "nom": "La nécromancienne",
+      "boardHeight": 0.95,
+      "sprite": {
+        "idle": "story/emo/necromancienne-2.webp",
+        "walk": "story/emo/necromancienne-2.webp",
+        "attack": "story/emo/necromancienne-1.webp",
+        "hit": "story/emo/necromancienne-2.webp",
+        "win": "story/emo/necromancienne-1.webp"
+      },
+      "paper": true
     }
   },
   "terrains": {

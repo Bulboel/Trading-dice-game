@@ -40,12 +40,20 @@
   "assets/story/emo/canourson-5.webp",
   "assets/story/emo/canourson-6.webp"
  ],
+ "chevalier-d-egide": [
+  "assets/story/emo/chevalier-d-egide-1.webp",
+  "assets/story/emo/chevalier-d-egide-2.webp"
+ ],
  "drahul": [
   "assets/story/emo/drahul-1.webp",
   "assets/story/emo/drahul-2.webp",
   "assets/story/emo/drahul-3.webp",
   "assets/story/emo/drahul-4.webp",
   "assets/story/emo/drahul-5.webp"
+ ],
+ "drone-pentagone": [
+  "assets/story/emo/drone-pentagone-1.webp",
+  "assets/story/emo/drone-pentagone-2.webp"
  ],
  "eberien": [
   "assets/story/emo/eberien-1.webp",
@@ -179,11 +187,23 @@
   "assets/story/emo/maestro-5.webp",
   "assets/story/emo/maestro-6.webp"
  ],
+ "maitre-d-armes": [
+  "assets/story/emo/maitre-d-armes-1.webp",
+  "assets/story/emo/maitre-d-armes-2.webp"
+ ],
  "messire-balai": [
   "assets/story/emo/messire-balai-1.webp",
   "assets/story/emo/messire-balai-2.webp",
   "assets/story/emo/messire-balai-3.webp",
   "assets/story/emo/messire-balai-4.webp"
+ ],
+ "minotaure": [
+  "assets/story/emo/minotaure-1.webp",
+  "assets/story/emo/minotaure-2.webp"
+ ],
+ "momie": [
+  "assets/story/emo/momie-1.webp",
+  "assets/story/emo/momie-2.webp"
  ],
  "naia": [
   "assets/story/emo/naia-1.webp",
@@ -192,6 +212,14 @@
   "assets/story/emo/naia-4.webp",
   "assets/story/emo/naia-5.webp",
   "assets/story/emo/naia-6.webp"
+ ],
+ "necromancienne": [
+  "assets/story/emo/necromancienne-1.webp",
+  "assets/story/emo/necromancienne-2.webp"
+ ],
+ "ogre": [
+  "assets/story/emo/ogre-1.webp",
+  "assets/story/emo/ogre-2.webp"
  ],
  "orven": [
   "assets/story/emo/orven-1.webp",
@@ -224,6 +252,10 @@
   "assets/story/emo/soldat-de-lunargent-5.webp",
   "assets/story/emo/soldat-de-lunargent-6.webp"
  ],
+ "squelette": [
+  "assets/story/emo/squelette-1.webp",
+  "assets/story/emo/squelette-2.webp"
+ ],
  "transporteur": [
   "assets/story/emo/transporteur-1.webp",
   "assets/story/emo/transporteur-2.webp",
@@ -236,6 +268,16 @@
   "assets/story/emo/velcan-1.webp",
   "assets/story/emo/velcan-2.webp",
   "assets/story/emo/velcan-3.webp"
+ ],
+ "velmarys": [
+  "assets/story/emo/velmarys-1.webp",
+  "assets/story/emo/velmarys-2.webp",
+  "assets/story/emo/velmarys-3.webp",
+  "assets/story/emo/velmarys-4.webp",
+  "assets/story/emo/velmarys-5.webp",
+  "assets/story/emo/velmarys-6.webp",
+  "assets/story/emo/velmarys-7.webp",
+  "assets/story/emo/velmarys-8.webp"
  ],
  "yoris": [
   "assets/story/emo/yoris-1.webp",

@@ -148,3 +148,16 @@
 /* v432 — Chapitre V : le journal de Kala (texte manuscrit, plume) */
 #story-scene.ss-diary .ss-speaker::before{content:'✒️ ';font-style:normal}
 #story-scene.ss-diary .ss-text{font-style:italic;letter-spacing:.01em}
+
+/* v452 — Personnages vivants dans l’Histoire : animations courtes (jamais en boucle), jouées quand l’humeur change.
+   « translate » se combine avec le placement (transform) calculé par fitCast. */
+#story-scene .ss-sprite.ss-anim-in{animation:ss-in .38s cubic-bezier(.2,1.4,.4,1) both}
+#story-scene .ss-sprite.ss-anim-scared{animation:ss-quiver .07s linear 7}
+#story-scene .ss-sprite.ss-anim-fight{animation:ss-lunge .5s cubic-bezier(.3,1.5,.5,1) 1}
+#story-scene .ss-sprite.ss-anim-happy{animation:ss-hop .55s ease-out 1}
+#story-scene .ss-sprite.ss-anim-ko{animation:ss-ko .5s ease-in 1}
+@keyframes ss-in{from{opacity:0;translate:0 14px;scale:.92}to{opacity:1;translate:0 0;scale:1}}
+@keyframes ss-quiver{0%,100%{translate:0 0}25%{translate:-3px 0}75%{translate:3px 0}}
+@keyframes ss-lunge{0%{translate:0 0}35%{translate:calc(var(--ss-dir,1) * 22px) -3px}100%{translate:0 0}}
+@keyframes ss-hop{0%,100%{translate:0 0}35%{translate:0 -14px}60%{translate:0 0}78%{translate:0 -5px}}
+@keyframes ss-ko{0%{translate:0 -6px;rotate:0deg}60%{translate:0 4px}100%{translate:0 0}}
