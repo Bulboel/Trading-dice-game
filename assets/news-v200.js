@@ -8,7 +8,7 @@ const NEWS=[
  {id:'v452',title:'Des personnages plus vivants',items:['Sept nouveaux dés en papier : squelette, Auguste la momie, minotaure, drone pentagone, chevalier d’Égide, vieux maître d’armes et nécromancienne.','Les figurines s’animent : elles s’élancent pour attaquer, tremblent sous les coups et réagissent dans l’Histoire.','Nouveaux décors pour le chapitre VI.']},
  {id:'v451',title:'Chapitre VI : Erevan et Mirrhol',items:['Un nouveau chapitre raconté par Bolduc : Bosco rejoint la compagnie, et le dieu Erevan la met à l’épreuve.','Trois combats : les gardiens de la statue, les vers du casu marzu et les drones pentagones.']},
  {id:'v450',title:'Chapitre V : la suite, par Jhimm',items:['Le chapitre V s’appelle désormais « Les fidèles d’Orcus ».','Six nouvelles parties racontées par Jhimm, avec trois combats : morts-vivants, ogres et une licorne corrompue.','Personnages de l’Histoire mieux détourés.']},
- {id:'v445',title:'Un jeu bien plus fluide',items:['Menus et plateau 3D allégés sans rien perdre des graphismes.','Téléphones où la 3D ne démarre pas : mode compatibilité automatique.']}
+ {id:'v448',title:'Merci à nos testeurs ! 🎁',items:['Merci à toutes et à tous pour vos retours : ils font avancer Hackénia chaque jour.','Pour profiter pleinement de votre première expérience, le Pack Sage vous est offert (bague de sage, boubourses par 100, recyclage automatique, 1 000 Bubulles, sans publicité) : il est ajouté à votre compte par l’équipe dans les prochains jours.','Nous sommes désolés pour les problèmes de fluidité : le jeu a été profondément optimisé, et le mode fluide (Options › Affichage) est activé d’office sur téléphone.']}
 ];
 const latest=NEWS[0].id;
 const read=()=>{try{return localStorage.getItem(SEEN)}catch{return null}};
