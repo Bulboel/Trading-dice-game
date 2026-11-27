@@ -1189,7 +1189,7 @@
       "paper": true
     },
     "chevalier-d-egide": {
-      "nom": "Chevalier de Lumérion",
+      "nom": "Chevalier d’Égide",
       "boardHeight": 0.95,
       "sprite": {
         "idle": "story/emo/chevalier-d-egide-2.webp",

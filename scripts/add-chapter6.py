@@ -109,14 +109,14 @@ parts.append({'id': 'c6p4', 'chapter': 6, 'title': 'Partie 4 : La statue colossa
     bb(DARK, G, 'J’allume ma torche.', (G, 'neutral'), (J, 'neutral')),
     bb(DARK, B, 'Moi, je veux avancer !', (B, 'happy'), (G, 'neutral')),
     bb(DARK, JB, 'Avec un peu plus de lumière (merci Jhimm et Grimgors), nous avons distingué un sentier. Nous l’avons emprunté en restant sur nos gardes.', (J, 'neutral'), (G, 'neutral')),
-    bb(DARK, JB, 'Après une bonne marche, Bosco a aperçu une énorme statue au loin. Deux kilomètres plus tard : la plus colossale statue de notre vie. Elle représentait Lumérion, le dieu que Jhimm sert aujourd’hui.', (BO, 'surprised'), (B, 'happy')),
-    bb(DARK, J, 'Une statue de Lumérion, ici ? C’est bizarre… Une illusion de l’autre dieu coquin ?', (J, 'thinking'), (G, 'neutral')),
+    bb(DARK, JB, 'Après une bonne marche, Bosco a aperçu une énorme statue au loin. Deux kilomètres plus tard : la plus colossale statue de notre vie. Elle représentait Égide, la grande armure de métal, le dieu qui avait tenté de parler à Jhimm en rêve.', (BO, 'surprised'), (B, 'happy')),
+    bb(DARK, J, 'Une statue d’Égide, ici ? C’est bizarre… Une illusion de l’autre dieu coquin ?', (J, 'thinking'), (G, 'neutral')),
     bb(DARK, JB, 'Encore un kilomètre jusqu’à ses gros pieds. J’ai touché direct pour trouver une porte secrète, aussitôt imité par Bosco. Il me plaît, ce p’tit gars : en plus de ne pas être grand, il est tactile comme moi !', (B, 'happy'), (BO, 'happy')),
     bb(DARK, K, 'Ne touchez à rien ! Combien de fois faudra-t-il le répéter ?', (K, 'neutral'), (B, 'sad'), (BO, 'shy')),
     bb(DARK, JB, 'Les trois grands nous ont grondés. Pfff… En contournant le pied, nous avons découvert une image de Jhimm sur le talon. Forcément, lui, il a eu l’autorisation de Grimgors pour la toucher !', (J, 'happy'), (G, 'proud'), (B, 'angry')),
 ]})
-parts.append({'id': 'c6p5', 'chapter': 6, 'title': 'Partie 5 : Le pied de Lumérion', 'intro': [
-    bb(FOOT, J, 'Une statue de Lumérion, mon image sur le talon… Si c’est une épreuve, elle m’est destinée. Restez derrière moi.', (J, 'neutral'), (G, 'neutral')),
+parts.append({'id': 'c6p5', 'chapter': 6, 'title': 'Partie 5 : Le pied d’Égide', 'intro': [
+    bb(FOOT, J, 'Une statue d’Égide, mon image sur le talon… Égide a déjà cherché à me parler. Si c’est une épreuve, elle m’est destinée. Restez derrière moi.', (J, 'neutral'), (G, 'neutral')),
     bb(FOOT, JB, 'Nous sommes entrés dans le pied : une grande pièce sombre.', (B, 'neutral'), (J, 'neutral')),
     bb(FOOT, JB, 'Jhimm a allumé sa masse avec sa magie. La magie ou la lumière ? Toujours est-il que six stèles se sont ouvertes…', (J, 'neutral'), (K, 'scared')),
     bb(FOOT, JB, '… et ont libéré des squelettes, des momies et un minotaure !', (SQ, 'fight'), (MO, 'fight'), (MI, 'fight'), (B, 'fight')),
@@ -143,7 +143,7 @@ parts.append({'id': 'c6p6', 'chapter': 6, 'title': 'Partie 6 : L’épreuve de J
 ]})
 parts.append({'id': 'c6p7', 'chapter': 6, 'title': 'Partie 7 : La meule géante', 'intro': [
     bb(MUSH, JB, '… nous avons encore été téléportés. Un endroit sombre, dehors, plein de champignons métalliques lumineux. Tiens, un petit sentier ! Ça nous rappelait quelque chose. On a foncé : j’aime ça !', (B, 'happy'), (BO, 'happy')),
-    bb(MUSH, JB, 'Et au loin… une énorme meule de fromage, grande comme une colline ! Waouh, quelle vision ! Après Lumérion pour Jhimm, ça sentait l’épreuve pour moi, ça… et peut-être ma cuillère !', (B, 'happy')),
+    bb(MUSH, JB, 'Et au loin… une énorme meule de fromage, grande comme une colline ! Waouh, quelle vision ! Après Égide pour Jhimm, ça sentait l’épreuve pour moi, ça… et peut-être ma cuillère !', (B, 'happy')),
     bb(MUSH, JB, 'En parlant de sentir, mes compagnons avaient beaucoup de mal à supporter l’odeur de cette merveille.', (K, 'sad'), (G, 'angry'), (BO, 'shy')),
     bb(MUSH, JB, 'En faisant le tour, j’ai trouvé une image de moi. Je lui ai mis le doigt dans le nez… et nous sommes entrés dans le fromage !', (B, 'happy'), (J, 'surprised')),
     bb(CHEESE, JB, 'Première pièce : le bleu d’Auvergne. Il nous a fallu un moment pour comprendre que je devais lécher les gardes myconides pour accéder à la porte.', (B, 'happy'), (K, 'surprised')),
