@@ -38,6 +38,14 @@ for u in shell:
     if os.path.isfile(p):h.update(u.encode());h.update(open(p,'rb').read())
 version=h.hexdigest()[:12]
 tpl=open('scripts/sw-template.js',encoding='utf8').read()
+# v454 — empreinte de chaque média (images, modèles 3D, sons) : le service worker retélécharge ceux qui ont changé
+hashes={}
+for dp,_,fs in os.walk('assets'):
+    if dp.startswith('assets/Models'):continue
+    for f in fs:
+        if re.search(r'\.(glb|webp|png|jpg|mp3|svg)$',f,re.I):
+            q=os.path.join(dp,f).replace(os.sep,'/');hashes[q]=hashlib.sha1(open(q,'rb').read()).hexdigest()[:8]
+tpl=tpl.replace('__HASHES__',json.dumps(dict(sorted(hashes.items())),ensure_ascii=False,separators=(',',':')))
 out=tpl.replace('__VERSION__',version).replace('__SHELL__',json.dumps(shell,ensure_ascii=False)).replace('__FULL__',json.dumps(full,ensure_ascii=False))
 import sys
 if '--check' in sys.argv:
