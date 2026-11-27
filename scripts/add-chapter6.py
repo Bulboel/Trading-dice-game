@@ -75,7 +75,7 @@ parts.append({'id': 'c6p1', 'chapter': 6, 'title': 'Partie 1 : Un sang maudit ?'
     bb(WOODS, JB, 'Et Jhimm portait au bras la coupure laissée par la dague de la nécromancienne. Une dague qui avait disparu… et des coupures identiques couvraient la licorne blessée.', (J, 'scared'), (K, 'neutral')),
     bb(WOODS, OR, 'Jhimm… votre sang ne serait-il pas maudit ?', (OR, 'haughty'), (J, 'scared')),
     bb(WOODS, JB, 'Grimgors l’a touché pour vérifier. Pas de malédiction en vue… mais ça lui a tout de même refermé la plaie !', (G, 'neutral'), (J, 'neutral')),
-    bb(WOODS, G, 'Pour en avoir le cœur net, nous irons dans un grand temple, à Forfalla.', (G, 'neutral'), (J, 'neutral')),
+    bb(WOODS, G, 'Pour en avoir le cœur net, nous irons au grand temple d’Égide, à Forfalla.', (G, 'neutral'), (J, 'neutral')),
     bb(WOODS, LI, 'Aidez-moi, je vous en supplie : mon petit est encore prisonnier. Il me faut de la magie pour aller le sauver.', (LI, 'sad'), (OR, 'friendly')),
     bb(WOODS, E, 'J’irai. Orven aussi. Gardez mon médaillon de Maebril pour communiquer : Orven a le même.', (E, 'neutral'), (OR, 'friendly')),
     bb(WOODS, JB, 'On suppose que Maebril acceptera de faire le messager. Et pouf : Ébérien, Orven et la licorne ont disparu.', (B, 'sad'), (K, 'neutral')),
