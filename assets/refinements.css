@@ -119,3 +119,12 @@ body[data-portal-view=decks] #portal-content{padding-bottom:150px!important}
    coûteux au défilement et à l’ouverture des fenêtres. Les fonds restent sombres et lisibles. */
 html.hk-fluid *,html.hk-fluid *::before,html.hk-fluid *::after,html.hk-fluid ::backdrop{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 html.hk-fluid #night-sky{will-change:auto!important}
+
+/* v453 — Mode fluide, téléphones modestes (Galaxy A13…) :
+   les pastilles et la médaille qui pulsent animaient box-shadow (la page est repeinte 60 fois par seconde) ;
+   elles pulsent désormais par taille et transparence, sans repeindre. Les cartes de la collection hors écran ne sont plus dessinées. */
+@keyframes hk-ping-lite{0%,100%{transform:scale(1)}50%{transform:scale(1.16)}}
+@keyframes hk-medal-lite{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+html.hk-fluid #daily-die.ready .daily-count,html.hk-fluid #news-die .news-count{animation:hk-ping-lite 1.6s ease-in-out infinite;box-shadow:0 0 0 3px #e5484d55}
+html.hk-fluid .sm-node.current .sm-medal,html.hk-fluid .sm-node.current.arrive .sm-medal{animation:hk-medal-lite 1.8s ease-in-out infinite;box-shadow:0 0 0 3px #ffe58a,0 0 24px 8px #ffcf4acc,0 4px 12px #000a}
+html.hk-fluid #collection-grid>.collect-card,html.hk-fluid #portal-content .portal-grid>article{content-visibility:auto;contain-intrinsic-size:auto 230px}
