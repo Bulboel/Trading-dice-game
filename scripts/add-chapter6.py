@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""v451 — Chapitre VI « Erevan et Mirrhol », raconté par Bolduc (d’après son récit) : parties c6p1 à c6p11, 3 duels.
+"""v451 — Chapitre VI « Les malices d’Erevan, 1re partie » (ex-« Erevan et Mirrhol »), raconté par Bolduc (d’après son récit) : parties c6p1 à c6p11, 3 duels.
 Écrit les parties c6 dans assets/story-data-v193.js (les remplace si elles existent déjà).
 Relancer ensuite : python3 scripts/tag-story-emotions.py && python3 scripts/story-sprite-bounds.py"""
 import json
@@ -201,6 +201,7 @@ parts.append({'id': 'c6p11', 'chapter': 6, 'title': 'Partie 11 : Ne pas toucher 
     bb(FIELD, JB, 'Qui aurait cru que ce serait moi qui la répéterais ? À suivre…', (B, 'happy'), (BO, 'happy')),
 ]})
 
-data.extend(parts)
+at = next((i for i, p in enumerate(data) if p['chapter'] > 6), len(data))  # v458 — avant le chapitre VII
+data[at:at] = parts
 open(P, 'w', encoding='utf-8').write(head + '\n' + PRE + json.dumps(data, ensure_ascii=False, separators=(',', ':')) + ';' + ('\n' if rest.endswith('\n') else ''))
 print('chapitre VI :', len(parts), 'parties,', sum(len(p.get('intro', [])) + len(p.get('victory', [])) for p in parts), 'répliques')
