@@ -2,10 +2,10 @@
 // or ardent / arc-en-ciel, finition du dé, cercles au sol, poussière, faisceau et éclat d'apparition.
 import * as THREE from 'three';
 import {invocationPalette} from './invocation-colors.js?v=166';
-import {applyLook} from './variant-look.js?v=20270102-v456';
-import {invocationNormalization,invocationFrame} from './invocation-layout.js?v=20270102-v456';
+import {applyLook} from './variant-look.js?v=20270102-v457';
+import {invocationNormalization,invocationFrame} from './invocation-layout.js?v=20270102-v457';
 import {GLTFLoader} from './vendor/three/examples/jsm/loaders/GLTFLoader.js';
-import {loadPaperTextures,buildPaperFigure} from './paper-figure.js?v=20270102-v456';
+import {loadPaperTextures,buildPaperFigure} from './paper-figure.js?v=20270102-v457';
 import {OrbitControls} from './vendor/three/examples/jsm/controls/OrbitControls.js';
 const TIERS={
  commun:{metal:0xb87d4b,rough:.6,metalness:.15,emissive:0,sigils:1,dust:500,beam:0,flash:0},
@@ -112,7 +112,7 @@ function resize(){const w=stage.clientWidth||1,h=stage.clientHeight||1,fit=invoc
 /* la feuille regarde toujours la caméra (sinon, de profil, elle disparaît presque), avec un léger trois-quarts */
 const _cam=new THREE.Vector3();function facePaper(m){if(!m.parent)return;_cam.copy(camera.position);m.parent.worldToLocal(_cam);m.rotation.y=Math.atan2(_cam.x,_cam.z)-.18}
 function livePaper(m){const U=m.userData,fig=U.paper,tex=U.paperTex||{},now=performance.now()/1000;U.t0??=now;const e=now-U.t0,c=e%3.4;
- const atk=!!tex.attack&&e>1.2&&c>2.3&&c<2.9,want=e<.7&&tex.win?'win':atk?'attack':'idle';if(want!==U.cur&&tex[want]){U.cur=want;fig.setPose(tex[want])}
+ const atk=!!tex.attack&&e>1.2&&c>2.3&&c<2.9,want=e<.7&&tex.win?'win':atk?'attack':'idle',seq=tex[want],fr=Array.isArray(seq)?Math.min(seq.length-1,Math.floor((c-2.3)/.6*seq.length)):0,cur=want+fr;if(cur!==U.cur&&seq){U.cur=cur;fig.setPose(Array.isArray(seq)?seq[fr]:seq)}
  const hop=e<.7?Math.abs(Math.sin(e*Math.PI/.35))*.18*(1-e/.7):0,lunge=atk?Math.sin(Math.PI*(c-2.3)/.6):0;
  m.position.set(lunge*.45,hop+.035*Math.abs(Math.sin(e*2.1))+lunge*.06,0);m.scale.set(1+.012*Math.sin(e*2.6),1+.028*Math.sin(e*2.6),1);m.rotation.z=.035*Math.sin(e*1.6)-lunge*.06}
 const clock=new THREE.Clock();function render(){if(dead)return;frame=requestAnimationFrame(render);if(document.hidden)return;const dt=Math.min(clock.getDelta(),.1);if(playing){progress=Math.min(1,progress+dt/2.6);if(progress>=1)playing=false}pose(progress);epicPose(progress);if(!reduced){mixer?.update(dt);for(const x of extraMixers)x.update(dt)}if(model?.userData?.paper){facePaper(model);if(!reduced&&progress>.77)livePaper(model)}orbit.update();renderer.render(scene,camera);if(!prepared){prepared=true;onReady?.()}if(progress>=1&&!finished){finished=true;onComplete?.()}}
