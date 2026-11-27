@@ -199,7 +199,7 @@ parts.append({'id': 'c5p11', 'chapter': 5, 'title': 'Partie 11 : La licorne corr
 ], 'duel': {'foe': 'La licorne corrompue', 'terrain': 'vent', 'level': 'difficile', 'dice': [297, 321, 297, 248, 250, 297, 249, 252, 246, 251],
             'cards': ['La licorne corrompue', 'La nécromancienne', 'La licorne corrompue', 'Morts-vivants', 'La licorne corrompue']}})
 parts.append({'id': 'c5p12', 'chapter': 5, 'title': 'Partie 12 : Une blessure de trop ?', 'intro': [
-    jb(WOODS, JJ, 'En examinant la licorne blessée, j’ai remarqué de nombreuses coupures, toutes identiques à celle que m’avait faite la dague de la nécromancienne.', (J, 'neutral'), (OR, 'friendly')),
+    jb(WOODS, JJ, 'En examinant la licorne blessée, j’ai remarqué de nombreuses coupures, toutes identiques à celle que m’avait faite la dague de la nécromancienne.', (J, 'thinking'), (OR, 'friendly')),
     jb(WOODS, K, 'Sa dague n’est plus là. Je l’ai cherchée partout.', (K, 'neutral'), (J, 'scared')),
     jb(WOODS, JJ, 'Disparue, étrangement. Peut-être pas si insignifiante que cela, cette blessure, finalement…', (J, 'scared')),
     jb(WOODS, JJ, 'Et la liste de nos problèmes continue de s’allonger. Les jumeaux et leurs secrets, le retour de Caleïzis, les complots de Gliska ou de Yoris, la dague maudite, la secte des Sans-chiffres, l’ombre d’Orcus…', (J, 'sad'), (G, 'angry'), (K, 'sad')),

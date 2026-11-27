@@ -6,11 +6,19 @@
   "assets/story/emo/bolduc-4.webp",
   "assets/story/emo/bolduc-5.webp"
  ],
+ "bolduc-plus": [
+  "assets/story/emo/bolduc-plus-1.webp",
+  "assets/story/emo/bolduc-plus-2.webp"
+ ],
  "bosco": [
   "assets/story/emo/bosco-1.webp",
   "assets/story/emo/bosco-2.webp",
   "assets/story/emo/bosco-3.webp",
   "assets/story/emo/bosco-4.webp"
+ ],
+ "bosco-plus": [
+  "assets/story/emo/bosco-plus-1.webp",
+  "assets/story/emo/bosco-plus-2.webp"
  ],
  "bulbalina": [
   "assets/story/emo/bulbalina-1.webp",
@@ -148,12 +156,20 @@
   "assets/story/emo/jhimm-4.webp",
   "assets/story/emo/jhimm-5.webp"
  ],
+ "jhimm-plus": [
+  "assets/story/emo/jhimm-plus-1.webp",
+  "assets/story/emo/jhimm-plus-2.webp"
+ ],
  "kala": [
   "assets/story/emo/kala-1.webp",
   "assets/story/emo/kala-2.webp",
   "assets/story/emo/kala-3.webp",
   "assets/story/emo/kala-4.webp",
   "assets/story/emo/kala-5.webp"
+ ],
+ "kala-plus": [
+  "assets/story/emo/kala-plus-1.webp",
+  "assets/story/emo/kala-plus-2.webp"
  ],
  "krak": [
   "assets/story/emo/krak-1.webp",

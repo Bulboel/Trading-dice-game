@@ -101,7 +101,7 @@ parts.append({'id': 'c6p3', 'chapter': 6, 'title': 'Partie 3 : La voix dans le c
     bb(WOODS, JB, 'Lui, évidemment, on devait le croire direct…', (B, 'angry')),
 ]})
 parts.append({'id': 'c6p4', 'chapter': 6, 'title': 'Partie 4 : La statue colossale', 'intro': [
-    bb(DARK, JB, 'Téléportés, ou revenus à nous ? Toujours est-il qu’on s’est retrouvés dans un endroit sombre, une sorte d’immense grotte. Sans nos chevaux… mais avec ce pauvre Bosco, qui n’avait même pas eu le temps de manger.', (B, 'scared'), (BO, 'shy')),
+    bb(DARK, JB, 'Téléportés, ou revenus à nous ? Toujours est-il qu’on s’est retrouvés dans un endroit sombre, une sorte d’immense grotte. Sans nos chevaux… mais avec ce pauvre Bosco, qui n’avait même pas eu le temps de manger.', (B, 'scared'), (BO, 'sad')),
     bb(DARK, JB, 'Nous lui avons raconté l’épisode des licornes.', (BO, 'surprised'), (K, 'neutral')),
     bb(DARK, BO, 'Et si on coupait la tête de cette girafe lumineuse, là-bas ?', (BO, 'thinking'), (K, 'surprised')),
     bb(DARK, J, 'Restons discrets.', (J, 'neutral'), (G, 'neutral')),
@@ -109,7 +109,7 @@ parts.append({'id': 'c6p4', 'chapter': 6, 'title': 'Partie 4 : La statue colossa
     bb(DARK, B, 'Moi, je veux avancer !', (B, 'happy'), (G, 'neutral')),
     bb(DARK, JB, 'Avec un peu plus de lumière (merci Jhimm et Grimgors), nous avons distingué un sentier. Nous l’avons emprunté en restant sur nos gardes.', (J, 'neutral'), (G, 'neutral')),
     bb(DARK, JB, 'Après une bonne marche, Bosco a aperçu une énorme statue au loin. Deux kilomètres plus tard : la plus colossale statue de notre vie. Elle représentait Égide.', (BO, 'surprised'), (B, 'happy')),
-    bb(DARK, J, 'Une statue d’Égide, ici ? C’est bizarre… Une illusion de l’autre dieu coquin ?', (J, 'neutral'), (G, 'neutral')),
+    bb(DARK, J, 'Une statue d’Égide, ici ? C’est bizarre… Une illusion de l’autre dieu coquin ?', (J, 'thinking'), (G, 'neutral')),
     bb(DARK, JB, 'Encore un kilomètre jusqu’à ses gros pieds. J’ai touché direct pour trouver une porte secrète, aussitôt imité par Bosco. Il me plaît, ce p’tit gars : en plus de ne pas être grand, il est tactile comme moi !', (B, 'happy'), (BO, 'happy')),
     bb(DARK, K, 'Ne touchez à rien ! Combien de fois faudra-t-il le répéter ?', (K, 'neutral'), (B, 'sad'), (BO, 'shy')),
     bb(DARK, JB, 'Les trois grands nous ont grondés. Pfff… En contournant le pied, nous avons découvert une image de Jhimm sur le talon. Forcément, lui, il a eu l’autorisation de Grimgors pour la toucher !', (J, 'happy'), (G, 'proud'), (B, 'angry')),
@@ -157,7 +157,7 @@ parts.append({'id': 'c6p8', 'chapter': 6, 'title': 'Partie 8 : La descente des m
             'cards': ['Les vers du casu marzu', 'Les vers du casu marzu', 'La meule folle', 'Les vers du casu marzu', 'La meule folle']}})
 parts.append({'id': 'c6p9', 'chapter': 6, 'title': 'Partie 9 : L’épreuve de Kala', 'intro': [
     bb(FIELD, JB, 'Cette fois, un champ de bataille sombre.', (B, 'scared'), (K, 'neutral')),
-    bb(FIELD, K, 'Je crois que c’est mon tour.', (K, 'neutral'), (B, 'happy')),
+    bb(FIELD, K, 'Je crois que c’est mon tour.', (K, 'thinking'), (B, 'happy')),
     bb(FIELD, JB, 'Nous avons foncé sur le sentier. Au loin, une statue de flèche qui pique une boule… enfin, un œil, on l’a vu en approchant.', (B, 'happy'), (J, 'neutral')),
     bb(FIELD, JB, 'En connaisseurs, nous avons directement fait le tour, et Kala a touché délicatement son image.', (K, 'neutral'), (G, 'neutral')),
     bb(FIELD, 'Une voix', 'Tout sera une question de choix.', (K, 'scared')),
