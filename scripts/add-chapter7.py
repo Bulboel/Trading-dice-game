@@ -48,13 +48,14 @@ K, E, B, G, J, BO, EV, CA = 'Kala', 'Ébérien', 'Bolduc', 'Grimgors', 'Jhimm', 
 def emo(n): return {'img': f'url("assets/story/emo/{n}.webp")', 'sz': 'contain', 'pos': 'center bottom'}
 TPL[BO] = emo('bosco-2'); TPL[EV] = emo('erevan-2'); TPL[CA] = emo('caleizis-2')
 DR = 'Les drones fantassins'; TPL[DR] = emo('drone-pentagone-2')
-NEST = ('Le nid des licornes', ['forest'], bg('assets/story/forest-background.webp', 'rgba(60, 30, 90, 0.18), rgba(20, 8, 30, 0.5)'))
-TOWER = ('La tour de Kala', ['night'], bg('assets/story/egide-leg-background.webp', 'rgba(70, 30, 110, 0.32), rgba(16, 6, 28, 0.6)'))
-FATE = ('La salle de destinée', ['night'], bg('assets/story/fairy-mists-district.webp', 'rgba(40, 20, 70, 0.2), rgba(12, 6, 24, 0.5)'))
+PE = 'Le perroquet'; TPL[PE] = emo('perroquet-2')
+NEST = ('Le nid des licornes', ['forest'], bg('assets/story/unicorn-nest-background.webp', 'rgba(20, 10, 30, 0.04), rgba(10, 6, 14, 0.35)'))
+TOWER = ('La tour de Kala', ['night'], bg('assets/story/kala-tower-background.webp', 'rgba(20, 10, 30, 0.04), rgba(10, 6, 20, 0.38)'))
+FATE = ('La salle de destinée', ['night'], bg('assets/story/kala-destiny-background.webp', 'rgba(20, 10, 30, 0.04), rgba(10, 6, 20, 0.38)'))
 WOOD = ('Les bois d’Erevan', ['forest'], bg('assets/story/forest-background.webp', 'rgba(30, 20, 50, 0.25), rgba(8, 6, 16, 0.6)'))
-BTRIAL = ('L’épreuve de Bosco', ['night'], bg('assets/story/twins-cave-background.webp', 'rgba(20, 40, 60, 0.25), rgba(6, 10, 20, 0.6)'))
-FLAMES = ('La salle des flammes', ['night'], bg('assets/story/ice-ritual-background.webp', 'rgba(140, 60, 10, 0.35), rgba(30, 10, 2, 0.6)'))
-GTRIAL = ('L’épreuve de Grimgors', ['night'], bg('assets/story/ice-ritual-background.webp', 'rgba(130, 10, 20, 0.45), rgba(30, 2, 6, 0.75)'))
+BTRIAL = ('La salle aux dragons', ['night'], bg('assets/story/dragon-hall-background.webp', 'rgba(10, 20, 30, 0.04), rgba(6, 10, 20, 0.38)'))
+FLAMES = ('La salle des flammes', ['night'], bg('assets/story/dancing-flames-background.webp', 'rgba(20, 10, 4, 0.04), rgba(10, 6, 2, 0.38)'))
+GTRIAL = ('L’épreuve de Grimgors', ['night'], bg('assets/story/grimgors-trial-background.webp', 'rgba(20, 4, 8, 0.04), rgba(10, 2, 4, 0.38)'))
 FIELD = ('Le champ de bataille d’Erevan', ['night'], bg('assets/story/erevan-battlefield-background.webp', 'rgba(20, 4, 14, 0.06), rgba(10, 2, 8, 0.42)'))
 def eb(place, speaker, text, *cast, mood='friendly', art=None):
     """Réplique du chapitre VII : Erevan raconte, depuis le nid de ses licornes, et il est à l’image quand il parle."""
@@ -105,8 +106,9 @@ parts.append({'id': 'c7p5', 'chapter': 7, 'title': 'Partie 5 : Le perroquet guid
     eb(WOOD, EV, 'Pendant une pause, le tout petit bonhomme rigolo a proposé un rouleau détraqué au petit oiseau. Je l’aime bien, lui : il ose, il aime jouer. Il faudra que je le prenne un jour dans un de mes jeux, pour faire peur à des aventuriers !', (B, 'happy'), (BO, 'surprised'), mood='friendly'),
     eb(WOOD, B, 'Tiens, Bosco : un parchemin magique. Il est un peu… détraqué. Mais c’est ce qui fait son charme !', (B, 'happy'), (BO, 'thinking')),
     eb(WOOD, EV, 'Sur le chemin, le demi-orque a joué avec le petit oiseau en le lançant très haut, à la verticale. Je n’ai pas compris, mais l’oiseau a l’air d’avoir aimé. Ils sont bizarres, quand même.', (G, 'proud'), (BO, 'happy')),
-    eb(WOOD, EV, 'J’ai envoyé un perroquet pour les guider : ils n’avaient pas l’air bien dégourdis. Je l’avais réglé en langage de base… et j’ai bien fait : le petit oiseau a tout de suite entamé la conversation.', (BO, 'happy'), mood='friendly'),
-    eb(WOOD, BO, 'Par ici ? Merci, cousin à plumes !', (BO, 'happy'), (G, 'neutral')),
+    eb(WOOD, EV, 'J’ai envoyé un perroquet pour les guider : ils n’avaient pas l’air bien dégourdis. Je l’avais réglé en langage de base… et j’ai bien fait : le petit oiseau a tout de suite entamé la conversation.', (PE, 'happy'), (BO, 'happy'), mood='friendly'),
+    eb(WOOD, PE, 'Coucou ! Vous, suivre moi ! Épreuve, par là ! Vite, vite !', (PE, 'fight'), (BO, 'surprised')),
+    eb(WOOD, BO, 'Par ici ? Merci, cousin à plumes !', (BO, 'happy'), (PE, 'happy'), (G, 'neutral')),
 ]})
 parts.append({'id': 'c7p6', 'chapter': 7, 'title': 'Partie 6 : L’épreuve de Bosco', 'intro': [
     eb(BTRIAL, EV, 'Arrivés à l’entrée de son épreuve, ils sont descendus, et ils ont beaucoup débattu pour savoir comment passer la première salle… gardée par mes dragons.', (K, 'thinking'), (G, 'thinking'), mood='friendly'),
