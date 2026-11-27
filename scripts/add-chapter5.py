@@ -139,7 +139,7 @@ def jb(place, speaker, text, *cast, art=None):
     return out
 parts.append({'id': 'c5p7', 'chapter': 5, 'title': 'Partie 7 : Le réveil de Jhimm', 'intro': [
     jb(KERZ, JJ, 'Après la bataille, je me suis éclipsé sans un mot. Je n’avais aucune envie de feindre la bonne humeur près du feu : je me suis écroulé tout habillé dans une tente à l’écart.', (J, 'sad')),
-    jb(KERZ, JJ, 'Les soins de mes compagnons avaient beau être irréprochables, cette mort frôlée de trop près me secouait encore. Égide enseigne que la mort nourrit la vie… mais je suis encore au matin de la mienne.', (J, 'sad')),
+    jb(KERZ, JJ, 'Les soins de mes compagnons avaient beau être irréprochables, cette mort frôlée de trop près me secouait encore. Lumérion enseigne que la mort nourrit la vie… mais je suis encore au matin de la mienne.', (J, 'sad')),
     jb(KERZ, G, 'Debout ! Tout le monde debout ! Ils reviennent !', (G, 'fight'), (J, 'scared')),
     jb(KERZ, JJ, 'Les cris de Grimgors m’ont arraché au sommeil, avec une douleur nouvelle dans les côtes. Je ne me souvenais pas d’avoir été touché à cet endroit… rien de rassurant.', (J, 'scared')),
     jb(KERZ, JJ, 'À la lueur vacillante du feu, j’ai compris : encore ces maudits morts-vivants. Pas de Kala ni de Velmarys en vue.', (J, 'fight')),
@@ -154,7 +154,7 @@ parts.append({'id': 'c5p7', 'chapter': 5, 'title': 'Partie 7 : Le réveil de Jhi
             'cards': ['Morts-vivants de Kierzan', 'Morts-vivants de Kierzan', 'Morts-vivants de Kierzan', 'Morts-vivants de Kierzan', 'Morts-vivants de Kierzan']}})
 parts.append({'id': 'c5p8', 'chapter': 5, 'title': 'Partie 8 : La lumière de l’aube', 'intro': [
     jb(KERZ_DAWN, JJ, 'À l’aube, par habitude, je me suis levé pour prier face au soleil levant. J’étais encore accablé…', (J, 'sad')),
-    jb(KERZ_DAWN, JJ, '… mais Égide n’abandonne pas ses fidèles. Au fil de mes prières, mes angoisses se sont dissipées, remplacées par une force neuve, presque tangible.', (J, 'happy')),
+    jb(KERZ_DAWN, JJ, '… mais Lumérion n’abandonne pas ses fidèles. Au fil de mes prières, mes angoisses se sont dissipées, remplacées par une force neuve, presque tangible.', (J, 'happy')),
     jb(KERZ_DAWN, JJ, 'La matinée a été consacrée à organiser la suite… jusqu’à ce que Maebril surgisse, toujours aussi peu vêtu.', (MA, 'neutral'), (J, 'surprised'), (B, 'happy')),
     jb(KERZ_DAWN, J, 'Bulbalina a prononcé une prophétie cette nuit, juste avant de s’évanouir. Cela vous évoque-t-il quelque chose ?', (J, 'neutral'), (MA, 'neutral')),
     jb(KERZ_DAWN, MA, 'Rien du tout, je le crains. En revanche, j’ai beaucoup à vous apprendre sur Gliska.', (MA, 'neutral'), (G, 'angry')),
@@ -196,7 +196,7 @@ parts.append({'id': 'c5p11', 'chapter': 5, 'title': 'Partie 11 : La licorne corr
     jb(WOODS, G, 'Occupez la licorne sans la blesser. Moi, je m’occupe de la magicienne : c’est elle qui tire les ficelles.', (G, 'fight'), (NE, 'fight')),
 ], 'victory': [
     jb(WOODS, JJ, 'J’ai vu Grimgors fondre sur la magicienne, sans comprendre comment il l’avait arrêtée.', (G, 'fight'), (NE, 'neutral')),
-    jb(WOODS, JJ, 'Je me suis précipité vers Orven et la licorne blessée. Je faisais confiance à mes compagnons pour terminer le combat : je me suis tourné vers Égide et j’ai prié de toutes mes forces.', (J, 'fight'), (OR, 'friendly')),
+    jb(WOODS, JJ, 'Je me suis précipité vers Orven et la licorne blessée. Je faisais confiance à mes compagnons pour terminer le combat : je me suis tourné vers Lumérion et j’ai prié de toutes mes forces.', (J, 'fight'), (OR, 'friendly')),
     jb(WOODS, JJ, 'Peu à peu, la licorne a retrouvé son souffle, apaisée.', (J, 'happy'), (OR, 'friendly')),
     jb(WOODS, JJ, 'Bolduc, Ébérien, Kala et Grimgors nous ont rejoints. La nécromancienne gisait sans vie. Quant à la licorne corrompue, elle s’était enfuie en se téléportant…', (B, 'neutral'), (E, 'neutral'), (K, 'neutral'), (G, 'neutral')),
 ], 'duel': {'foe': 'La licorne corrompue', 'terrain': 'vent', 'level': 'difficile', 'dice': [297, 321, 297, 248, 250, 297, 249, 252, 246, 251],
