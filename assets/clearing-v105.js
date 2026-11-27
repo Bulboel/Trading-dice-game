@@ -1,25 +1,25 @@
 /* Presentation adapter. Game legality, turns, decks and combat stay in index.html. */
 import * as THREE from 'three';
-import { orientBoardModel } from './model-facing.js?v=20270102-v452';
-import { createEmberlands } from './ember-v239.js?v=20270102-v452';
-import { attachHeroParts } from './hero-parts.js?v=20270102-v452';
-import { applyLook } from './variant-look.js?v=20270102-v452';
-import { loadPaperTextures, buildPaperFigure } from './paper-figure.js?v=20270102-v452';
-import { autoBake } from './bake-static.js?v=20270102-v452';
-import { createLake } from './lake-v241.js?v=20270102-v452';
-import { createSkyIsland } from './sky-v231.js?v=20270102-v452';
-import { createWindHighlands } from './wind-v232.js?v=20270102-v452';
-import { createWoodland } from './woodland-v238.js?v=20270102-v452';
-import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20270102-v452';
-import { createFrostRoad } from './frost-v240.js?v=20270102-v452';
-import { createCity } from './city-v246.js?v=20270102-v452';
-import { createColosseum } from './colosseum-v364.js?v=20270102-v452';
-import { createTavern } from './tavern-v369.js?v=20270102-v452';
-import { createCave } from './cave-v246.js?v=20270102-v452';
-import { createAutumn } from './autumn-v253.js?v=20270102-v452';
-import { createFairyMists } from './fairy-v335.js?v=20270102-v452';
-import { createNoel } from './noel-v253.js?v=20270102-v452';
-import { createElementWheel } from './element-wheel-v252.js?v=20270102-v452';
+import { orientBoardModel } from './model-facing.js?v=20270102-v453';
+import { createEmberlands } from './ember-v239.js?v=20270102-v453';
+import { attachHeroParts } from './hero-parts.js?v=20270102-v453';
+import { applyLook } from './variant-look.js?v=20270102-v453';
+import { loadPaperTextures, buildPaperFigure } from './paper-figure.js?v=20270102-v453';
+import { autoBake } from './bake-static.js?v=20270102-v453';
+import { createLake } from './lake-v241.js?v=20270102-v453';
+import { createSkyIsland } from './sky-v231.js?v=20270102-v453';
+import { createWindHighlands } from './wind-v232.js?v=20270102-v453';
+import { createWoodland } from './woodland-v238.js?v=20270102-v453';
+import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20270102-v453';
+import { createFrostRoad } from './frost-v240.js?v=20270102-v453';
+import { createCity } from './city-v246.js?v=20270102-v453';
+import { createColosseum } from './colosseum-v364.js?v=20270102-v453';
+import { createTavern } from './tavern-v369.js?v=20270102-v453';
+import { createCave } from './cave-v246.js?v=20270102-v453';
+import { createAutumn } from './autumn-v253.js?v=20270102-v453';
+import { createFairyMists } from './fairy-v335.js?v=20270102-v453';
+import { createNoel } from './noel-v253.js?v=20270102-v453';
+import { createElementWheel } from './element-wheel-v252.js?v=20270102-v453';
 
 window.__clearingStarted=true;
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
@@ -57,7 +57,19 @@ let renderer;
 if(!software&&window.__hkFailWebGLInit)throw new Error(String(window.__hkFailWebGLInit));/* interrupteur de test (tests/v442-safe-render.cjs) */
 if(software)renderer=new LandscapeCanvasRenderer(canvas);else try{/* v445 — mode fluide : pas de lissage des bords (coûteux sur téléphone) */renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});}catch{renderer=new LandscapeCanvasRenderer(canvas);}
 renderer.setClearColor(0x172c25,1);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
-renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;host.prepend(canvas);
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+/* v453 — Qualité adaptative. Les puces graphiques modestes (Galaxy A13 : Mali-G52 ; PowerVR, anciens Adreno) commencent
+   en résolution 1,5 avec des ombres simples ; ensuite le plateau mesure sa propre fluidité et baisse la résolution par paliers
+   s'il n'arrive pas à suivre. Le palier trouvé est retenu pour les parties suivantes (hackenia-3d-dpr). */
+const DPR_KEY='hackenia-3d-dpr',gpuName=(()=>{try{const gl=renderer.getContext?.(),x=gl?.getExtension('WEBGL_debug_renderer_info');return String(x?gl.getParameter(x.UNMASKED_RENDERER_WEBGL):gl?.getParameter(gl.RENDERER)||'')}catch{return ''}})();
+const weakGpu=!renderer.isSoftware&&(/Mali-(G5[0-9]|G3\d|G[0-9]\b|T\d)|PowerVR|Adreno[^0-9]*(3|4|5)\d\d\b|Adreno[^0-9]*6[01]\d\b/i.test(gpuName)||(navigator.deviceMemory||8)<=3);
+window.__hkGpu={name:gpuName,weak:weakGpu};if(weakGpu)renderer.shadowMap.type=THREE.PCFShadowMap;
+let dprCap=(()=>{try{const v=+localStorage.getItem(DPR_KEY);if(v>=1&&v<=2)return v}catch{}return weakGpu?1.5:2})(),perf={ema:0,n:0,worse:0};
+function adaptQuality(gap,target){if(renderer.isSoftware||gap>250)return;perf.ema=perf.n?perf.ema*.94+gap*.06:gap;perf.n++;if(perf.n<90)return;/* ~3 s de mesure avant de juger */
+ if(perf.ema>target*1.45){if(++perf.worse<45)return;perf.worse=0;perf.n=0;
+  if(dprCap>1){dprCap=Math.max(1,Math.round((dprCap-.25)*4)/4);try{localStorage.setItem(DPR_KEY,String(dprCap))}catch{}renderer.setPixelRatio(Math.min(devicePixelRatio||1,dprCap));resize()}
+  else if(renderer.shadowMap.enabled){renderer.shadowMap.enabled=false;perf.noShadow=true;scene.traverse(o=>{if(o.material)o.material.needsUpdate=true})}}
+ else perf.worse=Math.max(0,perf.worse-1)}host.prepend(canvas);
 // Copy the freshly rendered placement to a separate overlay, above the finger.
 const placementLens=document.createElement('aside');placementLens.id='placement-lens';placementLens.hidden=true;placementLens.setAttribute('aria-label','Loupe de placement');
 const lensCanvas=document.createElement('canvas');lensCanvas.width=lensCanvas.height=320;const lensContext=lensCanvas.getContext('2d'),lensCaption=document.createElement('div');lensCaption.id='placement-lens-caption';placementLens.append(lensCanvas,lensCaption);document.body.append(placementLens);let lensPoint=null;
@@ -93,7 +105,7 @@ let zoom=1.1,panX=0,panY=0,panEnabled=false,panDrag=null,viewSpan=9,viewAspect=1
 const scene=new THREE.Scene(),world=new THREE.Group();window.__hkBoardScene=scene;/* accès de diagnostic (tests de performance) */scene.add(world);scene.fog=new THREE.Fog(0x304d3d,25,58);
 const camera=new THREE.OrthographicCamera(-10,10,10,-10,.1,100);camera.position.set(8,15,16);camera.lookAt(0,0,0);
 const sky=new THREE.HemisphereLight(0xe9f0d5,0x3c5034,2.3);scene.add(sky);
-const sun=new THREE.DirectionalLight(0xffe1a0,3.1);sun.position.set(-7,14,6);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);Object.assign(sun.shadow.camera,{left:-11,right:11,top:11,bottom:-11,near:1,far:40});sun.shadow.bias=-.001;sun.shadow.normalBias=.035;scene.add(sun);
+const sun=new THREE.DirectionalLight(0xffe1a0,3.1);sun.position.set(-7,14,6);sun.castShadow=true;sun.shadow.mapSize.set(weakGpu?512:1024,weakGpu?512:1024);Object.assign(sun.shadow.camera,{left:-11,right:11,top:11,bottom:-11,near:1,far:40});sun.shadow.bias=-.001;sun.shadow.normalBias=.035;scene.add(sun);
 let seed=73491;const rand=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296};
 const mat=(color,extra={})=>new THREE.MeshStandardMaterial({color,roughness:.92,...extra});
 // Small seamless procedural materials: no additional downloads.
@@ -744,7 +756,7 @@ function setActive(value,terrainOverride=null){
 function resize(){const r=host.getBoundingClientRect();if(r.width<1||r.height<1)return;const aspect=r.width/r.height;renderer.setSize(r.width,r.height,false);const desktopBoard=matchMedia('(min-width: 900px) and (min-height: 660px)').matches;const fit=Math.pow(ZS,.85),span=Math.max((desktopBoard?8.0:8.9)*fit,7.1*ZS/aspect);viewSpan=span;viewAspect=aspect;camera.left=-span*aspect;camera.right=span*aspect;camera.top=span;camera.bottom=-span;updateCamera()}
 /* v446 — décor immobile des terrains fusionné à la création (bake-static.js) : bien moins d’appels de dessin par image */
 function tuned(T){if(window.__hkNoBake)return T;/* interrupteur de comparaison (tests) */try{autoBake(T,t=>T.update(t,false,true))}catch(e){console.warn('autoBake',e)}return T}
-function configure(){const fluid=!!window.HackeniaSettings?.get().fluid;/* v445 — mode fluide : résolution réduite, sans ombres portées, moins d’herbe et de fleurs */light=renderer.isSoftware||fluid;moving=window.HackeniaSettings?.get().motion!==false&&!matchMedia('(prefers-reduced-motion:reduce)').matches;renderer.setPixelRatio(Math.min(devicePixelRatio||1,renderer.isSoftware?1.5:2));/* v446 — pleine résolution même en mode fluide : le dé qui survole le plateau et les chiffres restent nets */renderer.shadowMap.enabled=!renderer.isSoftware;/* v446 — ombres gardées : mesuré, elles coûtent peu une fois le décor fusionné */grass.count=light?Math.min(850,grassCount):grassCount;const flowers=light?36:flowerCount;petals.count=flowers*5;stems.count=centres.count=flowers;flowerLeaves.count=flowers*2;motes.visible=!renderer.isSoftware&&moving;windAmount.value=moving?1:0;resize()}
+function configure(){const fluid=!!window.HackeniaSettings?.get().fluid;/* v445 — mode fluide : résolution réduite, sans ombres portées, moins d’herbe et de fleurs */light=renderer.isSoftware||fluid;moving=window.HackeniaSettings?.get().motion!==false&&!matchMedia('(prefers-reduced-motion:reduce)').matches;renderer.setPixelRatio(Math.min(devicePixelRatio||1,renderer.isSoftware?1.5:dprCap));/* v446 — pleine résolution même en mode fluide : le dé qui survole le plateau et les chiffres restent nets */renderer.shadowMap.enabled=!renderer.isSoftware&&!(dprCap<=1&&perf.noShadow);/* v446 — ombres gardées : mesuré, elles coûtent peu une fois le décor fusionné */grass.count=light?Math.min(850,grassCount):grassCount;const flowers=light?36:flowerCount;petals.count=flowers*5;stems.count=centres.count=flowers;flowerLeaves.count=flowers*2;motes.visible=!renderer.isSoftware&&moving;windAmount.value=moving?1:0;resize()}
 matchMedia('(prefers-reduced-motion:reduce)').addEventListener('change',configure);new ResizeObserver(resize).observe(host);document.addEventListener('visibilitychange',()=>{paused=document.hidden});
 canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();setActive(false);document.getElementById('terrain-status').textContent='Affichage de secours · recharge la page pour retrouver la 3D'});
 function preview(terrain,container,layout='classique'){
@@ -781,7 +793,7 @@ function renderElementWheel(t){if(previewMode||!renderer.isWebGLRenderer)return;
 window.HackeniaElementWheel={get:()=>elementWheel,anchor:()=>wheelAnchor.clone()};
 // v343 — une erreur dans une image ne doit plus laisser le plateau vide sans explication : elle est affichée sous le plateau.
 let frameErr=0;function frame(now){requestAnimationFrame(frame);try{frameStep(now)}catch(err){if(!frameErr++){console.error(err);window.__hk3dError?.(err)}}}
-function frameStep(now){if(paused||(!game.isPlaying()&&!previewMode)||!active||now-lastFrame<(renderer.isSoftware?100:light?32:16))return;const dt=Math.min((now-lastFrame)/1000,.06);lastFrame=now;if(pureFx.length)updatePureFx(now);if(weatherFx.length)updateWeather(now);animateLotus();animateGifts();animateFxBoard();animateForecast();if(auras.size)updateAuras(now);updateCrackles(now);if(moving)for(const g of creatures.values()){const h=g.userData.hop,m=g.userData.model;if(!h||!m)continue;const u=((now/1000+h.phase)%3.2)/.55;if(u<1){const lift=Math.sin(Math.PI*u);m.position.y=h.base+.24*lift;m.scale.set(1-.05*lift,1+.08*lift,1-.05*lift)}else if(u<1.25){const s=Math.sin(Math.PI*(u-1)/.25);m.position.y=h.base;m.scale.set(1+.07*s,1-.1*s,1+.07*s)}else{m.position.y=h.base;m.scale.set(1,1,1)}}updateZoneGlow(now);const t=moving?now/1000:0;
+function frameStep(now){if(paused||(!game.isPlaying()&&!previewMode)||!active||now-lastFrame<(renderer.isSoftware?100:light?32:16))return;adaptQuality(now-lastFrame,renderer.isSoftware?100:light?32:16);const dt=Math.min((now-lastFrame)/1000,.06);lastFrame=now;if(pureFx.length)updatePureFx(now);if(weatherFx.length)updateWeather(now);animateLotus();animateGifts();animateFxBoard();animateForecast();if(auras.size)updateAuras(now);updateCrackles(now);if(moving)for(const g of creatures.values()){const h=g.userData.hop,m=g.userData.model;if(!h||!m)continue;const u=((now/1000+h.phase)%3.2)/.55;if(u<1){const lift=Math.sin(Math.PI*u);m.position.y=h.base+.24*lift;m.scale.set(1-.05*lift,1+.08*lift,1-.05*lift)}else if(u<1.25){const s=Math.sin(Math.PI*(u-1)/.25);m.position.y=h.base;m.scale.set(1+.07*s,1-.1*s,1+.07*s)}else{m.position.y=h.base;m.scale.set(1,1,1)}}updateZoneGlow(now);const t=moving?now/1000:0;
  if(frostRoad?.root.visible)frostRoad.update(t,light,moving);if(cityScene?.root.visible)cityScene.update(t,light,moving);if(coliScene?.root.visible)coliScene.update(t,light,moving);if(tavernScene?.root.visible)tavernScene.update(t,light,moving);if(caveScene?.root.visible)caveScene.update(t,light,moving);if(autumnScene?.root.visible)autumnScene.update(t,light,moving);if(fairyScene?.root.visible)fairyScene.update(t,light,moving);if(noelScene?.root.visible)noelScene.update(t,light,moving);
  if(forest.visible){wind.value=t;waterNormals.offset.set(-t*.032,t*.013);
  for(let i=0;i<wp.count;i++){const x=waterOrig[i*3],z=waterOrig[i*3+2];wp.setY(i,waterHeight(x,z,t))}wp.needsUpdate=true;if(!renderer.isSoftware)wg.computeVertexNormals();
