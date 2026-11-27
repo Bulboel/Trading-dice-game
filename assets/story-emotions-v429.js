@@ -7,13 +7,15 @@
  /* humeur neutre : pose « calme » propre à certains personnages (sinon l'illustration d'origine reste affichée) */
  /* v437 — Grimgors au repos : air sérieux, sourcils froncés (il garde le sourire pour les répliques joyeuses ou fières) */const CALM={grimgors:'angry','messire-balai':'happy',caleizis:'haughty','fee-pachie':'proud',orven:'haughty',yoris:'proud',lamie:'proud',erevan:'friendly'};
  const CHAIN={happy:['happy','friendly','proud'],friendly:['friendly','happy'],proud:['proud','haughty','happy'],haughty:['haughty','proud','neutral'],
-  'blasé':['haughty','neutral','thinking'],surprised:['surprised'],shy:['shy','scared','sad'],embarrassed:['shy','scared','sad'],crying:['sad'],sad:['sad'],
+  'blasé':['haughty','neutral','thinking'],surprised:['surprised','scared','thinking'],shy:['shy','scared','sad'],embarrassed:['shy','scared','sad'],crying:['sad'],sad:['sad'],
   angry:['angry','fight'],fight:['fight','angry'],scared:['scared','surprised'],ko:['ko','sad'],thinking:['thinking','neutral'],neutral:['neutral']};
  const slug=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
  function key(name){const n=String(name||'').toLowerCase().trim();if(ALIAS[n])return ALIAS[n];const k=slug(n);return POSES[k]?k:null}
  function pick(name,mood){const k=key(name);if(!k)return null;const P=POSES[k];mood=mood||'neutral';
   for(const m of CHAIN[mood]||[mood])if(P[m])return 'assets/story/emo/'+P[m]+'.webp';
-  if(mood==='neutral'&&CALM[k]&&P[CALM[k]])return 'assets/story/emo/'+P[CALM[k]]+'.webp';return null}
+  if(mood==='neutral'&&CALM[k]&&P[CALM[k]])return 'assets/story/emo/'+P[CALM[k]]+'.webp';
+  /* v457 — humeur absente de la planche : une pose calme du même personnage plutôt que son ancienne illustration (sinon deux dessins différents dans la même scène) */
+  const any=P.neutral||(CALM[k]&&P[CALM[k]])||P.happy||P.friendly||P.proud||P.thinking||Object.values(P)[0];return any?'assets/story/emo/'+any+'.webp':null}
  /* v431 — Taille réelle des personnages (1 = adulte humain ou elfe) : les illustrations sont mises à l'échelle d'après leur silhouette,
     pour que les proportions soient justes entre eux (un nain arrive à mi-hauteur d'un humain). Personnage absent : 1. */
  const STATURE={'licorne':1,'squelette':.9,'drone-pentagone':.7,'momie':1,'chevalier-d-egide':1.02,'maitre-d-armes':.95,'minotaure':1.3,'necromancienne':.95,'ogre':1.6,'bolduc':.56,'grimgors':1.12,'kala':1,'eberien':1.02,'jhimm':.98,'kayla':1,'hilam':1.02,'zackarie':1,'pennedra':1,'ven':1,'velmarys':1,

@@ -1,25 +1,25 @@
 /* Presentation adapter. Game legality, turns, decks and combat stay in index.html. */
 import * as THREE from 'three';
-import { orientBoardModel } from './model-facing.js?v=20270102-v456';
-import { createEmberlands } from './ember-v239.js?v=20270102-v456';
-import { attachHeroParts } from './hero-parts.js?v=20270102-v456';
-import { applyLook } from './variant-look.js?v=20270102-v456';
-import { loadPaperTextures, buildPaperFigure } from './paper-figure.js?v=20270102-v456';
-import { autoBake } from './bake-static.js?v=20270102-v456';
-import { createLake } from './lake-v241.js?v=20270102-v456';
-import { createSkyIsland } from './sky-v231.js?v=20270102-v456';
-import { createWindHighlands } from './wind-v232.js?v=20270102-v456';
-import { createWoodland } from './woodland-v238.js?v=20270102-v456';
-import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20270102-v456';
-import { createFrostRoad } from './frost-v240.js?v=20270102-v456';
-import { createCity } from './city-v246.js?v=20270102-v456';
-import { createColosseum } from './colosseum-v364.js?v=20270102-v456';
-import { createTavern } from './tavern-v369.js?v=20270102-v456';
-import { createCave } from './cave-v246.js?v=20270102-v456';
-import { createAutumn } from './autumn-v253.js?v=20270102-v456';
-import { createFairyMists } from './fairy-v335.js?v=20270102-v456';
-import { createNoel } from './noel-v253.js?v=20270102-v456';
-import { createElementWheel } from './element-wheel-v252.js?v=20270102-v456';
+import { orientBoardModel } from './model-facing.js?v=20270102-v457';
+import { createEmberlands } from './ember-v239.js?v=20270102-v457';
+import { attachHeroParts } from './hero-parts.js?v=20270102-v457';
+import { applyLook } from './variant-look.js?v=20270102-v457';
+import { loadPaperTextures, buildPaperFigure } from './paper-figure.js?v=20270102-v457';
+import { autoBake } from './bake-static.js?v=20270102-v457';
+import { createLake } from './lake-v241.js?v=20270102-v457';
+import { createSkyIsland } from './sky-v231.js?v=20270102-v457';
+import { createWindHighlands } from './wind-v232.js?v=20270102-v457';
+import { createWoodland } from './woodland-v238.js?v=20270102-v457';
+import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20270102-v457';
+import { createFrostRoad } from './frost-v240.js?v=20270102-v457';
+import { createCity } from './city-v246.js?v=20270102-v457';
+import { createColosseum } from './colosseum-v364.js?v=20270102-v457';
+import { createTavern } from './tavern-v369.js?v=20270102-v457';
+import { createCave } from './cave-v246.js?v=20270102-v457';
+import { createAutumn } from './autumn-v253.js?v=20270102-v457';
+import { createFairyMists } from './fairy-v335.js?v=20270102-v457';
+import { createNoel } from './noel-v253.js?v=20270102-v457';
+import { createElementWheel } from './element-wheel-v252.js?v=20270102-v457';
 
 window.__clearingStarted=true;
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
@@ -542,7 +542,10 @@ function animatePaper(g,k,f,combat,t,G){const P=G.paper,now=performance.now();le
  if(!P.tex[pose])pose='idle';
  /* changement de pose : la feuille pivote (demi-tour), on change d'image à mi-course */
  if(pose!==P.want){P.want=pose;P.flipT=0}
- if(P.flipT<1){P.flipT=Math.min(1,P.flipT+(moving?.16:1));if(P.flipT>=.5&&P.pose!==P.want){P.pose=P.want;P.fig.setPose(P.tex[P.pose])}}
+ /* v457 — attaque en plusieurs images : élan, coup, suite, au fil du combat (sans retourner la feuille entre deux images) */
+ const seq=P.tex[pose],frame=Array.isArray(seq)?(combat&&f?Math.min(seq.length-1,Math.max(0,Math.floor((combat.progress-.12)/.5*seq.length))):Math.floor(now/180)%seq.length):0;
+ if(P.flipT<1){P.flipT=Math.min(1,P.flipT+(moving?.16:1));if(P.flipT>=.5&&P.pose!==P.want){P.pose=P.want;P.frame=-1}}
+ if(P.pose===pose&&Array.isArray(P.tex[pose])&&P.frame!==frame){P.frame=frame;P.fig.setPose(P.tex[pose][frame])}else if(P.frame===-1||P.shown!==P.pose){P.shown=P.pose;P.frame=Array.isArray(P.tex[P.pose])?0:null;P.fig.setPose(P.tex[P.pose])}
  /* regard vers la gauche ou la droite de l'écran selon le sens de la marche */
  g.getWorldPosition(_pv);camera.getWorldDirection(_pd);_pr.setFromMatrixColumn(camera.matrixWorld,0);
  if(P.lastX){const dx=_pv.clone().sub(P.lastX).dot(_pr);if(Math.abs(dx)>.004)P.face=dx>0?-1:1}P.lastX=_pv.clone();

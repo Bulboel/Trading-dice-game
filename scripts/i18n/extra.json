@@ -1055,7 +1055,6 @@
  "Squelette": "Skeleton",
  "Drone pentagone": "Pentagon drone",
  "Auguste la momie": "Auguste the Mummy",
- "Chevalier d’Égide": "Knight of Égide",
  "Le vieux maître d’armes": "The old weapons master",
  "Minotaure": "Minotaur",
  "La nécromancienne": "The necromancer",
@@ -1071,5 +1070,12 @@
  "Attaque": "Attack",
  "Joie": "Joy",
  "Peur": "Fear",
- "Figurine en papier · choisissez une pose, ou laissez-la s’animer.": "Paper figure · pick a pose, or let it come alive."
+ "Figurine en papier · choisissez une pose, ou laissez-la s’animer.": "Paper figure · pick a pose, or let it come alive.",
+ "Attaques animées en plusieurs images pour plusieurs figurines en papier, et des poses plus justes.": "Multi-frame attack animations for several paper figures, and more accurate poses.",
+ "Égide": "Égide",
+ "Chevalier de Lumérion": "Knight of Lumérion",
+ "Sept nouveaux dés en papier : squelette, Auguste la momie, minotaure, drone pentagone, chevalier de Lumérion, vieux maître d’armes et nécromancienne.": "Seven new paper dice: skeleton, Auguste the Mummy, minotaur, pentagon drone, Knight of Lumérion, old weapons master and necromancer.",
+ "Égide, le dieu protecteur, une grande armure de métal qui veille sur ses fidèles. Il a tenté de parler à Jhimm en rêve, et son grand temple se dresse à Forfalla. Figurine en papier. Affinité Foudre.": "Égide, the protector god, a great suit of metal armour watching over the faithful. He tried to speak to Jhimm in a dream, and his great temple stands in Forfalla. Paper figure. Lightning affinity.",
+ "Chevalier d’Égide": "Knight of Égide",
+ "Clerc de Lumérion, affinité Vent.": "Cleric of Lumérion, Wind affinity."
 }

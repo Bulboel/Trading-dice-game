@@ -832,7 +832,7 @@
       "boardHeight": 0.95,
       "sprite": {
         "idle": "story/emo/rat-a-forfalla-2.webp",
-        "walk": "story/emo/rat-a-forfalla-1.webp",
+        "walk": "story/emo/rat-a-forfalla-2.webp",
         "attack": "story/emo/rat-a-forfalla-3.webp",
         "hit": "story/emo/rat-a-forfalla-5.webp",
         "ko": "story/emo/rat-a-forfalla-6.webp",
@@ -844,8 +844,8 @@
       "nom": "Krak",
       "boardHeight": 0.95,
       "sprite": {
-        "idle": "story/emo/krak-2.webp",
-        "walk": "story/emo/krak-2.webp",
+        "idle": "story/emo/krak-1.webp",
+        "walk": "story/emo/krak-1.webp",
         "attack": "story/emo/krak-3.webp",
         "hit": "story/emo/krak-5.webp",
         "ko": "story/emo/krak-6.webp",
@@ -857,8 +857,8 @@
       "nom": "Krek",
       "boardHeight": 0.95,
       "sprite": {
-        "idle": "story/emo/krek-2.webp",
-        "walk": "story/emo/krek-2.webp",
+        "idle": "story/emo/krek-1.webp",
+        "walk": "story/emo/krek-1.webp",
         "attack": "story/emo/krek-3.webp",
         "hit": "story/emo/krek-5.webp",
         "ko": "story/emo/krek-6.webp",
@@ -885,8 +885,9 @@
       "sprite": {
         "idle": "story/emo/velcan-3.webp",
         "walk": "story/emo/velcan-3.webp",
-        "attack": "story/emo/velcan-2.webp",
-        "hit": "story/emo/velcan-2.webp"
+        "attack": "story/emo/velcan-3.webp",
+        "hit": "story/emo/velcan-2.webp",
+        "win": "story/emo/velcan-3.webp"
       },
       "paper": true
     },
@@ -909,7 +910,7 @@
       "sprite": {
         "idle": "story/emo/pelerin-1.webp",
         "walk": "story/emo/pelerin-1.webp",
-        "ko": "story/emo/pelerin-3.webp",
+        "attack": "story/emo/pelerin-1.webp",
         "win": "story/emo/pelerin-1.webp"
       },
       "paper": true
@@ -920,7 +921,8 @@
       "sprite": {
         "idle": "story/emo/faux-enfants-1.webp",
         "walk": "story/emo/faux-enfants-1.webp",
-        "attack": "story/emo/faux-enfants-2.webp"
+        "attack": "story/emo/faux-enfants-2.webp",
+        "win": "story/emo/faux-enfants-1.webp"
       },
       "paper": true
     },
@@ -971,7 +973,6 @@
         "walk": "story/emo/drahul-1.webp",
         "attack": "story/emo/drahul-3.webp",
         "hit": "story/emo/drahul-5.webp",
-        "ko": "story/emo/drahul-4.webp",
         "win": "story/emo/drahul-1.webp"
       },
       "paper": true
@@ -980,8 +981,8 @@
       "nom": "Griselda",
       "boardHeight": 0.95,
       "sprite": {
-        "idle": "story/emo/griselda-2.webp",
-        "walk": "story/emo/griselda-2.webp",
+        "idle": "story/emo/griselda-1.webp",
+        "walk": "story/emo/griselda-1.webp",
         "attack": "story/emo/griselda-3.webp",
         "hit": "story/emo/griselda-5.webp",
         "ko": "story/emo/griselda-6.webp",
@@ -996,7 +997,8 @@
         "idle": "story/emo/sans-chiffre-1.webp",
         "walk": "story/emo/sans-chiffre-1.webp",
         "attack": "story/emo/sans-chiffre-2.webp",
-        "ko": "story/emo/sans-chiffre-3.webp"
+        "ko": "story/emo/sans-chiffre-3.webp",
+        "win": "story/emo/sans-chiffre-1.webp"
       },
       "paper": true
     },
@@ -1008,12 +1010,12 @@
         "walk": "story/emo/golem-de-pierre-1.webp",
         "attack": "story/emo/golem-de-pierre-3.webp",
         "hit": "story/emo/golem-de-pierre-5.webp",
-        "ko": "story/emo/golem-de-pierre-4.webp"
+        "win": "story/emo/golem-de-pierre-1.webp"
       },
       "paper": true
     },
     "heaum": {
-      "nom": "Heaum",
+      "nom": "Égide",
       "boardHeight": 1.05,
       "sprite": {
         "idle": "story/emo/heaum-2.webp",
@@ -1042,11 +1044,10 @@
       "nom": "Bolduc de papier",
       "boardHeight": 1.05,
       "sprite": {
-        "idle": "story/emo/bolduc-1.webp",
-        "walk": "story/emo/bolduc-1.webp",
+        "idle": "story/emo/bolduc-plus-1.webp",
+        "walk": "story/emo/bolduc-plus-1.webp",
         "attack": "story/emo/bolduc-3.webp",
         "hit": "story/emo/bolduc-5.webp",
-        "ko": "story/emo/bolduc-4.webp",
         "win": "story/emo/bolduc-1.webp"
       },
       "paper": true
@@ -1059,7 +1060,6 @@
         "walk": "story/emo/grimgors-1.webp",
         "attack": "story/emo/grimgors-3.webp",
         "hit": "story/emo/grimgors-5.webp",
-        "ko": "story/emo/grimgors-4.webp",
         "win": "story/emo/grimgors-1.webp"
       },
       "paper": true
@@ -1072,7 +1072,6 @@
         "walk": "story/emo/eberien-2.webp",
         "attack": "story/emo/eberien-3.webp",
         "hit": "story/emo/eberien-5.webp",
-        "ko": "story/emo/eberien-4.webp",
         "win": "story/emo/eberien-1.webp"
       },
       "paper": true
@@ -1085,7 +1084,6 @@
         "walk": "story/emo/kala-2.webp",
         "attack": "story/emo/kala-3.webp",
         "hit": "story/emo/kala-5.webp",
-        "ko": "story/emo/kala-4.webp",
         "win": "story/emo/kala-1.webp"
       },
       "paper": true
@@ -1098,7 +1096,6 @@
         "walk": "story/emo/jhimm-2.webp",
         "attack": "story/emo/jhimm-3.webp",
         "hit": "story/emo/jhimm-5.webp",
-        "ko": "story/emo/jhimm-4.webp",
         "win": "story/emo/jhimm-1.webp"
       },
       "paper": true
@@ -1111,7 +1108,6 @@
         "walk": "story/emo/elementaire-de-feu-majeur-1.webp",
         "attack": "story/emo/elementaire-de-feu-majeur-3.webp",
         "hit": "story/emo/elementaire-de-feu-majeur-5.webp",
-        "ko": "story/emo/elementaire-de-feu-majeur-4.webp",
         "win": "story/emo/elementaire-de-feu-majeur-1.webp"
       },
       "paper": true
@@ -1124,7 +1120,6 @@
         "walk": "story/emo/elementaire-de-glace-majeur-1.webp",
         "attack": "story/emo/elementaire-de-glace-majeur-3.webp",
         "hit": "story/emo/elementaire-de-glace-majeur-5.webp",
-        "ko": "story/emo/elementaire-de-glace-majeur-4.webp",
         "win": "story/emo/elementaire-de-glace-majeur-1.webp"
       },
       "paper": true
@@ -1133,8 +1128,8 @@
       "nom": "Erevan",
       "boardHeight": 1.05,
       "sprite": {
-        "idle": "story/emo/erevan-2.webp",
-        "walk": "story/emo/erevan-2.webp",
+        "idle": "story/emo/erevan-1.webp",
+        "walk": "story/emo/erevan-1.webp",
         "attack": "story/emo/erevan-3.webp",
         "hit": "story/emo/erevan-5.webp",
         "ko": "story/emo/erevan-6.webp",
@@ -1148,7 +1143,11 @@
       "sprite": {
         "idle": "story/emo/squelette-2.webp",
         "walk": "story/emo/squelette-2.webp",
-        "attack": "story/emo/squelette-3.webp",
+        "attack": [
+          "story/emo/squelette-3.webp",
+          "story/emo/squelette-attaque-1.webp",
+          "story/emo/squelette-attaque-2.webp"
+        ],
         "hit": "story/emo/squelette-5.webp",
         "ko": "story/emo/squelette-6.webp",
         "win": "story/emo/squelette-1.webp"
@@ -1161,7 +1160,11 @@
       "sprite": {
         "idle": "story/emo/drone-pentagone-2.webp",
         "walk": "story/emo/drone-pentagone-2.webp",
-        "attack": "story/emo/drone-pentagone-3.webp",
+        "attack": [
+          "story/emo/drone-pentagone-3.webp",
+          "story/emo/drone-pentagone-attaque-1.webp",
+          "story/emo/drone-pentagone-attaque-2.webp"
+        ],
         "hit": "story/emo/drone-pentagone-5.webp",
         "ko": "story/emo/drone-pentagone-6.webp",
         "win": "story/emo/drone-pentagone-1.webp"
@@ -1174,7 +1177,11 @@
       "sprite": {
         "idle": "story/emo/momie-2.webp",
         "walk": "story/emo/momie-2.webp",
-        "attack": "story/emo/momie-3.webp",
+        "attack": [
+          "story/emo/momie-3.webp",
+          "story/emo/momie-attaque-1.webp",
+          "story/emo/momie-attaque-2.webp"
+        ],
         "hit": "story/emo/momie-5.webp",
         "ko": "story/emo/momie-6.webp",
         "win": "story/emo/momie-1.webp"
@@ -1187,7 +1194,11 @@
       "sprite": {
         "idle": "story/emo/chevalier-d-egide-2.webp",
         "walk": "story/emo/chevalier-d-egide-2.webp",
-        "attack": "story/emo/chevalier-d-egide-3.webp",
+        "attack": [
+          "story/emo/chevalier-d-egide-3.webp",
+          "story/emo/chevalier-d-egide-attaque-1.webp",
+          "story/emo/chevalier-d-egide-attaque-2.webp"
+        ],
         "hit": "story/emo/chevalier-d-egide-5.webp",
         "ko": "story/emo/chevalier-d-egide-6.webp",
         "win": "story/emo/chevalier-d-egide-1.webp"
@@ -1200,7 +1211,11 @@
       "sprite": {
         "idle": "story/emo/maitre-d-armes-2.webp",
         "walk": "story/emo/maitre-d-armes-2.webp",
-        "attack": "story/emo/maitre-d-armes-3.webp",
+        "attack": [
+          "story/emo/maitre-d-armes-3.webp",
+          "story/emo/maitre-d-armes-attaque-1.webp",
+          "story/emo/maitre-d-armes-attaque-2.webp"
+        ],
         "hit": "story/emo/maitre-d-armes-5.webp",
         "ko": "story/emo/maitre-d-armes-6.webp",
         "win": "story/emo/maitre-d-armes-1.webp"
@@ -1213,7 +1228,11 @@
       "sprite": {
         "idle": "story/emo/minotaure-2.webp",
         "walk": "story/emo/minotaure-2.webp",
-        "attack": "story/emo/minotaure-3.webp",
+        "attack": [
+          "story/emo/minotaure-3.webp",
+          "story/emo/minotaure-attaque-1.webp",
+          "story/emo/minotaure-attaque-2.webp"
+        ],
         "hit": "story/emo/minotaure-5.webp",
         "ko": "story/emo/minotaure-6.webp",
         "win": "story/emo/minotaure-1.webp"
@@ -1226,7 +1245,11 @@
       "sprite": {
         "idle": "story/emo/necromancienne-2.webp",
         "walk": "story/emo/necromancienne-2.webp",
-        "attack": "story/emo/necromancienne-3.webp",
+        "attack": [
+          "story/emo/necromancienne-3.webp",
+          "story/emo/necromancienne-attaque-1.webp",
+          "story/emo/necromancienne-attaque-2.webp"
+        ],
         "hit": "story/emo/necromancienne-5.webp",
         "ko": "story/emo/necromancienne-6.webp",
         "win": "story/emo/necromancienne-1.webp"

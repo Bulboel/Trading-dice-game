@@ -48,6 +48,10 @@
   "assets/story/emo/canourson-5.webp",
   "assets/story/emo/canourson-6.webp"
  ],
+ "chevalier-d-egide-attaque": [
+  "assets/story/emo/chevalier-d-egide-attaque-1.webp",
+  "assets/story/emo/chevalier-d-egide-attaque-2.webp"
+ ],
  "chevalier-d-egide": [
   "assets/story/emo/chevalier-d-egide-1.webp",
   "assets/story/emo/chevalier-d-egide-2.webp",
@@ -62,6 +66,10 @@
   "assets/story/emo/drahul-3.webp",
   "assets/story/emo/drahul-4.webp",
   "assets/story/emo/drahul-5.webp"
+ ],
+ "drone-pentagone-attaque": [
+  "assets/story/emo/drone-pentagone-attaque-1.webp",
+  "assets/story/emo/drone-pentagone-attaque-2.webp"
  ],
  "drone-pentagone": [
   "assets/story/emo/drone-pentagone-1.webp",
@@ -213,6 +221,10 @@
   "assets/story/emo/licorne-enrage-5.webp",
   "assets/story/emo/licorne-enrage-6.webp"
  ],
+ "maebril-attaque": [
+  "assets/story/emo/maebril-attaque-1.webp",
+  "assets/story/emo/maebril-attaque-2.webp"
+ ],
  "maebril": [
   "assets/story/emo/maebril-1.webp",
   "assets/story/emo/maebril-2.webp",
@@ -229,6 +241,10 @@
   "assets/story/emo/maestro-5.webp",
   "assets/story/emo/maestro-6.webp"
  ],
+ "maitre-d-armes-attaque": [
+  "assets/story/emo/maitre-d-armes-attaque-1.webp",
+  "assets/story/emo/maitre-d-armes-attaque-2.webp"
+ ],
  "maitre-d-armes": [
   "assets/story/emo/maitre-d-armes-1.webp",
   "assets/story/emo/maitre-d-armes-2.webp",
@@ -243,6 +259,10 @@
   "assets/story/emo/messire-balai-3.webp",
   "assets/story/emo/messire-balai-4.webp"
  ],
+ "minotaure-attaque": [
+  "assets/story/emo/minotaure-attaque-1.webp",
+  "assets/story/emo/minotaure-attaque-2.webp"
+ ],
  "minotaure": [
   "assets/story/emo/minotaure-1.webp",
   "assets/story/emo/minotaure-2.webp",
@@ -250,6 +270,10 @@
   "assets/story/emo/minotaure-4.webp",
   "assets/story/emo/minotaure-5.webp",
   "assets/story/emo/minotaure-6.webp"
+ ],
+ "momie-attaque": [
+  "assets/story/emo/momie-attaque-1.webp",
+  "assets/story/emo/momie-attaque-2.webp"
  ],
  "momie": [
   "assets/story/emo/momie-1.webp",
@@ -267,6 +291,10 @@
   "assets/story/emo/naia-5.webp",
   "assets/story/emo/naia-6.webp"
  ],
+ "necromancienne-attaque": [
+  "assets/story/emo/necromancienne-attaque-1.webp",
+  "assets/story/emo/necromancienne-attaque-2.webp"
+ ],
  "necromancienne": [
   "assets/story/emo/necromancienne-1.webp",
   "assets/story/emo/necromancienne-2.webp",
@@ -274,6 +302,10 @@
   "assets/story/emo/necromancienne-4.webp",
   "assets/story/emo/necromancienne-5.webp",
   "assets/story/emo/necromancienne-6.webp"
+ ],
+ "ogre-attaque": [
+  "assets/story/emo/ogre-attaque-1.webp",
+  "assets/story/emo/ogre-attaque-2.webp"
  ],
  "ogre": [
   "assets/story/emo/ogre-1.webp",
@@ -313,6 +345,10 @@
   "assets/story/emo/soldat-de-lunargent-4.webp",
   "assets/story/emo/soldat-de-lunargent-5.webp",
   "assets/story/emo/soldat-de-lunargent-6.webp"
+ ],
+ "squelette-attaque": [
+  "assets/story/emo/squelette-attaque-1.webp",
+  "assets/story/emo/squelette-attaque-2.webp"
  ],
  "squelette": [
   "assets/story/emo/squelette-1.webp",

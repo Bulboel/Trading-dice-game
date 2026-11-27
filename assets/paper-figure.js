@@ -12,7 +12,8 @@ export function paperTexture(path) {
 
 export async function loadPaperTextures(sprite) {
   const out = {};
-  await Promise.all(Object.entries(sprite || {}).map(async ([k, p]) => { out[k] = await paperTexture(p); }));
+  // v457 — une pose peut être une suite d'images (attaque : élan, coup, suite) : la texture est alors un tableau
+  await Promise.all(Object.entries(sprite || {}).map(async ([k, p]) => { out[k] = Array.isArray(p) ? (await Promise.all(p.map(paperTexture))).filter(Boolean) : await paperTexture(p); if (Array.isArray(out[k]) && !out[k].length) delete out[k]; }));
   return out;
 }
 
@@ -37,6 +38,7 @@ export function buildPaperFigure(tex, height, { tint = null, thickness = .055 } 
   }
   const sheet = new THREE.Group(); sheet.add(group); sheet.userData.imported = true; group.userData.imported = true;
   function setPose(t) {
+    if (Array.isArray(t)) t = t[0];
     if (!t) return;
     for (const m of layers) {
       m.material.map = t; if (m.material.emissiveMap) m.material.emissiveMap = t; m.material.needsUpdate = true;
@@ -47,6 +49,6 @@ export function buildPaperFigure(tex, height, { tint = null, thickness = .055 } 
     // l'épaisseur ne doit pas suivre l'échelle horizontale : on la règle feuille par feuille
     layers.forEach((m, i) => { m.position.z = (-depth / 2 + depth * i / (LAYERS - 1)); });
   }
-  setPose(tex);
+  setPose(Array.isArray(tex) ? tex[0] : tex);
   return { object: sheet, setPose, layers };
 }
