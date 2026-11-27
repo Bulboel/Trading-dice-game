@@ -141,3 +141,9 @@ html.hk-fluid #collection-grid>.collect-card,html.hk-fluid #portal-content .port
 @keyframes paper-hop{0%,100%{transform:translateY(0)}25%{transform:translateY(-9%)}50%{transform:translateY(0)}70%{transform:translateY(-4%)}}
 #portal-detail .detail-character.has-paper{position:absolute;inset:4% 6% 2%;transform:none;display:block}
 #portal-detail .detail-character.has-paper .paper-showcase{width:100%;height:100%}
+/* v455 — Figurine en papier dans l'inspecteur (« Agrandir ») */
+#character-inspector .inspector-paper{position:absolute;inset:6% 8% 4%;display:grid;transform-origin:50% 90%;transition:transform .2s}
+#character-inspector .inspector-paper .paper-showcase{width:100%;height:100%}
+#character-inspector .inspector-paper .paper-pose{filter:drop-shadow(0 10px 14px #0008)}
+#character-inspector .inspector-poses[data-paper]{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:100%}
+#character-inspector .inspector-poses[data-paper] button{padding:6px 10px;min-width:0;font-size:13px;white-space:nowrap}

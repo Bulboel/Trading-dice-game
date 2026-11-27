@@ -1064,5 +1064,12 @@
  "Menus allégés : pastilles animées sans recalcul, collection plus rapide à afficher.": "Lighter menus: animated badges without repaints, a faster collection.",
  "Plus fluide et plus vivant": "Smoother and livelier",
  "Les figurines en papier s’animent aussi dans leur fiche de personnage.": "Paper figures now come alive in their character sheet too.",
- "Les images corrigées des personnages s’affichent enfin partout (elles restaient en mémoire sur le téléphone).": "Corrected character images now show everywhere (old ones stayed stored on the phone)."
+ "Les images corrigées des personnages s’affichent enfin partout (elles restaient en mémoire sur le téléphone).": "Corrected character images now show everywhere (old ones stayed stored on the phone).",
+ "Les figurines en papier s’animent aussi dans leur fiche de personnage, et en grand avec le bouton Agrandir (une pose au choix).": "Paper figures now come alive in their character sheet too, and full-size with the Enlarge button (pick any pose).",
+ "Animé": "Animated",
+ "Garde": "Guard",
+ "Attaque": "Attack",
+ "Joie": "Joy",
+ "Peur": "Fear",
+ "Figurine en papier · choisissez une pose, ou laissez-la s’animer.": "Paper figure · pick a pose, or let it come alive."
 }
