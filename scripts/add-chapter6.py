@@ -72,6 +72,7 @@ def bb(place, speaker, text, *cast, art=None):
 parts = []
 parts.append({'id': 'c6p1', 'chapter': 6, 'title': 'Partie 1 : Un sang maudit ?', 'intro': [
     bb(WOODS, JB, 'Après ce rude combat contre les ogres, la licorne maléfique et la nécromancienne, nous étions tous fourbus.', (B, 'sad'), (J, 'sad')),
+    bb(WOODS, JB, 'Et Jhimm portait au bras la coupure laissée par la dague de la nécromancienne. Une dague qui avait disparu… et des coupures identiques couvraient la licorne blessée.', (J, 'scared'), (K, 'neutral')),
     bb(WOODS, OR, 'Jhimm… votre sang ne serait-il pas maudit ?', (OR, 'haughty'), (J, 'scared')),
     bb(WOODS, JB, 'Grimgors l’a touché pour vérifier. Pas de malédiction en vue… mais ça lui a tout de même refermé la plaie !', (G, 'neutral'), (J, 'neutral')),
     bb(WOODS, G, 'Pour en avoir le cœur net, nous irons dans un grand temple, à Forfalla.', (G, 'neutral'), (J, 'neutral')),
@@ -102,7 +103,7 @@ parts.append({'id': 'c6p3', 'chapter': 6, 'title': 'Partie 3 : La voix dans le c
 ]})
 parts.append({'id': 'c6p4', 'chapter': 6, 'title': 'Partie 4 : La statue colossale', 'intro': [
     bb(DARK, JB, 'Téléportés, ou revenus à nous ? Toujours est-il qu’on s’est retrouvés dans un endroit sombre, une sorte d’immense grotte. Sans nos chevaux… mais avec ce pauvre Bosco, qui n’avait même pas eu le temps de manger.', (B, 'scared'), (BO, 'sad')),
-    bb(DARK, JB, 'Nous lui avons raconté l’épisode des licornes.', (BO, 'surprised'), (K, 'neutral')),
+    bb(DARK, JB, 'Nous lui avons raconté l’épisode des licornes : celle que nous avons soignée, celle qui a été corrompue, et le petit que l’on recherche encore. Visiblement, Erevan tient beaucoup à ses licornes.', (BO, 'surprised'), (K, 'neutral')),
     bb(DARK, BO, 'Et si on coupait la tête de cette girafe lumineuse, là-bas ?', (BO, 'thinking'), (K, 'surprised')),
     bb(DARK, J, 'Restons discrets.', (J, 'neutral'), (G, 'neutral')),
     bb(DARK, G, 'J’allume ma torche.', (G, 'neutral'), (J, 'neutral')),
@@ -115,6 +116,7 @@ parts.append({'id': 'c6p4', 'chapter': 6, 'title': 'Partie 4 : La statue colossa
     bb(DARK, JB, 'Les trois grands nous ont grondés. Pfff… En contournant le pied, nous avons découvert une image de Jhimm sur le talon. Forcément, lui, il a eu l’autorisation de Grimgors pour la toucher !', (J, 'happy'), (G, 'proud'), (B, 'angry')),
 ]})
 parts.append({'id': 'c6p5', 'chapter': 6, 'title': 'Partie 5 : Le pied d’Égide', 'intro': [
+    bb(FOOT, J, 'Une statue d’Égide, mon image sur le talon… Si c’est une épreuve, elle m’est destinée. Restez derrière moi.', (J, 'neutral'), (G, 'neutral')),
     bb(FOOT, JB, 'Nous sommes entrés dans le pied : une grande pièce sombre.', (B, 'neutral'), (J, 'neutral')),
     bb(FOOT, JB, 'Jhimm a allumé sa masse avec sa magie. La magie ou la lumière ? Toujours est-il que six stèles se sont ouvertes…', (J, 'neutral'), (K, 'scared')),
     bb(FOOT, JB, '… et ont libéré des squelettes, des momies et un minotaure !', (SQ, 'fight'), (MO, 'fight'), (MI, 'fight'), (B, 'fight')),
@@ -124,6 +126,8 @@ parts.append({'id': 'c6p5', 'chapter': 6, 'title': 'Partie 5 : Le pied d’Égid
     bb(FOOT, JB, 'Et là, j’ai eu l’idée du siècle : j’ai invoqué une horde de huit sangliers et je les ai envoyés sur le minotaure. Ça l’a occupé un long moment !', (B, 'happy'), (MI, 'neutral')),
     bb(FOOT, JB, 'Notre Kala a fini par achever la momie au corps à corps, avec son arc. Grandiose ! Et Bosco a achevé le minotaure.', (K, 'fight'), (BO, 'happy')),
     bb(FOOT, B, 'Tiens, mon grand : vingt baies nourricières ! Ça va te requinquer.', (B, 'happy'), (G, 'sad')),
+], 'lose': [
+    bb(FOOT, JB, 'Les gardiens nous ont repoussés jusqu’à la porte. Grimgors s’est relevé en grognant : on y retourne !', (G, 'angry'), (B, 'fight')),
 ], 'duel': {'foe': 'Les gardiens du pied', 'terrain': 'grotte', 'level': 'difficile', 'dice': [315, 317, 320, 315, 246, 317, 249, 252, 315, 250],
             'cards': ['Squelettes', 'La momie Auguste', 'Le minotaure', 'Momies', 'Squelettes']}})
 parts.append({'id': 'c6p6', 'chapter': 6, 'title': 'Partie 6 : L’épreuve de Jhimm', 'intro': [
@@ -139,7 +143,7 @@ parts.append({'id': 'c6p6', 'chapter': 6, 'title': 'Partie 6 : L’épreuve de J
 ]})
 parts.append({'id': 'c6p7', 'chapter': 6, 'title': 'Partie 7 : La meule géante', 'intro': [
     bb(MUSH, JB, '… nous avons encore été téléportés. Un endroit sombre, dehors, plein de champignons métalliques lumineux. Tiens, un petit sentier ! Ça nous rappelait quelque chose. On a foncé : j’aime ça !', (B, 'happy'), (BO, 'happy')),
-    bb(MUSH, JB, 'Et au loin… une énorme meule ! Waouh, quelle vision ! Ça sentait l’épreuve pour moi, ça !', (B, 'happy')),
+    bb(MUSH, JB, 'Et au loin… une énorme meule de fromage, grande comme une colline ! Waouh, quelle vision ! Après Égide pour Jhimm, ça sentait l’épreuve pour moi, ça… et peut-être ma cuillère !', (B, 'happy')),
     bb(MUSH, JB, 'En parlant de sentir, mes compagnons avaient beaucoup de mal à supporter l’odeur de cette merveille.', (K, 'sad'), (G, 'angry'), (BO, 'shy')),
     bb(MUSH, JB, 'En faisant le tour, j’ai trouvé une image de moi. Je lui ai mis le doigt dans le nez… et nous sommes entrés dans le fromage !', (B, 'happy'), (J, 'surprised')),
     bb(CHEESE, JB, 'Première pièce : le bleu d’Auvergne. Il nous a fallu un moment pour comprendre que je devais lécher les gardes myconides pour accéder à la porte.', (B, 'happy'), (K, 'surprised')),
@@ -147,36 +151,56 @@ parts.append({'id': 'c6p7', 'chapter': 6, 'title': 'Partie 7 : La meule géante'
     bb(CHEESE, JB, 'Dans la pièce suivante, j’ai remis dans l’ordre d’affinage les huit meules, hyper rapidement.', (B, 'happy'), (J, 'happy')),
 ]})
 parts.append({'id': 'c6p8', 'chapter': 6, 'title': 'Partie 8 : La descente des meules', 'intro': [
-    bb(ARENA, JB, 'Nous nous sommes retrouvés en haut d’une sorte d’arène de cheese-rolling. Tout au fond grouillaient les petits vers qu’on trouve dans le casu marzu, le fromage corse.', (B, 'happy'), (K, 'scared'), (BO, 'surprised')),
-    bb(ARENA, B, 'À vos meules, les amis ! Et gare aux vers !', (B, 'fight'), (G, 'fight')),
+    bb(ARENA, JB, 'La dernière porte s’est ouverte sur le haut d’une arène de cheese-rolling : une pente vertigineuse creusée dans le fromage, avec des meules alignées tout en haut.', (B, 'happy'), (BO, 'surprised')),
+    bb(ARENA, JB, 'Tout au fond grouillaient des milliers de petits vers blancs, ceux qu’on trouve dans le casu marzu, le fromage corse. Un délice… pour qui aime ça.', (K, 'scared'), (G, 'angry'), (B, 'happy')),
+    bb(ARENA, 'Une voix', 'Dix-huit meules. Lancez-les toutes jusqu’en bas, et ce qui t’appartient te sera rendu.', (B, 'thinking'), (J, 'neutral')),
+    bb(ARENA, B, 'Facile ! Je lance, vous rattrapez celles qui partent de travers. Et gare aux vers : ils remontent la pente !', (B, 'fight'), (G, 'fight'), (K, 'fight')),
 ], 'victory': [
-    bb(ARENA, JB, 'Mes camarades ont fièrement réussi à stopper la deuxième meule ! Ils ont tout déchiré : je songe à leur proposer de rejoindre mon équipe à la fin de nos aventures.', (B, 'happy'), (G, 'proud'), (K, 'happy')),
-    bb(ARENA, JB, 'Nous avons lancé les dix-huit meules et, nom d’un fromage, ma cuillère magique est apparue en bas ! Oh !', (B, 'happy')),
-    bb(ARENA, JB, 'Quand je l’ai récupérée, nous avons de nouveau été téléportés.', (B, 'surprised'), (BO, 'surprised')),
+    bb(ARENA, JB, 'La deuxième meule a filé de travers ; mes camarades ont fièrement réussi à la stopper avant qu’elle n’écrase Bosco !', (G, 'proud'), (K, 'happy'), (BO, 'shy')),
+    bb(ARENA, JB, 'Les vers ont été repoussés, et nous avons lancé les dix-huit meules une à une. Mes compagnons ont tout déchiré : je songe à leur proposer de rejoindre mon équipe à la fin de nos aventures !', (B, 'happy'), (J, 'happy')),
+    bb(ARENA, JB, 'Et là, nom d’un fromage : ma cuillère magique est apparue en bas de la pente ! Oh !', (B, 'happy')),
+    bb(ARENA, JB, 'À peine l’avais-je ramassée que tout s’est de nouveau effacé autour de nous.', (B, 'surprised'), (BO, 'surprised')),
+], 'lose': [
+    bb(ARENA, JB, 'Une meule nous a renversés, et les vers en ont profité. Repli en haut de la pente : on recommence !', (B, 'sad'), (BO, 'scared')),
 ], 'duel': {'foe': 'Les vers du casu marzu', 'terrain': 'terre', 'level': 'moyen', 'dice': [239, 240, 241, 264, 242, 243, 244, 245, 254, 264],
             'cards': ['Les vers du casu marzu', 'Les vers du casu marzu', 'La meule folle', 'Les vers du casu marzu', 'La meule folle']}})
 parts.append({'id': 'c6p9', 'chapter': 6, 'title': 'Partie 9 : L’épreuve de Kala', 'intro': [
-    bb(FIELD, JB, 'Cette fois, un champ de bataille sombre.', (B, 'scared'), (K, 'neutral')),
-    bb(FIELD, K, 'Je crois que c’est mon tour.', (K, 'thinking'), (B, 'happy')),
-    bb(FIELD, JB, 'Nous avons foncé sur le sentier. Au loin, une statue de flèche qui pique une boule… enfin, un œil, on l’a vu en approchant.', (B, 'happy'), (J, 'neutral')),
-    bb(FIELD, JB, 'En connaisseurs, nous avons directement fait le tour, et Kala a touché délicatement son image.', (K, 'neutral'), (G, 'neutral')),
-    bb(FIELD, 'Une voix', 'Tout sera une question de choix.', (K, 'scared')),
-    bb(FIELD, JB, 'Première épreuve : viser trois cibles animales… ou les mécanismes entre leurs pattes. Kala a réussi : un pont est apparu.', (K, 'happy'), (B, 'happy')),
-    bb(FIELD, J, 'Ce dieu est farceur et illusionniste. Rien n’est réel ici, Kala.', (J, 'neutral'), (K, 'sad')),
-    bb(FIELD, JB, 'Je l’espère… J’aimerais quand même revoir Jordan vivant quand on sortira de là !', (B, 'sad')),
+    bb(FIELD, JB, 'Cette fois, nous étions sur un champ de bataille sombre, sous un ciel violet et rouge. Des armes plantées partout, des bannières déchirées.', (B, 'scared'), (K, 'neutral')),
+    bb(FIELD, K, 'Jhimm a eu son épreuve, Bolduc la sienne… Je crois que c’est mon tour.', (K, 'thinking'), (B, 'happy')),
+    bb(FIELD, JB, 'Nous avons foncé sur le sentier. Au loin, une statue géante : une flèche plantée dans une boule… enfin, dans un œil, on l’a vu en approchant. Le symbole d’une archère, forcément.', (B, 'happy'), (J, 'neutral')),
+    bb(FIELD, JB, 'En connaisseurs, nous avons directement fait le tour, et Kala a trouvé son image. Elle l’a touchée délicatement.', (K, 'neutral'), (G, 'neutral')),
+    bb(FIELD, 'Une voix', 'Tout sera une question de choix.', (K, 'scared'), (J, 'neutral')),
+    bb(FIELD, JB, 'Devant un gouffre se dressaient trois cibles : trois animaux… qui ressemblaient drôlement à nos montures. Entre leurs pattes, des mécanismes de bois.', (K, 'scared'), (B, 'scared')),
+    bb(FIELD, K, 'Je ne tirerai pas sur eux. Les mécanismes, entre les pattes : c’est ça, le vrai choix.', (K, 'fight'), (J, 'neutral')),
+    bb(FIELD, JB, 'Trois flèches, trois mécanismes touchés : un pont de lumière s’est déployé au-dessus du gouffre. Kala tremblait encore.', (K, 'sad'), (B, 'happy')),
+    bb(FIELD, J, 'Ce dieu est farceur et illusionniste, Kala. Nos chevaux sont restés dans les bois : rien de tout cela n’était réel.', (J, 'neutral'), (K, 'sad')),
+    bb(FIELD, B, 'Je l’espère… J’aimerais quand même retrouver Jordan bien vivant quand on sortira de là !', (B, 'sad'), (BO, 'sad')),
 ]})
 parts.append({'id': 'c6p10', 'chapter': 6, 'title': 'Partie 10 : Les drones pentagones', 'intro': [
-    bb(FIELD, JB, 'Ensuite : un combat contre des drones pentagones !', (DR, 'fight'), (B, 'fight'), (K, 'fight'), (G, 'fight')),
+    bb(FIELD, JB, 'Nous avons traversé le pont de lumière un par un. Bosco n’a pas regardé en bas ; moi si, et je le regrette.', (BO, 'scared'), (B, 'scared')),
+    bb(FIELD, JB, 'De l’autre côté, des formes de pierre et d’or se sont élevées du sol en bourdonnant : des drones en forme de pentagone, avec un œil jaune au milieu.', (DR, 'neutral'), (K, 'surprised')),
+    bb(FIELD, G, 'Ce sont les gardiens de l’épreuve. Regardez leurs runes : elles virent au rouge !', (G, 'fight'), (DR, 'fight')),
+    bb(FIELD, B, 'Laissez-moi faire, je vais me changer en…', (B, 'fight'), (DR, 'fight')),
+    bb(FIELD, JB, 'Un éclair a jailli de l’œil du premier drone. Je n’ai jamais fini ma phrase : impossible de bouger le petit doigt !', (B, 'scared'), (DR, 'fight'), (K, 'fight')),
 ], 'victory': [
     bb(FIELD, JB, 'Victoire nette ! Jhimm et Bosco ont découpé un drone chacun, Grimgors en a découpé trois.', (J, 'fight'), (BO, 'happy'), (G, 'proud')),
-    bb(FIELD, JB, 'Kala a démontré ses aptitudes au cimeterre. Jhimm a pris cher.', (K, 'fight'), (J, 'sad')),
-    bb(FIELD, JB, 'Et moi ? Paralysé pendant tout le combat : j’ai compté les points !', (B, 'sad')),
+    bb(FIELD, JB, 'Kala a démontré ses aptitudes au cimeterre, en plus de son arc. Jhimm, lui, a pris cher.', (K, 'fight'), (J, 'sad')),
+    bb(FIELD, JB, 'Et moi ? Paralysé pendant tout le combat, j’ai compté les points. Quelqu’un devait bien le faire !', (B, 'sad')),
+    bb(FIELD, JB, 'Quand le dernier drone est tombé, la paralysie s’est dissipée d’un coup. Mais toujours rien pour Kala : son épreuve n’était visiblement pas terminée.', (K, 'thinking'), (B, 'happy')),
+], 'lose': [
+    bb(FIELD, JB, 'Les drones nous ont repoussés jusqu’au pont. Reprenons notre souffle, et cette fois, que quelqu’un les vise à l’œil !', (G, 'angry'), (K, 'fight')),
 ], 'duel': {'foe': 'Les drones pentagones', 'terrain': 'foudre', 'level': 'difficile', 'dice': [316, 316, 316, 295, 316, 247, 252, 316, 249, 250],
             'cards': ['Les drones pentagones', 'Les drones pentagones', 'Les drones pentagones', 'Les drones pentagones', 'Les drones pentagones']}})
 parts.append({'id': 'c6p11', 'chapter': 6, 'title': 'Partie 11 : Ne pas toucher !', 'intro': [
-    bb(FIELD, JB, 'Et qu’est-ce qui nous attend pour la suite ? Sans doute des alcôves tentatrices, pleines de trésors et de représentations de mes transformations animales…', (B, 'happy'), (BO, 'happy')),
-    bb(FIELD, B, 'Je vous rappelle notre devise : « Ne pas toucher » !', (B, 'happy'), (BO, 'shy'), (K, 'happy'), (G, 'proud'), (J, 'happy')),
+    bb(FIELD, JB, 'Faisons le point : Jhimm a retrouvé son livre de prières, et moi ma cuillère magique. Kala n’a pas encore récupéré son bien, et Grimgors attend toujours son tour.', (B, 'thinking'), (K, 'neutral'), (G, 'neutral')),
+    bb(FIELD, JB, 'Quant à Bosco, embarqué avec nous sans rien demander, il n’avait sur lui rien de précieux… à part son appétit.', (BO, 'shy'), (B, 'happy')),
+    bb(FIELD, G, 'Erevan ne nous laissera pas partir avant d’avoir fini son jeu. Restons groupés.', (G, 'neutral'), (J, 'neutral')),
+    bb(FIELD, JB, 'Le sentier continue de l’autre côté du champ de bataille. Et qu’est-ce qui nous attend pour la suite ?', (B, 'thinking'), (K, 'fight')),
+    bb(FIELD, JB, 'Sans doute encore des alcôves tentatrices, pleines de trésors… et peut-être des représentations de mes transformations animales. De quoi faire craquer Bosco, et moi avec !', (B, 'happy'), (BO, 'happy')),
+    bb(FIELD, B, 'Alors je vous rappelle notre devise, les amis : « Ne pas toucher » !', (B, 'happy'), (BO, 'shy'), (K, 'happy'), (G, 'proud'), (J, 'happy')),
+    bb(FIELD, JB, 'Qui aurait cru que ce serait moi qui la répéterais ? À suivre…', (B, 'happy'), (BO, 'happy')),
 ]})
+
 data.extend(parts)
 open(P, 'w', encoding='utf-8').write(head + '\n' + PRE + json.dumps(data, ensure_ascii=False, separators=(',', ':')) + ';' + ('\n' if rest.endswith('\n') else ''))
 print('chapitre VI :', len(parts), 'parties,', sum(len(p.get('intro', [])) + len(p.get('victory', [])) for p in parts), 'répliques')

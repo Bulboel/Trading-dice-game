@@ -188,9 +188,12 @@ parts.append({'id': 'c5p10', 'chapter': 5, 'title': 'Partie 10 : Les ogres et l�
 ], 'duel': {'foe': 'Les ogres et la nécromancienne', 'terrain': 'terre', 'level': 'difficile', 'dice': [294, 321, 252, 294, 249, 250, 294, 247, 251, 248],
             'cards': ['Les ogres des collines', 'La nécromancienne', 'Les ogres des collines', 'Morts-vivants', 'La nécromancienne'], 'boss': 'ogre'}})
 parts.append({'id': 'c5p11', 'chapter': 5, 'title': 'Partie 11 : La licorne corrompue', 'intro': [
-    jb(WOODS, LC, 'Hiiiiii !', (LC, 'fight'), (J, 'scared')),
+    jb(WOODS, JJ, 'Les ogres à terre, nous pensions souffler. Mais la seconde licorne, celle que nous étions venus sauver, avait les yeux injectés d’une lueur impie.', (LC, 'angry'), (J, 'scared')),
+    jb(WOODS, OR, 'Ce n’est plus elle… On l’a corrompue ! Ne la tuez pas, je vous en prie !', (OR, 'fight'), (LC, 'angry')),
+        jb(WOODS, LC, 'Hiiiiii !', (LC, 'fight'), (J, 'scared')),
     jb(WOODS, JJ, 'La nécromancienne était revenue, et la licorne corrompue chargeait à ses côtés.', (NE, 'fight'), (LC, 'fight'), (G, 'fight')),
     jb(WOODS, JJ, 'Orven et la première licorne, affolée et blessée, étaient en plein milieu.', (OR, 'fight'), (J, 'fight')),
+    jb(WOODS, G, 'Occupez la licorne sans la blesser. Moi, je m’occupe de la magicienne : c’est elle qui tire les ficelles.', (G, 'fight'), (NE, 'fight')),
 ], 'victory': [
     jb(WOODS, JJ, 'J’ai vu Grimgors fondre sur la magicienne, sans comprendre comment il l’avait arrêtée.', (G, 'fight'), (NE, 'neutral')),
     jb(WOODS, JJ, 'Je me suis précipité vers Orven et la licorne blessée. Je faisais confiance à mes compagnons pour terminer le combat : je me suis tourné vers Égide et j’ai prié de toutes mes forces.', (J, 'fight'), (OR, 'friendly')),
