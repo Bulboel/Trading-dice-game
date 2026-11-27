@@ -27,7 +27,7 @@ def force(xs,prof,n):
         i=max(range(len(xs)-1),key=lambda k:xs[k+1]-xs[k]);a,b=xs[i],xs[i+1];lo,hi=a+(b-a)//4,b-(b-a)//4
         xs.insert(i+1,lo+int(np.argmin(prof[lo:hi])))
     return xs
-FORCE={'harpe-de-bulbalina':6,'velmarys':8}
+FORCE={'harpe-de-bulbalina':6,'velmarys':8,'minotaure':6}
 ROWS={'faux-enfants'}  # planche en grille : deux rangées de poses
 SKIP={'mimic-levier','bobo'}  # mimic : fond opaque, pas de détourage possible ; bobo : pas encore utilisé dans l'Histoire
 def split_touching(m,rg,cnt):

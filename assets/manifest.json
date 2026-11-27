@@ -1148,8 +1148,9 @@
       "sprite": {
         "idle": "story/emo/squelette-2.webp",
         "walk": "story/emo/squelette-2.webp",
-        "attack": "story/emo/squelette-1.webp",
-        "hit": "story/emo/squelette-2.webp",
+        "attack": "story/emo/squelette-3.webp",
+        "hit": "story/emo/squelette-5.webp",
+        "ko": "story/emo/squelette-6.webp",
         "win": "story/emo/squelette-1.webp"
       },
       "paper": true
@@ -1160,8 +1161,9 @@
       "sprite": {
         "idle": "story/emo/drone-pentagone-2.webp",
         "walk": "story/emo/drone-pentagone-2.webp",
-        "attack": "story/emo/drone-pentagone-1.webp",
-        "hit": "story/emo/drone-pentagone-2.webp",
+        "attack": "story/emo/drone-pentagone-3.webp",
+        "hit": "story/emo/drone-pentagone-5.webp",
+        "ko": "story/emo/drone-pentagone-6.webp",
         "win": "story/emo/drone-pentagone-1.webp"
       },
       "paper": true
@@ -1172,8 +1174,9 @@
       "sprite": {
         "idle": "story/emo/momie-2.webp",
         "walk": "story/emo/momie-2.webp",
-        "attack": "story/emo/momie-1.webp",
-        "hit": "story/emo/momie-2.webp",
+        "attack": "story/emo/momie-3.webp",
+        "hit": "story/emo/momie-5.webp",
+        "ko": "story/emo/momie-6.webp",
         "win": "story/emo/momie-1.webp"
       },
       "paper": true
@@ -1184,8 +1187,9 @@
       "sprite": {
         "idle": "story/emo/chevalier-d-egide-2.webp",
         "walk": "story/emo/chevalier-d-egide-2.webp",
-        "attack": "story/emo/chevalier-d-egide-1.webp",
-        "hit": "story/emo/chevalier-d-egide-2.webp",
+        "attack": "story/emo/chevalier-d-egide-3.webp",
+        "hit": "story/emo/chevalier-d-egide-5.webp",
+        "ko": "story/emo/chevalier-d-egide-6.webp",
         "win": "story/emo/chevalier-d-egide-1.webp"
       },
       "paper": true
@@ -1196,8 +1200,9 @@
       "sprite": {
         "idle": "story/emo/maitre-d-armes-2.webp",
         "walk": "story/emo/maitre-d-armes-2.webp",
-        "attack": "story/emo/maitre-d-armes-1.webp",
-        "hit": "story/emo/maitre-d-armes-2.webp",
+        "attack": "story/emo/maitre-d-armes-3.webp",
+        "hit": "story/emo/maitre-d-armes-5.webp",
+        "ko": "story/emo/maitre-d-armes-6.webp",
         "win": "story/emo/maitre-d-armes-1.webp"
       },
       "paper": true
@@ -1208,8 +1213,9 @@
       "sprite": {
         "idle": "story/emo/minotaure-2.webp",
         "walk": "story/emo/minotaure-2.webp",
-        "attack": "story/emo/minotaure-1.webp",
-        "hit": "story/emo/minotaure-2.webp",
+        "attack": "story/emo/minotaure-3.webp",
+        "hit": "story/emo/minotaure-5.webp",
+        "ko": "story/emo/minotaure-6.webp",
         "win": "story/emo/minotaure-1.webp"
       },
       "paper": true
@@ -1220,8 +1226,9 @@
       "sprite": {
         "idle": "story/emo/necromancienne-2.webp",
         "walk": "story/emo/necromancienne-2.webp",
-        "attack": "story/emo/necromancienne-1.webp",
-        "hit": "story/emo/necromancienne-2.webp",
+        "attack": "story/emo/necromancienne-3.webp",
+        "hit": "story/emo/necromancienne-5.webp",
+        "ko": "story/emo/necromancienne-6.webp",
         "win": "story/emo/necromancienne-1.webp"
       },
       "paper": true
