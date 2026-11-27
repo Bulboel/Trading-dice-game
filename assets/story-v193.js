@@ -42,14 +42,17 @@ function fitCast(cast,specs){if(!specs.length)return;const Hb=Math.min(innerHeig
   st.setProperty('background-size',s.cell?(4*cellW)+'px '+(3*cellH)+'px':cellW+'px '+cellH+'px','important');
   st.setProperty('background-position',-((s.cell?s.cell[0]:0)*cellW+s.b[0]*cellW)+'px '+(-((s.cell?s.cell[1]:0)*cellH+s.b[1]*cellH))+'px','important');
   st.setProperty('margin','0 '+gap/2+'px')})}
-function draw(){const b=seq[step];scene.className='ss '+(b.c||[]).map(c=>'ss-'+c).join(' ')+(b.s==='Voix off'?' ss-narration':b.s==='Journal de Kala'?' ss-narration ss-diary':'');
+function draw(){const b=seq[step];scene.className='ss '+(b.c||[]).map(c=>'ss-'+c).join(' ')+(b.s==='Voix off'?' ss-narration':/^Journal de /.test(b.s||'')?' ss-narration ss-diary':'');/* v452 — journaux de Kala, Jhimm et Bolduc */
  scene.querySelector('.ss-bg').style.backgroundImage=b.bg&&b.bg!=='none'?b.bg:'';scene.querySelector('.ss-bgb').style.backgroundImage=b.bgb||'';
  scene.querySelector('.ss-caption').textContent=b.l||'';const cast=scene.querySelector('.ss-cast');cast.replaceChildren();
+ /* v452 — personnages vivants : apparition, tremblement s'ils ont peur, élan en combat, petit saut de joie, chute K.-O. (seulement quand l'humeur change) */
+ const was=new Map((step>0?seq[step-1]?.cast||[]:[]).filter(x=>x.n).map(x=>[x.n,x.m||'neutral'])),anim=x=>{const m=x.m||'neutral';if(!was.has(x.n))return 'in';if(was.get(x.n)===m)return '';return {scared:'scared',fight:'fight',angry:'fight',happy:'happy',ko:'ko',surprised:'happy'}[m]||''};
  const sized=[];for(const x of b.cast||[]){if(x.art){const img=document.createElement('img');img.className='ss-art';img.src=x.art;img.alt=x.alt||'';cast.append(img);continue}
-  const sp=document.createElement('div');sp.className='ss-sprite '+(x.k||[]).map(k=>'ss-'+k.replace(/^story-/,'').replace(/^is-/,'')).join(' ');sp.setAttribute('role','img');sp.setAttribute('aria-label',x.n||'');
+  const sp=document.createElement('div');sp.className='ss-sprite '+(x.k||[]).map(k=>'ss-'+k.replace(/^story-/,'').replace(/^is-/,'')).join(' ');sp.setAttribute('role','img');sp.setAttribute('aria-label',x.n||'');{const a=anim(x);if(a)sp.classList.add('ss-anim-'+a)}
   const emo=x.p?null:window.HackeniaEmo?.pick(x.n,x.m||'neutral');/* v429 — pose de la planche d’émotions qui correspond à l’humeur de la réplique */
   if(x.p||emo){sp.style.backgroundImage='none';const im=document.createElement('img');im.src=x.p||emo;im.alt='';if(emo)sp.classList.add('ss-emo');sp.append(im)}else{sp.style.backgroundImage=x.img;sp.style.backgroundSize=x.sz||'contain';sp.style.backgroundPosition=x.pos||'center bottom'}cast.append(sp);sized.push(spriteSpec(sp,x,emo))}
  fitCast(cast,sized.filter(Boolean));
+ {const all=[...cast.querySelectorAll('.ss-sprite')];all.forEach((el,i)=>el.style.setProperty('--ss-dir',i<(all.length-1)/2?1:i>(all.length-1)/2?-1:(i%2?-1:1)))}/* l’élan part vers le centre de la scène */
  preloadNext();scene.querySelector('.ss-speaker').textContent=b.s;scene.querySelector('.ss-text').textContent=b.t;
  const ch=scene.querySelector('.ss-choices');ch.innerHTML=(b.choices||[]).map((c,i)=>`<button type="button" data-ss="choice" data-i="${i}" class="${c.go==='duel'?'ss-primary':''}">${esc(c.label)}</button>`).join('');
  const nx=scene.querySelector('.ss-next');nx.hidden=!!b.choices;nx.textContent=step===seq.length-1?(b.next||'Continuer'):'Continuer';scene.querySelector('[data-ss="prev"]').disabled=step===0;scene.querySelector('.ss-progress').textContent=(step+1)+' / '+seq.length;const sk=scene.querySelector('.ss-skip');sk.hidden=!skipHandler;sk.textContent=skipLabel}

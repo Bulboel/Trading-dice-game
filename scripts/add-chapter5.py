@@ -121,10 +121,12 @@ parts.append({'id': 'c5p6', 'chapter': 5, 'title': 'Partie 6 : Une victoire amè
 # ——— v450 — La suite, racontée par Jhimm (d’après son récit) ———
 JJ = 'Journal de Jhimm'
 TPL['Orven'] = {'img': 'url("assets/story/emo/orven-2.webp")', 'sz': 'contain', 'pos': 'center bottom'}
+TPL['La nécromancienne'] = {'img': 'url("assets/story/emo/necromancienne-2.webp")', 'sz': 'contain', 'pos': 'center bottom'}
+TPL['Les ogres'] = {'img': 'url("assets/story/emo/ogre-2.webp")', 'sz': 'contain', 'pos': 'center bottom'}
 TPL['La licorne corrompue'] = {'img': 'url("assets/story/emo/licorne-enrage-2.webp")', 'sz': 'contain', 'pos': 'center bottom'}
 KERZ_DAWN = ('Kierzan, à l’aube', ['night'], bg('assets/story/berdesa-village-background.webp', 'rgba(120, 70, 30, 0.18), rgba(40, 20, 8, 0.42)'))
 WOODS = ('Les bois de la route de Mirrhol', ['forest'], bg('assets/story/forest-background.webp', 'rgba(14, 16, 10, 0.2), rgba(8, 10, 6, 0.55)'))
-OR, MB, LC = 'Orven', 'Messire Balai', 'La licorne corrompue'
+OR, MB, LC, NE, OG = 'Orven', 'Messire Balai', 'La licorne corrompue', 'La nécromancienne', 'Les ogres'
 def jb(place, speaker, text, *cast, art=None):
     """Réplique du récit de Jhimm : quand il raconte, il est à l’image avec l’humeur de la scène (sinon calme)."""
     if speaker == JJ and not art and J not in [n for n, _ in cast]:
@@ -175,29 +177,29 @@ parts.append({'id': 'c5p9', 'chapter': 5, 'title': 'Partie 9 : Orven, sur la rou
 ]})
 parts.append({'id': 'c5p10', 'chapter': 5, 'title': 'Partie 10 : Les ogres et l’ombre', 'intro': [
     jb(WOODS, JJ, 'Deux tentatives de Grimgors pour communiquer — ou pour provoquer, difficile à dire — grâce à son collier de dents d’ogre…', (G, 'fight'), (J, 'neutral')),
-    jb(WOODS, JJ, '… et les ogres se sont mis en marche vers nous. C’est Ébérien qui a ouvert les hostilités : une énorme boule de feu a éclaté sur les deux créatures.', (E, 'fight'), (G, 'fight')),
+    jb(WOODS, JJ, '… et les ogres se sont mis en marche vers nous. C’est Ébérien qui a ouvert les hostilités : une énorme boule de feu a éclaté sur les deux créatures.', (E, 'fight'), (OG, 'fight'), (G, 'fight')),
     jb(WOODS, JJ, 'Malgré cela, une inquiétude sourde me tenaillait. Je sentais une autre présence.', (J, 'scared')),
-    jb(WOODS, JJ, 'Je ne me trompais pas : une silhouette sombre est apparue et m’a lancé une dague. La blessure était superficielle, mais la sensation… étrange.', (J, 'scared')),
-    jb(WOODS, J, 'Une nécromancienne ! Elle est avec eux !', (J, 'fight'), (K, 'fight')),
+    jb(WOODS, JJ, 'Je ne me trompais pas : une silhouette sombre est apparue et m’a lancé une dague. La blessure était superficielle, mais la sensation… étrange.', (NE, 'fight'), (J, 'scared')),
+    jb(WOODS, J, 'Une nécromancienne ! Elle est avec eux !', (J, 'fight'), (NE, 'neutral'), (K, 'fight')),
 ], 'victory': [
     jb(WOODS, JJ, 'La puissance décuplée du groupe a rapidement fait plier les ogres et mis la nécromancienne en fuite.', (J, 'fight'), (B, 'fight')),
     jb(WOODS, JJ, 'Kala et Grimgors semblaient encore plus rapides et efficaces que lors de nos précédents combats.', (K, 'fight'), (G, 'proud')),
     jb(WOODS, JJ, 'C’est alors que la seconde licorne est apparue. Mais au lieu de me rassurer, une angoisse glacée m’a saisi : elle était corrompue, pervertie par une magie impie.', (LC, 'angry'), (J, 'scared')),
-], 'duel': {'foe': 'Les ogres et la nécromancienne', 'terrain': 'terre', 'level': 'difficile', 'dice': [294, 246, 252, 294, 249, 250, 294, 247, 251, 248],
+], 'duel': {'foe': 'Les ogres et la nécromancienne', 'terrain': 'terre', 'level': 'difficile', 'dice': [294, 321, 252, 294, 249, 250, 294, 247, 251, 248],
             'cards': ['Les ogres des collines', 'La nécromancienne', 'Les ogres des collines', 'Morts-vivants', 'La nécromancienne'], 'boss': 'ogre'}})
 parts.append({'id': 'c5p11', 'chapter': 5, 'title': 'Partie 11 : La licorne corrompue', 'intro': [
     jb(WOODS, LC, 'Hiiiiii !', (LC, 'fight'), (J, 'scared')),
-    jb(WOODS, JJ, 'La nécromancienne était revenue, et la licorne corrompue chargeait à ses côtés.', (LC, 'fight'), (G, 'fight'), (K, 'fight')),
+    jb(WOODS, JJ, 'La nécromancienne était revenue, et la licorne corrompue chargeait à ses côtés.', (NE, 'fight'), (LC, 'fight'), (G, 'fight')),
     jb(WOODS, JJ, 'Orven et la première licorne, affolée et blessée, étaient en plein milieu.', (OR, 'fight'), (J, 'fight')),
 ], 'victory': [
-    jb(WOODS, JJ, 'J’ai vu Grimgors fondre sur la magicienne, sans comprendre comment il l’avait arrêtée.', (G, 'fight')),
+    jb(WOODS, JJ, 'J’ai vu Grimgors fondre sur la magicienne, sans comprendre comment il l’avait arrêtée.', (G, 'fight'), (NE, 'neutral')),
     jb(WOODS, JJ, 'Je me suis précipité vers Orven et la licorne blessée. Je faisais confiance à mes compagnons pour terminer le combat : je me suis tourné vers Égide et j’ai prié de toutes mes forces.', (J, 'fight'), (OR, 'friendly')),
     jb(WOODS, JJ, 'Peu à peu, la licorne a retrouvé son souffle, apaisée.', (J, 'happy'), (OR, 'friendly')),
     jb(WOODS, JJ, 'Bolduc, Ébérien, Kala et Grimgors nous ont rejoints. La nécromancienne gisait sans vie. Quant à la licorne corrompue, elle s’était enfuie en se téléportant…', (B, 'neutral'), (E, 'neutral'), (K, 'neutral'), (G, 'neutral')),
-], 'duel': {'foe': 'La licorne corrompue', 'terrain': 'vent', 'level': 'difficile', 'dice': [297, 246, 297, 248, 250, 297, 249, 252, 297, 251],
+], 'duel': {'foe': 'La licorne corrompue', 'terrain': 'vent', 'level': 'difficile', 'dice': [297, 321, 297, 248, 250, 297, 249, 252, 246, 251],
             'cards': ['La licorne corrompue', 'La nécromancienne', 'La licorne corrompue', 'Morts-vivants', 'La licorne corrompue']}})
 parts.append({'id': 'c5p12', 'chapter': 5, 'title': 'Partie 12 : Une blessure de trop ?', 'intro': [
-    jb(WOODS, JJ, 'En examinant la licorne blessée, j’ai remarqué de nombreuses coupures, toutes identiques à celle que m’avait faite la dague de la nécromancienne.', (J, 'neutral'), (OR, 'friendly')),
+    jb(WOODS, JJ, 'En examinant la licorne blessée, j’ai remarqué de nombreuses coupures, toutes identiques à celle que m’avait faite la dague de la nécromancienne.', (J, 'thinking'), (OR, 'friendly')),
     jb(WOODS, K, 'Sa dague n’est plus là. Je l’ai cherchée partout.', (K, 'neutral'), (J, 'scared')),
     jb(WOODS, JJ, 'Disparue, étrangement. Peut-être pas si insignifiante que cela, cette blessure, finalement…', (J, 'scared')),
     jb(WOODS, JJ, 'Et la liste de nos problèmes continue de s’allonger. Les jumeaux et leurs secrets, le retour de Caleïzis, les complots de Gliska ou de Yoris, la dague maudite, la secte des Sans-chiffres, l’ombre d’Orcus…', (J, 'sad'), (G, 'angry'), (K, 'sad')),

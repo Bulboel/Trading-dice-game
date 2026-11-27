@@ -1,25 +1,25 @@
 /* Presentation adapter. Game legality, turns, decks and combat stay in index.html. */
 import * as THREE from 'three';
-import { orientBoardModel } from './model-facing.js?v=20270102-v451';
-import { createEmberlands } from './ember-v239.js?v=20270102-v451';
-import { attachHeroParts } from './hero-parts.js?v=20270102-v451';
-import { applyLook } from './variant-look.js?v=20270102-v451';
-import { loadPaperTextures, buildPaperFigure } from './paper-figure.js?v=20270102-v451';
-import { autoBake } from './bake-static.js?v=20270102-v451';
-import { createLake } from './lake-v241.js?v=20270102-v451';
-import { createSkyIsland } from './sky-v231.js?v=20270102-v451';
-import { createWindHighlands } from './wind-v232.js?v=20270102-v451';
-import { createWoodland } from './woodland-v238.js?v=20270102-v451';
-import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20270102-v451';
-import { createFrostRoad } from './frost-v240.js?v=20270102-v451';
-import { createCity } from './city-v246.js?v=20270102-v451';
-import { createColosseum } from './colosseum-v364.js?v=20270102-v451';
-import { createTavern } from './tavern-v369.js?v=20270102-v451';
-import { createCave } from './cave-v246.js?v=20270102-v451';
-import { createAutumn } from './autumn-v253.js?v=20270102-v451';
-import { createFairyMists } from './fairy-v335.js?v=20270102-v451';
-import { createNoel } from './noel-v253.js?v=20270102-v451';
-import { createElementWheel } from './element-wheel-v252.js?v=20270102-v451';
+import { orientBoardModel } from './model-facing.js?v=20270102-v452';
+import { createEmberlands } from './ember-v239.js?v=20270102-v452';
+import { attachHeroParts } from './hero-parts.js?v=20270102-v452';
+import { applyLook } from './variant-look.js?v=20270102-v452';
+import { loadPaperTextures, buildPaperFigure } from './paper-figure.js?v=20270102-v452';
+import { autoBake } from './bake-static.js?v=20270102-v452';
+import { createLake } from './lake-v241.js?v=20270102-v452';
+import { createSkyIsland } from './sky-v231.js?v=20270102-v452';
+import { createWindHighlands } from './wind-v232.js?v=20270102-v452';
+import { createWoodland } from './woodland-v238.js?v=20270102-v452';
+import { createCombatFx, attackStyle } from './combat-fx-v244.js?v=20270102-v452';
+import { createFrostRoad } from './frost-v240.js?v=20270102-v452';
+import { createCity } from './city-v246.js?v=20270102-v452';
+import { createColosseum } from './colosseum-v364.js?v=20270102-v452';
+import { createTavern } from './tavern-v369.js?v=20270102-v452';
+import { createCave } from './cave-v246.js?v=20270102-v452';
+import { createAutumn } from './autumn-v253.js?v=20270102-v452';
+import { createFairyMists } from './fairy-v335.js?v=20270102-v452';
+import { createNoel } from './noel-v253.js?v=20270102-v452';
+import { createElementWheel } from './element-wheel-v252.js?v=20270102-v452';
 
 window.__clearingStarted=true;
 const game=window.hackeniaGame, BH=game.rows||10, HZ=(BH-1)/2, ZS=BH/10, host=document.getElementById('bw'),homeParent=host.parentElement,homeNextSibling=host.nextElementSibling;
@@ -514,14 +514,16 @@ async function attachPaperModel(g,k,info){const mi=k.mi;g.userData.modelId=mi;co
  const H=1.35*(info.boardHeight||.95)*(game.monsters[mi]?.boardScale||1),fig=buildPaperFigure(tex.idle,H,{tint:game.monsters[mi]?.variant?.color||null});fig.object.position.y=.1;
  const holder=new THREE.Group(),node=new THREE.Group(),flipper=new THREE.Group();holder.userData.imported=true;node.userData.imported=true;flipper.userData.imported=true;flipper.add(fig.object);node.add(flipper);holder.add(node);
  g.children.forEach((o,i)=>{if(i>0)o.visible=false});g.add(holder);g.userData.model=holder;g.userData.animationInfo=info;
- g.userData.gest={node,kind:'paper',phase:Math.random()*6,paper:{fig,flipper,tex,H,pose:'idle',want:'idle',flipT:1,face:1,lastX:null}};
+ g.userData.gest={node,kind:'paper',phase:Math.random()*6,paper:{fig,flipper,tex,H,pose:'idle',want:'idle',flipT:1,face:1,lastX:null,born:performance.now()}};
  if(game.monsters[mi]?.shiny)addCrackle(g);if(game.rarity?.(game.monsters[mi]||{})===6)addDivineAura(g,game.monsters[mi])}
-const _pv=new THREE.Vector3(),_pd=new THREE.Vector3(),_pr=new THREE.Vector3();
-function animatePaper(g,k,f,combat,t,G){const P=G.paper,now=performance.now();let pose='idle',y=0,sq=0;
+const _pv=new THREE.Vector3(),_pd=new THREE.Vector3(),_pr=new THREE.Vector3(),_pl=new THREE.Vector3();
+function animatePaper(g,k,f,combat,t,G){const P=G.paper,now=performance.now();let pose='idle',y=0,sq=0,lunge=0,shake=0;
  const walking=k.walk&&Date.now()<k.walk.started+k.walk.duration;
  if(f&&combat&&!combat.reduced){const p=combat.progress,att=k.id===combat.fighters[0].id;
   if(f.loser&&p>.55)pose=P.tex.ko?'ko':'hit';else if(!f.loser&&p>.7&&combat.stats[0].attack!==combat.stats[1].attack){pose='win';y=.12*Math.abs(Math.sin((p-.7)*Math.PI*6))}
-  else if(att&&p<.62){pose='attack';if(p>.3)y=.08*Math.sin(Math.PI*(p-.3)/.32)}else if(!att&&p>.3)pose='hit'}
+  else if(att&&p<.62){pose='attack';if(p>.3){y=.08*Math.sin(Math.PI*(p-.3)/.32);lunge=.42*Math.sin(Math.PI*Math.min(1,(p-.3)/.3))}}else if(!att&&p>.3){pose='hit';if(p<.7)shake=.035*(1-(p-.3)/.4)}
+  /* v452 — l’attaquant s’élance vers sa cible (et change d’image), le défenseur tremble sous le coup */
+  if(f.loser&&p>.45&&p<.6)shake=.03}
  else if(G.celebrate&&moving){pose='win';y=.16*Math.abs(Math.sin(t*4.4+G.phase))}
  else if(walking){pose='walk';y=.14*Math.abs(Math.sin(t*9+G.phase))}
  else if(moving){sq=.025*Math.sin(t*2.4+G.phase)}
@@ -532,7 +534,12 @@ function animatePaper(g,k,f,combat,t,G){const P=G.paper,now=performance.now();le
  /* regard vers la gauche ou la droite de l'écran selon le sens de la marche */
  g.getWorldPosition(_pv);camera.getWorldDirection(_pd);_pr.setFromMatrixColumn(camera.matrixWorld,0);
  if(P.lastX){const dx=_pv.clone().sub(P.lastX).dot(_pr);if(Math.abs(dx)>.004)P.face=dx>0?-1:1}P.lastX=_pv.clone();
- const flip=Math.abs(Math.cos(Math.PI*P.flipT));G.node.position.set(0,y,0);G.node.scale.set(1-sq,1+sq*1.6,1);
+ const flip=Math.abs(Math.cos(Math.PI*P.flipT));G.node.position.set(0,y,0);
+ if(lunge&&combat){const me=combat.fighters.find(u=>u.id===k.id),op=combat.fighters.find(u=>u.id!==k.id);if(me&&op){_pl.set(op.x-me.x,0,op.y-me.y);if(_pl.lengthSq()>1e-6){_pl.normalize().multiplyScalar(lunge);const r=-g.rotation.y,c=Math.cos(r),sn=Math.sin(r);G.node.position.x+=_pl.x*c+_pl.z*sn;G.node.position.z+=-_pl.x*sn+_pl.z*c}}}
+ if(shake)G.node.position.x+=shake*Math.sin(now*.09);
+ /* v452 — apparition : la figurine se déplie en rebondissant */
+ const born=Math.min(1,(now-(P.born||0))/420),pop=born>=1?1:1+2.2*Math.pow(born-1,3)+1.2*Math.pow(born-1,2);
+ G.node.scale.set((1-sq)*pop,(1+sq*1.6)*pop,pop);
  P.flipper.scale.set(P.face*Math.max(.04,flip),1,1);
  /* feuille face à la caméra (rotation autour de la verticale seulement) */
  G.node.getWorldPosition(_pv);_pd.y*=.45;_pv.sub(_pd.normalize());G.node.lookAt(_pv)/* légèrement penchée vers la caméra : la feuille reste lisible vue d’en haut */}

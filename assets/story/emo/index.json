@@ -6,11 +6,19 @@
   "assets/story/emo/bolduc-4.webp",
   "assets/story/emo/bolduc-5.webp"
  ],
+ "bolduc-plus": [
+  "assets/story/emo/bolduc-plus-1.webp",
+  "assets/story/emo/bolduc-plus-2.webp"
+ ],
  "bosco": [
   "assets/story/emo/bosco-1.webp",
   "assets/story/emo/bosco-2.webp",
   "assets/story/emo/bosco-3.webp",
   "assets/story/emo/bosco-4.webp"
+ ],
+ "bosco-plus": [
+  "assets/story/emo/bosco-plus-1.webp",
+  "assets/story/emo/bosco-plus-2.webp"
  ],
  "bulbalina": [
   "assets/story/emo/bulbalina-1.webp",
@@ -40,12 +48,28 @@
   "assets/story/emo/canourson-5.webp",
   "assets/story/emo/canourson-6.webp"
  ],
+ "chevalier-d-egide": [
+  "assets/story/emo/chevalier-d-egide-1.webp",
+  "assets/story/emo/chevalier-d-egide-2.webp",
+  "assets/story/emo/chevalier-d-egide-3.webp",
+  "assets/story/emo/chevalier-d-egide-4.webp",
+  "assets/story/emo/chevalier-d-egide-5.webp",
+  "assets/story/emo/chevalier-d-egide-6.webp"
+ ],
  "drahul": [
   "assets/story/emo/drahul-1.webp",
   "assets/story/emo/drahul-2.webp",
   "assets/story/emo/drahul-3.webp",
   "assets/story/emo/drahul-4.webp",
   "assets/story/emo/drahul-5.webp"
+ ],
+ "drone-pentagone": [
+  "assets/story/emo/drone-pentagone-1.webp",
+  "assets/story/emo/drone-pentagone-2.webp",
+  "assets/story/emo/drone-pentagone-3.webp",
+  "assets/story/emo/drone-pentagone-4.webp",
+  "assets/story/emo/drone-pentagone-5.webp",
+  "assets/story/emo/drone-pentagone-6.webp"
  ],
  "eberien": [
   "assets/story/emo/eberien-1.webp",
@@ -132,12 +156,20 @@
   "assets/story/emo/jhimm-4.webp",
   "assets/story/emo/jhimm-5.webp"
  ],
+ "jhimm-plus": [
+  "assets/story/emo/jhimm-plus-1.webp",
+  "assets/story/emo/jhimm-plus-2.webp"
+ ],
  "kala": [
   "assets/story/emo/kala-1.webp",
   "assets/story/emo/kala-2.webp",
   "assets/story/emo/kala-3.webp",
   "assets/story/emo/kala-4.webp",
   "assets/story/emo/kala-5.webp"
+ ],
+ "kala-plus": [
+  "assets/story/emo/kala-plus-1.webp",
+  "assets/story/emo/kala-plus-2.webp"
  ],
  "krak": [
   "assets/story/emo/krak-1.webp",
@@ -163,6 +195,16 @@
   "assets/story/emo/lamie-5.webp",
   "assets/story/emo/lamie-6.webp"
  ],
+ "licorne": [
+  "assets/story/emo/licorne-1.webp",
+  "assets/story/emo/licorne-2.webp",
+  "assets/story/emo/licorne-3.webp",
+  "assets/story/emo/licorne-4.webp",
+  "assets/story/emo/licorne-5.webp",
+  "assets/story/emo/licorne-6.webp",
+  "assets/story/emo/licorne-7.webp",
+  "assets/story/emo/licorne-8.webp"
+ ],
  "licorne-enrage": [
   "assets/story/emo/licorne-enrage-1.webp",
   "assets/story/emo/licorne-enrage-2.webp",
@@ -170,6 +212,14 @@
   "assets/story/emo/licorne-enrage-4.webp",
   "assets/story/emo/licorne-enrage-5.webp",
   "assets/story/emo/licorne-enrage-6.webp"
+ ],
+ "maebril": [
+  "assets/story/emo/maebril-1.webp",
+  "assets/story/emo/maebril-2.webp",
+  "assets/story/emo/maebril-3.webp",
+  "assets/story/emo/maebril-4.webp",
+  "assets/story/emo/maebril-5.webp",
+  "assets/story/emo/maebril-6.webp"
  ],
  "maestro": [
   "assets/story/emo/maestro-1.webp",
@@ -179,11 +229,35 @@
   "assets/story/emo/maestro-5.webp",
   "assets/story/emo/maestro-6.webp"
  ],
+ "maitre-d-armes": [
+  "assets/story/emo/maitre-d-armes-1.webp",
+  "assets/story/emo/maitre-d-armes-2.webp",
+  "assets/story/emo/maitre-d-armes-3.webp",
+  "assets/story/emo/maitre-d-armes-4.webp",
+  "assets/story/emo/maitre-d-armes-5.webp",
+  "assets/story/emo/maitre-d-armes-6.webp"
+ ],
  "messire-balai": [
   "assets/story/emo/messire-balai-1.webp",
   "assets/story/emo/messire-balai-2.webp",
   "assets/story/emo/messire-balai-3.webp",
   "assets/story/emo/messire-balai-4.webp"
+ ],
+ "minotaure": [
+  "assets/story/emo/minotaure-1.webp",
+  "assets/story/emo/minotaure-2.webp",
+  "assets/story/emo/minotaure-3.webp",
+  "assets/story/emo/minotaure-4.webp",
+  "assets/story/emo/minotaure-5.webp",
+  "assets/story/emo/minotaure-6.webp"
+ ],
+ "momie": [
+  "assets/story/emo/momie-1.webp",
+  "assets/story/emo/momie-2.webp",
+  "assets/story/emo/momie-3.webp",
+  "assets/story/emo/momie-4.webp",
+  "assets/story/emo/momie-5.webp",
+  "assets/story/emo/momie-6.webp"
  ],
  "naia": [
   "assets/story/emo/naia-1.webp",
@@ -192,6 +266,22 @@
   "assets/story/emo/naia-4.webp",
   "assets/story/emo/naia-5.webp",
   "assets/story/emo/naia-6.webp"
+ ],
+ "necromancienne": [
+  "assets/story/emo/necromancienne-1.webp",
+  "assets/story/emo/necromancienne-2.webp",
+  "assets/story/emo/necromancienne-3.webp",
+  "assets/story/emo/necromancienne-4.webp",
+  "assets/story/emo/necromancienne-5.webp",
+  "assets/story/emo/necromancienne-6.webp"
+ ],
+ "ogre": [
+  "assets/story/emo/ogre-1.webp",
+  "assets/story/emo/ogre-2.webp",
+  "assets/story/emo/ogre-3.webp",
+  "assets/story/emo/ogre-4.webp",
+  "assets/story/emo/ogre-5.webp",
+  "assets/story/emo/ogre-6.webp"
  ],
  "orven": [
   "assets/story/emo/orven-1.webp",
@@ -224,6 +314,14 @@
   "assets/story/emo/soldat-de-lunargent-5.webp",
   "assets/story/emo/soldat-de-lunargent-6.webp"
  ],
+ "squelette": [
+  "assets/story/emo/squelette-1.webp",
+  "assets/story/emo/squelette-2.webp",
+  "assets/story/emo/squelette-3.webp",
+  "assets/story/emo/squelette-4.webp",
+  "assets/story/emo/squelette-5.webp",
+  "assets/story/emo/squelette-6.webp"
+ ],
  "transporteur": [
   "assets/story/emo/transporteur-1.webp",
   "assets/story/emo/transporteur-2.webp",
@@ -236,6 +334,16 @@
   "assets/story/emo/velcan-1.webp",
   "assets/story/emo/velcan-2.webp",
   "assets/story/emo/velcan-3.webp"
+ ],
+ "velmarys": [
+  "assets/story/emo/velmarys-1.webp",
+  "assets/story/emo/velmarys-2.webp",
+  "assets/story/emo/velmarys-3.webp",
+  "assets/story/emo/velmarys-4.webp",
+  "assets/story/emo/velmarys-5.webp",
+  "assets/story/emo/velmarys-6.webp",
+  "assets/story/emo/velmarys-7.webp",
+  "assets/story/emo/velmarys-8.webp"
  ],
  "yoris": [
   "assets/story/emo/yoris-1.webp",

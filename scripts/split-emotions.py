@@ -27,7 +27,8 @@ def force(xs,prof,n):
         i=max(range(len(xs)-1),key=lambda k:xs[k+1]-xs[k]);a,b=xs[i],xs[i+1];lo,hi=a+(b-a)//4,b-(b-a)//4
         xs.insert(i+1,lo+int(np.argmin(prof[lo:hi])))
     return xs
-FORCE={'harpe-de-bulbalina':6}
+CUTS={'maebril':[1640]}  # coupes ajoutées à la main (poses qui se chevauchent : la pose effrayée de Maebril touche sa pose K.-O.)
+FORCE={'harpe-de-bulbalina':6,'velmarys':8,'minotaure':6,'licorne':8}
 ROWS={'faux-enfants'}  # planche en grille : deux rangées de poses
 SKIP={'mimic-levier','bobo'}  # mimic : fond opaque, pas de détourage possible ; bobo : pas encore utilisé dans l'Histoire
 def split_touching(m,rg,cnt):
@@ -60,6 +61,7 @@ for f in sorted(glob.glob(SRC+'/*.png')):
     name=slug(base)
     if name in SKIP:continue
     prof=A.sum(0).astype(float);xs=cuts(prof,H)
+    if name in CUTS:xs=sorted(set(xs+CUTS[name]))
     if name in FORCE:xs=force(xs,np.convolve(prof,np.ones(9)/9,'same'),FORCE[name])
     index[name]=[];boxes=[]
     for i in range(len(xs)-1):
