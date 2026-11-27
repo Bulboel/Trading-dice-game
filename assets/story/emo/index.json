@@ -179,6 +179,16 @@
   "assets/story/emo/lamie-5.webp",
   "assets/story/emo/lamie-6.webp"
  ],
+ "licorne": [
+  "assets/story/emo/licorne-1.webp",
+  "assets/story/emo/licorne-2.webp",
+  "assets/story/emo/licorne-3.webp",
+  "assets/story/emo/licorne-4.webp",
+  "assets/story/emo/licorne-5.webp",
+  "assets/story/emo/licorne-6.webp",
+  "assets/story/emo/licorne-7.webp",
+  "assets/story/emo/licorne-8.webp"
+ ],
  "licorne-enrage": [
   "assets/story/emo/licorne-enrage-1.webp",
   "assets/story/emo/licorne-enrage-2.webp",
@@ -189,7 +199,11 @@
  ],
  "maebril": [
   "assets/story/emo/maebril-1.webp",
-  "assets/story/emo/maebril-2.webp"
+  "assets/story/emo/maebril-2.webp",
+  "assets/story/emo/maebril-3.webp",
+  "assets/story/emo/maebril-4.webp",
+  "assets/story/emo/maebril-5.webp",
+  "assets/story/emo/maebril-6.webp"
  ],
  "maestro": [
   "assets/story/emo/maestro-1.webp",

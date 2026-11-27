@@ -49,7 +49,7 @@ K, E, B, G, J, MA, BU, OR, BO, EV, LI = 'Kala', 'Ébérien', 'Bolduc', 'Grimgors
 def emo(n): return {'img': f'url("assets/story/emo/{n}.webp")', 'sz': 'contain', 'pos': 'center bottom'}
 SQ, MO, MI, MAI, CH, DR = 'Les squelettes', 'Auguste', 'Le minotaure', 'Le vieux maître d’armes', 'Les chevaliers', 'Les drones'
 for n, k in ((SQ, 'squelette-2'), (MO, 'momie-2'), (MI, 'minotaure-2'), (MAI, 'maitre-d-armes-2'), (CH, 'chevalier-d-egide-2'), (DR, 'drone-pentagone-2')): TPL[n] = emo(k)
-TPL[OR] = emo('orven-2'); TPL[BO] = emo('bosco-2'); TPL[EV] = emo('erevan-2'); TPL[LI] = emo('licorne-enrage-1')
+TPL[OR] = emo('orven-2'); TPL[BO] = emo('bosco-2'); TPL[EV] = emo('erevan-2'); TPL[LI] = emo('licorne-2')
 JB = 'Journal de Bolduc'
 WOODS = ('Les bois de la route de Mirrhol', ['forest'], bg('assets/story/forest-background.webp', 'rgba(14, 16, 10, 0.12), rgba(8, 10, 6, 0.45)'))
 DARK = ('Le domaine d’Erevan', ['night'], bg('assets/story/erevan-cave-background.webp', 'rgba(10, 8, 20, 0.05), rgba(6, 4, 14, 0.4)'))
