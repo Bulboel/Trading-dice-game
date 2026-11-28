@@ -103,8 +103,8 @@ parts.append({'id': 'c7p4', 'chapter': 7, 'title': 'Partie 4 : La salle de desti
 ]})
 parts.append({'id': 'c7p5', 'chapter': 7, 'title': 'Partie 5 : Le perroquet guide', 'intro': [
     eb(WOOD, EV, 'Les voilà repartis vers l’épreuve suivante, celle du petit oiseau. Non sans se méfier des arbres et des plantes ! Ils sont vraiment craintifs. Je me demande comment ils font pour ne pas avoir peur de leur ombre.', (K, 'scared'), (J, 'scared'), mood='haughty'),
-    eb(WOOD, EV, 'Pendant une pause, le tout petit bonhomme rigolo a proposé un rouleau détraqué au petit oiseau. Je l’aime bien, lui : il ose, il aime jouer. Il faudra que je le prenne un jour dans un de mes jeux, pour faire peur à des aventuriers !', (B, 'happy'), (BO, 'surprised'), mood='friendly'),
-    eb(WOOD, B, 'Tiens, Bosco : un parchemin magique. Il est un peu… détraqué. Mais c’est ce qui fait son charme !', (B, 'happy'), (BO, 'thinking')),
+    eb(WOOD, EV, 'Pendant une pause, le tout petit bonhomme rigolo a proposé au petit oiseau son « petit roulé détraqué », une drôle de recette de fromage. Je l’aime bien, lui : il ose, il aime jouer. Il faudra que je le prenne un jour dans un de mes jeux, pour faire peur à des aventuriers !', (B, 'happy'), (BO, 'surprised'), mood='friendly'),
+    eb(WOOD, B, 'Tiens, Bosco : goûte mon petit roulé détraqué. Il lui manque encore quelque chose… mais c’est ce qui fait son charme !', (B, 'happy'), (BO, 'thinking')),
     eb(WOOD, EV, 'Sur le chemin, le demi-orque a joué avec le petit oiseau en le lançant très haut, à la verticale. Je n’ai pas compris, mais l’oiseau a l’air d’avoir aimé. Ils sont bizarres, quand même.', (G, 'proud'), (BO, 'happy')),
     eb(WOOD, EV, 'J’ai envoyé un perroquet pour les guider : ils n’avaient pas l’air bien dégourdis. Je l’avais réglé en langage de base… et j’ai bien fait : le petit oiseau a tout de suite entamé la conversation.', (PE, 'happy'), (BO, 'happy'), mood='friendly'),
     eb(WOOD, PE, 'Coucou ! Vous, suivre moi ! Épreuve, par là ! Vite, vite !', (PE, 'fight'), (BO, 'surprised')),
@@ -143,6 +143,7 @@ parts.append({'id': 'c7p9', 'chapter': 7, 'title': 'Partie 9 : Fin de partie', '
     eb(FIELD, E, 'Je vous ai manqué ? On dirait que vous avez eu de drôles d’aventures sans moi.', (E, 'happy'), (B, 'happy')),
     eb(FIELD, EV, '… avant que le demi-orque et le petit oiseau refassent leur jeu de saut. Complètement raté, celui-là ! Ils sont prêts pour le cirque, ceux-là. Hahaha !', (G, 'surprised'), (BO, 'scared'), mood='friendly'),
 ]})
-data.extend(parts)
+at = next((i for i, p in enumerate(data) if p['chapter'] > 7), len(data))
+data[at:at] = parts
 open(P, 'w', encoding='utf-8').write(head + '\n' + PRE + json.dumps(data, ensure_ascii=False, separators=(',', ':')) + ';' + ('\n' if rest.endswith('\n') else ''))
 print('chapitre VII :', len(parts), 'parties,', sum(len(p.get('intro', [])) + len(p.get('victory', [])) for p in parts), 'répliques')
