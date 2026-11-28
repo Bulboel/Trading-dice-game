@@ -1255,6 +1255,18 @@
         "win": "story/emo/necromancienne-1.webp"
       },
       "paper": true
+    },
+    "elementaire-vent-majeur": {
+      "nom": "Élémentaire de vent majeur",
+      "boardHeight": 1.05,
+      "sprite": {
+        "idle": "story/emo/elementaire-de-vent-majeur-2.webp",
+        "walk": "story/emo/elementaire-de-vent-majeur-2.webp",
+        "attack": "story/emo/elementaire-de-vent-majeur-3.webp",
+        "hit": "story/emo/elementaire-de-vent-majeur-5.webp",
+        "win": "story/emo/elementaire-de-vent-majeur-1.webp"
+      },
+      "paper": true
     }
   },
   "terrains": {
