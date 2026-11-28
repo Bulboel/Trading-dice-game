@@ -47,13 +47,14 @@ K, E, B, G, J, BO, MA, CA = 'Kala', 'Ébérien', 'Bolduc', 'Grimgors', 'Jhimm', 
 def emo(n): return {'img': f'url("assets/story/emo/{n}.webp")', 'sz': 'contain', 'pos': 'center bottom'}
 TPL[BO] = emo('bosco-2'); TPL[CA] = emo('caleizis-2'); TPL[MA] = emo('maebril-2')
 OM = 'Les ombres'; TPL[OM] = emo('sans-chiffre-1')
+CR = 'La créature'; TPL[CR] = emo('elementaire-de-vent-majeur-2')
 JG = 'Journal de Grimgors'
 CAMP = ('Le campement', ['night'], bg('assets/story/forest-background.webp', 'rgba(10, 14, 30, 0.45), rgba(4, 6, 14, 0.75)'))
 DREAM = ('Le rêve partagé', ['night', 'night-dream'], 'radial-gradient(at 50% 32%, rgb(70, 20, 40), rgb(14, 4, 10) 78%)')
-SNOW = ('Vers Mirrhol', ['forest'], bg('assets/story/mirrhol-road-background.webp', 'rgba(200, 220, 240, 0.35), rgba(60, 80, 110, 0.5)'))
-MIST = ('La route de Mirrhol', ['forest'], bg('assets/story/mirrhol-road-background.webp', 'rgba(170, 175, 185, 0.6), rgba(40, 44, 52, 0.75)'))
+SNOW = ('Vers Mirrhol', ['forest'], bg('assets/story/snowy-road-background.webp', 'rgba(20, 30, 50, 0.04), rgba(20, 30, 50, 0.35)'))
+MIST = ('La route de Mirrhol', ['forest'], bg('assets/story/mirrhol-misty-road-background.webp', 'rgba(20, 20, 24, 0.05), rgba(10, 10, 14, 0.42)'))
 INN = ('L’auberge de Mirrhol', ['dassom-tavern'], bg('assets/story/griffon-dore-interior.webp', 'rgba(20, 14, 8, 0.1), rgba(10, 6, 2, 0.4)'))
-STONE = ('La pierre d’Aliam', ['forest'], bg('assets/story/forest-background.webp', 'rgba(150, 155, 170, 0.55), rgba(30, 32, 40, 0.75)'))
+STONE = ('La pierre d’Aliam', ['forest'], bg('assets/story/mirrhol-misty-road-background.webp', 'rgba(120, 125, 140, 0.35), rgba(20, 22, 30, 0.6)'))
 CAVE = ('La grotte des ombres', ['night'], bg('assets/story/humid-cavern-background.webp', 'rgba(60, 70, 90, 0.3), rgba(8, 10, 16, 0.7)'))
 def gb(place, speaker, text, *cast, art=None):
     """Réplique du récit de Grimgors : quand il raconte, il est à l’image avec l’humeur de la scène."""
@@ -119,21 +120,21 @@ parts.append({'id': 'c8p7', 'chapter': 8, 'title': 'Partie 7 : La pierre d’Ali
     gb(STONE, JG, 'Nous sommes arrivés au mégalithe : une grande pierre couverte de runes, au cœur de la brume.', (G, 'neutral'), (E, 'thinking')),
     gb(STONE, E, 'Ces runes sont brisées… Je ne vois pas comment la réparer. Pas encore.', (E, 'sad'), (K, 'neutral')),
     gb(STONE, G, 'Alors allons rendre visite à celui qui nous menace.', (G, 'fight'), (J, 'neutral')),
-    gb(CAVE, JG, 'Nous sommes entrés dans la grotte et avons avancé jusqu’à une très grande salle. Une créature gigantesque nous y attendait, semblable à un élémentaire d’air.', (G, 'fight'), (B, 'scared'), (K, 'scared')),
-    gb(CAVE, 'La créature', 'Mes frères… Vous les avez détruits. Vous allez les rejoindre.', (G, 'angry'), (J, 'scared')),
+    gb(CAVE, JG, 'Nous sommes entrés dans la grotte et avons avancé jusqu’à une très grande salle. Une créature gigantesque nous y attendait : un élémentaire de vent majeur, un tourbillon vivant.', (CR, 'neutral'), (G, 'fight'), (K, 'scared')),
+    gb(CAVE, CR, 'Mes frères… Vous les avez détruits. Vous allez les rejoindre.', (CR, 'angry'), (G, 'angry'), (J, 'scared')),
 ]})
 parts.append({'id': 'c8p8', 'chapter': 8, 'title': 'Partie 8 : Le gardien de la grotte', 'intro': [
     gb(CAVE, JG, 'Autour de la créature, l’air s’est mis à tourbillonner, et de petites silhouettes se sont détachées des parois : d’autres morts-vivants, ses « enfants ».', (OM, 'fight'), (K, 'scared'), (J, 'scared')),
     gb(CAVE, G, 'Occupez-vous des petits. Le grand est pour moi !', (G, 'fight'), (E, 'fight'), (B, 'fight')),
     gb(CAVE, JG, 'Le combat a commencé. Mes camarades se sont occupés des petits morts-vivants avec facilité, et moi, j’ai chargé le monstre.', (G, 'fight'), (K, 'fight'), (B, 'fight')),
-    gb(CAVE, JG, 'Il a fait quelque chose qui m’empêchait de le toucher. Mais il ne pourrait pas fuir mon courroux indéfiniment.', (G, 'angry')),
+    gb(CAVE, JG, 'Il a fait quelque chose qui m’empêchait de le toucher. Mais il ne pourrait pas fuir mon courroux indéfiniment.', (CR, 'fight'), (G, 'angry')),
 ], 'victory': [
     gb(CAVE, JG, 'Peu après, avec l’aide de mon dieu, j’ai pu lui asséner deux attaques dévastatrices.', (G, 'fight')),
-    gb(CAVE, JG, 'Mais le combat n’est pas terminé : il est toujours debout… et il fait venir d’autres ombres.', (G, 'surprised'), (J, 'scared'), (K, 'scared')),
+    gb(CAVE, JG, 'Mais le combat n’est pas terminé : il est toujours debout… et il fait venir d’autres ombres.', (CR, 'angry'), (G, 'surprised'), (J, 'scared')),
     gb(CAVE, G, 'Restez près de moi. Ce n’est pas fini.', (G, 'fight'), (E, 'fight')),
 ], 'lose': [
     gb(CAVE, JG, 'Le monstre nous a repoussés jusqu’à l’entrée de la salle. Je ne lâcherai pas : on y retourne !', (G, 'angry')),
-], 'duel': {'foe': 'Le gardien de la grotte', 'terrain': 'vent', 'level': 'difficile', 'dice': [248, 248, 248, 255, 246, 249, 250, 251, 252, 247],
+], 'duel': {'foe': 'Le gardien de la grotte', 'terrain': 'vent', 'level': 'difficile', 'dice': [322, 248, 248, 255, 246, 249, 250, 251, 252, 247],
             'cards': ['Le gardien de la grotte', 'Les ombres de la brume', 'Le gardien de la grotte', 'Les ombres de la brume', 'Le gardien de la grotte']}})
 at = next((i for i, p in enumerate(data) if p['chapter'] > 8), len(data))
 data[at:at] = parts

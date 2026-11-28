@@ -3,7 +3,7 @@
 const SEEN='hackenia-news-seen-v1';
 // Du plus récent au plus ancien. v447 — annonces condensées : l’essentiel seulement.
 const NEWS=[
- {id:'v459',title:'Chapitre VIII : La brume de Mirrhol',items:['Grimgors raconte la suite : le rêve d’Orcus, la route maudite et la pierre d’Aliam.']},
+ {id:'v459',title:'Chapitre VIII : La brume de Mirrhol',items:['Grimgors raconte la suite : le rêve d’Orcus, la route maudite et la pierre d’Aliam.','Nouveau dé : l’élémentaire de vent majeur, frère des élémentaires de feu et de glace.']},
  {id:'v458',title:'Chapitre VII : Les malices d’Erevan',items:['La suite de l’Histoire racontée par Erevan lui-même : la tour de Kala, l’épreuve de Bosco et celle de Grimgors.','Le chapitre VI devient « Les malices d’Erevan, 1re partie ».']},
  {id:'v457',title:'Plus fluide et plus vivant',items:['Attaques animées en plusieurs images pour plusieurs figurines en papier, et des poses plus justes.','Les figurines en papier s’animent aussi dans leur fiche de personnage, et en grand avec le bouton Agrandir (une pose au choix).','Les images corrigées des personnages s’affichent enfin partout (elles restaient en mémoire sur le téléphone).','Le plateau 3D adapte tout seul sa résolution si le téléphone peine, et retient le bon réglage.','Menus allégés : pastilles animées sans recalcul, collection plus rapide à afficher.']},
  {id:'v452',title:'Des personnages plus vivants',items:['Sept nouveaux dés en papier : squelette, Auguste la momie, minotaure, drone pentagone, chevalier d’Égide, vieux maître d’armes et nécromancienne.','Les figurines s’animent : elles s’élancent pour attaquer, tremblent sous les coups et réagissent dans l’Histoire.','Nouveaux décors pour le chapitre VI.']},
